@@ -30,6 +30,8 @@ Then your Boss asks *"how did you get there?"* — and a chat log isn't an answe
 
 That's the gap I built **Executive Advisor OS** to close. It's not another AI chatbot. It's a structured operating system that treats every strategic question like boardroom preparation — step by step, method first, with every decision documented and every assumption visible.
 
+To make AI useful, it needs rules — not vibes. Once AI touches real operations, intuition isn't enough. Ambiguous instructions lead to hesitation or worse, confident mistakes. So the rules became explicit: what AI can handle, what gets escalated, what needs approval, what must never be touched.
+
 If you've ever been burned by an AI output that sounded great in the moment but fell apart under scrutiny — this is built to survive that scrutiny.
 
 ---
@@ -89,6 +91,22 @@ Two properties matter here: **(1)** every output is a self-contained artifact th
 | Output looks like a chat log | Boardroom-polished HTML, Marp decks (PPTX/PDF/HTML export), audit-grade MD — print-safe, email-safe |
 | One-off | Live dashboard tracking every topic, every version, every output |
 | Locked to one provider | Works with **any LLM** (Claude, GPT-4, Gemini, Azure, Mistral) via Python CLI |
+
+> ---
+>
+> **On whose discipline is wired into the pipeline:**
+>
+> None of these are mine. The discipline is borrowed from people I admire. The engineering is stitching them into a pipeline that runs every time, on every decision that matters, without asking you to remember the frameworks.
+>
+> • **Charlie Munger** — mental-model latticework (inversion, opportunity cost, circle of competence, incentive alignment, social proof, loss aversion, Lollapalooza effects)
+> • **Warren Buffett** — circle of competence as a decision gate
+> • **Jeff Bezos** — two-way vs one-way doors, regret minimization
+> • **Richard Feynman** — "if you can't explain it simply, you don't understand it" re-framing
+> • **Donella Meadows** — systems-thinking leverage points (*Thinking in Systems*)
+> • **Elon Musk** — constraint-drill reasoning to the terminal "why?"
+> • **René Descartes** — doubt as a discipline (reject anything not clearly and distinctly true)
+> • **Aristotle** — categorical decomposition (six categories of being applied to decisions)
+> • **Thomas Bayes** — priors and updating on evidence
 
 ---
 
