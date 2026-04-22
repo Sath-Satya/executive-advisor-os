@@ -93,9 +93,6 @@ Two properties matter here: **(1)** every output is a self-contained artifact th
 | Locked to one provider | Works with **any LLM** (Claude, GPT-4, Gemini, Azure, Mistral) via Python CLI |
 
 > ---
->
-> **On whose discipline is wired into the pipeline:**
->
 > None of these are mine. The discipline is borrowed from people I admire. The engineering is stitching them into a pipeline that runs every time, on every decision that matters, without asking you to remember the frameworks.
 >
 > • **Charlie Munger** — mental-model latticework (inversion, opportunity cost, circle of competence, incentive alignment, social proof, loss aversion, Lollapalooza effects)
