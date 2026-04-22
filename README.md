@@ -100,12 +100,12 @@ Company reports, compliance filings, competitor decks, process memos, briefing n
 ### Step 2 — It classifies the stakes
 Every topic is auto-classified into one of four complexity tiers:
 
-| Tier | Triggers | Depth |
-|---|---|---|
-| **Simple** | Single topic, internal audience, short memo | 1 round of questions |
-| **Standard** | Multi-angle, one audience, one deadline | 2 rounds |
-| **Complex** | Board-level, multi-stakeholder, regulatory/financial exposure | 3–5 rounds |
-| **Strategic-deep** | M&A, market entry, major policy shift, multi-year bets | 5+ rounds, no ceiling |
+| Tier | Triggers | Depth | Gets
+|---|---|---|---|
+| **Simple** | Single topic, internal audience, short memo | 1 round of questions | Light treatment  |
+| **Standard** | Multi-angle, one audience, one deadline | 2 rounds | Routine brief |
+| **Complex** | Board-level, multi-stakeholder, regulatory/financial exposure | 3–5 rounds | Thorough analysis |
+| **Strategic-deep** | M&A, market entry, major policy shift, multi-year bets | 5+ rounds, no ceiling | Full deep research |
 
 ### Step 3 — It interviews you with structured multiple-choice questions
 Four per round, each with concrete options plus *"Other — I'll type it."* Simple topics complete in one round. Strategic-deep topics keep going until the research picture is genuinely clear. Your time is worth more picking from well-framed options than composing prose.
@@ -126,7 +126,7 @@ The system auto-declines four kinds of problems:
 Rigor isn't the right tool for every job. The system tells you when it's the wrong fit.
 
 ### Step 6 — For Strategic-deep topics, a 4-phase first-principles pipeline auto-invokes inside `/new-research`
-After classification, before output generation, the first-principles skill runs as an explicit phase of the research workflow — transparently, named in conversation, no black box. It is not a separate autonomous engine; it is a skill the `/new-research` workflow invokes once the complexity classifier tags the topic Strategic-deep.
+After classification, before output generation, the first-principles skill runs as an explicit phase of the research workflow — transparently, named in conversation, no black box. It is not a separate autonomous engine; it is a skill the `/new-research` workflow invokes once the complexity classifier tags the topic Strategic-deep. If you need to invoke Deep-research, then say it explicitly during /new-research: "treat this as Strategic-deep" or "go deep on this" — the classifier honors the override
 
 - **Phase 1 — Deconstruct.** Feynman re-frame ("explain the real question in plain language") → Aristotelian decomposition across Substance / Quality / Quantity / Relation / Time / Place → Musk / 5-Whys drill until a law of physics, a regulation, a contract, or grounded evidence → Cartesian doubt tests every candidate axiom.
 - **Phase 2 — Challenge assumptions.** Every assumption is inventoried with a confidence score and evidence link. **Frozen** (regulatory, contractual, political, ethical) are separated from **Challengeable**. Load-bearing assumptions are flagged. **Frozen-thaw sidebar:** the top 2–3 frozen assumptions get a *"if this later thaws, the recommendation shifts toward X"* note — critical for multi-year horizons.
