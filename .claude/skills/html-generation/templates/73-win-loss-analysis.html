@@ -1,0 +1,414 @@
+<!--
+TEMPLATE: Win-Loss Analysis
+CATEGORY: Sales
+USE WHEN: Documenting and presenting structured win/loss analysis for a completed deal, including competitor context, stage details, interview quotes, and strategic recommendations.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Win-Loss Analysis &mdash; Meridian Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #161e28;
+      --border: rgba(255,255,255,0.08);
+      --ink: #d0d8e4;
+      --muted: #8899ac;
+      --subtle: #556677;
+      --green: #2dd4a0;
+      --amber: #f0a050;
+      --red: #f06070;
+      --purple: #a78bfa;
+      --blue: #3b9eff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .page {
+      width: 860px;
+      margin: 0 auto;
+    }
+    /* Header */
+    .header {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 32px 40px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .header-tag {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .header-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+    .header-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .verdict {
+      text-align: right;
+    }
+    .verdict-badge {
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .verdict-win { background: rgba(45,212,160,0.15); color: var(--green); border: 1px solid rgba(45,212,160,0.3); }
+    .verdict-loss { background: rgba(240,96,112,0.15); color: var(--red); border: 1px solid rgba(240,96,112,0.3); }
+    .verdict-sub { font-size: 0.68rem; color: var(--muted); margin-top: 6px; }
+    /* Cards row */
+    .cards-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .card-label {
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .card-val {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    /* Two-col layout */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+    }
+    .panel-title {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .panel-title.win { color: var(--green); }
+    .panel-title.loss { color: var(--red); }
+    .panel-title.neutral { color: var(--blue); }
+    .reason-list { list-style: none; }
+    .reason-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+    .reason-list li:last-child { border-bottom: none; }
+    .reason-icon {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .icon-win { background: rgba(45,212,160,0.15); color: var(--green); }
+    .icon-loss { background: rgba(240,96,112,0.15); color: var(--red); }
+    /* Stage timeline */
+    .timeline-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .timeline {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      margin-top: 4px;
+    }
+    .stage {
+      flex: 1;
+      position: relative;
+    }
+    .stage::after {
+      content: '';
+      position: absolute;
+      top: 14px;
+      right: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--border);
+    }
+    .stage:last-child::after { display: none; }
+    .stage-dot {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
+    }
+    .stage-dot.done { background: rgba(59,158,255,0.2); color: var(--blue); border: 2px solid var(--blue); }
+    .stage-dot.final-win { background: rgba(45,212,160,0.2); color: var(--green); border: 2px solid var(--green); }
+    .stage-dot.final-loss { background: rgba(240,96,112,0.2); color: var(--red); border: 2px solid var(--red); }
+    .stage-dot.pending { background: var(--surface2); color: var(--subtle); border: 2px solid var(--border); }
+    .stage-name {
+      font-size: 0.6rem;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.3;
+    }
+    .stage-duration {
+      font-size: 0.55rem;
+      color: var(--subtle);
+      font-family: 'DM Mono', monospace;
+    }
+    /* Quotes */
+    .quotes-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .quote-block {
+      border-left: 3px solid var(--blue);
+      padding: 10px 16px;
+      margin-bottom: 14px;
+      background: var(--surface2);
+      border-radius: 0 6px 6px 0;
+    }
+    .quote-block:last-child { margin-bottom: 0; }
+    .quote-text {
+      font-size: 0.8rem;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.55;
+      margin-bottom: 6px;
+    }
+    .quote-attr {
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    /* Patterns + Recommendations */
+    .patterns-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .rec-list { list-style: none; }
+    .rec-list li {
+      display: flex;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+    .rec-list li:last-child { border-bottom: none; }
+    .rec-num {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: rgba(59,158,255,0.15);
+      color: var(--blue);
+      font-size: 0.62rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 14px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+    footer span { font-size: 0.62rem; color: var(--subtle); font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <div class="header-tag">Win-Loss Analysis &bull; Closed Q1 2026</div>
+      <div class="header-title">Meridian Health</div>
+      <div class="header-sub">Member Engagement Suite &bull; ACV $120,000 &bull; vs. CareConnect Pro &amp; Epic Cosmos</div>
+    </div>
+    <div class="verdict">
+      <div class="verdict-badge verdict-win">&#10003; WON</div>
+      <div class="verdict-sub">Closed March 14, 2026 &bull; 67-day cycle</div>
+    </div>
+  </div>
+
+  <!-- Deal Stats -->
+  <div class="cards-row">
+    <div class="card">
+      <div class="card-label">ACV</div>
+      <div class="card-val">$120,000</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Cycle Length</div>
+      <div class="card-val">67 days</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Primary Competitor</div>
+      <div class="card-val">CareConnect Pro</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Decision Maker</div>
+      <div class="card-val">Dr. Susan Park</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Stage Lost/Won</div>
+      <div class="card-val" style="color:var(--green);">Negotiation</div>
+    </div>
+  </div>
+
+  <!-- Stage Timeline -->
+  <div class="timeline-panel">
+    <div class="panel-title neutral">Deal Stage Progression</div>
+    <div class="timeline">
+      <div class="stage">
+        <div class="stage-dot done">&#10003;</div>
+        <div class="stage-name">Prospecting</div>
+        <div class="stage-duration">Jan 6 &bull; 5d</div>
+      </div>
+      <div class="stage">
+        <div class="stage-dot done">&#10003;</div>
+        <div class="stage-name">Discovery</div>
+        <div class="stage-duration">Jan 11 &bull; 12d</div>
+      </div>
+      <div class="stage">
+        <div class="stage-dot done">&#10003;</div>
+        <div class="stage-name">Demo / Eval</div>
+        <div class="stage-duration">Jan 23 &bull; 18d</div>
+      </div>
+      <div class="stage">
+        <div class="stage-dot done">&#10003;</div>
+        <div class="stage-name">Proposal</div>
+        <div class="stage-duration">Feb 10 &bull; 14d</div>
+      </div>
+      <div class="stage">
+        <div class="stage-dot done">&#10003;</div>
+        <div class="stage-name">Pilot</div>
+        <div class="stage-duration">Feb 24 &bull; 11d</div>
+      </div>
+      <div class="stage">
+        <div class="stage-dot final-win">&#9733;</div>
+        <div class="stage-name">Negotiation</div>
+        <div class="stage-duration">Mar 7 &bull; 7d</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Win / Loss Reasons -->
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title win">Win Reasons</div>
+      <ul class="reason-list">
+        <li><span class="reason-icon icon-win">+</span>Healthcare-specific workflow templates &mdash; out-of-box HIPAA-aware member engagement flows that CareConnect Pro lacked</li>
+        <li><span class="reason-icon icon-win">+</span>Pilot results: 34% reduction in care gap closure cycle time versus baseline &mdash; CMO presented to board</li>
+        <li><span class="reason-icon icon-win">+</span>SponAI implementation team&rsquo;s deep Medicaid program experience &mdash; trusted advisor positioning</li>
+        <li><span class="reason-icon icon-win">+</span>Competitive pricing: 18% below CareConnect Pro at equivalent module scope</li>
+        <li><span class="reason-icon icon-win">+</span>Champion (Marcus Webb) drove internal evaluation; team had prior positive experience with SponAI</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-title loss">Challenges Overcome (Near-Loss Factors)</div>
+      <ul class="reason-list">
+        <li><span class="reason-icon icon-loss">&minus;</span>CDO (Sasha Moreno) raised data governance objections in Week 4 &mdash; required 2 additional security review sessions</li>
+        <li><span class="reason-icon icon-loss">&minus;</span>Epic Cosmos had existing integration with Meridian&rsquo;s EHR &mdash; mitigated via pre-built Epic connector demo</li>
+        <li><span class="reason-icon icon-loss">&minus;</span>Procurement pushed for net-60 payment terms; required CFO escalation</li>
+        <li><span class="reason-icon icon-loss">&minus;</span>Initial demo focused too heavily on UI &mdash; technical buyer wanted API documentation earlier in cycle</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Interview Quotes -->
+  <div class="quotes-panel">
+    <div class="panel-title neutral" style="margin-bottom:16px;">Post-Decision Interview Quotes</div>
+    <div class="quote-block">
+      <div class="quote-text">&ldquo;The pilot numbers were undeniable. When you can show the CMO a 34% improvement in 30 days, the conversation stops being about price and starts being about implementation timeline.&rdquo;</div>
+      <div class="quote-attr">Marcus Webb &mdash; VP Information Systems (Champion)</div>
+    </div>
+    <div class="quote-block">
+      <div class="quote-text">&ldquo;We almost went with CareConnect because our IT team was familiar with them. SponAI had to earn credibility on the security side, but once they did the deep-dive with Sasha, we were comfortable.&rdquo;</div>
+      <div class="quote-attr">Dr. Susan Park &mdash; Chief Medical Officer (Economic Buyer)</div>
+    </div>
+    <div class="quote-block" style="border-left-color:var(--amber);">
+      <div class="quote-text">&ldquo;I still have concerns about the data pipeline architecture. I expect a 90-day post-go-live review where we validate compliance controls are operating as documented.&rdquo;</div>
+      <div class="quote-attr">Sasha Moreno &mdash; Chief Data Officer (Cautious Approver)</div>
+    </div>
+  </div>
+
+  <!-- Patterns + Recommendations -->
+  <div class="patterns-grid">
+    <div class="panel">
+      <div class="panel-title neutral">Patterns Identified</div>
+      <ul class="reason-list">
+        <li><span class="reason-icon icon-win">&#8679;</span>Healthcare pilot ROI closes deals faster than any pricing lever</li>
+        <li><span class="reason-icon icon-win">&#8679;</span>CDO/data governance objections are consistent in regulated-industry deals &mdash; pre-address in demo</li>
+        <li><span class="reason-icon icon-loss">&#8681;</span>Demo scripts under-emphasize API &amp; integration story for technical buyers</li>
+        <li><span class="reason-icon icon-loss">&#8681;</span>Payment term flexibility is a recurring procurement friction point</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-title neutral">Recommendations</div>
+      <ul class="rec-list">
+        <li><span class="rec-num">1</span>Add &ldquo;Pilot ROI Calculator&rdquo; to standard demo deck; pre-quantify expected improvement for each healthcare sub-vertical</li>
+        <li><span class="rec-num">2</span>Create a CDO security brief (2-pager) to deploy at Stage 3 for healthcare deals &mdash; proactively address governance</li>
+        <li><span class="rec-num">3</span>Add API documentation and integration architecture slide to technical buyer demo variant</li>
+        <li><span class="rec-num">4</span>Work with Finance to pre-approve net-45 and net-60 options for deals &gt;$100K ACV</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <span>Win-Loss Analysis &bull; Meridian Health &bull; Member Engagement Suite &bull; Q1 2026</span>
+    <span>v{{VERSION}} &bull; {{DATE}} &bull; {{OWNER}}</span>
+  </footer>
+</div>
+</body>
+</html>

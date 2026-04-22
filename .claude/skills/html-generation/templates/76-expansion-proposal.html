@@ -1,0 +1,475 @@
+<!--
+TEMPLATE: Expansion Proposal
+CATEGORY: Sales
+USE WHEN: Proposing an upsell or expansion to an existing customer, including current footprint, new opportunity, ROI case, proposed package, pricing, timeline, and a signature block.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expansion Proposal &mdash; Meridian Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --white: #ffffff;
+      --green: #2dd4a0;
+      --amber: #f0a050;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #e8e4dc;
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .page {
+      background: var(--white);
+      width: 860px;
+      margin: 0 auto;
+      box-shadow: 0 4px 32px rgba(14,27,46,0.12);
+    }
+    .cover {
+      background: var(--navy);
+      padding: 52px 64px 44px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      top: -50px; right: -50px;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      border: 44px solid rgba(184,150,90,0.1);
+    }
+    .cover-tag {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 12px;
+    }
+    .cover-title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .cover-sub {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 32px;
+    }
+    .cover-footer-row {
+      display: flex;
+      gap: 40px;
+    }
+    .cover-footer-item label {
+      display: block;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 3px;
+    }
+    .cover-footer-item span {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.82);
+    }
+    .body { padding: 44px 64px; }
+    .section { margin-bottom: 36px; }
+    .section-title {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      margin-bottom: 18px;
+    }
+    /* Footprint grid */
+    .footprint-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 16px; }
+    .fp-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .fp-label {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .fp-val {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    /* Opportunity block */
+    .opp-box {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      padding: 18px 22px;
+      margin-bottom: 16px;
+    }
+    .opp-box h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    .opp-box p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    /* ROI calc */
+    .roi-calc {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+    }
+    .roi-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid #ede9e1;
+      font-size: 0.78rem;
+    }
+    .roi-row:last-child { border-bottom: none; }
+    .roi-row.total {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--navy);
+      border-top: 2px solid var(--border);
+      padding-top: 12px;
+      margin-top: 4px;
+    }
+    .roi-val { font-weight: 600; color: var(--navy); }
+    .roi-val.positive { color: #1a8a68; }
+    /* Package table */
+    .pkg-table { width: 100%; border-collapse: collapse; }
+    .pkg-table th {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 9px 14px;
+      text-align: left;
+      border-bottom: 2px solid var(--border);
+    }
+    .pkg-table td {
+      padding: 11px 14px;
+      font-size: 0.78rem;
+      border-bottom: 1px solid #ede9e1;
+      vertical-align: top;
+    }
+    .pkg-table tr:last-child td { border-bottom: none; }
+    .pkg-table tfoot td {
+      font-weight: 700;
+      font-size: 0.82rem;
+      border-top: 2px solid var(--border);
+      color: var(--navy);
+      padding: 12px 14px;
+    }
+    .line-desc { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+    /* Timeline */
+    .timeline { display: flex; gap: 0; margin-top: 4px; }
+    .tl-step { flex: 1; }
+    .tl-step::after {
+      content: '';
+      display: block;
+      height: 2px;
+      background: var(--border);
+      margin: 10px 0 0 28px;
+    }
+    .tl-step:last-child::after { display: none; }
+    .tl-dot {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tl-name { font-size: 0.7rem; font-weight: 600; color: var(--navy); margin-top: 6px; }
+    .tl-date { font-size: 0.62rem; color: var(--gold); }
+    .tl-desc { font-size: 0.65rem; color: var(--muted); line-height: 1.3; margin-top: 2px; }
+    /* Signature */
+    .sig-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      background: var(--cream);
+    }
+    .sig-party label {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 14px;
+    }
+    .sig-line {
+      border-bottom: 1px solid var(--border);
+      height: 28px;
+      margin-bottom: 6px;
+    }
+    .sig-meta {
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 14px 64px;
+      display: flex;
+      justify-content: space-between;
+    }
+    footer span { font-size: 0.62rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="cover-tag">Expansion Proposal &bull; Confidential</div>
+    <div class="cover-title">Member Engagement Suite<br />Expansion Proposal</div>
+    <div class="cover-sub">Prepared for Meridian Health by SponAI Consulting</div>
+    <div class="cover-footer-row">
+      <div class="cover-footer-item"><label>Prepared For</label><span>Dr. Susan Park, CMO &bull; Meridian Health</span></div>
+      <div class="cover-footer-item"><label>Prepared By</label><span>{{OWNER}} &bull; SponAI Consulting</span></div>
+      <div class="cover-footer-item"><label>Proposal Date</label><span>{{DATE}}</span></div>
+      <div class="cover-footer-item"><label>Valid Until</label><span>60 days from issue</span></div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- Current Footprint -->
+    <div class="section">
+      <div class="section-title">Your Current SponAI Footprint</div>
+      <div class="footprint-grid">
+        <div class="fp-card">
+          <div class="fp-label">Current Modules</div>
+          <div class="fp-val">3 active</div>
+        </div>
+        <div class="fp-card">
+          <div class="fp-label">Current ACV</div>
+          <div class="fp-val">$325,000</div>
+        </div>
+        <div class="fp-card">
+          <div class="fp-label">Active Users</div>
+          <div class="fp-val">487</div>
+        </div>
+        <div class="fp-card">
+          <div class="fp-label">Q1 ROI Achieved</div>
+          <div class="fp-val" style="color:#1a8a68;">2.6x</div>
+        </div>
+        <div class="fp-card">
+          <div class="fp-label">Health Score</div>
+          <div class="fp-val" style="color:#1a8a68;">87 / 100</div>
+        </div>
+        <div class="fp-card">
+          <div class="fp-label">Customer Since</div>
+          <div class="fp-val">Mar 2023</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Opportunity -->
+    <div class="section">
+      <div class="section-title">Expansion Opportunity</div>
+      <div class="opp-box">
+        <h3>Member Engagement Suite &mdash; 1,000-Seat License Expansion</h3>
+        <p>Meridian&rsquo;s Medicaid population health program is expanding to 4 new counties in Q3 2026. The current outreach infrastructure (manual calls + basic batch SMS) cannot scale to the projected 340,000 additional members. The Member Engagement Suite provides AI-assisted outreach scheduling, personalized communication sequencing, and HIPAA-compliant channel management &mdash; purpose-built for payer workflows. Priya Nair&rsquo;s team has already piloted the capability on 50 seats with strong adoption metrics (see Q1 QBR).</p>
+      </div>
+    </div>
+
+    <!-- ROI Calculation -->
+    <div class="section">
+      <div class="section-title">ROI Calculation &mdash; Member Engagement Suite</div>
+      <div class="roi-calc">
+        <div class="roi-row">
+          <span>Outreach cost reduction (32% vs current manual process)</span>
+          <span class="roi-val positive">+$280,000 / yr</span>
+        </div>
+        <div class="roi-row">
+          <span>Quality bonus improvement (HEDIS Gap &mdash; 2 additional measures)</span>
+          <span class="roi-val positive">+$320,000 / yr</span>
+        </div>
+        <div class="roi-row">
+          <span>FTE hours recaptured (case manager admin reduction)</span>
+          <span class="roi-val positive">+$145,000 / yr</span>
+        </div>
+        <div class="roi-row">
+          <span>Member retention improvement (est. 1.2pp reduction in disenrollment)</span>
+          <span class="roi-val positive">+$185,000 / yr</span>
+        </div>
+        <div class="roi-row">
+          <span>Annual investment (Member Engagement Suite, 1,000 seats)</span>
+          <span class="roi-val" style="color:#c03040;">&minus;$120,000 / yr</span>
+        </div>
+        <div class="roi-row total">
+          <span>Estimated Net Annual Benefit</span>
+          <span class="roi-val positive">$810,000 / yr &bull; 6.8x ROI</span>
+        </div>
+      </div>
+      <p style="font-size:0.67rem;color:var(--muted);margin-top:8px;">ROI estimates based on Meridian Q1 actuals + payer industry benchmarks (AHIP 2025). Finance validation recommended prior to board presentation.</p>
+    </div>
+
+    <!-- Proposed Package -->
+    <div class="section">
+      <div class="section-title">Proposed Package</div>
+      <table class="pkg-table">
+        <thead>
+          <tr>
+            <th>Line Item</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
+            <th>Annual Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              Member Engagement Suite &mdash; Core License
+              <div class="line-desc">Outreach scheduling, AI sequencing, HIPAA channel mgmt, analytics dashboard</div>
+            </td>
+            <td>1,000 seats</td>
+            <td>$100 / seat</td>
+            <td>$100,000</td>
+          </tr>
+          <tr>
+            <td>
+              Implementation &amp; Onboarding (flat fee)
+              <div class="line-desc">Data migration, SSO setup, admin training (3 sessions), go-live support</div>
+            </td>
+            <td>1</td>
+            <td>$24,000</td>
+            <td>$24,000</td>
+          </tr>
+          <tr>
+            <td>
+              Loyalty Discount (3-yr commit bundled with renewal)
+              <div class="line-desc">Applied as a reduction on recurring license fee</div>
+            </td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+            <td style="color:#1a8a68;">&minus;$4,000</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">Total First Year Investment</td>
+            <td>$120,000</td>
+          </tr>
+          <tr>
+            <td colspan="3">Year 2&ndash;3 Annual Recurring (license only, CPI uplift)</td>
+            <td>$98,000 / yr</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Timeline -->
+    <div class="section">
+      <div class="section-title">Proposed Timeline</div>
+      <div class="timeline">
+        <div class="tl-step">
+          <div class="tl-dot">1</div>
+          <div class="tl-name">Agreement</div>
+          <div class="tl-date">By Apr 30</div>
+          <div class="tl-desc">Contract signed, BAA amended, PO issued</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot">2</div>
+          <div class="tl-name">Kickoff</div>
+          <div class="tl-date">May 7</div>
+          <div class="tl-desc">Implementation kick-off, data requirements, SSO config</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot">3</div>
+          <div class="tl-name">UAT</div>
+          <div class="tl-date">May 28&ndash;Jun 11</div>
+          <div class="tl-desc">Priya&rsquo;s team user acceptance testing, 20 pilot users</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot">4</div>
+          <div class="tl-name">Go-Live</div>
+          <div class="tl-date">June 15</div>
+          <div class="tl-desc">Full 1,000-seat activation; CSM assigned</div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-dot">5</div>
+          <div class="tl-name">Review</div>
+          <div class="tl-date">Sep 15</div>
+          <div class="tl-desc">90-day ROI review with Priya and Dr. Park</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signature -->
+    <div class="section">
+      <div class="section-title">Acceptance</div>
+      <div class="sig-block">
+        <div class="sig-party">
+          <label>Meridian Health</label>
+          <div class="sig-line"></div>
+          <div class="sig-meta">Authorized Signature</div>
+          <div style="margin-top:12px;" class="sig-line"></div>
+          <div class="sig-meta">Printed Name &amp; Title</div>
+          <div style="margin-top:12px;" class="sig-line"></div>
+          <div class="sig-meta">Date</div>
+        </div>
+        <div class="sig-party">
+          <label>SponAI Consulting</label>
+          <div class="sig-line"></div>
+          <div class="sig-meta">Account Executive: {{OWNER}}</div>
+          <div style="margin-top:12px;" class="sig-line"></div>
+          <div class="sig-meta">Printed Name &amp; Title</div>
+          <div style="margin-top:12px;" class="sig-line"></div>
+          <div class="sig-meta">Date</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Expansion Proposal &bull; Meridian Health &bull; SponAI Consulting &bull; Confidential</span>
+    <span>v{{VERSION}} &bull; {{DATE}} &bull; {{OWNER}}</span>
+  </footer>
+</div>
+</body>
+</html>

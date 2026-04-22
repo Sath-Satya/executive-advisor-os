@@ -1,0 +1,606 @@
+<!--
+TEMPLATE: case-study
+CATEGORY: Reports / Documents
+USE WHEN: Presenting a business case study with client challenge, solution, and measurable results for client-facing or marketing use.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{CLIENT_NAME}} — Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream2: #efebe3;
+      --navy: #0e1b2e;
+      --navy2: #162540;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --callout-bg: #f0ece4;
+      --green: #2d6a4f;
+      --green-bg: #eef6f1;
+      --amber: #92400e;
+      --serif: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+      --sans: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', 'Fira Code', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: var(--navy);
+      padding: 3rem 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold2) 50%, transparent 100%);
+    }
+    .hero-inner {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(184,150,90,0.15);
+      border: 1px solid rgba(184,150,90,0.3);
+      color: var(--gold2);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-family: var(--serif);
+      font-size: 2.6rem;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      max-width: 640px;
+    }
+    .hero-tagline {
+      font-size: 1.05rem;
+      color: #9aacc0;
+      max-width: 540px;
+      margin-bottom: 2.5rem;
+      line-height: 1.65;
+    }
+    .hero-client-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      padding: 1.5rem 0 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .hero-client-item {}
+    .hero-client-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold2);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    .hero-client-value {
+      font-size: 0.9rem;
+      color: #c0cede;
+    }
+
+    /* ── Results Banner ── */
+    .results-banner {
+      background: var(--navy2);
+      border-bottom: 3px solid var(--gold);
+    }
+    .results-banner-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 1.75rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.5rem;
+    }
+    .result-metric {
+      text-align: center;
+      padding: 0.75rem 0.5rem;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .result-metric:last-child { border-right: none; }
+    .result-value {
+      display: block;
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      color: var(--gold2);
+      line-height: 1.1;
+    }
+    .result-label {
+      font-size: 0.78rem;
+      color: #8899b0;
+      font-family: var(--mono);
+      letter-spacing: 0.04em;
+      display: block;
+      margin-top: 0.25rem;
+    }
+
+    /* ── Body layout ── */
+    .doc-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    /* ── Sections ── */
+    .cs-section {
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cs-section:last-child { border-bottom: none; }
+    .section-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.25;
+      margin-bottom: 1.25rem;
+    }
+    h3 {
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-top: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Challenge section accent ── */
+    .challenge-highlight {
+      background: var(--callout-bg);
+      border-left: 4px solid var(--amber);
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 4px 4px 0;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+    .challenge-highlight strong { color: #5c2d0a; }
+
+    /* ── Solution steps ── */
+    .solution-steps { list-style: none; margin: 1.5rem 0; }
+    .solution-steps li {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .solution-steps li:last-child { border-bottom: none; }
+    .step-num {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: var(--navy);
+      color: var(--gold2);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+    .step-body {}
+    .step-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--navy);
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+    .step-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── Technology tags ── */
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+    }
+    .tech-tag {
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      color: var(--navy);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 3px;
+    }
+
+    /* ── Results deep-dive ── */
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    .result-card {
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+    }
+    .result-card-value {
+      font-family: var(--serif);
+      font-size: 2rem;
+      color: var(--navy);
+      display: block;
+      line-height: 1.1;
+    }
+    .result-card-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-top: 0.25rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .result-card-note { font-size: 0.82rem; color: var(--muted); }
+    .result-card.highlight {
+      background: var(--navy);
+      border-color: var(--gold);
+    }
+    .result-card.highlight .result-card-value { color: var(--gold2); }
+    .result-card.highlight .result-card-label { color: #d0dae8; }
+    .result-card.highlight .result-card-note { color: #8899b0; }
+
+    /* ── Testimonial ── */
+    .testimonial {
+      background: var(--navy);
+      border-radius: 6px;
+      padding: 2.25rem 2.5rem;
+      margin: 2rem 0;
+      position: relative;
+    }
+    .testimonial::before {
+      content: '\201C';
+      position: absolute;
+      top: 1rem; left: 1.5rem;
+      font-family: var(--serif);
+      font-size: 4rem;
+      color: var(--gold);
+      opacity: 0.4;
+      line-height: 1;
+    }
+    blockquote {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-style: italic;
+      color: #d0dae8;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .testimonial-attribution {
+      margin-top: 1.25rem;
+    }
+    .testimonial-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--gold2);
+      display: block;
+    }
+    .testimonial-role {
+      font-size: 0.8rem;
+      color: #7090a8;
+      font-family: var(--mono);
+    }
+
+    /* ── Services sidebar strip ── */
+    .services-strip {
+      background: var(--callout-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem 1.75rem;
+      margin-top: 2rem;
+    }
+    .services-strip-title {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .services-list { list-style: none; }
+    .services-list li {
+      padding: 0.4rem 0;
+      font-size: 0.875rem;
+      border-bottom: 1px dotted var(--border);
+      display: flex;
+      gap: 0.6rem;
+      align-items: center;
+    }
+    .services-list li:last-child { border-bottom: none; }
+    .services-dot {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── Footer ── */
+    .cs-footer {
+      background: var(--navy);
+      color: #6b7e94;
+      padding: 1.5rem 2rem;
+      font-size: 0.78rem;
+      font-family: var(--mono);
+    }
+    .cs-footer .doc-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding-top: 0; padding-bottom: 0;
+    }
+    .footer-brand { color: var(--gold2); font-weight: 500; }
+    .footer-div { color: rgba(255,255,255,0.2); margin: 0 0.5rem; }
+
+    /* ── Print ── */
+    @media print {
+      @page { margin: 2cm; size: A4; }
+      body { background: #fff; font-size: 11pt; }
+      .hero { background: #fff; padding: 0; }
+      .hero-title { color: var(--navy); font-size: 22pt; }
+      .hero-tagline, .hero-client-value { color: var(--muted); }
+      .hero::after, .hero-badge { display: none; }
+      .results-banner { background: #f0ece4; }
+      .result-value { color: var(--gold); }
+      .result-label { color: var(--muted); }
+      .result-metric { border-right-color: var(--border); }
+      .testimonial { background: #f0ece4; }
+      blockquote { color: var(--ink); }
+      .testimonial-name { color: var(--gold); }
+      .testimonial-role { color: var(--muted); }
+      .result-card.highlight { background: #f0ece4; border-color: var(--gold); }
+      .result-card.highlight .result-card-value { color: var(--navy); }
+      .result-card.highlight .result-card-label { color: var(--ink); }
+      .cs-footer { background: #fff; color: var(--muted); border-top: 1px solid var(--border); padding: 0.5cm 0 0; }
+      .cs-section { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Hero ── -->
+  <header class="hero">
+    <div class="hero-inner">
+      <span class="hero-badge">Case Study</span>
+      <h1 class="hero-title">How Meridian Health Reduced Prior Authorization Denials by 44% with AI-Assisted Review</h1>
+      <p class="hero-tagline">Replacing a 72-hour manual review cycle with an AI-augmented workflow that surfaces decision-critical evidence in under four minutes — without replacing clinical judgment.</p>
+      <div class="hero-client-row">
+        <div class="hero-client-item">
+          <span class="hero-client-label">Client</span>
+          <span class="hero-client-value">Meridian Health Systems</span>
+        </div>
+        <div class="hero-client-item">
+          <span class="hero-client-label">Industry</span>
+          <span class="hero-client-value">Healthcare — Managed Care</span>
+        </div>
+        <div class="hero-client-item">
+          <span class="hero-client-label">Project Duration</span>
+          <span class="hero-client-value">{{DURATION}}</span>
+        </div>
+        <div class="hero-client-item">
+          <span class="hero-client-label">Engagement</span>
+          <span class="hero-client-value">{{ENGAGEMENT_TYPE}}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Results Banner ── -->
+  <div class="results-banner" role="region" aria-label="Key results">
+    <div class="results-banner-inner">
+      <div class="result-metric">
+        <span class="result-value">44%</span>
+        <span class="result-label">Denial Rate Reduction</span>
+      </div>
+      <div class="result-metric">
+        <span class="result-value">4 min</span>
+        <span class="result-label">Evidence Surfacing Time</span>
+      </div>
+      <div class="result-metric">
+        <span class="result-value">$2.1M</span>
+        <span class="result-label">Annual Cost Avoidance</span>
+      </div>
+      <div class="result-metric">
+        <span class="result-value">91%</span>
+        <span class="result-label">Reviewer Satisfaction</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Body ── -->
+  <div class="doc-wrap">
+
+    <!-- Client Overview -->
+    <section class="cs-section" id="overview">
+      <span class="section-eyebrow">Client Overview</span>
+      <h2>About Meridian Health Systems</h2>
+      <p>Meridian Health Systems is a regional managed care organization serving 340,000 members across the Pacific Northwest. With a network of 2,200 contracted providers and an annual prior authorization (PA) volume exceeding 180,000 requests, Meridian's utilization management (UM) team is the operational backbone of its medical cost control program.</p>
+      <p>Like most health plans of its size, Meridian operated a primarily manual PA review process: clinical reviewers accessed multiple disparate systems — claims history, clinical guidelines, physician notes — to gather the evidence needed for each determination. The process was slow, inconsistent, and a growing source of provider and member friction.</p>
+    </section>
+
+    <!-- Challenge -->
+    <section class="cs-section" id="challenge">
+      <span class="section-eyebrow">The Challenge</span>
+      <h2>A Review Process That Could Not Scale</h2>
+      <p>By the end of FY2023, Meridian's UM team faced a confluence of pressures that made the status quo unsustainable. PA request volume had grown 22% year-over-year, driven by expanded specialty drug coverage and a new behavioral health benefit tier. Average review time had extended to 72 hours, against an internal target of 48 hours and a regulatory ceiling of 72 hours for non-urgent requests.</p>
+
+      <div class="challenge-highlight">
+        <strong>Root Cause:</strong> Clinical reviewers were spending an average of 41 minutes per PA request — not reviewing clinical evidence, but locating and consolidating it from six disconnected source systems. Less than 30% of review time was spent on the actual clinical determination.
+      </div>
+
+      <h3>Specific Pain Points</h3>
+      <p>Stakeholder interviews and time-motion studies identified three primary failure modes: inconsistent evidence gathering across reviewers, high cognitive load from context-switching between systems, and a growing backlog that required costly overtime and contractor augmentation to manage.</p>
+      <p>A secondary issue — denial rate variance of up to 18 percentage points across reviewer cohorts for the same procedure codes — indicated that the underlying process lacked sufficient standardization to produce reliable, defensible determinations.</p>
+    </section>
+
+    <!-- Solution -->
+    <section class="cs-section" id="solution">
+      <span class="section-eyebrow">The Solution</span>
+      <h2>AI-Augmented Evidence Surfacing with Clinical Guardrails</h2>
+      <p>The engagement centered on one principle: augment the clinical reviewer, not replace them. The AI system was designed to handle the evidence retrieval and consolidation work — the 41-minute problem — while leaving all clinical judgment and final determinations with the credentialed reviewer.</p>
+
+      <ul class="solution-steps" aria-label="Solution components">
+        <li>
+          <span class="step-num">01</span>
+          <div class="step-body">
+            <span class="step-title">Unified Evidence Retrieval Layer</span>
+            <span class="step-desc">A structured data API aggregated claims history, clinical notes, lab results, and prior authorization history from six source systems into a single, PA-scoped evidence bundle. Median retrieval time: 47 seconds.</span>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">02</span>
+          <div class="step-body">
+            <span class="step-title">Guideline-Anchored Summarization</span>
+            <span class="step-desc">An AI model parsed the evidence bundle and mapped clinical facts to the relevant InterQual or MCG guideline criteria, producing a structured summary that identified which criteria were met, which were unmet, and which required reviewer assessment.</span>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">03</span>
+          <div class="step-body">
+            <span class="step-title">Confidence-Scored Recommendation</span>
+            <span class="step-desc">The system generated a provisional recommendation (approve/pend/deny) with a calibrated confidence score. Low-confidence cases were automatically flagged for senior reviewer attention rather than being routed to the standard queue.</span>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">04</span>
+          <div class="step-body">
+            <span class="step-title">Full Audit Trail and Override Logging</span>
+            <span class="step-desc">Every AI-generated summary and recommendation included a provenance record — which sources were used, which guideline version was applied, and what the AI confidence score was. All reviewer overrides were logged with reason codes for quality review.</span>
+          </div>
+        </li>
+      </ul>
+
+      <div class="tech-tags" aria-label="Technologies used">
+        <span class="tech-tag">Python / FastAPI</span>
+        <span class="tech-tag">Azure OpenAI</span>
+        <span class="tech-tag">HL7 FHIR R4</span>
+        <span class="tech-tag">Salesforce Health Cloud</span>
+        <span class="tech-tag">Azure Container Apps</span>
+        <span class="tech-tag">PostgreSQL</span>
+        <span class="tech-tag">HIPAA-compliant logging</span>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="cs-section" id="results">
+      <span class="section-eyebrow">Results</span>
+      <h2>Measurable Outcomes at 6-Month Post-Launch</h2>
+      <p>Results were measured against a pre-launch baseline derived from six months of historical PA data. The comparison was adjusted for seasonal volume variation using a matched-period control from the prior year.</p>
+
+      <div class="results-grid" aria-label="Detailed results">
+        <div class="result-card highlight">
+          <span class="result-card-value">44%</span>
+          <span class="result-card-label">Reduction in Denial Rate</span>
+          <p class="result-card-note">From 28.4% to 15.9% denial rate across all procedure categories. Effect strongest in musculoskeletal (52% improvement) and behavioral health (61% improvement).</p>
+        </div>
+        <div class="result-card">
+          <span class="result-card-value">4 min</span>
+          <span class="result-card-label">Evidence Surfacing Time</span>
+          <p class="result-card-note">Reduced from 41 minutes (manual) to 3 min 52 sec (AI-augmented) median per request. 90th percentile: 7 minutes vs. 68 minutes.</p>
+        </div>
+        <div class="result-card">
+          <span class="result-card-value">$2.1M</span>
+          <span class="result-card-label">Annual Cost Avoidance</span>
+          <p class="result-card-note">From reduced overtime, contractor spend, and downstream appeals processing. Excludes medical cost impact of improved determination consistency.</p>
+        </div>
+        <div class="result-card">
+          <span class="result-card-value">91%</span>
+          <span class="result-card-label">Reviewer Satisfaction</span>
+          <p class="result-card-note">Based on post-launch survey of 47 clinical reviewers (n=42 responses, 89% response rate). Pre-launch baseline was 41%.</p>
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <blockquote>"Before this system, I spent most of my morning just gathering information. Now the evidence is in front of me before I finish reading the request. I can focus on the actual clinical question — which is why I became a nurse in the first place."</blockquote>
+        <div class="testimonial-attribution">
+          <span class="testimonial-name">{{TESTIMONIAL_NAME}}</span>
+          <span class="testimonial-role">{{TESTIMONIAL_TITLE}}, Meridian Health Systems</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services provided -->
+    <section class="cs-section" id="services">
+      <span class="section-eyebrow">Engagement Scope</span>
+      <h2>Services Delivered</h2>
+      <p>This engagement was executed over {{DURATION}} in three phases: discovery and current-state mapping, design and build, and supervised go-live with a 60-day hypercare period.</p>
+
+      <div class="services-strip">
+        <span class="services-strip-title">Services Included</span>
+        <ul class="services-list">
+          <li><span class="services-dot" aria-hidden="true"></span>Current-state process mapping and time-motion study</li>
+          <li><span class="services-dot" aria-hidden="true"></span>AI solution architecture and data flow design</li>
+          <li><span class="services-dot" aria-hidden="true"></span>FHIR integration layer development (6 source systems)</li>
+          <li><span class="services-dot" aria-hidden="true"></span>AI evidence summarization engine (custom prompt engineering)</li>
+          <li><span class="services-dot" aria-hidden="true"></span>HIPAA compliance review and audit trail implementation</li>
+          <li><span class="services-dot" aria-hidden="true"></span>Reviewer training and change management support</li>
+          <li><span class="services-dot" aria-hidden="true"></span>60-day post-launch hypercare and model tuning</li>
+        </ul>
+      </div>
+    </section>
+
+  </div><!-- .doc-wrap -->
+
+  <!-- ── Footer ── -->
+  <footer class="cs-footer">
+    <div class="doc-wrap">
+      <span><span class="footer-brand">SponAItech</span> <span class="footer-div">|</span> html-generation skill v1.1</span>
+      <span>Version {{VERSION}} <span class="footer-div">|</span> {{DATE}} <span class="footer-div">|</span> {{CLASSIFICATION}}</span>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!--
+TEMPLATE: product-brief
+CATEGORY: Docs / Product Communications
+USE WHEN: Writing an internal product brief or PRD covering problem, target user, success metrics, scope in/out, risks, and rollout plan.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Brief — Meridian NL Query Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Serif+Display&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream-dark: #ede9e0;
+      --navy: #0e1b2e;
+      --navy-mid: #1a2f4a;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --border2: #c8c2b6;
+      --blue: #2a6bb5;
+      --green: #1a7a5e;
+      --red: #b53a2a;
+      --amber: #9a6010;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 3.5rem 3rem 5rem;
+    }
+
+    /* Doc header */
+    .doc-header {
+      border-top: 4px solid var(--navy);
+      padding-top: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    .doc-header .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .doc-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    .doc-header .subtitle { color: var(--muted); font-size: 0.95rem; max-width: 520px; }
+
+    /* Meta grid */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      margin-bottom: 2.5rem;
+      overflow: hidden;
+    }
+    .meta-cell {
+      padding: 0.75rem 1rem;
+      border-right: 1px solid var(--border2);
+    }
+    .meta-cell:last-child { border-right: none; }
+    .meta-cell .label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+    }
+    .meta-cell .value { font-size: 0.85rem; font-weight: 500; color: var(--ink); }
+    .status-approved { color: var(--green); font-weight: 600; }
+    .status-draft    { color: var(--amber); font-weight: 600; }
+    .status-review   { color: var(--blue);  font-weight: 600; }
+
+    /* Sections */
+    .doc-section { margin-bottom: 2.5rem; }
+    h2 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--navy);
+      border-bottom: 2px solid var(--navy);
+      padding-bottom: 0.35rem;
+      margin-bottom: 1.1rem;
+    }
+    p { font-size: 0.9rem; color: var(--ink); margin-bottom: 0.75rem; }
+    p:last-child { margin-bottom: 0; }
+    ul { margin-left: 1.25rem; margin-bottom: 0.75rem; }
+    li { font-size: 0.9rem; color: var(--ink); margin-bottom: 0.3rem; }
+
+    /* Problem box */
+    .problem-box {
+      background: var(--cream-dark);
+      border: 1px solid var(--border2);
+      border-left: 3px solid var(--navy);
+      border-radius: 0 6px 6px 0;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .problem-box p { color: var(--ink); font-size: 0.88rem; }
+
+    /* User persona */
+    .persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 0; }
+    @media(max-width:560px) { .persona-grid { grid-template-columns: 1fr; } .meta-grid { grid-template-columns: 1fr; } }
+    .persona-card {
+      background: var(--cream-dark);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.1rem;
+    }
+    .persona-card .role-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.35rem;
+    }
+    .persona-card h3 { font-size: 0.9rem; font-weight: 600; color: var(--navy); margin-bottom: 0.3rem; }
+    .persona-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 0; }
+
+    /* Metrics table */
+    .metrics-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-bottom: 0; }
+    .metrics-table th {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 0.45rem 0.5rem;
+      border-bottom: 1px solid var(--border2);
+    }
+    .metrics-table td { padding: 0.5rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .metrics-table tr:last-child td { border-bottom: none; }
+    .metric-name { font-weight: 500; color: var(--ink); }
+    .metric-baseline, .metric-target, .metric-how { color: var(--muted); }
+    .target-value { color: var(--green); font-weight: 600; }
+
+    /* Scope */
+    .scope-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .scope-col h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .scope-in  h3 { color: var(--green); }
+    .scope-out h3 { color: var(--red);   }
+    .scope-col ul { margin-left: 1rem; }
+    .scope-col li { font-size: 0.85rem; color: var(--muted); }
+
+    /* Risks */
+    .risk-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .risk-table th {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid var(--border2);
+    }
+    .risk-table td { padding: 0.5rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .risk-table tr:last-child td { border-bottom: none; }
+    .risk-desc { color: var(--ink); font-weight: 500; font-size: 0.85rem; }
+    .risk-level {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      border-radius: 3px;
+      padding: 1px 6px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .level-high   { background: #fdeef0; color: var(--red); }
+    .level-medium { background: #fef5e8; color: var(--amber); }
+    .level-low    { background: #eaf5ee; color: var(--green); }
+    .mitigation { font-size: 0.82rem; color: var(--muted); }
+
+    /* Rollout timeline */
+    .timeline { list-style: none; }
+    .tl-item { display: flex; gap: 1rem; margin-bottom: 0.85rem; align-items: flex-start; }
+    .tl-marker { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 24px; }
+    .tl-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--navy);
+      background: var(--cream);
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .tl-dot.filled { background: var(--navy); }
+    .tl-line { width: 2px; flex: 1; background: var(--border2); min-height: 20px; margin-top: 2px; }
+    .tl-content { flex: 1; }
+    .tl-phase {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.15rem;
+    }
+    .tl-content strong { font-size: 0.88rem; color: var(--navy); display: block; margin-bottom: 0.1rem; }
+    .tl-content p { font-size: 0.82rem; color: var(--muted); margin: 0; }
+
+    /* Approvals */
+    .approval-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .approval-table th {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid var(--border2);
+    }
+    .approval-table td { padding: 0.5rem 0.5rem; border-bottom: 1px solid var(--border); }
+    .approval-table tr:last-child td { border-bottom: none; }
+    .approved-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      background: #eaf5ee;
+      color: var(--green);
+      border-radius: 3px;
+      padding: 1px 6px;
+      font-weight: 600;
+    }
+    .pending-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      background: #fef5e8;
+      color: var(--amber);
+      border-radius: 3px;
+      padding: 1px 6px;
+      font-weight: 600;
+    }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 3.5rem;
+      padding-top: 1.25rem;
+      border-top: 2px solid var(--navy);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page" role="main">
+
+  <!-- Header -->
+  <header class="doc-header">
+    <div class="eyebrow">Product Brief &mdash; Internal</div>
+    <h1>Meridian Natural Language<br>Query Engine</h1>
+    <p class="subtitle">Enabling any business user to query indexed datasets in plain English, with AI-generated SQL and confidence scoring.</p>
+  </header>
+
+  <!-- Meta -->
+  <div class="meta-grid" role="complementary" aria-label="Document metadata">
+    <div class="meta-cell">
+      <div class="label">Status</div>
+      <div class="value status-approved">Approved</div>
+    </div>
+    <div class="meta-cell">
+      <div class="label">Version</div>
+      <div class="value">1.2 &mdash; April 1, 2026</div>
+    </div>
+    <div class="meta-cell">
+      <div class="label">Product Owner</div>
+      <div class="value">Kavya Menon</div>
+    </div>
+    <div class="meta-cell">
+      <div class="label">Target Release</div>
+      <div class="value">v2.1.0 &mdash; April 14, 2026</div>
+    </div>
+    <div class="meta-cell">
+      <div class="label">Eng Lead</div>
+      <div class="value">Dmitri Volkov</div>
+    </div>
+    <div class="meta-cell">
+      <div class="label">Design Lead</div>
+      <div class="value">Yuna Park</div>
+    </div>
+  </div>
+
+  <!-- Problem -->
+  <section class="doc-section" aria-labelledby="problem-heading">
+    <h2 id="problem-heading">1. Problem</h2>
+    <div class="problem-box">
+      <p>Data teams report spending 60% of their time answering ad-hoc questions from business users. These users cannot write SQL and wait an average of 3.2 business days for analyst responses. This bottleneck prevents data-driven decisions at the speed business demands.</p>
+    </div>
+    <p>Competitors have shipped NL-to-SQL features with &lt; 40% confidence in query accuracy. The market gap is a production-grade, hallucination-resistant engine with transparent confidence scoring that enterprise buyers trust.</p>
+  </section>
+
+  <!-- Target User -->
+  <section class="doc-section" aria-labelledby="user-heading">
+    <h2 id="user-heading">2. Target Users</h2>
+    <div class="persona-grid">
+      <div class="persona-card">
+        <div class="role-label">Primary</div>
+        <h3>Business Analyst / Operations Manager</h3>
+        <p>Asks 5&ndash;20 questions per week from product, finance, or ops data. No SQL knowledge. Currently submits tickets to the data team.</p>
+      </div>
+      <div class="persona-card">
+        <div class="role-label">Secondary</div>
+        <h3>Data Engineer / Analyst</h3>
+        <p>Prototypes queries quickly. Validates AI-generated SQL before handing to business users. Uses the confidence score as a quality signal.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Success Metrics -->
+  <section class="doc-section" aria-labelledby="metrics-heading">
+    <h2 id="metrics-heading">3. Success Metrics</h2>
+    <table class="metrics-table" aria-label="Success metrics">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Baseline</th>
+          <th>Target (90 days post-launch)</th>
+          <th>Measurement method</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="metric-name">NL query adoption</td>
+          <td class="metric-baseline">0% (pre-launch)</td>
+          <td class="metric-target target-value">40% of active workspaces use weekly</td>
+          <td class="metric-how">Product analytics (Amplitude)</td>
+        </tr>
+        <tr>
+          <td class="metric-name">Query accuracy (P90 confidence &ge; 0.85)</td>
+          <td class="metric-baseline">Internal eval: 72%</td>
+          <td class="metric-target target-value">&ge; 85% on benchmark set</td>
+          <td class="metric-how">Automated eval suite, 500-query benchmark</td>
+        </tr>
+        <tr>
+          <td class="metric-name">Time-to-first-result</td>
+          <td class="metric-baseline">N/A</td>
+          <td class="metric-target target-value">&le; 3 seconds P90</td>
+          <td class="metric-how">Datadog APM traces</td>
+        </tr>
+        <tr>
+          <td class="metric-name">Analyst ticket deflection</td>
+          <td class="metric-baseline">0</td>
+          <td class="metric-target target-value">&ge; 30% reduction in ad-hoc requests</td>
+          <td class="metric-how">Intercom ticket category tracking</td>
+        </tr>
+        <tr>
+          <td class="metric-name">User satisfaction (CSAT)</td>
+          <td class="metric-baseline">N/A</td>
+          <td class="metric-target target-value">&ge; 4.2 / 5.0</td>
+          <td class="metric-how">In-product survey (sample 10% of queries)</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Scope -->
+  <section class="doc-section" aria-labelledby="scope-heading">
+    <h2 id="scope-heading">4. Scope</h2>
+    <div class="scope-grid">
+      <div class="scope-col scope-in">
+        <h3>In scope</h3>
+        <ul>
+          <li>NL-to-SQL translation for SELECT queries only</li>
+          <li>Confidence score (0.0&ndash;1.0) per response</li>
+          <li>Auto-generated SQL explanation in plain English</li>
+          <li>Low-confidence escalation to human review queue</li>
+          <li>Streaming results for large query outputs</li>
+          <li>Audit log entry for every NL query executed</li>
+          <li>SDK support (Python + Node.js)</li>
+        </ul>
+      </div>
+      <div class="scope-col scope-out">
+        <h3>Out of scope (v2.1)</h3>
+        <ul>
+          <li>INSERT / UPDATE / DELETE generation</li>
+          <li>Multi-dataset join queries across workspaces</li>
+          <li>Custom model fine-tuning per workspace</li>
+          <li>Spoken / voice query input</li>
+          <li>Chart or visualization generation</li>
+          <li>Historical query memory / conversation threads</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Risks -->
+  <section class="doc-section" aria-labelledby="risks-heading">
+    <h2 id="risks-heading">5. Risks &amp; Mitigations</h2>
+    <table class="risk-table" aria-label="Risks and mitigations">
+      <thead>
+        <tr><th>Risk</th><th>Level</th><th>Mitigation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="risk-desc">Model hallucination produces incorrect SQL that returns wrong data without visible error</td>
+          <td><span class="risk-level level-high">High</span></td>
+          <td class="mitigation">Chain-of-verification: SQL is executed in a read-only sandbox, row count compared against expected range; flag anomalies to user</td>
+        </tr>
+        <tr>
+          <td class="risk-desc">Latency exceeds 3 s P90 at scale (&gt; 500 concurrent users)</td>
+          <td><span class="risk-level level-medium">Medium</span></td>
+          <td class="mitigation">Semantic result cache (Redis) for identical or similar questions; pre-warm model inference layer at 50 queries/min baseline</td>
+        </tr>
+        <tr>
+          <td class="risk-desc">Business users over-trust low-confidence results and act on incorrect data</td>
+          <td><span class="risk-level level-medium">Medium</span></td>
+          <td class="mitigation">UX: prominently display confidence score with colour-coded warning; require explicit acknowledgement before acting on results below 0.70</td>
+        </tr>
+        <tr>
+          <td class="risk-desc">NL queries expose column names the user lacks FLS permission to see</td>
+          <td><span class="risk-level level-high">High</span></td>
+          <td class="mitigation">SQL generation is post-processed through the existing RBAC engine; prohibited columns are masked before query execution</td>
+        </tr>
+        <tr>
+          <td class="risk-desc">Third-party model provider outage degrades query availability</td>
+          <td><span class="risk-level level-low">Low</span></td>
+          <td class="mitigation">Model abstraction layer supports automatic failover to secondary provider; degraded-mode banner shown to users; SLA excludes NL query downtime</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Rollout -->
+  <section class="doc-section" aria-labelledby="rollout-heading">
+    <h2 id="rollout-heading">6. Rollout Plan</h2>
+    <ul class="timeline" aria-label="Rollout timeline">
+      <li class="tl-item">
+        <div class="tl-marker">
+          <div class="tl-dot filled"></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-phase">Phase 1 &mdash; Mar 15, 2026</div>
+          <strong>Internal alpha (Meridian team only)</strong>
+          <p>Core NL-to-SQL + confidence score. 500-query eval suite must pass &ge; 80%. No external access.</p>
+        </div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-marker">
+          <div class="tl-dot filled"></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-phase">Phase 2 &mdash; Mar 28, 2026</div>
+          <strong>Closed beta (10 design-partner workspaces)</strong>
+          <p>Feature flagged. CSAT survey in-product. Weekly feedback sessions. Accuracy threshold: &ge; 83%.</p>
+        </div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-marker">
+          <div class="tl-dot"></div>
+          <div class="tl-line"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-phase">Phase 3 &mdash; Apr 14, 2026</div>
+          <strong>General availability (v2.1.0 release)</strong>
+          <p>All Team and Enterprise workspaces. Launch blog post + in-app announcement. Free tier: 100 NL queries/mo.</p>
+        </div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-marker">
+          <div class="tl-dot"></div>
+        </div>
+        <div class="tl-content">
+          <div class="tl-phase">Phase 4 &mdash; Q3 2026</div>
+          <strong>Conversation threads + chart generation (v2.3 scope)</strong>
+          <p>Multi-turn queries with memory, visual chart output. Subject to GA performance data and user demand signals.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Approvals -->
+  <section class="doc-section" aria-labelledby="approvals-heading">
+    <h2 id="approvals-heading">7. Approvals</h2>
+    <table class="approval-table" aria-label="Document approvals">
+      <thead>
+        <tr><th>Role</th><th>Name</th><th>Status</th><th>Date</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>VP Product</td>
+          <td>Layla Osei</td>
+          <td><span class="approved-tag">Approved</span></td>
+          <td>2026-03-30</td>
+        </tr>
+        <tr>
+          <td>VP Engineering</td>
+          <td>Dmitri Volkov</td>
+          <td><span class="approved-tag">Approved</span></td>
+          <td>2026-03-30</td>
+        </tr>
+        <tr>
+          <td>Security Lead</td>
+          <td>Priya Chandran</td>
+          <td><span class="approved-tag">Approved</span></td>
+          <td>2026-03-28</td>
+        </tr>
+        <tr>
+          <td>Legal (data handling)</td>
+          <td>Marcus Okafor</td>
+          <td><span class="pending-tag">Pending</span></td>
+          <td>&mdash;</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer class="doc-footer" role="contentinfo">
+    <span>CONFIDENTIAL &mdash; INTERNAL ONLY</span>
+    <span>Meridian Product Brief &mdash; v{{VERSION}} &mdash; {{DATE}}</span>
+    <span>Owner: Kavya Menon &bull; product@meridian.io</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

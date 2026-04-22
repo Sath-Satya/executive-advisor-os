@@ -1,0 +1,423 @@
+<!--
+TEMPLATE: investor-update
+CATEGORY: Executive / Board
+USE WHEN: Sending a monthly or quarterly investor update with key metrics, highlights, lowlights, and specific asks to current investors or a board investment committee.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investor Update — {{TITLE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #162030;
+      --surface3: #0d1520;
+      --primary: #3b9eff;
+      --primary-dim: rgba(59,158,255,0.10);
+      --secondary: #a78bfa;
+      --accent: #2dd4a0;
+      --accent-dim: rgba(45,212,160,0.08);
+      --warn: #f0a050;
+      --warn-dim: rgba(240,160,80,0.1);
+      --error: #f06070;
+      --error-dim: rgba(240,96,112,0.08);
+      --text: #d0d8e4;
+      --muted: #8899ac;
+      --subtle: #4a5a6a;
+      --border: rgba(255,255,255,0.07);
+      --border-strong: rgba(255,255,255,0.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .inv-header {
+      background: var(--surface3);
+      border-bottom: 1px solid var(--border-strong);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .inv-header .brand {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 0.4rem;
+    }
+    .inv-header h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .inv-header .header-right {
+      text-align: right;
+    }
+    .inv-header .period-badge {
+      background: var(--primary-dim);
+      border: 1px solid rgba(59,158,255,0.2);
+      color: var(--primary);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.8rem;
+      border-radius: 3px;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+    .inv-header .header-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      color: var(--subtle);
+      line-height: 1.6;
+    }
+
+    /* ── Page ── */
+    .page {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 2.5rem 2.5rem 5rem;
+    }
+
+    /* ── Metrics grid ── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+    .metric-box {
+      background: var(--surface);
+      padding: 1.4rem 1.3rem;
+      position: relative;
+    }
+    .metric-box::after {
+      content: attr(data-trend);
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 500;
+    }
+    .metric-box.trend-up::after   { color: var(--accent); }
+    .metric-box.trend-down::after { color: var(--error); }
+    .metric-box.trend-flat::after { color: var(--warn); }
+    .metric-box .m-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--subtle);
+      margin-bottom: 0.5rem;
+    }
+    .metric-box .m-value {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .metric-box .m-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+    }
+    .metric-box .m-sub .highlight { color: var(--accent); }
+
+    /* ── Section ── */
+    .inv-section { margin-bottom: 2.5rem; }
+    .inv-section h2 {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Highlights / Lowlights ── */
+    .hl-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .hl-col h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      padding: 0.3rem 0.7rem;
+      display: inline-block;
+      border-radius: 3px;
+    }
+    .hl-col.high h3 { background: var(--accent-dim); color: var(--accent); }
+    .hl-col.low  h3 { background: var(--error-dim);  color: var(--error); }
+    .hl-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .hl-item {
+      background: var(--surface);
+      padding: 0.9rem 1.1rem;
+      font-size: 0.87rem;
+    }
+    .hl-item strong {
+      display: block;
+      color: var(--text);
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+    .hl-item span { color: var(--muted); font-size: 0.83rem; line-height: 1.5; }
+
+    /* ── Narrative section ── */
+    .narrative p {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.75;
+      margin-bottom: 1.1rem;
+    }
+    .narrative p strong { color: #fff; }
+
+    /* ── Asks ── */
+    .asks-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .ask-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--secondary);
+      padding: 1rem 1.3rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .ask-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--secondary);
+      min-width: 1.8rem;
+    }
+    .ask-content strong {
+      display: block;
+      font-size: 0.93rem;
+      color: var(--text);
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    .ask-content span {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .ask-type {
+      margin-left: auto;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--secondary);
+      background: rgba(167,139,250,0.1);
+      border: 1px solid rgba(167,139,250,0.2);
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      white-space: nowrap;
+      align-self: flex-start;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 4rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      color: var(--subtle);
+    }
+    footer .brand-f { color: var(--primary); }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .page { padding: 1.5cm 2cm; }
+      .inv-header, .metric-box, .hl-item, .ask-item { background: #f5f5f5 !important; border-color: #ccc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .m-value, strong { color: #111 !important; }
+      @page { size: A4 portrait; margin: 1.5cm 2cm; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="inv-header">
+    <div>
+      <p class="brand">Meridian Health &mdash; Investor Relations</p>
+      <h1>Monthly Investor Update</h1>
+    </div>
+    <div class="header-right">
+      <span class="period-badge">June 2027 &mdash; Month 6 of FY 2027</span>
+      <div class="header-meta">
+        Distributed to: Series B Investors &amp; Board<br>
+        {{DATE}} &nbsp;|&nbsp; {{VERSION}}
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="page">
+
+      <section class="inv-section" aria-labelledby="metrics-heading">
+        <h2 id="metrics-heading">Key Metrics &mdash; June 2027</h2>
+        <div class="metrics-grid">
+          <div class="metric-box trend-up" data-trend="+18% YoY">
+            <p class="m-label">Monthly Recurring Revenue</p>
+            <p class="m-value">$12.4M</p>
+            <p class="m-sub">H1 total: <span class="highlight">$73.8M</span> vs plan $71.2M</p>
+          </div>
+          <div class="metric-box trend-up" data-trend="+2.4k MoM">
+            <p class="m-label">Active Patients</p>
+            <p class="m-value">312K</p>
+            <p class="m-sub">Portal MAU: <span class="highlight">44K</span> &mdash; 14% of base</p>
+          </div>
+          <div class="metric-box trend-flat" data-trend="~flat">
+            <p class="m-label">Gross Margin</p>
+            <p class="m-value">34.2%</p>
+            <p class="m-sub">Plan: 35.0% &mdash; 80bp below</p>
+          </div>
+          <div class="metric-box trend-up" data-trend="+11pt YoY">
+            <p class="m-label">Patient NPS</p>
+            <p class="m-value">48</p>
+            <p class="m-sub">Industry median: 31</p>
+          </div>
+          <div class="metric-box trend-down" data-trend="-7pp vs plan">
+            <p class="m-label">Digital Appt Share</p>
+            <p class="m-value">31%</p>
+            <p class="m-sub">55+ cohort at 8% &mdash; sprint underway</p>
+          </div>
+          <div class="metric-box trend-up" data-trend="14 mo">
+            <p class="m-label">Cash Runway</p>
+            <p class="m-value">14 mo.</p>
+            <p class="m-sub">Series C target: Q1 2028</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="inv-section" aria-labelledby="hl-heading">
+        <h2 id="hl-heading">Highlights &amp; Lowlights</h2>
+        <div class="hl-grid">
+          <div class="hl-col high">
+            <h3>Highlights</h3>
+            <ul class="hl-list">
+              <li class="hl-item">
+                <strong>Patient portal surpassed 44,000 MAU</strong>
+                <span>Achieved in 45 days post-launch. 31% of users booked a follow-up appointment within 14 days of registration.</span>
+              </li>
+              <li class="hl-item">
+                <strong>H1 revenue ahead of plan by $2.6M</strong>
+                <span>Driven by two new specialist clinics reaching capacity 6 weeks ahead of schedule.</span>
+              </li>
+              <li class="hl-item">
+                <strong>NPS reached 48 — highest in company history</strong>
+                <span>Benchmark improvement attributable to AI scheduling reducing wait time by 22%.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="hl-col low">
+            <h3>Lowlights</h3>
+            <ul class="hl-list">
+              <li class="hl-item">
+                <strong>Claim denial rate at 12.4% vs 9.0% target</strong>
+                <span>ICD-11 migration issues identified. Revenue cycle automation vendor delivered 6 weeks late. Remediation plan in place.</span>
+              </li>
+              <li class="hl-item">
+                <strong>Gross margin 80bp below plan</strong>
+                <span>Driven by higher-than-planned clinical staffing to cover Phoenix launch preparation. Expected to normalise in Q4.</span>
+              </li>
+              <li class="hl-item">
+                <strong>55+ digital adoption lagging significantly</strong>
+                <span>This cohort is 38% of our billable volume. UX accessibility sprint starts 1 August with a 90-day target of 25% digital share.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="inv-section narrative" aria-labelledby="context-heading">
+        <h2 id="context-heading">Context &amp; Commentary</h2>
+        <p>The core investment thesis is tracking ahead of expectations on the metrics that matter most for long-term value — patient acquisition, NPS, and revenue. <strong>The digital adoption gap in the 55+ cohort is our most important near-term operational challenge.</strong> We have diagnosed the root cause (UX complexity, not awareness or willingness) and have a specific engineering sprint beginning 1 August with clear success criteria.</p>
+        <p>On the balance sheet: our 14-month runway is adequate, but we are beginning Series C relationship-building now rather than waiting until Q4. We expect to enter formal raise mode in Q4 2027, targeting $22-28M at a post-money valuation reflecting our revenue growth trajectory and the digital platform's strategic option value. We will share a detailed Series C narrative at the September board meeting.</p>
+      </section>
+
+      <section class="inv-section" aria-labelledby="asks-heading">
+        <h2 id="asks-heading">Asks &amp; Introductions Needed</h2>
+        <ul class="asks-list">
+          <li class="ask-item">
+            <span class="ask-number">01</span>
+            <div class="ask-content">
+              <strong>Warm introductions to Series C leads in healthcare tech</strong>
+              <span>We are targeting 3-4 lead investors with healthcare provider experience. Ideal: firms that have written $10M+ checks into digital health platforms.</span>
+            </div>
+            <span class="ask-type">Fundraise</span>
+          </li>
+          <li class="ask-item">
+            <span class="ask-number">02</span>
+            <div class="ask-content">
+              <strong>Referrals to enterprise UX researchers specialising in 55+ digital accessibility</strong>
+              <span>Need 2-3 senior contract UX researchers for a 12-week sprint. Healthcare domain experience preferred.</span>
+            </div>
+            <span class="ask-type">Talent</span>
+          </li>
+          <li class="ask-item">
+            <span class="ask-number">03</span>
+            <div class="ask-content">
+              <strong>Board guidance on Phoenix contingency decision by 15 August</strong>
+              <span>Seeking board input on whether to proceed with leased-space contingency or hold for permanent site. Decision has 6-month operational impact either way.</span>
+            </div>
+            <span class="ask-type">Governance</span>
+          </li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div><span class="brand-f">Meridian Health</span> &mdash; Investor Update &mdash; Series B Confidential</div>
+    <div>Audience: Series B Investors &amp; Board &nbsp;|&nbsp; {{DATE}} &nbsp;|&nbsp; {{VERSION}}</div>
+  </footer>
+
+</body>
+</html>

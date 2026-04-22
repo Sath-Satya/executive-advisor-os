@@ -1,0 +1,358 @@
+<!--
+TEMPLATE: event-invite
+CATEGORY: Marketing / Admin
+USE WHEN: Inviting prospects or clients to a webinar, workshop, or live event — hero-forward with RSVP CTA.
+PALETTE: White/cream background, electric blue #3b9eff accents, navy #0e1b2e headers
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{EVENT_TITLE}} — SponAI Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7faff;
+      --surface: #ffffff;
+      --navy: #0e1b2e;
+      --navy-mid: #1a3a5c;
+      --blue: #3b9eff;
+      --blue-dark: #2180e0;
+      --blue-faint: #eef6ff;
+      --purple: #a78bfa;
+      --mint: #2dd4a0;
+      --amber: #f0a050;
+      --ink: #1c2b3a;
+      --muted: #5a6a7a;
+      --subtle: #94a3b8;
+      --border: #dde5ef;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    .page { max-width: 900px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #1a4a7a 100%);
+      border-radius: 16px; overflow: hidden; margin-bottom: 3rem;
+      position: relative;
+    }
+    .hero-inner { padding: 3.5rem 3rem; position: relative; z-index: 1; }
+    .hero-bg-circle {
+      position: absolute; right: -60px; top: -60px;
+      width: 300px; height: 300px; border-radius: 50%;
+      background: rgba(59,158,255,0.08);
+      pointer-events: none;
+    }
+    .hero-bg-circle2 {
+      position: absolute; right: 80px; bottom: -80px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: rgba(167,139,250,0.07);
+      pointer-events: none;
+    }
+    .event-type-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(59,158,255,0.15); border: 1px solid rgba(59,158,255,0.3);
+      color: #7dc8ff; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 100px; margin-bottom: 1.25rem;
+    }
+    .event-type-badge svg { flex-shrink: 0; }
+    .hero h1 {
+      font-size: 2.25rem; font-weight: 700; color: #fff;
+      line-height: 1.2; letter-spacing: -0.4px; margin-bottom: 1.25rem;
+      max-width: 560px;
+    }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 1.25rem; margin-bottom: 2rem;
+    }
+    .hero-meta-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.9rem; color: #a0bcd8;
+    }
+    .hero-meta-item svg { color: var(--blue); flex-shrink: 0; }
+    .hero-meta-item strong { color: #fff; font-weight: 600; }
+    .hero-cta-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--blue); color: #fff; text-decoration: none;
+      padding: 0.875rem 1.75rem; border-radius: 8px;
+      font-size: 0.95rem; font-weight: 700; letter-spacing: 0.2px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: #a0bcd8; text-decoration: none;
+      padding: 0.875rem 1.5rem; border-radius: 8px;
+      font-size: 0.9rem; font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
+    .seats-note { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 0.75rem; }
+
+    /* Sections */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem; }
+    @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+    .section-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.75rem;
+    }
+    .section-card h2 {
+      font-size: 1rem; font-weight: 700; color: var(--navy);
+      margin-bottom: 1.25rem; display: flex; align-items: center; gap: 8px;
+    }
+    .section-card h2 svg { color: var(--blue); }
+
+    /* Agenda */
+    .agenda-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+    .agenda-item {
+      display: flex; gap: 1rem; padding: 0.875rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .agenda-item:last-child { border-bottom: 0; padding-bottom: 0; }
+    .agenda-time {
+      font-size: 0.78rem; font-weight: 600; color: var(--blue);
+      font-family: 'DM Mono', monospace; white-space: nowrap;
+      min-width: 70px; padding-top: 2px;
+    }
+    .agenda-content .title { font-size: 0.9rem; font-weight: 600; color: var(--navy); }
+    .agenda-content .desc { font-size: 0.8rem; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+    .agenda-tag {
+      display: inline-block; font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 4px; margin-top: 4px;
+    }
+    .agenda-tag.live { background: #d0f7ee; color: #0e7a5f; }
+    .agenda-tag.qa { background: #dbeeff; color: #2180e0; }
+    .agenda-tag.demo { background: #ede8ff; color: #5b3fa8; }
+
+    /* Speakers */
+    .speakers-grid { display: flex; flex-direction: column; gap: 1rem; }
+    .speaker-card { display: flex; gap: 1rem; align-items: flex-start; }
+    .speaker-avatar {
+      width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--navy-mid), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700; color: #fff;
+    }
+    .speaker-info .name { font-size: 0.9rem; font-weight: 600; color: var(--navy); }
+    .speaker-info .title { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+    .speaker-info .company { font-size: 0.8rem; color: var(--blue); font-weight: 500; }
+
+    /* What you'll learn */
+    .learn-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .learn-list li {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      font-size: 0.875rem; color: var(--ink); line-height: 1.5;
+    }
+    .learn-list li svg { flex-shrink: 0; margin-top: 2px; color: var(--blue); }
+
+    /* RSVP form block */
+    .rsvp-section {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      border-radius: 14px; padding: 2.5rem; text-align: center; margin-bottom: 3rem;
+    }
+    .rsvp-section h2 { font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+    .rsvp-section p { font-size: 0.9rem; color: #8899ac; margin-bottom: 1.75rem; }
+    .rsvp-form { display: flex; gap: 0.75rem; max-width: 480px; margin: 0 auto; }
+    .rsvp-input {
+      flex: 1; padding: 0.75rem 1rem; border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.07);
+      color: #fff; font-size: 0.9rem; font-family: inherit;
+    }
+    .rsvp-input::placeholder { color: rgba(255,255,255,0.35); }
+    .rsvp-input:focus { outline: 2px solid var(--blue); outline-offset: 0; }
+    .rsvp-submit {
+      background: var(--blue); color: #fff; border: none; cursor: pointer;
+      padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 0.9rem;
+      font-weight: 700; font-family: inherit; transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .rsvp-submit:hover { background: var(--blue-dark); }
+    .rsvp-fine { font-size: 0.75rem; color: rgba(255,255,255,0.3); margin-top: 0.875rem; }
+    @media (max-width: 520px) { .rsvp-form { flex-direction: column; } }
+
+    /* Footer */
+    .page-footer { padding-top: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .page-footer .brand { font-size: 0.875rem; font-weight: 600; color: var(--navy); }
+    .page-footer .meta { font-size: 0.75rem; color: var(--subtle); font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="event-title">
+    <div class="hero-bg-circle" aria-hidden="true"></div>
+    <div class="hero-bg-circle2" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div class="event-type-badge">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="6" r="5.5" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+        Live Webinar
+      </div>
+      <h1 id="event-title">AI-Assisted Development:<br>POC to Production in 2 Weeks</h1>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M2 7h12M5 1v3M11 1v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <span><strong>May 14, 2026</strong> &bull; Wednesday</span>
+        </div>
+        <div class="hero-meta-item">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 4.5v4l2.5 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <span><strong>11:00 AM PST</strong> &bull; 90 minutes</span>
+        </div>
+        <div class="hero-meta-item">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2C5.8 2 4 3.8 4 6c0 3 4 8 4 8s4-5 4-8c0-2.2-1.8-4-4-4z" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.2"/></svg>
+          <span><strong>Online</strong> &bull; Zoom + Recording</span>
+        </div>
+      </div>
+      <div class="hero-cta-row">
+        <a href="#rsvp" class="btn-primary">
+          Reserve My Seat
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#agenda" class="btn-secondary">View Agenda</a>
+      </div>
+      <p class="seats-note">Limited to 150 seats &bull; Free to attend &bull; Recording provided to registrants</p>
+    </div>
+  </section>
+
+  <!-- Two column: Agenda + Speakers -->
+  <div class="two-col">
+
+    <!-- Agenda -->
+    <div class="section-card" id="agenda">
+      <h2>
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M6 7h6M6 10h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Agenda
+      </h2>
+      <ol class="agenda-list">
+        <li class="agenda-item">
+          <span class="agenda-time">11:00</span>
+          <div class="agenda-content">
+            <div class="title">Welcome &amp; Context Setting</div>
+            <div class="desc">Why the AI-assisted development shift matters right now.</div>
+            <span class="agenda-tag live">Live</span>
+          </div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-time">11:10</span>
+          <div class="agenda-content">
+            <div class="title">The 7-Gate Pipeline, Explained</div>
+            <div class="desc">How Plan &rarr; Design &rarr; Build &rarr; Test &rarr; Review &rarr; Deploy &rarr; Verify works in practice.</div>
+            <span class="agenda-tag live">Live</span>
+          </div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-time">11:30</span>
+          <div class="agenda-content">
+            <div class="title">Live Demo: Salesforce Claims AI Dashboard</div>
+            <div class="desc">Walk through a real client POC from brief to deployed in 9 days.</div>
+            <span class="agenda-tag demo">Demo</span>
+          </div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-time">12:00</span>
+          <div class="agenda-content">
+            <div class="title">Security-First in AI Projects</div>
+            <div class="desc">HIPAA, OWASP, secrets management — how we bake it in from day one.</div>
+            <span class="agenda-tag live">Live</span>
+          </div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-time">12:20</span>
+          <div class="agenda-content">
+            <div class="title">Open Q&amp;A</div>
+            <div class="desc">Submit questions live or in advance at the registration page.</div>
+            <span class="agenda-tag qa">Q&amp;A</span>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Speakers + What you'll learn -->
+    <div style="display:flex;flex-direction:column;gap:1.5rem;">
+      <div class="section-card">
+        <h2>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="7" cy="6" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M2 15c0-3 2.2-5 5-5s5 2 5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="13" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M15 12c1.2.5 2 1.5 2 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Speakers
+        </h2>
+        <div class="speakers-grid">
+          <div class="speaker-card">
+            <div class="speaker-avatar" aria-hidden="true">ST</div>
+            <div class="speaker-info">
+              <div class="name">Sathish T.</div>
+              <div class="title">Founder &amp; Principal Consultant</div>
+              <div class="company">SponAI Consulting</div>
+            </div>
+          </div>
+          <div class="speaker-card">
+            <div class="speaker-avatar" style="background:linear-gradient(135deg,#5b3fa8,#a78bfa);" aria-hidden="true">JM</div>
+            <div class="speaker-info">
+              <div class="name">Jessica Morales</div>
+              <div class="title">Director of IT</div>
+              <div class="company">Meridian Health Systems</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <h2>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 2L3 7v9h4v-4h4v4h4V7z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+          What You'll Walk Away With
+        </h2>
+        <ul class="learn-list">
+          <li>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#dbeeff"/><path d="M5 8l2 2 4-4" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            A repeatable POC-to-production playbook you can apply immediately
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#dbeeff"/><path d="M5 8l2 2 4-4" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            The security checklist we use on every engagement (PDF, free)
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#dbeeff"/><path d="M5 8l2 2 4-4" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Live demo source code (GitHub link shared post-event)
+          </li>
+          <li>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#dbeeff"/><path d="M5 8l2 2 4-4" stroke="var(--blue)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            30-min 1:1 strategy session (first 20 registrants only)
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RSVP section -->
+  <section class="rsvp-section" id="rsvp" aria-labelledby="rsvp-heading">
+    <h2 id="rsvp-heading">Reserve Your Seat</h2>
+    <p>Free registration &bull; Zoom link sent 24h before &bull; Recording included</p>
+    <form class="rsvp-form" action="#" method="post" novalidate>
+      <label for="rsvp-email" class="sr-only">Email address</label>
+      <input id="rsvp-email" type="email" name="email" class="rsvp-input" placeholder="your@company.com" required autocomplete="email">
+      <button type="submit" class="rsvp-submit">Register Free</button>
+    </form>
+    <p class="rsvp-fine">No spam. One confirmation email. Unsubscribe any time.</p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <span class="brand">SponAI Consulting &mdash; sponaitech.com</span>
+    <span class="meta">v{{VERSION}} &bull; {{DATE}} &bull; event-invite</span>
+  </footer>
+
+</div>
+
+<style>
+  .sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0; }
+</style>
+</body>
+</html>

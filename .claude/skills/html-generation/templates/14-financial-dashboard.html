@@ -1,0 +1,450 @@
+<!--
+TEMPLATE: financial-dashboard
+CATEGORY: Dashboard / Analytics
+USE WHEN: You need a revenue/cost/margin executive financial overview with headline numbers, breakdown tables, and monthly trend bars.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financial Dashboard &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f7f4ef;
+      --cream2: #edeae3;
+      --cream3: #e4e0d8;
+      --navy: #0e1b2e;
+      --navy2: #1a2e47;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --green: #2dd4a0;
+      --green-dark: #0e7a5a;
+      --amber: #f0a050;
+      --amber-dark: #a05c10;
+      --red: #f06070;
+      --red-dark: #b52030;
+      --font: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* header */
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .header-left h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 0.15rem; }
+    .header-left .sub { font-size: 0.82rem; color: #94a3b8; font-family: var(--mono); }
+    .period-selector {
+      display: flex; gap: 0.4rem;
+    }
+    .period-btn {
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      font-family: var(--mono);
+      background: transparent;
+      color: #94a3b8;
+      border: 1px solid #2a3f5a;
+      cursor: default;
+    }
+    .period-btn.active {
+      background: var(--gold);
+      color: var(--navy);
+      border-color: var(--gold);
+      font-weight: 700;
+    }
+
+    main { max-width: 1200px; margin: 0 auto; padding: 2rem 2.5rem; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+    }
+
+    /* headline cards */
+    .headline-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .hl-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.35rem 1.5rem;
+    }
+    .hl-card.accent-gold { border-top: 3px solid var(--gold); }
+    .hl-card.accent-green { border-top: 3px solid var(--green); }
+    .hl-card.accent-red   { border-top: 3px solid var(--red); }
+    .hl-card.accent-navy  { border-top: 3px solid var(--navy); }
+    .hl-label { font-size: 0.76rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 0.4rem; }
+    .hl-value { font-size: 2rem; font-weight: 700; line-height: 1.1; color: var(--navy); letter-spacing: -0.8px; }
+    .hl-change {
+      display: flex; align-items: center; gap: 0.3rem;
+      font-size: 0.82rem; font-weight: 500; margin-top: 0.4rem;
+    }
+    .ch-up   { color: var(--green-dark); }
+    .ch-down { color: var(--red-dark); }
+    .ch-vs   { color: var(--muted); font-weight: 400; margin-left: 0.15rem; }
+
+    /* two-column layout */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.35rem 1.5rem;
+    }
+    .card-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* monthly bar chart */
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.5rem;
+      height: 120px;
+    }
+    .bar-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      height: 100%;
+    }
+    .bar-wrap {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+    }
+    .bar {
+      flex: 1;
+      border-radius: 4px 4px 0 0;
+      min-height: 4px;
+      transition: opacity 0.2s;
+    }
+    .bar:hover { opacity: 0.8; }
+    .bar-month { font-size: 0.66rem; font-family: var(--mono); color: var(--muted); }
+
+    /* chart legend */
+    .chart-legend {
+      display: flex; gap: 1rem; margin-bottom: 0.75rem; flex-wrap: wrap;
+    }
+    .legend-item { display: flex; align-items: center; gap: 0.3rem; font-size: 0.76rem; color: var(--muted); }
+    .legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* P&L table */
+    table { width: 100%; border-collapse: collapse; }
+    .tbl-head th {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-align: left;
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .tbl-head th:not(:first-child) { text-align: right; }
+    td {
+      font-size: 0.88rem;
+      padding: 0.6rem 0.5rem;
+      border-top: 1px solid var(--cream2);
+      color: var(--ink);
+      vertical-align: middle;
+    }
+    td.num   { font-family: var(--mono); text-align: right; }
+    td.label { font-weight: 500; }
+    td.sub   { font-weight: 400; color: var(--muted); padding-left: 1.5rem; }
+    tr.total td {
+      border-top: 2px solid var(--border);
+      font-weight: 700;
+      background: var(--cream);
+    }
+    .pos { color: var(--green-dark); }
+    .neg { color: var(--red-dark); }
+
+    /* cost breakdown donut — CSS */
+    .donut-section { display: flex; align-items: center; gap: 1.5rem; }
+    .donut-chart {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: conic-gradient(
+        var(--gold)   0deg 126deg,
+        var(--navy2)  126deg 198deg,
+        #2dd4a0       198deg 252deg,
+        var(--amber)  252deg 306deg,
+        var(--red)    306deg 360deg
+      );
+      flex-shrink: 0;
+      position: relative;
+    }
+    .donut-chart::after {
+      content: '';
+      position: absolute;
+      top: 22%; left: 22%; right: 22%; bottom: 22%;
+      background: #fff;
+      border-radius: 50%;
+    }
+    .donut-labels { flex: 1; }
+    .dl-row {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.8rem; margin-bottom: 0.4rem;
+    }
+    .dl-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+    .dl-name { flex: 1; color: var(--ink); }
+    .dl-pct  { font-family: var(--mono); color: var(--muted); }
+
+    footer {
+      background: var(--navy);
+      color: #64748b;
+      padding: 1rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-family: var(--mono);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      main { padding: 1.25rem; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: #fff; }
+      header { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Northwind Capital &mdash; Financial Dashboard</h1>
+    <div class="sub">Q2 2026 &bull; Consolidated P&amp;L &bull; Management View</div>
+  </div>
+  <div class="period-selector" role="group" aria-label="Period selection">
+    <div class="period-btn">Q4 25</div>
+    <div class="period-btn">Q1 26</div>
+    <div class="period-btn active">Q2 26</div>
+    <div class="period-btn">YTD</div>
+  </div>
+</header>
+
+<main>
+
+  <section aria-labelledby="headline-financials">
+    <p class="section-label" id="headline-financials">Q2 2026 Headline</p>
+    <div class="headline-row">
+
+      <div class="hl-card accent-gold">
+        <div class="hl-label">Total Revenue</div>
+        <div class="hl-value">$6.18M</div>
+        <div class="hl-change ch-up">&#9650; 22.4% <span class="ch-vs">vs Q2 2025</span></div>
+      </div>
+
+      <div class="hl-card accent-red">
+        <div class="hl-label">Total OpEx</div>
+        <div class="hl-value">$4.51M</div>
+        <div class="hl-change ch-down">&#9650; 11.2% <span class="ch-vs">YoY — above plan</span></div>
+      </div>
+
+      <div class="hl-card accent-green">
+        <div class="hl-label">Gross Profit</div>
+        <div class="hl-value">$4.39M</div>
+        <div class="hl-change ch-up">&#9650; 28.6% <span class="ch-vs">vs Q2 2025</span></div>
+      </div>
+
+      <div class="hl-card accent-green">
+        <div class="hl-label">Gross Margin</div>
+        <div class="hl-value">71.0%</div>
+        <div class="hl-change ch-up">&#9650; 3.2pp <span class="ch-vs">vs plan 68%</span></div>
+      </div>
+
+      <div class="hl-card accent-navy">
+        <div class="hl-label">EBITDA</div>
+        <div class="hl-value">$1.67M</div>
+        <div class="hl-change ch-up">&#9650; 41.5% <span class="ch-vs">vs Q2 2025</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section aria-labelledby="trend-section">
+    <p class="section-label" id="trend-section">Monthly Trend &amp; P&amp;L Summary</p>
+    <div class="two-col">
+
+      <div class="card">
+        <div class="card-title">Revenue vs OpEx &mdash; Last 6 Months</div>
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-swatch" style="background:var(--gold)"></span>Revenue</div>
+          <div class="legend-item"><span class="legend-swatch" style="background:var(--red)"></span>OpEx</div>
+          <div class="legend-item"><span class="legend-swatch" style="background:var(--green)"></span>Gross Profit</div>
+        </div>
+        <div class="bar-chart" role="img" aria-label="Monthly revenue and cost trend bar chart">
+          <!-- Nov -->
+          <div class="bar-col">
+            <div class="bar-wrap">
+              <div class="bar" style="height:70%;background:var(--gold)"></div>
+              <div class="bar" style="height:60%;background:var(--red)"></div>
+              <div class="bar" style="height:42%;background:var(--green)"></div>
+            </div>
+            <div class="bar-month">Nov</div>
+          </div>
+          <!-- Dec -->
+          <div class="bar-col">
+            <div class="bar-wrap">
+              <div class="bar" style="height:72%;background:var(--gold)"></div>
+              <div class="bar" style="height:58%;background:var(--red)"></div>
+              <div class="bar" style="height:46%;background:var(--green)"></div>
+            </div>
+            <div class="bar-month">Dec</div>
+          </div>
+          <!-- Jan -->
+          <div class="bar-col">
+            <div class="bar-wrap">
+              <div class="bar" style="height:76%;background:var(--gold)"></div>
+              <div class="bar" style="height:62%;background:var(--red)"></div>
+              <div class="bar" style="height:50%;background:var(--green)"></div>
+            </div>
+            <div class="bar-month">Jan</div>
+          </div>
+          <!-- Feb -->
+          <div class="bar-col">
+            <div class="bar-wrap">
+              <div class="bar" style="height:80%;background:var(--gold)"></div>
+              <div class="bar" style="height:65%;background:var(--red)"></div>
+              <div class="bar" style="height:55%;background:var(--green)"></div>
+            </div>
+            <div class="bar-month">Feb</div>
+          </div>
+          <!-- Mar -->
+          <div class="bar-col">
+            <div class="bar-wrap">
+              <div class="bar" style="height:88%;background:var(--gold)"></div>
+              <div class="bar" style="height:70%;background:var(--red)"></div>
+              <div class="bar" style="height:62%;background:var(--green)"></div>
+            </div>
+            <div class="bar-month">Mar</div>
+          </div>
+          <!-- Apr -->
+          <div class="bar-col">
+            <div class="bar-wrap">
+              <div class="bar" style="height:100%;background:var(--gold)"></div>
+              <div class="bar" style="height:73%;background:var(--red)"></div>
+              <div class="bar" style="height:71%;background:var(--green)"></div>
+            </div>
+            <div class="bar-month">Apr</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Cost Breakdown</div>
+        <div class="donut-section">
+          <div class="donut-chart" role="img" aria-label="Cost breakdown donut chart"></div>
+          <div class="donut-labels">
+            <div class="dl-row"><span class="dl-swatch" style="background:var(--gold)"></span><span class="dl-name">Engineering</span><span class="dl-pct">35%</span></div>
+            <div class="dl-row"><span class="dl-swatch" style="background:var(--navy2)"></span><span class="dl-name">Sales &amp; Mktg</span><span class="dl-pct">20%</span></div>
+            <div class="dl-row"><span class="dl-swatch" style="background:#2dd4a0"></span><span class="dl-name">G&amp;A</span><span class="dl-pct">15%</span></div>
+            <div class="dl-row"><span class="dl-swatch" style="background:var(--amber)"></span><span class="dl-name">COGS</span><span class="dl-pct">15%</span></div>
+            <div class="dl-row"><span class="dl-swatch" style="background:var(--red)"></span><span class="dl-name">Infra</span><span class="dl-pct">15%</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section aria-labelledby="pl-section">
+    <p class="section-label" id="pl-section">P&amp;L Statement</p>
+    <div class="card">
+      <table>
+        <thead class="tbl-head">
+          <tr>
+            <th>Line Item</th>
+            <th>Q2 2026</th>
+            <th>Q2 2025</th>
+            <th>Plan</th>
+            <th>Variance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="label">Revenue</td><td class="num">$6,180K</td><td class="num">$5,048K</td><td class="num">$5,900K</td><td class="num pos">&#9650; $280K</td></tr>
+          <tr><td class="sub">&#9492; Subscription</td><td class="num">$5,340K</td><td class="num">$4,290K</td><td class="num">$5,100K</td><td class="num pos">&#9650; $240K</td></tr>
+          <tr><td class="sub">&#9492; Services</td><td class="num">$620K</td><td class="num">$550K</td><td class="num">$600K</td><td class="num pos">&#9650; $20K</td></tr>
+          <tr><td class="sub">&#9492; Other</td><td class="num">$220K</td><td class="num">$208K</td><td class="num">$200K</td><td class="num pos">&#9650; $20K</td></tr>
+          <tr><td class="label">COGS</td><td class="num">$1,792K</td><td class="num">$1,562K</td><td class="num">$1,888K</td><td class="num pos">&#9660; $96K</td></tr>
+          <tr class="total"><td class="label">Gross Profit</td><td class="num pos">$4,388K</td><td class="num">$3,486K</td><td class="num">$4,012K</td><td class="num pos">&#9650; $376K</td></tr>
+          <tr><td class="label">Operating Expenses</td><td class="num">$2,718K</td><td class="num">$2,424K</td><td class="num">$2,600K</td><td class="num neg">&#9650; $118K</td></tr>
+          <tr><td class="sub">&#9492; Engineering</td><td class="num">$1,263K</td><td class="num">$1,100K</td><td class="num">$1,200K</td><td class="num neg">&#9650; $63K</td></tr>
+          <tr><td class="sub">&#9492; Sales &amp; Mktg</td><td class="num">$722K</td><td class="num">$660K</td><td class="num">$700K</td><td class="num neg">&#9650; $22K</td></tr>
+          <tr><td class="sub">&#9492; G&amp;A</td><td class="num">$541K</td><td class="num">$490K</td><td class="num">$520K</td><td class="num neg">&#9650; $21K</td></tr>
+          <tr><td class="sub">&#9492; Infra</td><td class="num">$192K</td><td class="num">$174K</td><td class="num">$180K</td><td class="num neg">&#9650; $12K</td></tr>
+          <tr class="total"><td class="label">EBITDA</td><td class="num pos">$1,670K</td><td class="num">$1,062K</td><td class="num">$1,412K</td><td class="num pos">&#9650; $258K</td></tr>
+          <tr><td class="sub">&#9492; EBITDA Margin</td><td class="num pos">27.0%</td><td class="num">21.0%</td><td class="num">23.9%</td><td class="num pos">+3.1pp</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Northwind Capital &mdash; Financial Dashboard</span>
+  <span>v{{VERSION}}</span>
+  <span>Updated {{UPDATED}}</span>
+  <span>Source: Finance Systems ERP</span>
+</footer>
+
+</body>
+</html>

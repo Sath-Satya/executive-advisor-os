@@ -1,0 +1,463 @@
+<!--
+TEMPLATE: release-notes
+CATEGORY: Docs / Product Communications
+USE WHEN: Publishing versioned product release notes with Added/Fixed/Changed/Removed tags grouped by version.
+PALETTE: Light clean
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Changelog — Meridian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f6f8fb;
+      --navy: #0e1b2e;
+      --blue: #3b9eff;
+      --green: #2dd4a0;
+      --amber: #f0a050;
+      --red: #f06070;
+      --purple: #a78bfa;
+      --text: #1c2a3a;
+      --muted: #5a7184;
+      --border: #dce5f0;
+      --tag-added-bg:   #e6faf5; --tag-added-text:   #0e8a6b; --tag-added-border:   #b3e8d8;
+      --tag-fixed-bg:   #eaf4ff; --tag-fixed-text:   #1a6ebf; --tag-fixed-border:   #b3d8f5;
+      --tag-changed-bg: #fef5e9; --tag-changed-text: #b86a10; --tag-changed-border: #f5d8a8;
+      --tag-removed-bg: #fdeef0; --tag-removed-text: #bf1a2a; --tag-removed-border: #f5b3ba;
+      --tag-improved-bg:#f3efff; --tag-improved-text:#6637cc; --tag-improved-border:#c9b8f5;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    /* Header */
+    .site-header {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: var(--navy); font-size: 0.95rem; text-decoration: none; }
+    .header-nav { display: flex; gap: 1.25rem; margin-left: 1.5rem; }
+    .header-nav a { font-size: 0.85rem; color: var(--muted); text-decoration: none; }
+    .header-nav a:hover, .header-nav a.active { color: var(--navy); }
+    .header-nav a.active { font-weight: 600; }
+    .subscribe-btn {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 500;
+      font-size: 0.82rem;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .subscribe-btn:hover { background: #2a8aef; }
+    .subscribe-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+    /* Layout */
+    .layout {
+      display: flex;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+      gap: 3.5rem;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 180px;
+      min-width: 180px;
+    }
+    .sidebar-inner { position: sticky; top: 70px; }
+    .sidebar-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+    .version-nav { list-style: none; }
+    .version-nav li { margin-bottom: 1px; }
+    .version-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.3rem 0.45rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      transition: background 0.15s, color 0.15s;
+    }
+    .version-nav a:hover, .version-nav a:focus-visible { background: #f0f4fa; color: var(--navy); outline: none; }
+    .version-nav a.latest { color: var(--blue); font-weight: 600; }
+    .latest-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      display: inline-block;
+    }
+
+    /* Main */
+    main { flex: 1; min-width: 0; }
+
+    /* Page header */
+    .page-header { margin-bottom: 3rem; }
+    .page-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+    }
+    .page-header p { color: var(--muted); font-size: 0.95rem; }
+
+    /* Version block */
+    .version-block { margin-bottom: 3.5rem; }
+    .version-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .version-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .version-date {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .latest-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: var(--tag-added-bg);
+      color: var(--tag-added-text);
+      border: 1px solid var(--tag-added-border);
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      font-family: 'DM Mono', monospace;
+      padding: 1px 7px;
+      letter-spacing: 0.06em;
+    }
+
+    /* Entries */
+    .entries { list-style: none; }
+    .entry {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .entry:last-child { border-bottom: none; }
+    .entry-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      font-weight: 600;
+      border-radius: 4px;
+      padding: 2px 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      margin-top: 1px;
+      min-width: 70px;
+      text-align: center;
+    }
+    .tag-added    { background: var(--tag-added-bg);    color: var(--tag-added-text);    border: 1px solid var(--tag-added-border); }
+    .tag-fixed    { background: var(--tag-fixed-bg);    color: var(--tag-fixed-text);    border: 1px solid var(--tag-fixed-border); }
+    .tag-changed  { background: var(--tag-changed-bg);  color: var(--tag-changed-text);  border: 1px solid var(--tag-changed-border); }
+    .tag-removed  { background: var(--tag-removed-bg);  color: var(--tag-removed-text);  border: 1px solid var(--tag-removed-border); }
+    .tag-improved { background: var(--tag-improved-bg); color: var(--tag-improved-text); border: 1px solid var(--tag-improved-border); }
+
+    .entry-content { flex: 1; }
+    .entry-title { font-size: 0.9rem; font-weight: 500; color: var(--text); margin-bottom: 0.15rem; }
+    .entry-desc  { font-size: 0.82rem; color: var(--muted); }
+    .entry-link  { font-size: 0.78rem; color: var(--blue); text-decoration: none; }
+    .entry-link:hover { text-decoration: underline; }
+
+    /* Breaking changes highlight */
+    .breaking-notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      background: #fdeef0;
+      border: 1px solid #f5b3ba;
+      border-radius: 7px;
+      padding: 0.8rem 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+    .breaking-notice svg { flex-shrink: 0; margin-top: 1px; }
+    .breaking-notice strong { color: var(--red); }
+
+    /* Footer */
+    .doc-footer {
+      border-top: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .doc-footer a { color: var(--muted); text-decoration: none; }
+    .doc-footer a:hover { color: var(--blue); }
+
+    @media(max-width:680px) {
+      .sidebar { display: none; }
+      .layout { padding: 2rem 1rem 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header" role="banner">
+    <a href="#" class="logo" aria-label="Meridian home">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <rect width="20" height="20" rx="4" fill="#0e1b2e"/>
+        <path d="M5 10h10M10 5l5 5-5 5" stroke="#3b9eff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Meridian
+    </a>
+    <nav class="header-nav" aria-label="Site navigation">
+      <a href="#">Docs</a>
+      <a href="#" class="active">Changelog</a>
+      <a href="#">Blog</a>
+      <a href="#">Status</a>
+    </nav>
+    <a href="#" class="subscribe-btn" aria-label="Subscribe to release notes">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+        <path d="M1.5 4.5l5 4 5-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        <rect x="1.5" y="2.5" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+      Subscribe
+    </a>
+  </header>
+
+  <div class="layout">
+
+    <!-- Version sidebar -->
+    <aside class="sidebar" aria-label="Version navigation">
+      <div class="sidebar-inner">
+        <div class="sidebar-label">Versions</div>
+        <ul class="version-nav">
+          <li>
+            <a href="#v2-1-0" class="latest">
+              v2.1.0
+              <span class="latest-dot" aria-label="latest"></span>
+            </a>
+          </li>
+          <li><a href="#v2-0-2">v2.0.2</a></li>
+          <li><a href="#v2-0-0">v2.0.0</a></li>
+          <li><a href="#v1-9-0">v1.9.0</a></li>
+          <li><a href="#v1-8-3">v1.8.3</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main changelog -->
+    <main id="main-content">
+
+      <div class="page-header">
+        <h1>Changelog</h1>
+        <p>All notable changes to Meridian, newest first.</p>
+      </div>
+
+      <!-- v2.1.0 -->
+      <section class="version-block" id="v2-1-0">
+        <div class="version-header">
+          <span class="version-number">v2.1.0</span>
+          <span class="version-date">April 14, 2026</span>
+          <span class="latest-badge">
+            <span class="latest-dot" aria-hidden="true"></span>
+            LATEST
+          </span>
+        </div>
+
+        <ul class="entries" aria-label="Version 2.1.0 changes">
+          <li class="entry">
+            <span class="entry-tag tag-added" aria-label="Added">Added</span>
+            <div class="entry-content">
+              <div class="entry-title">Natural language query &mdash; GA release</div>
+              <div class="entry-desc">Ask questions in plain English. Meridian translates them to SQL, executes against your indexed datasets, and returns results with an explanation and confidence score. Available on all plans.</div>
+              <a href="#" class="entry-link">Read the announcement &rarr;</a>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-tag tag-added" aria-label="Added">Added</span>
+            <div class="entry-content">
+              <div class="entry-title">Databricks connector</div>
+              <div class="entry-desc">Connect Databricks SQL warehouses using personal access tokens or service principals. Supports Unity Catalog with row-level security passthrough.</div>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-tag tag-improved" aria-label="Improved">Improved</span>
+            <div class="entry-content">
+              <div class="entry-title">Dataset indexing speed up to 3&times; faster</div>
+              <div class="entry-desc">Parallelized Parquet partition writes and reduced index re-build scope to changed partitions only. 50 GB datasets now index in under 4 minutes (was 12 minutes).</div>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-tag tag-fixed" aria-label="Fixed">Fixed</span>
+            <div class="entry-content">
+              <div class="entry-title">Snowflake connector intermittent 401 on session expiry</div>
+              <div class="entry-desc">Token refresh was not retried on the first failure. Sessions now auto-refresh with a 3-attempt backoff before surfacing an error.</div>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-tag tag-fixed" aria-label="Fixed">Fixed</span>
+            <div class="entry-content">
+              <div class="entry-title">Workspace admin could not delete connector created by another user</div>
+              <div class="entry-desc">Permission check incorrectly required object ownership instead of workspace admin role. Now resolved.</div>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-tag tag-changed" aria-label="Changed">Changed</span>
+            <div class="entry-content">
+              <div class="entry-title">API rate limits increased for Team and Enterprise plans</div>
+              <div class="entry-desc">Query API: 120 req/min (was 60) on Team; 600 req/min (was 300) on Enterprise. Ingest API unchanged.</div>
+              <a href="#" class="entry-link">See updated rate limit docs &rarr;</a>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- v2.0.2 -->
+      <section class="version-block" id="v2-0-2">
+        <div class="version-header">
+          <span class="version-number">v2.0.2</span>
+          <span class="version-date">March 28, 2026</span>
+        </div>
+        <ul class="entries" aria-label="Version 2.0.2 changes">
+          <li class="entry">
+            <span class="entry-tag tag-fixed" aria-label="Fixed">Fixed</span>
+            <div class="entry-content">
+              <div class="entry-title">Pipeline run history missing after workspace migration</div>
+              <div class="entry-desc">Run metadata was not re-associated with the migrated workspace ID. Retroactively backfilled for all affected workspaces.</div>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-tag tag-fixed" aria-label="Fixed">Fixed</span>
+            <div class="entry-content">
+              <div class="entry-title">CSV connector failing on files with BOM characters</div>
+              <div class="entry-desc">UTF-8 BOM bytes at the start of a file caused schema inference to fail. BOM is now stripped before parsing.</div>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-tag tag-improved" aria-label="Improved">Improved</span>
+            <div class="entry-content">
+              <div class="entry-title">Query result pagination now returns a stable cursor</div>
+              <div class="entry-desc">Previous cursor implementation was offset-based and drifted when new rows were added during pagination. Replaced with keyset-based cursor.</div>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- v2.0.0 -->
+      <section class="version-block" id="v2-0-0">
+        <div class="version-header">
+          <span class="version-number">v2.0.0</span>
+          <span class="version-date">March 1, 2026</span>
+        </div>
+
+        <div class="breaking-notice" role="alert">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 2L14.5 13H1.5L8 2z" stroke="#f06070" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M8 6v3M8 11h.01" stroke="#f06070" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <div><strong>Breaking change:</strong> The v1 API base path (<code style="font-family:'DM Mono',monospace;font-size:0.85em">/api/v1/</code>) is deprecated as of this release and will be removed on June 1, 2026. Migrate to <code style="font-family:'DM Mono',monospace;font-size:0.85em">/api/v2/</code>. <a href="#" style="color:var(--red)">Migration guide &rarr;</a></div>
+        </div>
+
+        <ul class="entries" aria-label="Version 2.0.0 changes">
+          <li class="entry">
+            <span class="entry-tag tag-added" aria-label="Added">Added</span>
+            <div class="entry-content">
+              <div class="entry-title">Multi-region workspace support</div>
+              <div class="entry-desc">Workspaces can now be provisioned in US-East, EU-West, and AP-Southeast. Data residency guarantees available on Enterprise plans.</div>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-tag tag-changed" aria-label="Changed">Changed</span>
+            <div class="entry-content">
+              <div class="entry-title">Authentication migrated to OAuth 2.0 + PKCE</div>
+              <div class="entry-desc">Legacy API key auth remains supported for machine-to-machine use cases. Browser-based flows now require OAuth 2.0.</div>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-tag tag-removed" aria-label="Removed">Removed</span>
+            <div class="entry-content">
+              <div class="entry-title">Legacy CSV bulk upload endpoint removed</div>
+              <div class="entry-desc"><code style="font-family:'DM Mono',monospace;font-size:0.85em">POST /v1/datasets/upload</code> removed. Use the Connector Hub (CSV source type) instead.</div>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- v1.9.0 abbreviated -->
+      <section class="version-block" id="v1-9-0">
+        <div class="version-header">
+          <span class="version-number">v1.9.0</span>
+          <span class="version-date">January 15, 2026</span>
+        </div>
+        <ul class="entries" aria-label="Version 1.9.0 changes">
+          <li class="entry">
+            <span class="entry-tag tag-added" aria-label="Added">Added</span>
+            <div class="entry-content">
+              <div class="entry-title">Webhook notifications for pipeline events</div>
+              <div class="entry-desc">Configure HTTP POST callbacks on <code style="font-family:'DM Mono',monospace;font-size:0.85em">run.completed</code>, <code style="font-family:'DM Mono',monospace;font-size:0.85em">run.failed</code>, and <code style="font-family:'DM Mono',monospace;font-size:0.85em">dataset.active</code> events.</div>
+            </div>
+          </li>
+          <li class="entry">
+            <span class="entry-tag tag-improved" aria-label="Improved">Improved</span>
+            <div class="entry-content">
+              <div class="entry-title">Connector Hub timeout handling</div>
+              <div class="entry-desc">Source connectors now surface actionable error messages on auth failure, network timeout, and schema mismatch instead of generic 500 errors.</div>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="doc-footer" role="contentinfo">
+    <span>Meridian Changelog &mdash; v{{VERSION}} &mdash; {{DATE}}</span>
+    <span>Owner: Product &amp; Engineering</span>
+    <a href="#">RSS feed</a>
+  </footer>
+
+</body>
+</html>

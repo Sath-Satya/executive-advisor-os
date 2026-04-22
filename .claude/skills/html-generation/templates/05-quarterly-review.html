@@ -1,0 +1,446 @@
+<!--
+TEMPLATE: quarterly-review
+CATEGORY: Executive / Board
+USE WHEN: Presenting a quarterly business review (QBR) with KPI performance, wins/losses, and forward plan to leadership or the board.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quarterly Review — {{TITLE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream-dark: #ede9e0;
+      --navy: #0e1b2e;
+      --navy-mid: #162035;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --green: #2d7a5f;
+      --green-bg: rgba(45,122,95,0.08);
+      --red: #9e2a2b;
+      --red-bg: rgba(158,42,43,0.08);
+      --amber: #8a5c14;
+      --amber-bg: rgba(138,92,20,0.1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream-dark);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    /* ── Top header band ── */
+    .qbr-header {
+      background: var(--navy-mid);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .qbr-header h1 {
+      font-size: 1.65rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+    .qbr-header .quarter-badge {
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 3px;
+      margin-bottom: 0.4rem;
+      display: inline-block;
+    }
+    .qbr-header .header-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.4);
+      text-align: right;
+      line-height: 1.7;
+    }
+    .qbr-header .header-meta strong { color: rgba(255,255,255,0.7); }
+
+    /* ── Page wrapper ── */
+    .page {
+      max-width: 840px;
+      margin: 0 auto;
+      padding: 2.5rem 2.5rem 5rem;
+    }
+
+    /* ── KPI scoreboard ── */
+    .kpi-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+    .kpi-tile {
+      background: var(--cream);
+      padding: 1.3rem 1.2rem;
+    }
+    .kpi-tile .kpi-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+    .kpi-tile .kpi-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-green { background: var(--green); }
+    .dot-amber { background: #c0850a; }
+    .dot-red   { background: var(--red); }
+    .kpi-tile .kpi-number {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .kpi-tile .kpi-vs {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+    .kpi-tile .kpi-vs .up { color: var(--green); font-weight: 500; }
+    .kpi-tile .kpi-vs .down { color: var(--red); font-weight: 500; }
+    .kpi-tile .kpi-vs .flat { color: var(--amber); font-weight: 500; }
+
+    /* ── Section ── */
+    .section-block { margin-bottom: 2.5rem; }
+    .section-block h2 {
+      font-size: 0.65rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Two-column split ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    /* ── Wins / Losses ── */
+    .result-list {
+      list-style: none;
+      padding: 0;
+    }
+    .result-item {
+      padding: 0.85rem 1rem;
+      margin-bottom: 1px;
+      display: flex;
+      gap: 0.9rem;
+      align-items: flex-start;
+      font-size: 0.88rem;
+    }
+    .result-item.win  { background: var(--green-bg); border-left: 3px solid var(--green); }
+    .result-item.loss { background: var(--red-bg);   border-left: 3px solid var(--red); }
+    .result-item.risk { background: var(--amber-bg); border-left: 3px solid #c0850a; }
+    .result-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.4rem;
+      border-radius: 2px;
+      white-space: nowrap;
+      margin-top: 0.1rem;
+      flex-shrink: 0;
+    }
+    .label-win  { background: var(--green); color: #fff; }
+    .label-loss { background: var(--red);   color: #fff; }
+    .label-risk { background: #c0850a;      color: #fff; }
+    .result-text strong {
+      display: block;
+      color: var(--ink);
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+    .result-text span { color: var(--muted); font-size: 0.84rem; }
+
+    /* ── Forward plan table ── */
+    .forward-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.87rem;
+    }
+    .forward-table thead th {
+      background: var(--cream-dark);
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 400;
+      padding: 0.65rem 1rem;
+      text-align: left;
+      border-bottom: 2px solid var(--gold);
+    }
+    .forward-table tbody tr { border-bottom: 1px solid var(--border); }
+    .forward-table tbody tr:hover { background: var(--cream-dark); }
+    .forward-table tbody td {
+      padding: 0.8rem 1rem;
+      vertical-align: top;
+      color: var(--ink);
+    }
+    .forward-table tbody td:first-child { font-weight: 500; color: var(--navy); }
+    .owner-chip {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      background: var(--cream-dark);
+      border: 1px solid var(--border);
+      padding: 0.1rem 0.45rem;
+      border-radius: 3px;
+      color: var(--muted);
+    }
+
+    /* ── Outlook callout ── */
+    .outlook-box {
+      background: var(--navy);
+      color: rgba(255,255,255,0.85);
+      padding: 1.8rem 2rem;
+      margin-top: 2rem;
+    }
+    .outlook-box .outlook-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 0.7rem;
+    }
+    .outlook-box p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 4rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.64rem;
+      color: var(--muted);
+    }
+    footer strong { color: var(--navy); }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; }
+      .page { padding: 1.5cm 2cm; }
+      .qbr-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .outlook-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .result-item { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      @page { size: A4 portrait; margin: 1.5cm 2cm; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="qbr-header">
+    <div>
+      <span class="quarter-badge">Q2 FY 2027 &mdash; Quarterly Business Review</span>
+      <h1>Meridian Health<br>Business Performance Report</h1>
+    </div>
+    <div class="header-meta">
+      <strong>Prepared for:</strong> Executive Leadership Team<br>
+      <strong>Date:</strong> {{DATE}}<br>
+      <strong>Version:</strong> {{VERSION}}<br>
+      Meridian Health &mdash; Confidential
+    </div>
+  </header>
+
+  <main>
+    <div class="page">
+
+      <section class="section-block" aria-labelledby="kpi-heading">
+        <h2 id="kpi-heading">Q2 Scorecard &mdash; Key Performance Indicators</h2>
+        <div class="kpi-bar">
+          <div class="kpi-tile">
+            <div class="kpi-header">
+              <span class="kpi-name">Revenue</span>
+              <span class="status-dot dot-green" aria-label="On track"></span>
+            </div>
+            <p class="kpi-number">$74.2M</p>
+            <p class="kpi-vs">vs target $72.0M &nbsp;<span class="up">+3.1%</span></p>
+          </div>
+          <div class="kpi-tile">
+            <div class="kpi-header">
+              <span class="kpi-name">Patient NPS</span>
+              <span class="status-dot dot-green" aria-label="On track"></span>
+            </div>
+            <p class="kpi-number">48</p>
+            <p class="kpi-vs">vs target 45 &nbsp;<span class="up">+6.7%</span></p>
+          </div>
+          <div class="kpi-tile">
+            <div class="kpi-header">
+              <span class="kpi-name">Digital Appt Share</span>
+              <span class="status-dot dot-amber" aria-label="At risk"></span>
+            </div>
+            <p class="kpi-number">31%</p>
+            <p class="kpi-vs">vs target 38% &nbsp;<span class="flat">-7pp</span></p>
+          </div>
+          <div class="kpi-tile">
+            <div class="kpi-header">
+              <span class="kpi-name">Claim Denial Rate</span>
+              <span class="status-dot dot-red" aria-label="Behind"></span>
+            </div>
+            <p class="kpi-number">12.4%</p>
+            <p class="kpi-vs">vs target 9.0% &nbsp;<span class="down">+3.4pp</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block" aria-labelledby="results-heading">
+        <h2 id="results-heading">Q2 Results &mdash; Wins, Misses &amp; Risks</h2>
+        <div class="two-col">
+          <div>
+            <ul class="result-list">
+              <li class="result-item win">
+                <span class="result-label label-win">Win</span>
+                <div class="result-text">
+                  <strong>Patient portal v2.0 launched on schedule</strong>
+                  <span>Delivered to all primary markets by 15 June. 22,000 patients registered in first 30 days — 46% above forecast.</span>
+                </div>
+              </li>
+              <li class="result-item win">
+                <span class="result-label label-win">Win</span>
+                <div class="result-text">
+                  <strong>NPS improved 17 points year-over-year</strong>
+                  <span>Driven by portal launch and AI scheduling pilot in Phoenix Metro. 68% of surveyed patients cited scheduling ease as primary driver.</span>
+                </div>
+              </li>
+              <li class="result-item win">
+                <span class="result-label label-win">Win</span>
+                <div class="result-text">
+                  <strong>Revenue exceeded target by $2.2M</strong>
+                  <span>Outperformance from two new specialist clinics opened in Q1 achieving patient capacity ahead of plan.</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <ul class="result-list">
+              <li class="result-item loss">
+                <span class="result-label label-loss">Miss</span>
+                <div class="result-text">
+                  <strong>Digital appointment share below target</strong>
+                  <span>Portal adoption concentrated in age 30-45 segment. 55+ adoption at 8% vs target 22%. Requires UX simplification sprint.</span>
+                </div>
+              </li>
+              <li class="result-item loss">
+                <span class="result-label label-loss">Miss</span>
+                <div class="result-text">
+                  <strong>Claim denial rate worsened</strong>
+                  <span>ICD-11 coding errors post-migration drove 38% of denials. Revenue cycle automation Phase 1 delayed to Q3 due to vendor capacity.</span>
+                </div>
+              </li>
+              <li class="result-item risk">
+                <span class="result-label label-risk">Risk</span>
+                <div class="result-text">
+                  <strong>Phoenix market entry timeline at risk</strong>
+                  <span>Site permitting delayed by 8 weeks. Contingency plan: temporary leased space identified. Final decision required by 15 August.</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-block" aria-labelledby="forward-heading">
+        <h2 id="forward-heading">Q3 Forward Plan</h2>
+        <table class="forward-table">
+          <thead>
+            <tr>
+              <th>Initiative</th>
+              <th>Q3 Objective</th>
+              <th>Owner</th>
+              <th>Due</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Portal 55+ Accessibility Sprint</td>
+              <td>Increase 55+ adoption from 8% to 25%</td>
+              <td><span class="owner-chip">CTO / UX</span></td>
+              <td>15 Aug</td>
+            </tr>
+            <tr>
+              <td>Revenue Cycle Automation P1</td>
+              <td>Reduce denial rate from 12.4% to 9.0%</td>
+              <td><span class="owner-chip">CFO / Ops</span></td>
+              <td>30 Sep</td>
+            </tr>
+            <tr>
+              <td>Phoenix Contingency Decision</td>
+              <td>Confirm site or activate leased-space plan</td>
+              <td><span class="owner-chip">CEO / Facilities</span></td>
+              <td>15 Aug</td>
+            </tr>
+            <tr>
+              <td>AI Scheduling Full Rollout</td>
+              <td>Expand from pilot 3,000 to all 285,000 patients</td>
+              <td><span class="owner-chip">CTO</span></td>
+              <td>30 Sep</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="outlook-box">
+          <p class="outlook-label">Q3 Outlook</p>
+          <p>Q3 presents a bifurcated risk profile. The NPS trajectory and revenue momentum are strong and expected to continue. The claim denial and digital adoption gaps require targeted interventions in weeks 1-4 of Q3 — if both are addressed promptly, the full-year plan remains on track. The Phoenix timeline risk is the highest-priority decision for the CEO and Board in August.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div><strong>Meridian Health</strong> &mdash; Q2 FY 2027 Quarterly Business Review &mdash; Executive Confidential</div>
+    <div>Audience: Executive Leadership &nbsp;|&nbsp; {{DATE}} &nbsp;|&nbsp; {{VERSION}}</div>
+  </footer>
+
+</body>
+</html>

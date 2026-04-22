@@ -1,0 +1,608 @@
+<!--
+TEMPLATE: api-docs
+CATEGORY: Docs / Product Communications
+USE WHEN: Publishing an API reference page with endpoint listings, method badges, and request/response examples.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Reference — Meridian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #19232f;
+      --primary: #3b9eff;
+      --secondary: #a78bfa;
+      --accent: #2dd4a0;
+      --text: #d0d8e4;
+      --muted: #8899ac;
+      --border: rgba(136,153,172,0.15);
+      --get: #3b9eff;
+      --post: #2dd4a0;
+      --put: #f0a050;
+      --delete: #f06070;
+      --patch: #a78bfa;
+      --sidebar-w: 260px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 0 0 2rem;
+    }
+    .sidebar-logo {
+      padding: 1.4rem 1.2rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .sidebar-logo svg { flex-shrink: 0; }
+    .sidebar-logo .logo-name {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .sidebar-logo .logo-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      background: rgba(59,158,255,0.15);
+      color: var(--primary);
+      border: 1px solid rgba(59,158,255,0.3);
+      border-radius: 4px;
+      padding: 1px 6px;
+      margin-left: auto;
+    }
+    .nav-section {
+      padding: 1rem 1.2rem 0.25rem;
+    }
+    .nav-section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.875rem;
+      transition: background 0.15s, color 0.15s;
+      margin-bottom: 1px;
+    }
+    .nav-link:hover, .nav-link:focus-visible {
+      background: rgba(59,158,255,0.08);
+      color: var(--text);
+      outline: none;
+    }
+    .nav-link.active { color: var(--primary); background: rgba(59,158,255,0.1); }
+    .badge-sm {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      font-weight: 500;
+      border-radius: 3px;
+      padding: 1px 5px;
+      text-transform: uppercase;
+      margin-left: auto;
+    }
+    .badge-get  { background: rgba(59,158,255,0.15);  color: var(--get); }
+    .badge-post { background: rgba(45,212,160,0.15);  color: var(--post); }
+    .badge-put  { background: rgba(240,160,80,0.15);  color: var(--put); }
+    .badge-del  { background: rgba(240,96,112,0.15);  color: var(--delete); }
+    .badge-patch{ background: rgba(167,139,250,0.15); color: var(--patch); }
+
+    /* ── Main ── */
+    main {
+      flex: 1;
+      min-width: 0;
+      padding: 2.5rem 3rem 4rem;
+      max-width: 860px;
+    }
+
+    /* Page header */
+    .page-header { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .page-header .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .page-header p { color: var(--muted); font-size: 0.95rem; max-width: 580px; }
+
+    /* Base URL bar */
+    .base-url {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.6rem 1rem;
+      margin-bottom: 2.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+    }
+    .base-url .label { color: var(--muted); }
+    .base-url .url   { color: var(--accent); }
+
+    /* Endpoint section */
+    .endpoint-section { margin-bottom: 3.5rem; }
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+      padding-top: 0.5rem;
+    }
+    .endpoint-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .endpoint-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .method-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      border-radius: 4px;
+      padding: 3px 8px;
+      text-transform: uppercase;
+      min-width: 56px;
+      text-align: center;
+    }
+    .method-get    { background: rgba(59,158,255,0.15);  color: var(--get);    border: 1px solid rgba(59,158,255,0.3); }
+    .method-post   { background: rgba(45,212,160,0.15);  color: var(--post);   border: 1px solid rgba(45,212,160,0.3); }
+    .method-put    { background: rgba(240,160,80,0.15);  color: var(--put);    border: 1px solid rgba(240,160,80,0.3); }
+    .method-delete { background: rgba(240,96,112,0.15);  color: var(--delete); border: 1px solid rgba(240,96,112,0.3); }
+    .method-patch  { background: rgba(167,139,250,0.15); color: var(--patch);  border: 1px solid rgba(167,139,250,0.3); }
+    .endpoint-path {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+    .endpoint-path .param { color: var(--secondary); }
+    .endpoint-desc { margin-left: auto; font-size: 0.82rem; color: var(--muted); }
+    .endpoint-body { padding: 1.2rem; }
+    .params-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: 0.85rem; }
+    .params-table th {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .params-table td { padding: 0.45rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .params-table tr:last-child td { border-bottom: none; }
+    .param-name { font-family: 'DM Mono', monospace; color: var(--primary); font-size: 0.82rem; }
+    .param-type { font-family: 'DM Mono', monospace; color: var(--secondary); font-size: 0.78rem; }
+    .required-tag { font-size: 0.7rem; color: var(--delete); font-family: 'DM Mono', monospace; }
+    .optional-tag { font-size: 0.7rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+    .code-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.75rem; }
+    @media(max-width:700px){ .code-pair { grid-template-columns: 1fr; } }
+    .code-block-wrap { }
+    .code-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    pre {
+      background: #070b10;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 0.85rem 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      color: var(--text);
+      white-space: pre;
+    }
+    .token-string  { color: #2dd4a0; }
+    .token-key     { color: #a78bfa; }
+    .token-number  { color: #f0a050; }
+    .token-bool    { color: #3b9eff; }
+    .token-null    { color: #8899ac; }
+    .http-status { display: inline-flex; align-items: center; gap: 0.4rem; font-family: 'DM Mono', monospace; font-size: 0.75rem; }
+    .status-200 { color: var(--post); }
+    .status-400 { color: var(--put); }
+    .status-401 { color: var(--delete); }
+
+    /* Auth callout */
+    .callout {
+      display: flex;
+      gap: 0.75rem;
+      background: rgba(59,158,255,0.06);
+      border: 1px solid rgba(59,158,255,0.2);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 2rem;
+      font-size: 0.875rem;
+    }
+    .callout svg { flex-shrink: 0; margin-top: 2px; }
+    .callout strong { color: var(--primary); }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 4rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .doc-footer a { color: var(--muted); text-decoration: none; }
+    .doc-footer a:hover { color: var(--primary); }
+
+    /* Responsive */
+    @media(max-width:800px) {
+      .sidebar { display: none; }
+      main { padding: 1.5rem 1.25rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <nav class="sidebar" aria-label="API navigation">
+    <div class="sidebar-logo">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <rect width="22" height="22" rx="5" fill="#3b9eff" fill-opacity="0.15"/>
+        <path d="M6 11h10M11 6l5 5-5 5" stroke="#3b9eff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-name">Meridian</span>
+      <span class="logo-badge">v2.1</span>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Overview</div>
+      <a href="#authentication" class="nav-link">Authentication</a>
+      <a href="#errors" class="nav-link">Errors &amp; Status Codes</a>
+      <a href="#rate-limits" class="nav-link">Rate Limits</a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Datasets</div>
+      <a href="#list-datasets" class="nav-link active">
+        List datasets <span class="badge-sm badge-get">GET</span>
+      </a>
+      <a href="#create-dataset" class="nav-link">
+        Create dataset <span class="badge-sm badge-post">POST</span>
+      </a>
+      <a href="#get-dataset" class="nav-link">
+        Get dataset <span class="badge-sm badge-get">GET</span>
+      </a>
+      <a href="#update-dataset" class="nav-link">
+        Update dataset <span class="badge-sm badge-patch">PATCH</span>
+      </a>
+      <a href="#delete-dataset" class="nav-link">
+        Delete dataset <span class="badge-sm badge-del">DEL</span>
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Pipelines</div>
+      <a href="#list-pipelines" class="nav-link">
+        List pipelines <span class="badge-sm badge-get">GET</span>
+      </a>
+      <a href="#trigger-pipeline" class="nav-link">
+        Trigger run <span class="badge-sm badge-post">POST</span>
+      </a>
+      <a href="#pipeline-status" class="nav-link">
+        Get run status <span class="badge-sm badge-get">GET</span>
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">Webhooks</div>
+      <a href="#webhooks" class="nav-link">Configure webhooks</a>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main>
+    <div class="page-header">
+      <div class="eyebrow">API Reference</div>
+      <h1>Meridian REST API</h1>
+      <p>Enterprise data platform API. All requests return JSON. Authentication via Bearer token.</p>
+    </div>
+
+    <div class="base-url">
+      <span class="label">Base URL</span>
+      <span class="url">https://api.meridian.io/v2</span>
+    </div>
+
+    <div class="callout" id="authentication">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <circle cx="9" cy="9" r="8" stroke="#3b9eff" stroke-width="1.5"/>
+        <path d="M9 8v4M9 6h.01" stroke="#3b9eff" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <strong>Authentication:</strong> Include your API key as <code style="font-family:'DM Mono',monospace;font-size:0.82em;color:#2dd4a0;">Authorization: Bearer &lt;API_KEY&gt;</code> in all requests. Keys are scoped per workspace.
+      </div>
+    </div>
+
+    <!-- Datasets -->
+    <section class="endpoint-section">
+      <h2 class="section-title" id="list-datasets">Datasets</h2>
+
+      <!-- GET /datasets -->
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method-badge method-get">GET</span>
+          <code class="endpoint-path">/datasets</code>
+          <span class="endpoint-desc">List all datasets</span>
+        </div>
+        <div class="endpoint-body">
+          <table class="params-table" aria-label="Query parameters">
+            <thead>
+              <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="param-name">workspace_id</span></td>
+                <td><span class="param-type">string</span></td>
+                <td><span class="required-tag">required</span></td>
+                <td style="color:var(--muted)">Workspace to list datasets from</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">limit</span></td>
+                <td><span class="param-type">integer</span></td>
+                <td><span class="optional-tag">optional</span></td>
+                <td style="color:var(--muted)">Max results (1–100, default 20)</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">cursor</span></td>
+                <td><span class="param-type">string</span></td>
+                <td><span class="optional-tag">optional</span></td>
+                <td style="color:var(--muted)">Pagination cursor from previous response</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="code-pair">
+            <div class="code-block-wrap">
+              <div class="code-label">Response 200</div>
+              <pre><code><span class="token-key">"data"</span>: [
+  {
+    <span class="token-key">"id"</span>: <span class="token-string">"ds_01hx4g"</span>,
+    <span class="token-key">"name"</span>: <span class="token-string">"Sales Q4 2025"</span>,
+    <span class="token-key">"rows"</span>: <span class="token-number">48291</span>,
+    <span class="token-key">"status"</span>: <span class="token-string">"active"</span>,
+    <span class="token-key">"created_at"</span>: <span class="token-string">"2025-10-01T09:00:00Z"</span>
+  }
+],
+<span class="token-key">"next_cursor"</span>: <span class="token-string">"cur_abc123"</span>,
+<span class="token-key">"has_more"</span>: <span class="token-bool">true</span></code></pre>
+            </div>
+            <div class="code-block-wrap">
+              <div class="code-label">Response 401</div>
+              <pre><code>{
+  <span class="token-key">"error"</span>: {
+    <span class="token-key">"code"</span>: <span class="token-string">"unauthorized"</span>,
+    <span class="token-key">"message"</span>: <span class="token-string">"Invalid or expired API key"</span>,
+    <span class="token-key">"request_id"</span>: <span class="token-string">"req_7f2k9p"</span>
+  }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- POST /datasets -->
+      <article class="endpoint-card" id="create-dataset">
+        <div class="endpoint-header">
+          <span class="method-badge method-post">POST</span>
+          <code class="endpoint-path">/datasets</code>
+          <span class="endpoint-desc">Create a dataset</span>
+        </div>
+        <div class="endpoint-body">
+          <table class="params-table" aria-label="Request body fields">
+            <thead>
+              <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="param-name">name</span></td>
+                <td><span class="param-type">string</span></td>
+                <td><span class="required-tag">required</span></td>
+                <td style="color:var(--muted)">Human-readable dataset name (max 128 chars)</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">source</span></td>
+                <td><span class="param-type">object</span></td>
+                <td><span class="required-tag">required</span></td>
+                <td style="color:var(--muted)">Source connector config (type + credentials)</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">refresh_schedule</span></td>
+                <td><span class="param-type">string</span></td>
+                <td><span class="optional-tag">optional</span></td>
+                <td style="color:var(--muted)">Cron expression for auto-refresh</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">tags</span></td>
+                <td><span class="param-type">string[]</span></td>
+                <td><span class="optional-tag">optional</span></td>
+                <td style="color:var(--muted)">Organizational tags</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="code-pair">
+            <div class="code-block-wrap">
+              <div class="code-label">Request Body</div>
+              <pre><code>{
+  <span class="token-key">"name"</span>: <span class="token-string">"Revenue Pipeline 2026"</span>,
+  <span class="token-key">"source"</span>: {
+    <span class="token-key">"type"</span>: <span class="token-string">"snowflake"</span>,
+    <span class="token-key">"warehouse"</span>: <span class="token-string">"ANALYTICS_WH"</span>,
+    <span class="token-key">"database"</span>: <span class="token-string">"PROD_DB"</span>
+  },
+  <span class="token-key">"refresh_schedule"</span>: <span class="token-string">"0 6 * * *"</span>
+}</code></pre>
+            </div>
+            <div class="code-block-wrap">
+              <div class="code-label">Response 201</div>
+              <pre><code>{
+  <span class="token-key">"id"</span>: <span class="token-string">"ds_02ky8m"</span>,
+  <span class="token-key">"name"</span>: <span class="token-string">"Revenue Pipeline 2026"</span>,
+  <span class="token-key">"status"</span>: <span class="token-string">"initializing"</span>,
+  <span class="token-key">"rows"</span>: <span class="token-null">null</span>,
+  <span class="token-key">"created_at"</span>: <span class="token-string">"2026-01-15T14:22:00Z"</span>
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- PATCH /datasets/:id -->
+      <article class="endpoint-card" id="update-dataset">
+        <div class="endpoint-header">
+          <span class="method-badge method-patch">PATCH</span>
+          <code class="endpoint-path">/datasets/<span class="param">{id}</span></code>
+          <span class="endpoint-desc">Update dataset metadata</span>
+        </div>
+        <div class="endpoint-body">
+          <table class="params-table" aria-label="Path and body parameters">
+            <thead>
+              <tr><th>Field</th><th>Type</th><th>In</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="param-name">id</span></td>
+                <td><span class="param-type">string</span></td>
+                <td style="color:var(--muted);font-size:0.78rem">path</td>
+                <td style="color:var(--muted)">Dataset ID</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">name</span></td>
+                <td><span class="param-type">string</span></td>
+                <td style="color:var(--muted);font-size:0.78rem">body</td>
+                <td style="color:var(--muted)">New display name</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">refresh_schedule</span></td>
+                <td><span class="param-type">string</span></td>
+                <td style="color:var(--muted);font-size:0.78rem">body</td>
+                <td style="color:var(--muted)">Updated cron expression</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <!-- DELETE /datasets/:id -->
+      <article class="endpoint-card" id="delete-dataset">
+        <div class="endpoint-header">
+          <span class="method-badge method-delete">DELETE</span>
+          <code class="endpoint-path">/datasets/<span class="param">{id}</span></code>
+          <span class="endpoint-desc">Delete a dataset (irreversible)</span>
+        </div>
+        <div class="endpoint-body" style="padding:1rem 1.2rem;">
+          <p style="font-size:0.875rem;color:var(--muted);">Permanently removes the dataset and all associated pipeline runs. Returns <span style="font-family:'DM Mono',monospace;color:var(--delete);">204 No Content</span> on success.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Pipelines -->
+    <section class="endpoint-section">
+      <h2 class="section-title" id="list-pipelines">Pipelines</h2>
+
+      <article class="endpoint-card">
+        <div class="endpoint-header">
+          <span class="method-badge method-post">POST</span>
+          <code class="endpoint-path">/pipelines/<span class="param">{id}</span>/runs</code>
+          <span class="endpoint-desc">Trigger a pipeline run</span>
+        </div>
+        <div class="endpoint-body">
+          <div class="code-pair">
+            <div class="code-block-wrap">
+              <div class="code-label">Request Body</div>
+              <pre><code>{
+  <span class="token-key">"parameters"</span>: {
+    <span class="token-key">"date_range"</span>: <span class="token-string">"2026-01"</span>,
+    <span class="token-key">"notify_on_complete"</span>: <span class="token-bool">true</span>
+  }
+}</code></pre>
+            </div>
+            <div class="code-block-wrap">
+              <div class="code-label">Response 202</div>
+              <pre><code>{
+  <span class="token-key">"run_id"</span>: <span class="token-string">"run_4xzq1"</span>,
+  <span class="token-key">"pipeline_id"</span>: <span class="token-string">"pl_8mx2c"</span>,
+  <span class="token-key">"status"</span>: <span class="token-string">"queued"</span>,
+  <span class="token-key">"started_at"</span>: <span class="token-null">null</span>
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Footer -->
+    <footer class="doc-footer">
+      <span>Meridian API Docs &mdash; v{{VERSION}} &mdash; {{DATE}}</span>
+      <span>Owner: Platform Engineering</span>
+      <a href="#authentication">Back to top</a>
+    </footer>
+  </main>
+
+</body>
+</html>

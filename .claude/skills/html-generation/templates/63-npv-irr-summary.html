@@ -1,0 +1,249 @@
+<!--
+TEMPLATE: npv-irr-summary
+CATEGORY: ROI / Business Case
+USE WHEN: Presenting NPV and IRR analysis with year-by-year cash flows and a sensitivity table across discount rates for finance or executive audiences.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NPV / IRR Summary &mdash; Meridian Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:  #f7f4ef;
+      --cream2: #edeae3;
+      --cream3: #e4e0d8;
+      --navy:   #0e1b2e;
+      --navy2:  #1a2e47;
+      --gold:   #b8965a;
+      --ink:    #1c1a18;
+      --muted:  #6b6560;
+      --border: #ddd8ce;
+      --go:     #2d6a4f;
+      --go-bg:  #d1fae5;
+      --hold:   #92400e;
+      --hold-bg:#fef3c7;
+      --font:   'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono:   'DM Mono', 'Cascadia Code', monospace;
+    }
+    body { font-family: var(--font); background: var(--cream); color: var(--ink); font-size: 15px; line-height: 1.6; }
+    header { background: var(--navy); color: #fff; padding: 1.5rem 2.5rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .header-left h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.4px; }
+    .header-left p { font-size: 0.82rem; opacity: 0.7; margin-top: 0.15rem; }
+    .header-right { text-align: right; font-size: 0.78rem; opacity: 0.65; font-family: var(--mono); }
+
+    main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+    h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+
+    /* Results boxes */
+    .result-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0 1.75rem; }
+    .rbox { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 1.1rem 1.25rem; }
+    .rbox.primary { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .rbox .rval { font-family: var(--mono); font-size: 1.75rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+    .rbox.primary .rval { color: #7dd3fc; }
+    .rbox .rlbl { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.4rem; color: var(--muted); }
+    .rbox.primary .rlbl { color: rgba(255,255,255,0.6); }
+    .rbox .rsub { font-size: 0.78rem; margin-top: 0.5rem; color: var(--muted); }
+    .rbox.primary .rsub { color: rgba(255,255,255,0.5); }
+
+    /* tables */
+    .section { margin-bottom: 1.75rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    caption { text-align: left; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-bottom: 0.5rem; }
+    thead th { background: var(--navy); color: #fff; padding: 0.5rem 0.75rem; font-weight: 600; font-size: 0.8rem; text-align: left; }
+    thead th.num { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:nth-child(even) { background: var(--cream2); }
+    tbody tr.total-row { background: var(--cream3); font-weight: 700; }
+    td { padding: 0.48rem 0.75rem; }
+    td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    td.neg { color: #b91c1c; }
+    td.pos { color: var(--go); }
+    tfoot td { font-weight: 700; border-top: 2px solid var(--navy); padding: 0.5rem 0.75rem; }
+    tfoot td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+    /* sensitivity */
+    .sensitivity td.cell-go   { background: var(--go-bg);   color: var(--go);   font-weight: 600; text-align: right; font-family: var(--mono); }
+    .sensitivity td.cell-hold { background: var(--hold-bg);  color: var(--hold); font-weight: 600; text-align: right; font-family: var(--mono); }
+    .sensitivity td.cell-base { background: #e0f2fe; color: #0c4a6e; font-weight: 700; text-align: right; font-family: var(--mono); border: 2px solid #0c4a6e; }
+
+    .note { background: var(--cream2); border-left: 3px solid var(--gold); padding: 0.75rem 1rem; font-size: 0.82rem; color: var(--muted); border-radius: 0 4px 4px 0; margin-top: 0.75rem; }
+    .verdict { border-radius: 8px; padding: 1rem 1.5rem; display: flex; gap: 1rem; align-items: center; background: var(--go-bg); border: 2px solid var(--go); color: var(--go); margin-top: 1rem; }
+    .verdict .vt { font-weight: 700; font-size: 1rem; }
+    .verdict .vs { font-size: 0.84rem; margin-top: 0.2rem; opacity: 0.85; }
+
+    footer { max-width: 960px; margin: 0 auto; padding: 1rem 1.5rem 2rem; display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--border); font-family: var(--mono); }
+    @media print { body { background:#fff; font-size:13px; } main,footer{max-width:100%;} header{-webkit-print-color-adjust:exact;print-color-adjust:exact;} }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>NPV / IRR Executive Summary &mdash; Claims Automation Initiative</h1>
+    <p>Meridian Health &bull; Finance Committee &bull; April 2026 &bull; Discount Rate: 9.0% (WACC)</p>
+  </div>
+  <div class="header-right">CONFIDENTIAL<br>Finance Committee</div>
+</header>
+
+<main>
+
+  <div class="result-strip">
+    <div class="rbox primary">
+      <div class="rval">$3,657,000</div>
+      <div class="rlbl">Net Present Value (NPV)</div>
+      <div class="rsub">5-year horizon, 9% discount rate</div>
+    </div>
+    <div class="rbox">
+      <div class="rval" style="color:var(--go);">38.4%</div>
+      <div class="rlbl">Internal Rate of Return (IRR)</div>
+      <div class="rsub">vs. 9.0% WACC hurdle &mdash; spread of +29.4 pp</div>
+    </div>
+    <div class="rbox">
+      <div class="rval">2.3 yr</div>
+      <div class="rlbl">Payback Period</div>
+      <div class="rsub">Undiscounted simple payback</div>
+    </div>
+  </div>
+
+  <!-- Year-by-year cash flow -->
+  <div class="section">
+    <h2>Year-by-Year Discounted Cash Flow</h2>
+    <table>
+      <caption>5-Year Cash Flow Model &mdash; Meridian Health Claims Automation (WACC 9.0%)</caption>
+      <thead>
+        <tr>
+          <th scope="col">Year</th>
+          <th scope="col" class="num">Gross Benefit</th>
+          <th scope="col" class="num">Operating Cost</th>
+          <th scope="col" class="num">Net Cash Flow</th>
+          <th scope="col" class="num">Discount Factor</th>
+          <th scope="col" class="num">Present Value</th>
+          <th scope="col" class="num">Cumulative NPV</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Year 0</strong></td>
+          <td class="num">&mdash;</td>
+          <td class="num neg">($4,200,000)</td>
+          <td class="num neg">($4,200,000)</td>
+          <td class="num">1.0000</td>
+          <td class="num neg">($4,200,000)</td>
+          <td class="num neg">($4,200,000)</td>
+        </tr>
+        <tr>
+          <td>Year 1 <small style="color:var(--muted)">(60% ramp)</small></td>
+          <td class="num">$1,590,000</td>
+          <td class="num neg">($380,000)</td>
+          <td class="num">$1,210,000</td>
+          <td class="num">0.9174</td>
+          <td class="num">$1,110,054</td>
+          <td class="num neg">($3,089,946)</td>
+        </tr>
+        <tr>
+          <td>Year 2</td>
+          <td class="num">$2,650,000</td>
+          <td class="num neg">($380,000)</td>
+          <td class="num">$2,270,000</td>
+          <td class="num">0.8417</td>
+          <td class="num">$1,910,659</td>
+          <td class="num neg">($1,179,287)</td>
+        </tr>
+        <tr>
+          <td>Year 3</td>
+          <td class="num">$2,650,000</td>
+          <td class="num neg">($380,000)</td>
+          <td class="num">$2,270,000</td>
+          <td class="num">0.7722</td>
+          <td class="num">$1,752,894</td>
+          <td class="num pos">$573,607</td>
+        </tr>
+        <tr>
+          <td>Year 4</td>
+          <td class="num">$2,650,000</td>
+          <td class="num neg">($380,000)</td>
+          <td class="num">$2,270,000</td>
+          <td class="num">0.7084</td>
+          <td class="num">$1,608,068</td>
+          <td class="num pos">$2,181,675</td>
+        </tr>
+        <tr>
+          <td>Year 5</td>
+          <td class="num">$2,650,000</td>
+          <td class="num neg">($380,000)</td>
+          <td class="num">$2,270,000</td>
+          <td class="num">0.6499</td>
+          <td class="num">$1,475,273</td>
+          <td class="num pos">$3,656,948</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>5-Year Total</td>
+          <td class="num">$12,140,000</td>
+          <td class="num">($6,100,000)</td>
+          <td class="num">$6,040,000</td>
+          <td class="num">&mdash;</td>
+          <td class="num">$7,856,948</td>
+          <td class="num"><strong>$3,656,948</strong></td>
+        </tr>
+      </tfoot>
+    </table>
+    <p class="note">Discount factors computed as 1/(1+0.09)^n. NPV of $3,657K confirms positive value creation at the 9% hurdle rate. IRR of 38.4% solved numerically as the discount rate that sets NPV = $0.</p>
+  </div>
+
+  <!-- Sensitivity table -->
+  <div class="section">
+    <h2>Sensitivity Analysis &mdash; NPV at Varying Discount Rates</h2>
+    <table class="sensitivity">
+      <caption>5-Year NPV sensitivity across discount rates (base = 9%)</caption>
+      <thead>
+        <tr>
+          <th scope="col">Discount Rate</th>
+          <th scope="col" class="num">Year 1 PV</th>
+          <th scope="col" class="num">Year 2 PV</th>
+          <th scope="col" class="num">Year 3 PV</th>
+          <th scope="col" class="num">Year 4 PV</th>
+          <th scope="col" class="num">Year 5 PV</th>
+          <th scope="col" class="num">NPV</th>
+          <th scope="col">Decision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>5%</td><td class="cell-go">$1,152,381</td><td class="cell-go">$1,981,406</td><td class="cell-go">$1,887,054</td><td class="cell-go">$1,797,194</td><td class="cell-go">$1,711,613</td><td class="cell-go">$4,329,648</td><td style="color:var(--go);font-weight:700;">GO</td></tr>
+        <tr><td>7%</td><td class="cell-go">$1,130,841</td><td class="cell-go">$1,945,738</td><td class="cell-go">$1,818,446</td><td class="cell-go">$1,699,482</td><td class="cell-go">$1,588,300</td><td class="cell-go">$3,982,807</td><td style="color:var(--go);font-weight:700;">GO</td></tr>
+        <tr><td><strong>9% (base)</strong></td><td class="cell-base">$1,110,092</td><td class="cell-base">$1,910,660</td><td class="cell-base">$1,752,899</td><td class="cell-base">$1,608,165</td><td class="cell-base">$1,475,288</td><td class="cell-base">$3,657,104</td><td style="color:#0c4a6e;font-weight:700;">GO</td></tr>
+        <tr><td>12%</td><td class="cell-go">$1,080,357</td><td class="cell-go">$1,812,748</td><td class="cell-go">$1,618,525</td><td class="cell-go">$1,445,112</td><td class="cell-go">$1,290,279</td><td class="cell-go">$3,047,021</td><td style="color:var(--go);font-weight:700;">GO</td></tr>
+        <tr><td>15%</td><td class="cell-go">$1,052,174</td><td class="cell-go">$1,716,825</td><td class="cell-go">$1,492,891</td><td class="cell-go">$1,298,166</td><td class="cell-go">$1,128,840</td><td class="cell-go">$2,488,896</td><td style="color:var(--go);font-weight:700;">GO</td></tr>
+        <tr><td>20%</td><td class="cell-hold">$1,008,333</td><td class="cell-hold">$1,576,389</td><td class="cell-hold">$1,313,657</td><td class="cell-hold">$1,094,714</td><td class="cell-hold">$912,262</td><td class="cell-hold">$1,705,355</td><td style="color:var(--hold);font-weight:700;">HOLD</td></tr>
+        <tr><td>30%</td><td class="cell-hold">$930,769</td><td class="cell-hold">$1,341,716</td><td class="cell-hold">$1,032,089</td><td class="cell-hold">$793,915</td><td class="cell-hold">$610,704</td><td class="cell-hold">$509,193</td><td style="color:var(--hold);font-weight:700;">HOLD</td></tr>
+        <tr><td>38.4% (IRR)</td><td class="num">$874,855</td><td class="num">$1,177,268</td><td class="num">$851,350</td><td class="num">$615,497</td><td class="num">$445,030</td><td class="num" style="color:var(--muted);">~$0</td><td style="color:var(--muted);">Break-even</td></tr>
+      </tbody>
+    </table>
+    <p class="note">NPV remains strongly positive at discount rates up to 30%. Investment breaks even (NPV &asymp; $0) at the IRR of 38.4%. A HOLD verdict is advised above 20% only under stress scenarios with elevated cost-of-capital assumptions unlikely for a healthcare system of Meridian&rsquo;s rating.</p>
+  </div>
+
+  <div class="verdict">
+    <div>
+      <div class="vt">&#10003; GO &mdash; NPV and IRR both confirm value creation</div>
+      <div class="vs">NPV of $3.66M at base WACC; IRR of 38.4% exceeds hurdle by 29 percentage points. Investment remains positive at rates up to 30%. Finance Committee recommends approval.</div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>Meridian Health &mdash; Claims Automation Initiative &bull; Finance Committee</span>
+  <span>v{{VERSION}} &bull; {{DATE}} &bull; CONFIDENTIAL &mdash; {{CLASSIFICATION}}</span>
+</footer>
+
+</body>
+</html>

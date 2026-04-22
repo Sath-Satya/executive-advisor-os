@@ -1,0 +1,399 @@
+<!--
+TEMPLATE: style-guide
+CATEGORY: Marketing / Admin
+USE WHEN: Documenting and presenting the SponAItech brand identity — colors, typography, spacing, do/don't examples.
+PALETTE: Full SponAItech brand (dark theme + light theme sections, both palettes shown)
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand Style Guide — SponAItech</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7faff;
+      --surface: #ffffff;
+      --navy: #0e1b2e;
+      --navy-mid: #1a3a5c;
+      --blue: #3b9eff;
+      --purple: #a78bfa;
+      --mint: #2dd4a0;
+      --amber: #f0a050;
+      --coral: #f06070;
+      --dark-bg: #0a0e14;
+      --dark-surface: #111820;
+      --ink: #1c2b3a;
+      --muted: #5a6a7a;
+      --subtle: #94a3b8;
+      --border: #dde5ef;
+      --text-light: #d0d8e4;
+      --text-muted-dark: #8899ac;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+
+    /* Page layout */
+    .page { max-width: 960px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+    /* Page header */
+    .page-header { margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+    .page-header .eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 0.5rem; }
+    .page-header h1 { font-size: 2rem; font-weight: 700; color: var(--navy); letter-spacing: -0.4px; }
+    .page-header .version { font-size: 0.78rem; color: var(--subtle); font-family: 'DM Mono', monospace; margin-top: 0.5rem; }
+
+    /* Section layout */
+    .section { margin-bottom: 3.5rem; }
+    .section-heading {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--subtle); border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem; margin-bottom: 1.75rem;
+    }
+
+    /* Color palette */
+    .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+    .swatch { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .swatch-color { height: 80px; }
+    .swatch-info { padding: 10px 12px; background: var(--surface); }
+    .swatch-name { font-size: 0.78rem; font-weight: 600; color: var(--navy); }
+    .swatch-hex { font-size: 0.72rem; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 2px; }
+    .swatch-role { font-size: 0.68rem; color: var(--subtle); margin-top: 2px; }
+
+    /* Palette: dark section */
+    .dark-palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+
+    /* Typography specimens */
+    .type-specimen { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 1rem; }
+    .type-specimen-label {
+      background: var(--surface); padding: 0.625rem 1rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--subtle); border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .type-specimen-label .tag { font-family: 'DM Mono', monospace; font-weight: 400; color: var(--blue); font-size: 0.72rem; text-transform: none; letter-spacing: 0; }
+    .type-specimen-body { padding: 1.25rem 1.25rem; background: var(--surface); }
+
+    /* Spacing guide */
+    .spacing-row { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 0.875rem; }
+    .spacing-block { background: var(--blue); border-radius: 3px; height: 24px; flex-shrink: 0; }
+    .spacing-label { font-size: 0.8rem; font-family: 'DM Mono', monospace; color: var(--navy); min-width: 60px; }
+    .spacing-desc { font-size: 0.8rem; color: var(--muted); }
+
+    /* Do / Don't */
+    .do-dont-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 600px) { .do-dont-grid { grid-template-columns: 1fr; } }
+    .do-card, .dont-card { border-radius: 10px; overflow: hidden; border: 1px solid; }
+    .do-card { border-color: #b8edd8; }
+    .dont-card { border-color: #f8c0c8; }
+    .card-label {
+      padding: 0.5rem 1rem; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .do-card .card-label { background: #d0f7ee; color: #0e7a5f; }
+    .dont-card .card-label { background: #fde8ea; color: #b01020; }
+    .card-body { padding: 1.25rem; background: var(--surface); font-size: 0.875rem; color: var(--ink); line-height: 1.6; }
+
+    /* Component examples */
+    .component-row { display: flex; flex-wrap: wrap; gap: 0.875rem; align-items: center; padding: 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1rem; }
+    .component-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--subtle); width: 100%; margin-bottom: 0.25rem; }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 0.625rem 1.25rem; border-radius: 8px; font-size: 0.875rem; font-weight: 600; font-family: inherit; cursor: default; border: 2px solid transparent; }
+    .btn-primary-ex { background: var(--blue); color: #fff; }
+    .btn-outline-ex { background: transparent; color: var(--navy); border-color: var(--border); }
+    .btn-ghost-ex { background: transparent; color: var(--blue); }
+    .btn-danger-ex { background: var(--coral); color: #fff; }
+    .btn-sm { padding: 0.375rem 0.875rem; font-size: 0.78rem; }
+
+    /* Badge pills */
+    .badge { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 9px; border-radius: 100px; }
+    .badge-blue { background: #dbeeff; color: #2180e0; }
+    .badge-purple { background: #ede8ff; color: #5b3fa8; }
+    .badge-mint { background: #d0f7ee; color: #0e7a5f; }
+    .badge-amber { background: #feecd3; color: #9a5f10; }
+    .badge-coral { background: #fde8ea; color: #b01020; }
+
+    /* Dark section */
+    .dark-section {
+      background: var(--dark-bg); border-radius: 14px; padding: 2rem;
+      margin-bottom: 1rem;
+    }
+    .dark-section .section-heading { color: var(--text-muted-dark); border-color: #1e2a38; }
+    .dark-section .component-row { background: var(--dark-surface); border-color: #1e2a38; }
+    .dark-section .component-label { color: #556677; }
+
+    /* Logo spacing rule */
+    .logo-zone {
+      border: 2px dashed var(--border); border-radius: 10px;
+      padding: 2rem; background: var(--surface);
+      display: flex; align-items: center; justify-content: center; gap: 2rem;
+      flex-wrap: wrap; margin-bottom: 1rem;
+    }
+    .logo-mark { position: relative; }
+    .logo-clearzone {
+      position: absolute; inset: -16px;
+      border: 1px dashed #3b9eff44; border-radius: 4px; pointer-events: none;
+    }
+    .logo-text-sample { font-size: 1.5rem; font-weight: 700; color: var(--navy); }
+    .logo-text-sample span { color: var(--blue); }
+
+    /* Footer */
+    .page-footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .page-footer .brand { font-size: 0.875rem; font-weight: 600; color: var(--navy); }
+    .page-footer .meta { font-size: 0.75rem; color: var(--subtle); font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="page-header">
+    <p class="eyebrow">SponAItech LLC</p>
+    <h1>Brand Style Guide</h1>
+    <p class="version">Version 1.1 &bull; April 2026 &bull; Internal reference</p>
+  </header>
+
+  <!-- Color Palette: Light / Marketing -->
+  <section class="section" aria-labelledby="color-light-heading">
+    <h2 class="section-heading" id="color-light-heading">Color Palette &mdash; Light / Marketing</h2>
+    <div class="palette-grid">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#3b9eff;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Electric Blue</div>
+          <div class="swatch-hex">#3b9eff</div>
+          <div class="swatch-role">Primary &bull; Trust, tech</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#a78bfa;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Soft Purple</div>
+          <div class="swatch-hex">#a78bfa</div>
+          <div class="swatch-role">Secondary &bull; AI, innovation</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#2dd4a0;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Mint Green</div>
+          <div class="swatch-hex">#2dd4a0</div>
+          <div class="swatch-role">Accent &bull; Success, growth</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#f0a050;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Amber</div>
+          <div class="swatch-hex">#f0a050</div>
+          <div class="swatch-role">Warning &bull; Attention</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#f06070;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Coral Red</div>
+          <div class="swatch-hex">#f06070</div>
+          <div class="swatch-role">Error &bull; Problems</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#0e1b2e;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Navy</div>
+          <div class="swatch-hex">#0e1b2e</div>
+          <div class="swatch-role">Headings, backgrounds</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Color Palette: Dark Theme -->
+  <section class="section" aria-labelledby="color-dark-heading">
+    <h2 class="section-heading" id="color-dark-heading">Color Palette &mdash; Dark Theme</h2>
+    <div class="dark-section">
+      <div class="dark-palette-grid">
+        <div class="swatch" style="border-color:#1e2a38;">
+          <div class="swatch-color" style="background:#0a0e14;"></div>
+          <div class="swatch-info" style="background:#111820;">
+            <div class="swatch-name" style="color:#d0d8e4;">Deep Navy</div>
+            <div class="swatch-hex">#0a0e14</div>
+            <div class="swatch-role" style="color:#556677;">Background</div>
+          </div>
+        </div>
+        <div class="swatch" style="border-color:#1e2a38;">
+          <div class="swatch-color" style="background:#111820;"></div>
+          <div class="swatch-info" style="background:#111820;">
+            <div class="swatch-name" style="color:#d0d8e4;">Dark Panel</div>
+            <div class="swatch-hex">#111820</div>
+            <div class="swatch-role" style="color:#556677;">Surface / cards</div>
+          </div>
+        </div>
+        <div class="swatch" style="border-color:#1e2a38;">
+          <div class="swatch-color" style="background:#d0d8e4;"></div>
+          <div class="swatch-info" style="background:#111820;">
+            <div class="swatch-name" style="color:#d0d8e4;">Light Gray</div>
+            <div class="swatch-hex">#d0d8e4</div>
+            <div class="swatch-role" style="color:#556677;">Body text</div>
+          </div>
+        </div>
+        <div class="swatch" style="border-color:#1e2a38;">
+          <div class="swatch-color" style="background:#8899ac;"></div>
+          <div class="swatch-info" style="background:#111820;">
+            <div class="swatch-name" style="color:#d0d8e4;">Muted</div>
+            <div class="swatch-hex">#8899ac</div>
+            <div class="swatch-role" style="color:#556677;">Secondary text</div>
+          </div>
+        </div>
+        <div class="swatch" style="border-color:#1e2a38;">
+          <div class="swatch-color" style="background:#556677;"></div>
+          <div class="swatch-info" style="background:#111820;">
+            <div class="swatch-name" style="color:#d0d8e4;">Subtle</div>
+            <div class="swatch-hex">#556677</div>
+            <div class="swatch-role" style="color:#556677;">Disabled / hints</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section class="section" aria-labelledby="type-heading">
+    <h2 class="section-heading" id="type-heading">Typography</h2>
+
+    <div class="type-specimen">
+      <div class="type-specimen-label">Display / H1 <span class="tag">DM Sans 700 &bull; 2.5rem &bull; tracking -0.5px</span></div>
+      <div class="type-specimen-body">
+        <span style="font-size:2.5rem;font-weight:700;color:var(--navy);letter-spacing:-0.5px;line-height:1.15;">AI-Powered Development</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-specimen-label">H2 Section Heading <span class="tag">DM Sans 600 &bull; 1.75rem &bull; tracking -0.3px</span></div>
+      <div class="type-specimen-body">
+        <span style="font-size:1.75rem;font-weight:600;color:var(--navy);letter-spacing:-0.3px;">Enterprise Speed, Startup Quality</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-specimen-label">H3 Card Title <span class="tag">DM Sans 600 &bull; 1.125rem</span></div>
+      <div class="type-specimen-body">
+        <span style="font-size:1.125rem;font-weight:600;color:var(--navy);">Claims AI Dashboard &mdash; Phase 1 Delivery</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-specimen-label">Body <span class="tag">DM Sans 400 &bull; 1rem &bull; line-height 1.7</span></div>
+      <div class="type-specimen-body">
+        <p style="font-size:1rem;line-height:1.7;color:var(--ink);max-width:600px;">SponAI Consulting delivers production-ready applications at startup speed. Our AI-assisted development pipeline compresses timelines by up to 68% without sacrificing security, test coverage, or code quality.</p>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-specimen-label">Small / Caption <span class="tag">DM Sans 400 &bull; 0.8rem</span></div>
+      <div class="type-specimen-body">
+        <span style="font-size:0.8rem;color:var(--muted);">Last updated April 20, 2026 &bull; sponaitech.com &bull; All rights reserved</span>
+      </div>
+    </div>
+
+    <div class="type-specimen">
+      <div class="type-specimen-label">Code / Mono <span class="tag">DM Mono 400 &bull; 0.875rem</span></div>
+      <div class="type-specimen-body">
+        <code style="font-family:'DM Mono',monospace;font-size:0.875rem;color:#2180e0;background:#eef6ff;padding:4px 8px;border-radius:4px;">const result = await pipeline.run('G3-Build');</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logo Usage -->
+  <section class="section" aria-labelledby="logo-heading">
+    <h2 class="section-heading" id="logo-heading">Logo &amp; Wordmark Usage</h2>
+    <div class="logo-zone">
+      <div class="logo-mark">
+        <div class="logo-clearzone" aria-label="Required clearzone — 1x logo height on all sides"></div>
+        <span class="logo-text-sample">SponAI<span>tech</span></span>
+      </div>
+      <div style="font-size:0.8rem;color:var(--muted);max-width:300px;line-height:1.6;">
+        <strong style="color:var(--navy);display:block;margin-bottom:4px;">Clearzone rule</strong>
+        Maintain minimum clear space equal to 1&times; the cap-height of the wordmark on all four sides. The dashed border shows the minimum clearzone.
+      </div>
+    </div>
+  </section>
+
+  <!-- Spacing -->
+  <section class="section" aria-labelledby="spacing-heading">
+    <h2 class="section-heading" id="spacing-heading">Spacing Scale (8px base unit)</h2>
+    <div class="spacing-row"><div class="spacing-block" style="width:8px;" aria-hidden="true"></div><span class="spacing-label">4px &mdash; 0.25rem</span><span class="spacing-desc">Hairline gaps, badge padding-y</span></div>
+    <div class="spacing-row"><div class="spacing-block" style="width:16px;" aria-hidden="true"></div><span class="spacing-label">8px &mdash; 0.5rem</span><span class="spacing-desc">Icon gaps, tight inline spacing</span></div>
+    <div class="spacing-row"><div class="spacing-block" style="width:24px;" aria-hidden="true"></div><span class="spacing-label">16px &mdash; 1rem</span><span class="spacing-desc">Card internal padding, list gaps</span></div>
+    <div class="spacing-row"><div class="spacing-block" style="width:40px;" aria-hidden="true"></div><span class="spacing-label">24px &mdash; 1.5rem</span><span class="spacing-desc">Section sub-gaps, form gaps</span></div>
+    <div class="spacing-row"><div class="spacing-block" style="width:56px;" aria-hidden="true"></div><span class="spacing-label">32px &mdash; 2rem</span><span class="spacing-desc">Card padding, column gaps</span></div>
+    <div class="spacing-row"><div class="spacing-block" style="width:80px;" aria-hidden="true"></div><span class="spacing-label">48px &mdash; 3rem</span><span class="spacing-desc">Section margins, hero padding</span></div>
+  </section>
+
+  <!-- Components -->
+  <section class="section" aria-labelledby="components-heading">
+    <h2 class="section-heading" id="components-heading">Components</h2>
+
+    <div class="component-row">
+      <span class="component-label">Buttons</span>
+      <span class="btn btn-primary-ex">Primary</span>
+      <span class="btn btn-outline-ex">Outline</span>
+      <span class="btn btn-ghost-ex">Ghost</span>
+      <span class="btn btn-danger-ex">Danger</span>
+      <span class="btn btn-primary-ex btn-sm">Small</span>
+    </div>
+
+    <div class="component-row">
+      <span class="component-label">Status Badges</span>
+      <span class="badge badge-blue">Active</span>
+      <span class="badge badge-mint">Complete</span>
+      <span class="badge badge-amber">In Progress</span>
+      <span class="badge badge-coral">Blocked</span>
+      <span class="badge badge-purple">Backlog</span>
+    </div>
+  </section>
+
+  <!-- Do / Don't -->
+  <section class="section" aria-labelledby="dodont-heading">
+    <h2 class="section-heading" id="dodont-heading">Do / Don&rsquo;t</h2>
+    <div class="do-dont-grid">
+      <div class="do-card">
+        <div class="card-label">Do</div>
+        <div class="card-body">Use dark theme (#0a0e14 background) as the default for all developer and enterprise-facing interfaces. Apply rounded corners of 8&ndash;12px on cards.</div>
+      </div>
+      <div class="dont-card">
+        <div class="card-label">Don&rsquo;t</div>
+        <div class="card-body">Use generic AI purple gradients across the entire UI. Do not apply the purple color to more than one component per page section.</div>
+      </div>
+      <div class="do-card">
+        <div class="card-label">Do</div>
+        <div class="card-body">Use DM Sans for all body text and headings. Use DM Mono for code samples, hex values, timestamps, and metric numbers requiring monospaced alignment.</div>
+      </div>
+      <div class="dont-card">
+        <div class="card-label">Don&rsquo;t</div>
+        <div class="card-body">Use Arial, Comic Sans, Impact, or Papyrus. Never render the wordmark in a condensed or italicized variant.</div>
+      </div>
+      <div class="do-card">
+        <div class="card-label">Do</div>
+        <div class="card-body">Apply hover states as <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">translateY(-1px)</code> combined with a border color shift to the primary blue. Keep transitions under 200ms.</div>
+      </div>
+      <div class="dont-card">
+        <div class="card-label">Don&rsquo;t</div>
+        <div class="card-body">Animate background gradients, add particle effects, or apply drop shadows heavier than <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">0 8px 24px rgba(0,0,0,.3)</code>.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <span class="brand">SponAItech LLC &mdash; sponaitech.com</span>
+    <span class="meta">v{{VERSION}} &bull; {{DATE}} &bull; style-guide</span>
+  </footer>
+
+</div>
+</body>
+</html>

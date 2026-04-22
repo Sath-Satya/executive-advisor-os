@@ -1,0 +1,738 @@
+<!--
+TEMPLATE: whitepaper
+CATEGORY: Reports / Documents
+USE WHEN: Publishing a formal technical whitepaper with cover page, TOC, code samples, and authoritative tone.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{WHITEPAPER_TITLE}} — Whitepaper</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream2: #efebe3;
+      --navy: #0e1b2e;
+      --navy2: #162540;
+      --navy3: #1e3050;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --callout-bg: #f0ece4;
+      --code-bg: #1a1e28;
+      --code-text: #c9d1d9;
+      --green: #2d6a4f;
+      --amber: #92400e;
+      --red: #b91c1c;
+      --serif: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+      --sans: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', 'Fira Code', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.72;
+    }
+
+    /* ── Cover Page ── */
+    .cover {
+      background: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 420px; height: 420px;
+      background: radial-gradient(circle at center, rgba(184,150,90,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cover-inner {
+      max-width: 820px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .cover-org {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold2);
+      margin-bottom: 1.5rem;
+    }
+    .cover-series {
+      display: inline-block;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      margin-bottom: 2rem;
+      border-radius: 2px;
+    }
+    .cover-title {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      max-width: 700px;
+    }
+    .cover-subtitle {
+      font-size: 1.1rem;
+      color: #9aacc0;
+      max-width: 580px;
+      line-height: 1.65;
+      margin-bottom: 3rem;
+    }
+    .cover-authors {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .cover-author-item {}
+    .cover-author-name {
+      font-size: 0.925rem;
+      color: #d0dae8;
+      font-weight: 500;
+    }
+    .cover-author-role {
+      font-size: 0.78rem;
+      color: #7090a8;
+      font-family: var(--mono);
+    }
+    .cover-divider {
+      height: 1px;
+      background: rgba(255,255,255,0.12);
+      margin-bottom: 1.5rem;
+    }
+    .cover-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .cover-meta-item {}
+    .cover-meta-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold2);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .cover-meta-value {
+      font-size: 0.875rem;
+      color: #b0c0d0;
+    }
+
+    /* ── Document layout ── */
+    .doc-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    /* ── TOC ── */
+    .toc-section {
+      padding: 3rem 0 2.5rem;
+      border-bottom: 2px solid var(--gold);
+      margin-bottom: 3.5rem;
+    }
+    .toc-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .toc-heading {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--navy);
+      margin-bottom: 1.5rem;
+    }
+    .toc-list { list-style: none; }
+    .toc-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px dotted var(--border);
+    }
+    .toc-list li:last-child { border-bottom: none; }
+    .toc-num {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--gold);
+      flex-shrink: 0;
+      width: 2.2rem;
+    }
+    .toc-list a {
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 0.9rem;
+      flex: 1;
+    }
+    .toc-list a:hover { color: var(--gold); text-decoration: underline; }
+    .toc-page {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    /* ── Sections ── */
+    .wp-section {
+      margin-bottom: 3.5rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .wp-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .section-num {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.25;
+      margin-bottom: 1.25rem;
+    }
+    h3 {
+      font-family: var(--sans);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+      padding-left: 0.75rem;
+      border-left: 3px solid var(--gold);
+    }
+    h4 {
+      font-family: var(--sans);
+      font-size: 0.925rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Executive Summary box ── */
+    .exec-summary {
+      background: var(--navy);
+      color: #d0dae8;
+      padding: 2rem 2.25rem;
+      border-radius: 6px;
+      margin-bottom: 2.5rem;
+    }
+    .exec-summary-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold2);
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .exec-summary p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #b0c4d8;
+    }
+    .exec-bullets { list-style: none; margin: 0.75rem 0 0; }
+    .exec-bullets li {
+      padding: 0.3rem 0 0.3rem 1.25rem;
+      position: relative;
+      font-size: 0.9rem;
+      color: #b0c4d8;
+    }
+    .exec-bullets li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0.75rem;
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    /* ── Code blocks ── */
+    .code-block {
+      background: var(--code-bg);
+      border-radius: 6px;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+    .code-block-header {
+      background: rgba(255,255,255,0.05);
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .code-lang {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold2);
+    }
+    .code-caption {
+      font-size: 0.78rem;
+      color: #6b7e94;
+    }
+    .code-block pre {
+      padding: 1.25rem 1.5rem;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--code-text);
+      tab-size: 2;
+    }
+    .code-comment { color: #6b8099; }
+    .code-keyword { color: #79c0ff; }
+    .code-string { color: #a5d6ff; }
+    .code-type { color: #f0983a; }
+    .code-number { color: #79c0ff; }
+    .code-fn { color: #d2a8ff; }
+
+    /* ── Callouts ── */
+    .callout {
+      padding: 1.1rem 1.35rem;
+      border-radius: 4px;
+      margin: 1.75rem 0;
+      font-size: 0.9rem;
+    }
+    .callout-key {
+      background: #eef6f1;
+      border-left: 3px solid var(--green);
+      color: #1a3d2b;
+    }
+    .callout-warn {
+      background: #fef3e2;
+      border-left: 3px solid var(--amber);
+      color: #5c2d0a;
+    }
+    .callout-info {
+      background: var(--callout-bg);
+      border-left: 3px solid var(--gold);
+      color: var(--ink);
+    }
+    .callout-title {
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    /* ── Architecture diagram ── */
+    .diagram-figure {
+      margin: 2rem 0;
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .diagram-figure svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      padding: 1.5rem;
+    }
+    figcaption {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      padding: 0.75rem 1rem 1rem;
+      font-style: italic;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Comparison table ── */
+    .data-table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    caption {
+      text-align: left;
+      font-size: 0.78rem;
+      font-family: var(--mono);
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    th {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 500;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.65rem 1rem;
+      text-align: left;
+    }
+    td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background: var(--callout-bg); }
+    .check { color: var(--green); font-weight: 600; }
+    .cross { color: var(--red); font-weight: 600; }
+
+    /* ── Footer ── */
+    .wp-footer {
+      background: var(--navy);
+      color: #6b7e94;
+      padding: 1.5rem 2rem;
+      font-size: 0.78rem;
+      font-family: var(--mono);
+    }
+    .wp-footer .doc-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .footer-brand { color: var(--gold2); font-weight: 500; }
+    .footer-div { color: rgba(255,255,255,0.2); margin: 0 0.5rem; }
+
+    /* ── Print ── */
+    @media print {
+      @page { margin: 2cm; size: A4; }
+      body { background: #fff; font-size: 11pt; }
+      .cover { background: #fff; min-height: auto; padding: 1cm 0 0.5cm; }
+      .cover-title { color: var(--navy); font-size: 24pt; }
+      .cover-subtitle { color: var(--muted); }
+      .cover::before { display: none; }
+      .code-block { background: #f4f4f4; border: 1px solid #ccc; }
+      .code-block pre { color: #111; }
+      .code-block-header { background: #e8e8e8; border-bottom-color: #ccc; }
+      .exec-summary { background: #f0ece4; color: var(--ink); }
+      .exec-summary-label, .exec-bullets li, .exec-summary p { color: var(--ink); }
+      .exec-bullets li::before { background: var(--gold); }
+      .wp-section { break-inside: avoid; }
+      h2, h3 { break-after: avoid; }
+      .wp-footer { background: #fff; color: var(--muted); border-top: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Cover Page ── -->
+  <section class="cover" aria-label="Cover page">
+    <div class="cover-inner">
+      <p class="cover-org">Northwind Capital &bull; Technology Research</p>
+      <span class="cover-series">Whitepaper &bull; Series WP-2024</span>
+      <h1 class="cover-title">Agentic AI in Enterprise Workflows: Architecture Patterns and Governance Frameworks</h1>
+      <p class="cover-subtitle">A practitioner's guide to deploying autonomous AI agents in regulated enterprise environments — covering orchestration architectures, human-in-the-loop controls, observability requirements, and rollout governance for teams operating under SOC 2 and HIPAA constraints.</p>
+      <div class="cover-authors">
+        <div class="cover-author-item">
+          <div class="cover-author-name">{{AUTHOR_1_NAME}}</div>
+          <div class="cover-author-role">{{AUTHOR_1_TITLE}}</div>
+        </div>
+        <div class="cover-author-item">
+          <div class="cover-author-name">{{AUTHOR_2_NAME}}</div>
+          <div class="cover-author-role">{{AUTHOR_2_TITLE}}</div>
+        </div>
+      </div>
+      <div class="cover-divider"></div>
+      <div class="cover-meta-row">
+        <div class="cover-meta-item">
+          <span class="cover-meta-label">Published</span>
+          <span class="cover-meta-value">{{DATE}}</span>
+        </div>
+        <div class="cover-meta-item">
+          <span class="cover-meta-label">Version</span>
+          <span class="cover-meta-value">{{VERSION}}</span>
+        </div>
+        <div class="cover-meta-item">
+          <span class="cover-meta-label">Document ID</span>
+          <span class="cover-meta-value">WP-2024-{{DOC_ID}}</span>
+        </div>
+        <div class="cover-meta-item">
+          <span class="cover-meta-label">Classification</span>
+          <span class="cover-meta-value">{{CLASSIFICATION}}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Document Body ── -->
+  <div class="doc-wrap">
+
+    <!-- TOC -->
+    <nav class="toc-section" aria-label="Table of contents" id="toc">
+      <span class="toc-label">Contents</span>
+      <h2 class="toc-heading">Table of Contents</h2>
+      <ol class="toc-list">
+        <li><span class="toc-num">1.</span><a href="#exec-summary">Executive Summary</a><span class="toc-page">2</span></li>
+        <li><span class="toc-num">2.</span><a href="#background">Background and Motivation</a><span class="toc-page">3</span></li>
+        <li><span class="toc-num">3.</span><a href="#architecture">Orchestration Architecture Patterns</a><span class="toc-page">5</span></li>
+        <li><span class="toc-num">4.</span><a href="#governance">Governance and Approval Gate Design</a><span class="toc-page">10</span></li>
+        <li><span class="toc-num">5.</span><a href="#observability">Observability and Auditability</a><span class="toc-page">14</span></li>
+        <li><span class="toc-num">6.</span><a href="#comparison">Framework Comparison</a><span class="toc-page">17</span></li>
+        <li><span class="toc-num">7.</span><a href="#implementation">Implementation Roadmap</a><span class="toc-page">19</span></li>
+        <li><span class="toc-num">8.</span><a href="#conclusions">Conclusions and Recommendations</a><span class="toc-page">22</span></li>
+      </ol>
+    </nav>
+
+    <!-- 1. Exec Summary -->
+    <section class="wp-section" id="exec-summary">
+      <span class="section-num">Section 01</span>
+      <h2>Executive Summary</h2>
+      <div class="exec-summary">
+        <span class="exec-summary-label">Key Takeaways</span>
+        <p>Enterprises deploying agentic AI systems face a fundamentally different governance challenge than those deploying traditional ML models. Agents make sequential decisions, invoke external tools, and operate with reduced human oversight — each of which creates distinct failure modes that existing compliance frameworks do not address.</p>
+        <ul class="exec-bullets">
+          <li>Agentic AI deployments require a layered guardrail architecture operating at input, planning, tool-call, and output layers simultaneously.</li>
+          <li>Human-in-the-loop (HITL) checkpoints are most effective when placed at trust boundaries — not as periodic interrupts, but at semantically meaningful decision points.</li>
+          <li>Observability requirements for agents exceed those for conventional APIs: action provenance, reasoning chain logging, and reversibility tracking are minimum requirements.</li>
+          <li>SOC 2 and HIPAA compliance is achievable with agentic systems, but requires pre-deployment governance artifacts that most vendors do not provide by default.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2. Background -->
+    <section class="wp-section" id="background">
+      <span class="section-num">Section 02</span>
+      <h2>Background and Motivation</h2>
+      <p>The term "agentic AI" refers to AI systems capable of pursuing multi-step goals autonomously — perceiving their environment, planning sequences of actions, invoking tools (APIs, databases, code execution), and adapting behavior based on intermediate results. This capability profile distinguishes agents from earlier generations of AI systems that operated as stateless request-response services.</p>
+      <p>Enterprise adoption of agentic AI is accelerating. A 2024 survey of 380 enterprise technology leaders found that 62% had deployed at least one agentic system in production, up from 18% in 2022. Healthcare, financial services, and logistics lead adoption, driven by the availability of structured data and the high cost of manual knowledge work in these sectors.</p>
+
+      <h3>The Governance Gap</h3>
+      <p>Despite rapid adoption, governance frameworks have not kept pace. The majority of surveyed organizations (71%) reported that their existing AI policy did not specifically address agentic behavior — including tool invocation, multi-step planning, or delegation of authority between agents.</p>
+      <p>This whitepaper synthesizes deployment experience across 47 enterprise agentic AI projects to define a practical governance architecture that meets the operational requirements of production deployment while satisfying audit and compliance obligations in regulated industries.</p>
+    </section>
+
+    <!-- 3. Architecture -->
+    <section class="wp-section" id="architecture">
+      <span class="section-num">Section 03</span>
+      <h2>Orchestration Architecture Patterns</h2>
+      <p>Three primary orchestration patterns emerge from enterprise deployments. Each makes different tradeoffs between autonomy, auditability, and operational cost.</p>
+
+      <h3>Pattern A: Sequential Pipeline</h3>
+      <p>The simplest pattern: an agent executes a fixed sequence of steps, passing structured artifacts between stages. Each stage has a defined input contract and output contract. Human approval gates are inserted between stages where trust transitions occur.</p>
+
+      <figure class="diagram-figure" aria-label="Sequential pipeline architecture diagram">
+        <svg viewBox="0 0 700 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sequential pipeline: Input → Plan → Execute → Review → Output">
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#b8965a"/>
+            </marker>
+          </defs>
+          <!-- Boxes -->
+          <rect x="10" y="35" width="90" height="50" rx="4" fill="#162540" stroke="#b8965a" stroke-width="1.5"/>
+          <text x="55" y="56" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" fill="#d4ab72">Input</text>
+          <text x="55" y="72" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="9" fill="#9aacc0">Validation</text>
+
+          <rect x="140" y="35" width="90" height="50" rx="4" fill="#162540" stroke="#b8965a" stroke-width="1.5"/>
+          <text x="185" y="56" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" fill="#d4ab72">Plan</text>
+          <text x="185" y="72" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="9" fill="#9aacc0">Generation</text>
+
+          <rect x="270" y="35" width="90" height="50" rx="4" fill="#162540" stroke="#b8965a" stroke-width="1.5"/>
+          <text x="315" y="56" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" fill="#d4ab72">HITL</text>
+          <text x="315" y="72" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="9" fill="#9aacc0">Approval</text>
+
+          <rect x="400" y="35" width="90" height="50" rx="4" fill="#162540" stroke="#b8965a" stroke-width="1.5"/>
+          <text x="445" y="56" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" fill="#d4ab72">Execute</text>
+          <text x="445" y="72" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="9" fill="#9aacc0">Tool Calls</text>
+
+          <rect x="530" y="35" width="90" height="50" rx="4" fill="#162540" stroke="#b8965a" stroke-width="1.5"/>
+          <text x="575" y="56" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" fill="#d4ab72">Output</text>
+          <text x="575" y="72" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="9" fill="#9aacc0">Verification</text>
+
+          <!-- Arrows -->
+          <line x1="100" y1="60" x2="138" y2="60" stroke="#b8965a" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <line x1="230" y1="60" x2="268" y2="60" stroke="#b8965a" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <line x1="360" y1="60" x2="398" y2="60" stroke="#b8965a" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <line x1="490" y1="60" x2="528" y2="60" stroke="#b8965a" stroke-width="1.5" marker-end="url(#arrow)"/>
+        </svg>
+        <figcaption>Figure 1. Sequential pipeline with HITL approval gate between planning and execution.</figcaption>
+      </figure>
+
+      <h3>Pattern B: Supervisor-Worker</h3>
+      <p>A supervisor agent decomposes a high-level goal into subtasks and dispatches them to specialized worker agents. The supervisor monitors completion, handles errors, and aggregates results. This pattern scales well but requires careful scope bounding for each worker to prevent cascading authority escalation.</p>
+
+      <div class="code-block">
+        <div class="code-block-header">
+          <span class="code-lang">Python</span>
+          <span class="code-caption">Supervisor agent dispatch with scope bounding</span>
+        </div>
+        <pre><span class="code-comment"># Supervisor dispatches scoped subtasks to worker agents</span>
+<span class="code-keyword">class</span> <span class="code-type">SupervisorAgent</span>:
+    <span class="code-keyword">def</span> <span class="code-fn">decompose</span>(self, goal: <span class="code-type">str</span>) -> <span class="code-type">list</span>[<span class="code-type">SubTask</span>]:
+        <span class="code-string">"""Break goal into bounded subtasks with explicit scope limits."""</span>
+        subtasks = self.planner.generate(goal)
+        <span class="code-keyword">for</span> task <span class="code-keyword">in</span> subtasks:
+            task.allowed_tools = self._scope_tools(task)   <span class="code-comment"># Minimum tool set</span>
+            task.max_turns = <span class="code-number">10</span>                             <span class="code-comment"># Hard cap</span>
+            task.requires_approval = self._assess_risk(task)
+        <span class="code-keyword">return</span> subtasks
+
+    <span class="code-keyword">def</span> <span class="code-fn">_assess_risk</span>(self, task: <span class="code-type">SubTask</span>) -> <span class="code-type">bool</span>:
+        <span class="code-string">"""Require HITL if task modifies persistent state."""</span>
+        <span class="code-keyword">return</span> task.has_side_effects <span class="code-keyword">or</span> task.touches_pii</pre>
+      </div>
+
+      <div class="callout callout-warn">
+        <span class="callout-title">Security Note</span>
+        Worker agents must not be granted tool permissions that exceed what their assigned subtask requires. Overly broad tool grants are the leading cause of unintended data access and privilege escalation in production agentic deployments.
+      </div>
+    </section>
+
+    <!-- 4. Governance -->
+    <section class="wp-section" id="governance">
+      <span class="section-num">Section 04</span>
+      <h2>Governance and Approval Gate Design</h2>
+      <p>Governance for agentic AI centers on defining where human judgment is necessary, how it is collected, and how approval decisions are recorded for audit purposes. Unlike batch ML inference, agentic systems take actions — and those actions may be difficult or impossible to reverse.</p>
+
+      <h3>Approval Gate Taxonomy</h3>
+      <p>We classify approval gates into three types based on the nature of the trust transition they protect:</p>
+
+      <ul style="margin: 1rem 0 1rem 1.5rem; color: var(--ink);">
+        <li style="margin-bottom: 0.6rem;"><strong>Type I — Pre-execution gates:</strong> Placed before any tool invocation that modifies external state (write APIs, database mutations, email sends). Required by default for all production deployments.</li>
+        <li style="margin-bottom: 0.6rem;"><strong>Type II — Escalation gates:</strong> Triggered when the agent's confidence score falls below a configurable threshold, or when the action set deviates from the approved plan. Allows the agent to continue with low-risk actions while pausing on high-risk ones.</li>
+        <li><strong>Type III — Audit gates:</strong> Non-blocking gates that log the decision and result for compliance record-keeping. Required for HIPAA-covered operations and SOC 2 evidence collection.</li>
+      </ul>
+
+      <div class="callout callout-key">
+        <span class="callout-title">Design Principle</span>
+        Approval gates should be placed at semantic trust boundaries — not inserted as periodic interrupts. A gate before every tool call creates friction without improving safety; a gate at the transition from read-only reconnaissance to write operations is both necessary and sufficient for most use cases.
+      </div>
+    </section>
+
+    <!-- 5. Observability -->
+    <section class="wp-section" id="observability">
+      <span class="section-num">Section 05</span>
+      <h2>Observability and Auditability</h2>
+      <p>Observability requirements for agentic systems are materially higher than for conventional API services. The key artifact is the <em>reasoning chain log</em> — a structured record of each decision step, the inputs considered, the tools invoked, and the outputs produced.</p>
+
+      <h3>Minimum Observable Artifacts</h3>
+      <div class="data-table-wrap">
+        <table>
+          <caption>Table 2. Required observability artifacts by compliance regime</caption>
+          <thead>
+            <tr>
+              <th scope="col">Artifact</th>
+              <th scope="col">Description</th>
+              <th scope="col">SOC 2</th>
+              <th scope="col">HIPAA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Reasoning chain log</td><td>Per-step decision log with input/output</td><td class="check">Required</td><td class="check">Required</td></tr>
+            <tr><td>Tool call provenance</td><td>Which tool, which parameters, which result</td><td class="check">Required</td><td class="check">Required</td></tr>
+            <tr><td>PII access log</td><td>Which identifiers were accessed or modified</td><td>Recommended</td><td class="check">Required</td></tr>
+            <tr><td>Approval gate audit trail</td><td>Who approved what decision and when</td><td class="check">Required</td><td class="check">Required</td></tr>
+            <tr><td>Model version + prompt hash</td><td>Reproducibility anchor for audit replay</td><td class="check">Required</td><td>Recommended</td></tr>
+            <tr><td>Reversibility registry</td><td>Which actions are reversible and how</td><td>Recommended</td><td>Recommended</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. Comparison -->
+    <section class="wp-section" id="comparison">
+      <span class="section-num">Section 06</span>
+      <h2>Framework Comparison</h2>
+      <div class="data-table-wrap">
+        <table>
+          <caption>Table 3. Comparison of agentic AI frameworks on enterprise governance criteria</caption>
+          <thead>
+            <tr>
+              <th scope="col">Criterion</th>
+              <th scope="col">Framework A</th>
+              <th scope="col">Framework B</th>
+              <th scope="col">Framework C</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Structured tool scoping</td><td class="check">Yes</td><td class="check">Yes</td><td class="cross">No</td></tr>
+            <tr><td>Built-in HITL gates</td><td class="check">Yes</td><td class="cross">No</td><td class="cross">No</td></tr>
+            <tr><td>Reasoning chain export</td><td class="check">Yes</td><td>Partial</td><td class="cross">No</td></tr>
+            <tr><td>Multi-agent delegation</td><td class="check">Yes</td><td class="check">Yes</td><td class="check">Yes</td></tr>
+            <tr><td>SOC 2 evidence support</td><td class="check">Yes</td><td>Partial</td><td class="cross">No</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 7. Implementation -->
+    <section class="wp-section" id="implementation">
+      <span class="section-num">Section 07</span>
+      <h2>Implementation Roadmap</h2>
+      <p>A phased approach to enterprise deployment minimizes operational risk while allowing governance maturity to grow alongside capability adoption.</p>
+
+      <h3>Phase 1 — Foundations (Weeks 1–4)</h3>
+      <p>Establish the observability and governance infrastructure before deploying any agentic workloads. This includes: reasoning chain logging pipeline, approval gate workflow integration, tool permission registry, and incident response runbook for agentic system failures.</p>
+
+      <h3>Phase 2 — Pilot (Weeks 5–10)</h3>
+      <p>Deploy a single, bounded agentic workflow with maximum HITL oversight. All Type I and Type II gates active. Weekly governance review. Use this phase to calibrate confidence thresholds and tune approval gate placement.</p>
+
+      <h3>Phase 3 — Controlled Scale (Weeks 11–20)</h3>
+      <p>Expand to three or four agentic workflows. Automate Type III audit gates. Begin replacing Type I gates with Type II escalation gates on well-understood workflow segments. Conduct first SOC 2 evidence review.</p>
+    </section>
+
+    <!-- 8. Conclusions -->
+    <section class="wp-section" id="conclusions">
+      <span class="section-num">Section 08</span>
+      <h2>Conclusions and Recommendations</h2>
+      <p>Agentic AI is production-ready for regulated enterprise environments, but the path requires deliberate governance design from the start. The organizations that deploy successfully are those that treat agent governance as a first-class engineering problem — not as a compliance checkbox added after deployment.</p>
+      <p>Three recommendations for enterprise AI leaders:</p>
+      <ol style="margin: 1rem 0 0 1.5rem; color: var(--ink);">
+        <li style="margin-bottom: 0.75rem;"><strong>Start with observability.</strong> Build the logging and audit pipeline before deploying any agent. You cannot govern what you cannot see.</li>
+        <li style="margin-bottom: 0.75rem;"><strong>Design gates semantically.</strong> Place human approval gates at trust transitions, not as periodic interrupts. This maximizes safety per unit of human friction.</li>
+        <li><strong>Plan for model change.</strong> Agentic system governance is tied to model behavior. Build version-pinning and prompt hashing into your deployment pipeline from day one.</li>
+      </ol>
+    </section>
+
+  </div><!-- .doc-wrap -->
+
+  <!-- ── Footer ── -->
+  <footer class="wp-footer">
+    <div class="doc-wrap">
+      <span><span class="footer-brand">SponAItech</span> <span class="footer-div">|</span> html-generation skill v1.1</span>
+      <span>Version {{VERSION}} <span class="footer-div">|</span> {{DATE}} <span class="footer-div">|</span> {{CLASSIFICATION}}</span>
+    </div>
+  </footer>
+
+</body>
+</html>

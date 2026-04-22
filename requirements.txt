@@ -1,0 +1,15 @@
+# Executive Advisor OS — Python dependencies
+#
+# TWO groups — read the comments before deciding what to install.
+
+# ─── REQUIRED for every user who wants deck (.pptx) generation ──────────────
+# Applies to Claude Code, Claude.ai, VS Code, AND the Python CLI fallback.
+# Without this, `.claude/scripts/md_to_pptx.py` cannot convert deck Markdown
+# sources into PowerPoint deliverables. Decks are a mandatory output per
+# `.claude/rules/output-completeness-mandate.md`.
+python-pptx>=1.0.0
+
+# ─── OPTIONAL — only for the non-Claude Python CLI (`python run.py`) ───────
+# Skip these if you use Claude Code, Claude.ai, or VS Code + Claude extension.
+litellm>=1.50.0
+python-dotenv>=1.0.0

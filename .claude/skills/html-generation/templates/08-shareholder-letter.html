@@ -1,0 +1,309 @@
+<!--
+TEMPLATE: shareholder-letter
+CATEGORY: Executive / Board
+USE WHEN: Writing a long-form Warren Buffett-style annual letter to shareholders — narrative-heavy, minimal formatting, designed for reading not scanning.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Letter to Shareholders — Meridian Health {{YEAR}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream-dark: #ede9e0;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --ink-light: #2e2c2a;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 18px; }
+    body {
+      font-family: 'DM Sans', Georgia, 'Times New Roman', serif;
+      background: var(--cream-dark);
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    /* ── Letter container ── */
+    .letter {
+      max-width: 680px;
+      margin: 3rem auto;
+      background: var(--cream);
+      box-shadow: 0 4px 60px rgba(14,27,46,0.08);
+      padding: 5rem 5rem 4rem;
+    }
+
+    /* ── Letterhead top ── */
+    .letter-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .letter-top .company {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--navy);
+    }
+    .letter-top .company-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-top: 0.2rem;
+    }
+    .letter-top .letter-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    /* ── Salutation ── */
+    .salutation {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 2rem;
+    }
+
+    /* ── Body ── */
+    .letter-body p {
+      font-size: 1rem;
+      color: var(--ink-light);
+      line-height: 1.82;
+      margin-bottom: 1.6rem;
+      text-align: justify;
+      hyphens: auto;
+    }
+    .letter-body p.lead {
+      font-size: 1.1rem;
+      color: var(--ink);
+      font-weight: 400;
+    }
+    .letter-body p em { font-style: italic; }
+    .letter-body p strong { color: var(--navy); font-weight: 600; }
+
+    /* ── Drop cap ── */
+    .letter-body p.lead::first-letter {
+      font-size: 3.2em;
+      font-weight: 700;
+      float: left;
+      line-height: 0.72;
+      padding-right: 0.1em;
+      padding-top: 0.08em;
+      color: var(--navy);
+    }
+
+    /* ── Section break ── */
+    .section-break {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2.5rem 0;
+      color: var(--gold);
+    }
+    .section-break::before,
+    .section-break::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-break span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* ── Inline stat ── */
+    .inline-stat {
+      display: inline-block;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin: 0 0.1em;
+      vertical-align: baseline;
+    }
+
+    /* ── Pull quote ── */
+    .pull-quote {
+      margin: 2.5rem 0 2.5rem 1.5rem;
+      padding: 0.5rem 0 0.5rem 1.5rem;
+      border-left: 2px solid var(--gold);
+    }
+    .pull-quote p {
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--navy);
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    /* ── Numbered inset ── */
+    .numbered-inset {
+      counter-reset: item;
+      list-style: none;
+      padding: 0;
+      margin: 1.5rem 0;
+    }
+    .numbered-inset li {
+      counter-increment: item;
+      display: flex;
+      gap: 1.2rem;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      color: var(--ink-light);
+      line-height: 1.7;
+    }
+    .numbered-inset li::before {
+      content: counter(item);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--gold);
+      min-width: 1.5rem;
+      padding-top: 0.2rem;
+      text-align: right;
+    }
+
+    /* ── Signature ── */
+    .closing {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .closing p { margin-bottom: 0.6rem; font-size: 0.97rem; color: var(--ink-light); line-height: 1.7; }
+    .sig-name {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .sig-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ── Footer strip ── */
+    footer {
+      background: var(--navy);
+      padding: 1.2rem 5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: rgba(255,255,255,0.35);
+    }
+    footer strong { color: rgba(255,255,255,0.6); }
+    .letter-outer { max-width: 680px; margin: 0 auto; }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; }
+      .letter { margin: 0; box-shadow: none; padding: 3cm 3.5cm; }
+      footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      @page { size: A4 portrait; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="letter">
+
+      <header class="letter-top">
+        <div>
+          <p class="company">Meridian Health</p>
+          <p class="company-sub">Annual Letter to Shareholders</p>
+        </div>
+        <div class="letter-date">
+          Fiscal Year 2027<br>
+          {{DATE}}
+        </div>
+      </header>
+
+      <p class="salutation">To Our Shareholders,</p>
+
+      <div class="letter-body">
+
+        <p class="lead">In my seventeen years of leading healthcare organisations, I have learned to be suspicious of certainty. The ones who claimed to know exactly how a technology investment would play out were usually the ones who had not thought hard enough about what could go wrong. When we authorised our digital platform investment in August 2026, we did not claim certainty. We claimed conviction — which is a different thing entirely.</p>
+
+        <p>Conviction is what you have when the evidence points in one direction strongly enough that the cost of inaction exceeds the cost of being wrong. In our case, the evidence was unambiguous. <strong>Our patients were leaving for providers with better digital experiences</strong>, the regulatory environment was moving toward interoperability mandates we could either lead or scramble to meet, and three of our most capable competitors had already made the investment we were still debating.</p>
+
+        <p>So we acted.</p>
+
+        <div class="section-break"><span>On the Results</span></div>
+
+        <p>Fiscal year 2027 produced revenue of <span class="inline-stat">$148M</span>, up 18% from <span class="inline-stat">$125M</span> in the prior year. More meaningfully, our patient net promoter score reached <span class="inline-stat">48</span> — the highest in our company's 22-year history, and 17 points above the industry median. These two facts together tell a coherent story: we grew because our patients valued us more, and they valued us more because we gave them something worth valuing.</p>
+
+        <p>The patient portal, launched in June 2027, registered 44,000 users in its first 45 days. By year-end, 68,000 of our 312,000 active patients were regular portal users. Those patients scheduled appointments more consistently, missed them less often, and followed up at higher rates. <em>The economics of digital engagement are better than most hospital systems appreciate — not because digital is cheap to build, but because engaged patients have better outcomes, and better outcomes mean lower cost per episode of care.</em></p>
+
+        <div class="pull-quote">
+          <p>"A patient who can see their care plan on their phone at 11 PM and message their nurse by 7 AM does not end up in the emergency room at noon. That is the business case. Everything else is arithmetic."</p>
+        </div>
+
+        <p>Net operating income declined to $7.3M from $15.1M in the prior year. I want to address this directly, because I believe our shareholders deserve candour rather than accounting creativity. The decline is almost entirely explained by the $8.4M platform investment, which we chose to expense in the year incurred rather than capitalise and amortise. We made this choice deliberately. When accounting treatments create flattering numbers at the expense of transparency, we prefer the transparent numbers.</p>
+
+        <div class="section-break"><span>On What Went Wrong</span></div>
+
+        <p>The claim denial rate deteriorated from 9.2% to 12.4% during the year. This cost us approximately $3.1M in delayed or reversed revenue. The cause was an ICD-11 coding migration that our revenue cycle vendor executed with insufficient testing and inadequate staff training. We accepted that vendor's timeline without adequate due diligence on their readiness.</p>
+
+        <p>I will not obscure this mistake behind passive voice. We accepted the vendor's assurances. We should have insisted on our own validation. We did not. The remediation plan is in place, the vendor has committed to a specific timeline, and if they miss it, we will find one who will not. I expect claim denial rate to return to below 9% by the end of Q2 2028.</p>
+
+        <div class="section-break"><span>On 2028</span></div>
+
+        <p>Our 2028 agenda has three chapters. First, we complete what 2027 started: the 55+ digital accessibility programme, the revenue cycle automation, and the FHIR R4 compliance work. Second, we enter Phoenix — our first new market in six years. Third, we begin the Series C process, which will fund our 2029 market entry and the clinical decision support platform we have been designing for two years.</p>
+
+        <ol class="numbered-inset">
+          <li>Reach 400,000 active patients through organic growth and Phoenix market entry by Q4 2028.</li>
+          <li>Deliver revenue guidance of $172-180M, reflecting 16-22% growth, with gross margin improvement to 37-38% as digital leverage takes effect.</li>
+          <li>Close Series C of $22-28M in Q4 2028, targeting healthcare-experienced investors who understand that the platform we have built is not a cost centre — it is a durable competitive moat.</li>
+        </ol>
+
+        <p>We are not a technology company. We are a healthcare company that has learned to use technology with discipline. That distinction matters. Technology without clinical judgment produces dashboards. Clinical judgment without technology produces waiting rooms. We are trying to build something that is neither.</p>
+
+        <p>Thank you for your continued confidence in our mission and our team.</p>
+
+      </div>
+
+      <div class="closing">
+        <p>With appreciation,</p>
+        <p class="sig-name">Elena Vasquez</p>
+        <p class="sig-title">Chief Executive Officer, Meridian Health &nbsp;&mdash;&nbsp; Annual Shareholder Letter FY 2027</p>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="letter-outer">
+    <footer>
+      <strong>Meridian Health</strong> &mdash; Annual Letter to Shareholders &mdash; Fiscal Year 2027
+      <span>{{DATE}} &nbsp;|&nbsp; {{VERSION}}</span>
+    </footer>
+  </div>
+
+</body>
+</html>

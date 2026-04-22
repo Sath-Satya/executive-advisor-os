@@ -1,0 +1,384 @@
+<!--
+TEMPLATE: pnl-statement
+CATEGORY: Finance
+USE WHEN: Presenting a multi-period Profit & Loss statement with vertical % and YoY variance — for board packets, LP reports, or audit review.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profit &amp; Loss Statement &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --cream2: #ede9e0;
+      --fav: #2d6a4f;
+      --fav-bg: #f0faf5;
+      --caution: #92400e;
+      --caution-bg: #fffbeb;
+      --unfav: #b91c1c;
+      --unfav-bg: #fff5f5;
+      --section-bg: #e8e4dc;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+
+    /* Header */
+    .doc-header {
+      border-top: 4px solid var(--navy);
+      padding-top: 1.75rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+    .doc-header .left .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .doc-header .left h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.4px;
+    }
+    .doc-header .right {
+      text-align: right;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.8;
+      flex-shrink: 0;
+    }
+    .doc-header .right strong { color: var(--ink); }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .legend span { display: flex; align-items: center; gap: 0.35rem; }
+    .legend .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .legend .dot-fav { background: var(--fav); }
+    .legend .dot-unfav { background: var(--unfav); }
+    .legend .dot-caution { background: var(--caution); }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      font-variant-numeric: tabular-nums;
+    }
+    caption {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: left;
+      padding-bottom: 0.6rem;
+      font-style: italic;
+    }
+    thead tr {
+      background: var(--navy);
+      color: #fff;
+    }
+    thead th {
+      padding: 0.6rem 0.75rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; min-width: 180px; }
+    thead th:not(:first-child) { text-align: right; }
+
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: var(--cream2); }
+    tbody td { padding: 0.5rem 0.75rem; }
+    tbody td:first-child { color: var(--ink); }
+    tbody td:not(:first-child) { text-align: right; font-family: 'DM Mono', monospace; font-size: 0.8rem; }
+
+    /* Row types */
+    tr.section-header td {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.75rem;
+      border: none;
+    }
+    tr.subtotal td {
+      background: var(--section-bg);
+      font-weight: 600;
+      border-bottom: 2px solid var(--border);
+    }
+    tr.total td {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 700;
+      border-top: 2px solid var(--gold);
+    }
+    tr.indented td:first-child { padding-left: 1.75rem; color: var(--muted); }
+    tr.spacer { height: 0.35rem; background: transparent; border: none; }
+    tr.spacer td { padding: 0; border: none; }
+
+    /* Variance colors */
+    .fav { color: var(--fav); font-weight: 500; }
+    .unfav { color: var(--unfav); font-weight: 500; }
+    .caution { color: var(--caution); font-weight: 500; }
+    .pct { color: var(--muted); font-size: 0.75rem; }
+    .pct-bold { font-weight: 600; }
+
+    /* Divider */
+    .section-divider {
+      border: none;
+      border-top: 2px solid var(--border);
+      margin: 2rem 0 1.25rem;
+    }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--muted);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* Print */
+    @media print {
+      @page { size: A4; margin: 2cm; }
+      body { font-size: 11pt; background: #fff; }
+      .page { padding: 0; max-width: 100%; }
+      .doc-header { border-top-color: #000; }
+      thead tr { background: #1c1a18 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      tr.section-header td, tr.total td { background: #1c1a18 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      tr.subtotal td { background: #e8e4dc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="doc-header">
+    <div class="left">
+      <p class="eyebrow">Northwind Capital &mdash; Confidential</p>
+      <h1>Profit &amp; Loss Statement</h1>
+    </div>
+    <div class="right">
+      <strong>Fiscal Year {{PERIOD}}</strong><br>
+      USD in thousands (000s)<br>
+      Prepared: {{PREPARED_BY}}<br>
+      v{{VERSION}}
+    </div>
+  </header>
+
+  <div class="legend">
+    <span><span class="dot dot-fav"></span> Favorable vs prior year</span>
+    <span><span class="dot dot-caution"></span> Caution &plusmn;1&ndash;5%</span>
+    <span><span class="dot dot-unfav"></span> Unfavorable &gt;5%</span>
+    <span>Pct&nbsp;% = % of Revenue &nbsp;|&nbsp; YoY % = year-over-year change</span>
+  </div>
+
+  <div class="table-wrap">
+    <table aria-label="Profit and Loss Statement — Northwind Capital FY2024">
+      <caption>All amounts in USD thousands. Percentages are % of total revenue unless noted. Totals may differ by rounding.</caption>
+      <thead>
+        <tr>
+          <th scope="col">Line Item</th>
+          <th scope="col">Q1 2024</th>
+          <th scope="col">Q2 2024</th>
+          <th scope="col">Q3 2024</th>
+          <th scope="col">Q4 2024</th>
+          <th scope="col">FY 2024</th>
+          <th scope="col">Pct&nbsp;%</th>
+          <th scope="col">FY 2023</th>
+          <th scope="col">YoY&nbsp;%</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- REVENUE -->
+        <tr class="section-header"><td colspan="9">Revenue</td></tr>
+        <tr class="indented">
+          <td>Subscription Revenue</td>
+          <td>$7,240</td><td>$7,810</td><td>$8,120</td><td>$8,650</td>
+          <td>$31,820</td><td class="pct">79.5%</td><td>$26,900</td>
+          <td class="fav">+18.3%</td>
+        </tr>
+        <tr class="indented">
+          <td>Professional Services</td>
+          <td>$1,450</td><td>$1,620</td><td>$1,540</td><td>$1,790</td>
+          <td>$6,400</td><td class="pct">16.0%</td><td>$5,800</td>
+          <td class="fav">+10.3%</td>
+        </tr>
+        <tr class="indented">
+          <td>Licensing &amp; Other</td>
+          <td>$390</td><td>$420</td><td>$410</td><td>$550</td>
+          <td>$1,770</td><td class="pct">4.5%</td><td>$1,920</td>
+          <td class="unfav">&minus;7.8%</td>
+        </tr>
+        <tr class="subtotal">
+          <td>Total Revenue</td>
+          <td>$9,080</td><td>$9,850</td><td>$10,070</td><td>$10,990</td>
+          <td><strong>$39,990</strong></td><td class="pct pct-bold">100.0%</td><td>$34,620</td>
+          <td class="fav">+15.5%</td>
+        </tr>
+
+        <tr class="spacer"><td colspan="9"></td></tr>
+
+        <!-- COGS -->
+        <tr class="section-header"><td colspan="9">Cost of Revenue (COGS)</td></tr>
+        <tr class="indented">
+          <td>Infrastructure &amp; Hosting</td>
+          <td>$910</td><td>$985</td><td>$1,007</td><td>$1,099</td>
+          <td>$4,001</td><td class="pct">10.0%</td><td>$3,460</td>
+          <td class="caution">+15.6%</td>
+        </tr>
+        <tr class="indented">
+          <td>Customer Support</td>
+          <td>$640</td><td>$690</td><td>$720</td><td>$780</td>
+          <td>$2,830</td><td class="pct">7.1%</td><td>$2,490</td>
+          <td class="caution">+13.7%</td>
+        </tr>
+        <tr class="indented">
+          <td>Third-Party Licenses</td>
+          <td>$280</td><td>$305</td><td>$295</td><td>$320</td>
+          <td>$1,200</td><td class="pct">3.0%</td><td>$1,100</td>
+          <td class="caution">+9.1%</td>
+        </tr>
+        <tr class="subtotal">
+          <td>Total COGS</td>
+          <td>$1,830</td><td>$1,980</td><td>$2,022</td><td>$2,199</td>
+          <td><strong>$8,031</strong></td><td class="pct pct-bold">20.1%</td><td>$7,050</td>
+          <td class="caution">+13.9%</td>
+        </tr>
+        <tr class="subtotal">
+          <td>Gross Profit</td>
+          <td>$7,250</td><td>$7,870</td><td>$8,048</td><td>$8,791</td>
+          <td><strong>$31,959</strong></td><td class="pct pct-bold">79.9%</td><td>$27,570</td>
+          <td class="fav">+15.9%</td>
+        </tr>
+
+        <tr class="spacer"><td colspan="9"></td></tr>
+
+        <!-- OPEX -->
+        <tr class="section-header"><td colspan="9">Operating Expenses (OpEx)</td></tr>
+        <tr class="indented">
+          <td>Sales &amp; Marketing</td>
+          <td>$2,270</td><td>$2,460</td><td>$2,518</td><td>$2,748</td>
+          <td>$9,996</td><td class="pct">25.0%</td><td>$8,655</td>
+          <td class="caution">+15.5%</td>
+        </tr>
+        <tr class="indented">
+          <td>Research &amp; Development</td>
+          <td>$1,680</td><td>$1,820</td><td>$1,860</td><td>$2,040</td>
+          <td>$7,400</td><td class="pct">18.5%</td><td>$6,230</td>
+          <td class="caution">+18.8%</td>
+        </tr>
+        <tr class="indented">
+          <td>General &amp; Administrative</td>
+          <td>$820</td><td>$885</td><td>$905</td><td>$990</td>
+          <td>$3,600</td><td class="pct">9.0%</td><td>$3,120</td>
+          <td class="caution">+15.4%</td>
+        </tr>
+        <tr class="indented">
+          <td>Depreciation &amp; Amortization</td>
+          <td>$310</td><td>$315</td><td>$320</td><td>$325</td>
+          <td>$1,270</td><td class="pct">3.2%</td><td>$1,150</td>
+          <td class="caution">+10.4%</td>
+        </tr>
+        <tr class="subtotal">
+          <td>Total OpEx</td>
+          <td>$5,080</td><td>$5,480</td><td>$5,603</td><td>$6,103</td>
+          <td><strong>$22,266</strong></td><td class="pct pct-bold">55.7%</td><td>$19,155</td>
+          <td class="caution">+16.2%</td>
+        </tr>
+
+        <tr class="spacer"><td colspan="9"></td></tr>
+
+        <!-- EBITDA -->
+        <tr class="subtotal">
+          <td>EBITDA</td>
+          <td>$2,480</td><td>$2,705</td><td>$2,765</td><td>$3,013</td>
+          <td><strong>$10,963</strong></td><td class="pct pct-bold">27.4%</td><td>$9,565</td>
+          <td class="fav">+14.6%</td>
+        </tr>
+        <tr class="indented">
+          <td>Less: D&amp;A</td>
+          <td>($310)</td><td>($315)</td><td>($320)</td><td>($325)</td>
+          <td>($1,270)</td><td class="pct">&minus;3.2%</td><td>($1,150)</td><td>&mdash;</td>
+        </tr>
+        <tr class="indented">
+          <td>Interest &amp; Other Income</td>
+          <td>$85</td><td>$90</td><td>$95</td><td>$110</td>
+          <td>$380</td><td class="pct">1.0%</td><td>$290</td>
+          <td class="fav">+31.0%</td>
+        </tr>
+        <tr class="indented">
+          <td>Income Tax Expense</td>
+          <td>($480)</td><td>($530)</td><td>($545)</td><td>($600)</td>
+          <td>($2,155)</td><td class="pct">&minus;5.4%</td><td>($1,840)</td><td>&mdash;</td>
+        </tr>
+
+        <tr class="spacer"><td colspan="9"></td></tr>
+
+        <tr class="total">
+          <td>Net Income</td>
+          <td>$1,775</td><td>$1,950</td><td>$1,995</td><td>$2,198</td>
+          <td><strong>$7,918</strong></td><td class="pct pct-bold">19.8%</td><td>$6,865</td>
+          <td class="fav">+15.3%</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="section-divider">
+
+  <footer class="doc-footer">
+    <span>Northwind Capital &mdash; Internal &amp; Confidential</span>
+    <span>Period: {{PERIOD}}</span>
+    <span>Prepared by: {{PREPARED_BY}}</span>
+    <span>v{{VERSION}}</span>
+  </footer>
+
+</div>
+</body>
+</html>

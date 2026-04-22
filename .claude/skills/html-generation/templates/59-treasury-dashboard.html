@@ -1,0 +1,390 @@
+<!--
+TEMPLATE: treasury-dashboard
+CATEGORY: Finance
+USE WHEN: Displaying a treasury operations dashboard with cash positions by account, FX exposure, debt/covenant status, liquidity ratios, and funding runway — for CFO or treasury team daily/weekly review.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Treasury Dashboard &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #172030;
+      --border: #1e2d40;
+      --border2: #253548;
+      --primary: #3b9eff;
+      --accent: #2dd4a0;
+      --warning: #f0a050;
+      --error: #f06070;
+      --text: #d0d8e4;
+      --muted: #8899ac;
+      --subtle: #556677;
+      --ok: #2dd4a0;
+      --caution: #f0a050;
+      --bad: #f06070;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .page { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+    /* Header */
+    .doc-header {
+      border-top: 3px solid var(--primary);
+      padding-top: 1.5rem;
+      margin-bottom: 1.75rem;
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem;
+    }
+    .eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary); margin-bottom: 0.35rem; }
+    h1 { font-size: 1.5rem; font-weight: 700; color: #fff; letter-spacing: -0.4px; }
+    .doc-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .meta-right { text-align: right; font-size: 0.78rem; color: var(--muted); line-height: 1.9; flex-shrink: 0; }
+    .meta-right strong { color: var(--text); }
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.68rem; font-weight: 600; color: var(--accent);
+      background: rgba(45,212,160,0.1); border: 1px solid rgba(45,212,160,0.3);
+      border-radius: 12px; padding: 0.2rem 0.6rem;
+    }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--primary);
+      margin: 1.5rem 0 0.75rem;
+    }
+
+    /* KPI row */
+    .kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    @media (max-width: 900px) { .kpi-row { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+    .kpi-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.9rem 1rem;
+    }
+    .kpi-label { font-size: 0.63rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; }
+    .kpi-value { font-size: 1.3rem; font-weight: 700; font-family: 'DM Mono', monospace; color: #fff; font-variant-numeric: tabular-nums; }
+    .kpi-sub { font-size: 0.7rem; margin-top: 0.2rem; }
+    .kpi-sub.ok { color: var(--ok); }
+    .kpi-sub.warn { color: var(--caution); }
+    .kpi-sub.bad { color: var(--bad); }
+    .kpi-sub.muted { color: var(--muted); }
+
+    /* Two-column layout */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* Panel */
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 1.5rem; }
+    .panel-header {
+      background: var(--surface2); padding: 0.6rem 1rem;
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--muted);
+      border-bottom: 1px solid var(--border); display: flex; justify-content: space-between;
+    }
+    .panel-body { padding: 0; }
+
+    /* Table */
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.8rem; font-variant-numeric: tabular-nums;
+    }
+    caption { font-size: 0.68rem; color: var(--muted); text-align: left; padding: 0.4rem 1rem; font-style: italic; }
+    thead th {
+      padding: 0.45rem 1rem;
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--muted); border-bottom: 1px solid var(--border); background: var(--surface2); white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; }
+    thead th:not(:first-child) { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--surface2); }
+    tbody td { padding: 0.48rem 1rem; }
+    tbody td:not(:first-child) { text-align: right; font-family: 'DM Mono', monospace; }
+    tr.total-row td { background: var(--surface2); font-weight: 700; border-top: 1px solid var(--border2); }
+
+    /* Status pill */
+    .pill {
+      display: inline-block; padding: 0.12rem 0.5rem;
+      border-radius: 10px; font-size: 0.68rem; font-weight: 600; white-space: nowrap;
+    }
+    .pill-ok  { background: rgba(45,212,160,0.15); color: var(--ok); }
+    .pill-warn { background: rgba(240,160,80,0.15); color: var(--caution); }
+    .pill-bad  { background: rgba(240,96,112,0.15); color: var(--bad); }
+
+    /* Runway bar */
+    .runway-container { padding: 1rem; }
+    .runway-label { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 0.5rem; }
+    .runway-label .val { font-family: 'DM Mono', monospace; font-weight: 700; color: var(--accent); font-size: 1.1rem; }
+    .runway-track { height: 10px; background: var(--border2); border-radius: 5px; overflow: hidden; }
+    .runway-fill { height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--accent) 0%, #1aa88a 100%); }
+    .runway-ticks { display: flex; justify-content: space-between; font-size: 0.62rem; color: var(--muted); margin-top: 0.3rem; font-family: 'DM Mono', monospace; }
+
+    /* Ratio grid */
+    .ratio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .ratio-cell {
+      padding: 0.75rem 1rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .ratio-cell:nth-child(2n) { border-right: none; }
+    .ratio-cell:nth-last-child(-n+2) { border-bottom: none; }
+    .ratio-name { font-size: 0.68rem; color: var(--muted); margin-bottom: 0.25rem; }
+    .ratio-val { font-size: 1.05rem; font-weight: 700; font-family: 'DM Mono', monospace; }
+    .ratio-threshold { font-size: 0.65rem; color: var(--muted); margin-top: 0.1rem; }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 2rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      font-size: 0.68rem; color: var(--muted); flex-wrap: wrap; gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="doc-header">
+    <div>
+      <p class="eyebrow">Northwind Capital &mdash; Treasury Operations</p>
+      <h1>Treasury Dashboard</h1>
+      <p class="doc-sub">As of: December 31, {{PERIOD}} &nbsp;|&nbsp; USD unless noted</p>
+    </div>
+    <div class="meta-right">
+      <div class="live-badge"><span class="live-dot"></span> Live</div><br>
+      <strong>Daily close snapshot</strong><br>
+      Prepared: {{PREPARED_BY}}<br>
+      v{{VERSION}}
+    </div>
+  </header>
+
+  <!-- KPI row -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Total Cash</div>
+      <div class="kpi-value">$8.42M</div>
+      <div class="kpi-sub ok">&#9650; +$1.61M YoY</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total Debt</div>
+      <div class="kpi-value">$7.20M</div>
+      <div class="kpi-sub ok">&#9660; &minus;$1.2M vs Jan</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Net Cash Position</div>
+      <div class="kpi-value">$1.22M</div>
+      <div class="kpi-sub ok">Net cash positive</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Credit Facility</div>
+      <div class="kpi-value">$5.00M</div>
+      <div class="kpi-sub ok">$5.0M undrawn</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Cash Runway</div>
+      <div class="kpi-value">27 mo</div>
+      <div class="kpi-sub ok">At current burn</div>
+    </div>
+  </div>
+
+  <!-- Cash positions + FX -->
+  <div class="two-col">
+
+    <!-- Cash by account -->
+    <div>
+      <p class="section-label">Cash Positions by Account</p>
+      <div class="panel">
+        <div class="panel-header"><span>Account Summary</span><span style="color:var(--text);">$8,420K total</span></div>
+        <div class="panel-body">
+          <table aria-label="Cash positions by account — Northwind Capital">
+            <caption>USD thousands. Sweep = overnight sweep to money market.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Account</th>
+                <th scope="col">Bank</th>
+                <th scope="col">Balance</th>
+                <th scope="col">Type</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Operating (USD)</td><td>JPMorgan</td><td>$3,840K</td><td>Checking</td><td><span class="pill pill-ok">Active</span></td></tr>
+              <tr><td>Payroll (USD)</td><td>JPMorgan</td><td>$620K</td><td>Dedicated</td><td><span class="pill pill-ok">Active</span></td></tr>
+              <tr><td>Money Market Sweep</td><td>JPMorgan</td><td>$2,180K</td><td>MMF</td><td><span class="pill pill-ok">Earning</span></td></tr>
+              <tr><td>T-Bill Ladder</td><td>Fidelity</td><td>$1,200K</td><td>3&ndash;6 mo</td><td><span class="pill pill-ok">Active</span></td></tr>
+              <tr><td>EUR Operating</td><td>Deutsche</td><td>$340K</td><td>EUR</td><td><span class="pill pill-ok">Active</span></td></tr>
+              <tr><td>GBP Operating</td><td>Barclays</td><td>$240K</td><td>GBP</td><td><span class="pill pill-warn">Low</span></td></tr>
+              <tr class="total-row"><td colspan="2">Total Cash</td><td>$8,420K</td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- FX Exposure -->
+    <div>
+      <p class="section-label">FX Exposure Grid</p>
+      <div class="panel">
+        <div class="panel-header"><span>Foreign Currency Positions</span><span style="color:var(--caution);">&#9660; USD weakening</span></div>
+        <div class="panel-body">
+          <table aria-label="FX exposure by currency — Northwind Capital">
+            <caption>Notional in native currency. USD equiv at spot rate Dec 31, 2024.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Currency</th>
+                <th scope="col">Notional</th>
+                <th scope="col">Spot Rate</th>
+                <th scope="col">USD Equiv</th>
+                <th scope="col">Hedged</th>
+                <th scope="col">Risk</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>EUR</td><td>&euro;312K</td><td>1.091</td><td>$340K</td><td>50%</td><td><span class="pill pill-warn">Medium</span></td></tr>
+              <tr><td>GBP</td><td>&pound;191K</td><td>1.257</td><td>$240K</td><td>0%</td><td><span class="pill pill-bad">Exposed</span></td></tr>
+              <tr><td>CAD</td><td>CA$108K</td><td>0.739</td><td>$80K</td><td>100%</td><td><span class="pill pill-ok">Hedged</span></td></tr>
+              <tr><td>AUD</td><td>A$65K</td><td>0.634</td><td>$41K</td><td>0%</td><td><span class="pill pill-ok">Immaterial</span></td></tr>
+              <tr class="total-row"><td colspan="3">Total FX Exposure (USD)</td><td>$701K</td><td>~44% avg</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="section-label">Funding Runway</p>
+      <div class="panel">
+        <div class="panel-body">
+          <div class="runway-container">
+            <div class="runway-label">
+              <span style="color:var(--muted);">Current runway (months of opex covered)</span>
+              <span class="val">27 mo</span>
+            </div>
+            <div class="runway-track"><div class="runway-fill" style="width:75%;"></div></div>
+            <div class="runway-ticks"><span>0</span><span>9</span><span>18</span><span>27</span><span>36</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Debt / Covenants + Ratios -->
+  <div class="two-col">
+
+    <!-- Debt schedule -->
+    <div>
+      <p class="section-label">Debt &amp; Covenant Status</p>
+      <div class="panel">
+        <div class="panel-header"><span>Debt Facilities</span></div>
+        <div class="panel-body">
+          <table aria-label="Debt facilities and covenant status — Northwind Capital">
+            <thead>
+              <tr>
+                <th scope="col">Facility</th>
+                <th scope="col">Balance</th>
+                <th scope="col">Rate</th>
+                <th scope="col">Maturity</th>
+                <th scope="col">Covenant</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Term Loan A</td><td>$5,400K</td><td>SOFR+250</td><td>Mar 2027</td><td><span class="pill pill-ok">In compliance</span></td></tr>
+              <tr><td>Term Loan B</td><td>$1,800K</td><td>SOFR+275</td><td>Sep 2026</td><td><span class="pill pill-ok">In compliance</span></td></tr>
+              <tr><td>Revolving Credit</td><td>$0</td><td>SOFR+225</td><td>Dec 2026</td><td><span class="pill pill-ok">$5.0M available</span></td></tr>
+              <tr class="total-row"><td>Total Debt</td><td>$7,200K</td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:0;">
+        <div class="panel-header"><span>Key Covenants</span></div>
+        <div class="panel-body">
+          <table aria-label="Key financial covenants — Northwind Capital">
+            <thead>
+              <tr>
+                <th scope="col">Covenant</th>
+                <th scope="col">Threshold</th>
+                <th scope="col">Actual</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Min Liquidity</td><td>&ge;$3.0M</td><td>$8.42M</td><td><span class="pill pill-ok">&#10003; Pass</span></td></tr>
+              <tr><td>Net Leverage (Debt/EBITDA)</td><td>&le;3.0&times;</td><td>0.66&times;</td><td><span class="pill pill-ok">&#10003; Pass</span></td></tr>
+              <tr><td>Interest Coverage (EBITDA/Int)</td><td>&ge;3.0&times;</td><td>12.4&times;</td><td><span class="pill pill-ok">&#10003; Pass</span></td></tr>
+              <tr><td>ARR Growth YoY</td><td>&ge;15%</td><td>21.2%</td><td><span class="pill pill-ok">&#10003; Pass</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Liquidity ratios -->
+    <div>
+      <p class="section-label">Liquidity Ratios</p>
+      <div class="panel">
+        <div class="panel-header"><span>Key Ratios &mdash; Dec 31, 2024</span></div>
+        <div class="ratio-grid">
+          <div class="ratio-cell">
+            <div class="ratio-name">Current Ratio</div>
+            <div class="ratio-val" style="color:var(--ok);">1.63&times;</div>
+            <div class="ratio-threshold">Min threshold: 1.0&times;</div>
+          </div>
+          <div class="ratio-cell">
+            <div class="ratio-name">Quick Ratio</div>
+            <div class="ratio-val" style="color:var(--ok);">1.40&times;</div>
+            <div class="ratio-threshold">Min threshold: 0.8&times;</div>
+          </div>
+          <div class="ratio-cell">
+            <div class="ratio-name">Cash Ratio</div>
+            <div class="ratio-val" style="color:var(--ok);">0.69&times;</div>
+            <div class="ratio-threshold">Reference: &ge;0.5&times;</div>
+          </div>
+          <div class="ratio-cell">
+            <div class="ratio-name">Net Debt/EBITDA</div>
+            <div class="ratio-val" style="color:var(--ok);">&minus;0.11&times;</div>
+            <div class="ratio-threshold">Negative = net cash</div>
+          </div>
+          <div class="ratio-cell">
+            <div class="ratio-name">Debt/Equity</div>
+            <div class="ratio-val" style="color:var(--caution);">0.36&times;</div>
+            <div class="ratio-threshold">Max covenant: 1.5&times;</div>
+          </div>
+          <div class="ratio-cell">
+            <div class="ratio-name">Operating CF / Debt</div>
+            <div class="ratio-val" style="color:var(--ok);">1.51&times;</div>
+            <div class="ratio-threshold">Min threshold: 0.5&times;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="doc-footer">
+    <span>Northwind Capital &mdash; Treasury &bull; Confidential</span>
+    <span>Period: {{PERIOD}}</span>
+    <span>Prepared by: {{PREPARED_BY}}</span>
+    <span>v{{VERSION}}</span>
+  </footer>
+
+</div>
+</body>
+</html>

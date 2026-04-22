@@ -1,0 +1,345 @@
+<!--
+TEMPLATE: testimonial-wall
+CATEGORY: Marketing / Admin
+USE WHEN: Showcasing client testimonials on a landing page or proposal appendix — warm, credibility-building layout.
+PALETTE: Warm off-white background, rounded cards, electric blue and purple accents
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Testimonials — SponAI Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9f7f4;
+      --surface: #ffffff;
+      --navy: #0e1b2e;
+      --navy-mid: #1a3a5c;
+      --blue: #3b9eff;
+      --purple: #a78bfa;
+      --mint: #2dd4a0;
+      --amber: #f0a050;
+      --ink: #1c2b3a;
+      --muted: #5a6a7a;
+      --subtle: #94a3b8;
+      --border: #e8edf2;
+      --shadow: 0 2px 12px rgba(14,27,46,0.07);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    /* Page layout */
+    .page { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem 5rem; }
+
+    /* Page header */
+    .page-header { text-align: center; margin-bottom: 3.5rem; }
+    .page-header .eyebrow {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 0.75rem;
+    }
+    .page-header h1 {
+      font-size: 2.25rem; font-weight: 700; color: var(--navy);
+      letter-spacing: -0.4px; line-height: 1.2; margin-bottom: 1rem;
+    }
+    .page-header p {
+      font-size: 1.05rem; color: var(--muted); max-width: 520px;
+      margin: 0 auto; line-height: 1.7;
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex; justify-content: center; gap: 3rem;
+      margin-bottom: 3.5rem; padding: 1.5rem 2rem;
+      background: var(--navy); border-radius: 10px; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat .num { font-size: 2rem; font-weight: 700; color: #fff; letter-spacing: -0.5px; }
+    .stat .label { font-size: 0.78rem; color: #8899ac; margin-top: 2px; }
+
+    /* Masonry grid */
+    .masonry {
+      columns: 3 320px; column-gap: 1.5rem;
+    }
+    .card {
+      break-inside: avoid; background: var(--surface);
+      border-radius: 12px; padding: 1.75rem;
+      box-shadow: var(--shadow); margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(14,27,46,0.11); }
+
+    /* Accent stripe */
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 3px; border-radius: 12px 12px 0 0;
+    }
+    .card.blue::before { background: var(--blue); }
+    .card.purple::before { background: var(--purple); }
+    .card.mint::before { background: var(--mint); }
+    .card.amber::before { background: var(--amber); }
+
+    /* Quote mark */
+    .quote-mark {
+      font-size: 3rem; line-height: 1; color: var(--border);
+      font-family: Georgia, serif; margin-bottom: 0.5rem; display: block;
+    }
+    .card.blue .quote-mark { color: #dbeeff; }
+    .card.purple .quote-mark { color: #ede8ff; }
+    .card.mint .quote-mark { color: #d0f7ee; }
+    .card.amber .quote-mark { color: #feecd3; }
+
+    /* Quote text */
+    .quote-text {
+      font-size: 0.95rem; color: var(--ink); line-height: 1.7;
+      font-style: italic; margin-bottom: 1.25rem;
+    }
+
+    /* Star rating */
+    .stars { display: flex; gap: 3px; margin-bottom: 1.25rem; }
+    .star {
+      width: 14px; height: 14px; display: inline-block;
+    }
+    .star svg { width: 14px; height: 14px; }
+
+    /* Attribution */
+    .attribution { display: flex; align-items: center; gap: 0.875rem; }
+    .avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy-mid), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+    .card.purple .avatar { background: linear-gradient(135deg, #5b3fa8, var(--purple)); }
+    .card.mint .avatar { background: linear-gradient(135deg, #0e7a5f, var(--mint)); }
+    .card.amber .avatar { background: linear-gradient(135deg, #9a5f10, var(--amber)); }
+    .attr-text .name { font-size: 0.875rem; font-weight: 600; color: var(--navy); }
+    .attr-text .role { font-size: 0.78rem; color: var(--muted); margin-top: 1px; }
+    .attr-text .company { font-size: 0.78rem; color: var(--blue); font-weight: 500; }
+
+    /* Tag pill */
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
+    .tag {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.5px;
+      text-transform: uppercase; padding: 3px 8px;
+      border-radius: 4px; color: var(--muted); background: var(--bg);
+      border: 1px solid var(--border);
+    }
+
+    /* Featured card — full width */
+    .card.featured {
+      background: linear-gradient(135deg, var(--navy) 0%, #1a3a5c 100%);
+      border-color: transparent;
+    }
+    .card.featured .quote-mark { color: rgba(59,158,255,0.3); }
+    .card.featured .quote-text { color: #c8d8e8; font-size: 1.05rem; }
+    .card.featured .name { color: #fff; }
+    .card.featured .role { color: #8899ac; }
+    .card.featured .company { color: var(--blue); }
+    .card.featured .tag { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.12); color: #8899ac; }
+    .card.featured::before { background: linear-gradient(90deg, var(--blue), var(--purple)); }
+
+    /* Footer */
+    .page-footer {
+      margin-top: 3rem; padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .page-footer .brand { font-size: 0.875rem; font-weight: 600; color: var(--navy); }
+    .page-footer .meta { font-size: 0.75rem; color: var(--subtle); font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="page-header">
+    <p class="eyebrow">Client Results</p>
+    <h1>What Our Clients Say</h1>
+    <p>Real outcomes from real engagements. We let our clients tell the story.</p>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats-bar" role="region" aria-label="Summary statistics">
+    <div class="stat">
+      <div class="num">47+</div>
+      <div class="label">Projects Delivered</div>
+    </div>
+    <div class="stat">
+      <div class="num">98%</div>
+      <div class="label">Client Satisfaction</div>
+    </div>
+    <div class="stat">
+      <div class="num">68%</div>
+      <div class="label">Avg. Faster to POC</div>
+    </div>
+    <div class="stat">
+      <div class="num">12</div>
+      <div class="label">Healthcare Clients</div>
+    </div>
+  </div>
+
+  <!-- Testimonial Grid -->
+  <section class="masonry" aria-label="Client testimonials">
+
+    <!-- Featured -->
+    <article class="card featured blue">
+      <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+      <div class="tag-row">
+        <span class="tag">Salesforce</span>
+        <span class="tag">Healthcare</span>
+        <span class="tag">AI</span>
+      </div>
+      <p class="quote-text">SponAI Consulting transformed our claims processing workflow in under three weeks. The Salesforce AI dashboard they built has already saved our team 14 hours per week. I've worked with four other consultancies in the past decade — none came close to this speed or quality.</p>
+      <div class="stars" aria-label="5 out of 5 stars">
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+      </div>
+      <div class="attribution">
+        <div class="avatar" aria-hidden="true">DR</div>
+        <div class="attr-text">
+          <div class="name">Dr. Rachel Kim</div>
+          <div class="role">VP of Operations</div>
+          <div class="company">Meridian Health Systems</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 2 -->
+    <article class="card purple">
+      <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+      <div class="tag-row">
+        <span class="tag">iOS</span>
+        <span class="tag">Mobile</span>
+      </div>
+      <p class="quote-text">The iOS member portal launched on TestFlight in 12 days. Our internal team estimated 8 weeks minimum. The code quality passed our security review without a single finding — rare for an external vendor.</p>
+      <div class="stars" aria-label="5 out of 5 stars">
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+      </div>
+      <div class="attribution">
+        <div class="avatar" aria-hidden="true">MJ</div>
+        <div class="attr-text">
+          <div class="name">Marcus Johnson</div>
+          <div class="role">Director of Product</div>
+          <div class="company">ClearPath Benefits</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 3 -->
+    <article class="card mint">
+      <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+      <div class="tag-row">
+        <span class="tag">Azure</span>
+        <span class="tag">Migration</span>
+      </div>
+      <p class="quote-text">Zero-downtime migration to Azure for 200 seats. Sathish's team handled everything — from Azure architecture to CI/CD pipeline setup. Our team didn't write a single ticket. It just appeared, running, in production.</p>
+      <div class="stars" aria-label="5 out of 5 stars">
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+      </div>
+      <div class="attribution">
+        <div class="avatar" aria-hidden="true">SL</div>
+        <div class="attr-text">
+          <div class="name">Sandra Lee</div>
+          <div class="role">CTO</div>
+          <div class="company">Apex Risk Partners</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 4 -->
+    <article class="card amber">
+      <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+      <div class="tag-row">
+        <span class="tag">Custom App</span>
+        <span class="tag">.NET</span>
+      </div>
+      <p class="quote-text">We needed a compliance dashboard that could survive a HIPAA audit on day one. SponAI delivered a hardened ASP.NET Core API and Blazor front-end — with security review docs included. That alone saved us $40K in consulting fees elsewhere.</p>
+      <div class="stars" aria-label="5 out of 5 stars">
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+        <span class="star"><svg viewBox="0 0 14 14" fill="#f0a050"><path d="M7 1l1.5 3.1 3.5.5-2.5 2.4.6 3.5L7 9l-3.1 1.5.6-3.5L2 4.6l3.5-.5z"/></svg></span>
+      </div>
+      <div class="attribution">
+        <div class="avatar" aria-hidden="true">TG</div>
+        <div class="attr-text">
+          <div class="name">Tanya Garrett</div>
+          <div class="role">Compliance Officer</div>
+          <div class="company">BluePeak Health Group</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 5 -->
+    <article class="card blue">
+      <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+      <div class="tag-row">
+        <span class="tag">Salesforce</span>
+        <span class="tag">Agentforce</span>
+      </div>
+      <p class="quote-text">The Agentforce implementation exceeded everything we expected. Our customer service agents now handle 3x the volume with the same headcount. ROI was visible in the first billing cycle.</p>
+      <div class="attribution">
+        <div class="avatar" aria-hidden="true">PW</div>
+        <div class="attr-text">
+          <div class="name">Patrick Wheeler</div>
+          <div class="role">SVP Customer Success</div>
+          <div class="company">Vantage Insurance</div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Card 6 -->
+    <article class="card purple">
+      <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+      <div class="tag-row">
+        <span class="tag">Python</span>
+        <span class="tag">FastAPI</span>
+      </div>
+      <p class="quote-text">I was skeptical of a one-person consultancy handling our entire data pipeline. Six weeks later, I'm recommending SponAI to every CTO I know. The architecture is clean, the tests are thorough, and the documentation is actually accurate.</p>
+      <div class="attribution">
+        <div class="avatar" aria-hidden="true">AK</div>
+        <div class="attr-text">
+          <div class="name">Alicia Kwan</div>
+          <div class="role">Head of Data Engineering</div>
+          <div class="company">Prism Analytics</div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <span class="brand">SponAI Consulting &mdash; sponaitech.com</span>
+    <span class="meta">v{{VERSION}} &bull; {{DATE}} &bull; testimonial-wall</span>
+  </footer>
+
+</div>
+</body>
+</html>

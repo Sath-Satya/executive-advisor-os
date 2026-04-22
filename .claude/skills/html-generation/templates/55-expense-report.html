@@ -1,0 +1,341 @@
+<!--
+TEMPLATE: expense-report
+CATEGORY: Finance
+USE WHEN: Submitting or reviewing an employee expense reimbursement report with itemized receipts, category breakdown, and approval signature block.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Report &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --cream2: #ede9e0;
+      --section-bg: #e8e4dc;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .page { max-width: 820px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+
+    /* Header */
+    .doc-header {
+      border-top: 4px solid var(--navy);
+      padding-top: 1.75rem;
+      margin-bottom: 1.75rem;
+    }
+    .header-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; margin-bottom: 1.25rem; }
+    .eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+    h1 { font-size: 1.5rem; font-weight: 700; color: var(--navy); letter-spacing: -0.4px; }
+    .meta-right { text-align: right; font-size: 0.78rem; color: var(--muted); line-height: 1.9; flex-shrink: 0; }
+    .meta-right strong { color: var(--ink); }
+
+    /* Employee info grid */
+    .employee-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 1.75rem;
+    }
+    @media (max-width: 600px) { .employee-grid { grid-template-columns: 1fr 1fr; } }
+    .emp-field {
+      padding: 0.7rem 0.9rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .emp-field:nth-child(3n) { border-right: none; }
+    .emp-field:nth-last-child(-n+3) { border-bottom: none; }
+    .emp-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.2rem; }
+    .emp-value { font-size: 0.85rem; font-weight: 500; color: var(--ink); }
+
+    /* Category summary */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+    .cat-card {
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      text-align: center;
+    }
+    .cat-card .cat-name { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.3rem; }
+    .cat-card .cat-amount { font-size: 1.1rem; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--navy); font-variant-numeric: tabular-nums; }
+    .cat-card .cat-items { font-size: 0.7rem; color: var(--muted); margin-top: 0.15rem; }
+
+    /* Section heading */
+    h2 {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #fff;
+      background: var(--navy);
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0;
+    }
+
+    /* Itemized table */
+    .table-wrap { overflow-x: auto; margin-bottom: 1.75rem; }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.81rem; font-variant-numeric: tabular-nums;
+    }
+    caption { font-size: 0.7rem; color: var(--muted); text-align: left; padding-bottom: 0.45rem; font-style: italic; }
+    thead tr { background: var(--cream2); }
+    thead th {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em;
+      text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; }
+    thead th.r { text-align: right; }
+    thead th.c { text-align: center; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: var(--cream2); }
+    tbody td { padding: 0.48rem 0.75rem; font-size: 0.81rem; }
+    tbody td.r { text-align: right; font-family: 'DM Mono', monospace; }
+    tbody td.c { text-align: center; }
+    .cat-badge {
+      display: inline-block;
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      background: var(--section-bg);
+      color: var(--navy);
+    }
+    .receipt-tag { font-size: 0.7rem; color: var(--muted); font-style: italic; }
+    .receipt-required { color: #b91c1c; font-weight: 600; }
+    tr.total-row td {
+      background: var(--navy); color: #fff;
+      font-weight: 700; border-top: 2px solid var(--gold);
+    }
+    tr.total-row td.r { text-align: right; font-family: 'DM Mono', monospace; }
+
+    /* Policy note */
+    .policy-note {
+      font-size: 0.72rem; color: var(--muted);
+      background: var(--cream2); border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 4px 4px 0;
+      padding: 0.6rem 0.9rem;
+      margin-bottom: 1.75rem;
+      line-height: 1.6;
+    }
+    .policy-note strong { color: var(--ink); }
+
+    /* Approval block */
+    .approval-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+    @media (max-width: 600px) { .approval-grid { grid-template-columns: 1fr; } }
+    .approval-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .approval-card .appr-header {
+      background: var(--navy); color: #fff;
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; padding: 0.4rem 0.75rem;
+    }
+    .approval-card .appr-body { padding: 0.75rem; }
+    .appr-row { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.35rem; }
+    .appr-row strong { color: var(--ink); display: block; }
+    .sig-line {
+      border-bottom: 1px solid var(--border);
+      height: 2.5rem;
+      margin-top: 0.75rem;
+      position: relative;
+    }
+    .sig-label { font-size: 0.65rem; color: var(--muted); position: absolute; bottom: -1.2rem; }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 2rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      font-size: 0.7rem; color: var(--muted); flex-wrap: wrap; gap: 0.5rem;
+    }
+
+    @media print {
+      @page { size: A4; margin: 2cm; }
+      body { font-size: 11pt; background: #fff; }
+      .page { padding: 0; max-width: 100%; }
+      h2, .approval-card .appr-header, tr.total-row td { background: #1c1a18 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="doc-header">
+    <div class="header-top">
+      <div>
+        <p class="eyebrow">Northwind Capital &mdash; Finance &amp; Accounting</p>
+        <h1>Expense Report</h1>
+      </div>
+      <div class="meta-right">
+        <strong>Report No: EXP-2024-0847</strong><br>
+        Submitted: {{PERIOD}}<br>
+        Prepared by: {{PREPARED_BY}}<br>
+        v{{VERSION}}
+      </div>
+    </div>
+
+    <div class="employee-grid" role="group" aria-label="Employee information">
+      <div class="emp-field">
+        <div class="emp-label">Employee Name</div>
+        <div class="emp-value">Jordan Whitmore</div>
+      </div>
+      <div class="emp-field">
+        <div class="emp-label">Employee ID</div>
+        <div class="emp-value">NW-04291</div>
+      </div>
+      <div class="emp-field">
+        <div class="emp-label">Department</div>
+        <div class="emp-value">Sales &amp; BD</div>
+      </div>
+      <div class="emp-field">
+        <div class="emp-label">Expense Period</div>
+        <div class="emp-value">Sep 1&ndash;30, 2024</div>
+      </div>
+      <div class="emp-field">
+        <div class="emp-label">Cost Center</div>
+        <div class="emp-value">CC-1140</div>
+      </div>
+      <div class="emp-field">
+        <div class="emp-label">Business Purpose</div>
+        <div class="emp-value">Enterprise Conference &amp; Client Meetings</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Category Summary -->
+  <h2 style="margin-bottom:0.75rem;">Category Summary</h2>
+  <div class="category-grid">
+    <div class="cat-card"><div class="cat-name">Travel</div><div class="cat-amount">$1,842</div><div class="cat-items">7 items</div></div>
+    <div class="cat-card"><div class="cat-name">Lodging</div><div class="cat-amount">$1,245</div><div class="cat-items">3 items</div></div>
+    <div class="cat-card"><div class="cat-name">Meals</div><div class="cat-amount">$487</div><div class="cat-items">9 items</div></div>
+    <div class="cat-card"><div class="cat-name">Client Entertain.</div><div class="cat-amount">$320</div><div class="cat-items">2 items</div></div>
+    <div class="cat-card"><div class="cat-name">Other</div><div class="cat-amount">$136</div><div class="cat-items">3 items</div></div>
+    <div class="cat-card" style="border-color:var(--navy);"><div class="cat-name">Total Claim</div><div class="cat-amount" style="color:var(--gold);">$4,030</div><div class="cat-items">24 items</div></div>
+  </div>
+
+  <!-- Itemized Table -->
+  <h2>Itemized Expenses</h2>
+  <div class="table-wrap">
+    <table aria-label="Itemized expense list for Jordan Whitmore, September 2024">
+      <caption>All amounts in USD. Receipts required for amounts &ge;$25. Mark &#10003; when attached.</caption>
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Merchant / Description</th>
+          <th scope="col" class="c">Category</th>
+          <th scope="col" class="r">Amount</th>
+          <th scope="col" class="c">Receipt</th>
+          <th scope="col">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Sep 03</td><td>United Airlines &mdash; NYC&#8594;SFO (conf)</td><td class="c"><span class="cat-badge">Travel</span></td><td class="r">$624.00</td><td class="c">&#10003;</td><td>SaaStr Annual 2024</td></tr>
+        <tr><td>Sep 03</td><td>Lyft &mdash; Airport to Hotel</td><td class="c"><span class="cat-badge">Travel</span></td><td class="r">$58.40</td><td class="c">&#10003;</td><td>Arrival transfer</td></tr>
+        <tr><td>Sep 03</td><td>Marriott Marquis SF &mdash; Night 1</td><td class="c"><span class="cat-badge">Lodging</span></td><td class="r">$415.00</td><td class="c">&#10003;</td><td>Conference rate</td></tr>
+        <tr><td>Sep 04</td><td>Marriott Marquis SF &mdash; Night 2</td><td class="c"><span class="cat-badge">Lodging</span></td><td class="r">$415.00</td><td class="c">&#10003;</td><td>Conference rate</td></tr>
+        <tr><td>Sep 04</td><td>Client Dinner &mdash; Bix Restaurant</td><td class="c"><span class="cat-badge">Client Entertain.</span></td><td class="r">$320.00</td><td class="c">&#10003;</td><td>3 attendees: Whitmore + 2 prospects</td></tr>
+        <tr><td>Sep 04</td><td>SaaStr &mdash; Conference Registration</td><td class="c"><span class="cat-badge">Other</span></td><td class="r">$99.00</td><td class="c">&#10003;</td><td>Pre-paid, reimbursing employee</td></tr>
+        <tr><td>Sep 05</td><td>Marriott Marquis SF &mdash; Night 3</td><td class="c"><span class="cat-badge">Lodging</span></td><td class="r">$415.00</td><td class="c">&#10003;</td><td>Conference rate</td></tr>
+        <tr><td>Sep 05</td><td>Lyft &mdash; Hotel to SFO</td><td class="c"><span class="cat-badge">Travel</span></td><td class="r">$61.20</td><td class="c">&#10003;</td><td>Departure transfer</td></tr>
+        <tr><td>Sep 05</td><td>United Airlines &mdash; SFO&#8594;NYC</td><td class="c"><span class="cat-badge">Travel</span></td><td class="r">$589.00</td><td class="c">&#10003;</td><td>Return flight</td></tr>
+        <tr><td>Sep 05</td><td>SFO Terminal 3 &mdash; Lunch</td><td class="c"><span class="cat-badge">Meals</span></td><td class="r">$34.80</td><td class="c">&#10003;</td><td>Solo</td></tr>
+        <tr><td>Sep 10</td><td>Uber &mdash; Client meeting (Midtown)</td><td class="c"><span class="cat-badge">Travel</span></td><td class="r">$24.50</td><td class="c"><span class="receipt-tag">&lt; $25</span></td><td>Acme Corp HQ</td></tr>
+        <tr><td>Sep 10</td><td>Acme Corp Meeting &mdash; Lunch</td><td class="c"><span class="cat-badge">Meals</span></td><td class="r">$78.20</td><td class="c">&#10003;</td><td>Whitmore + 1 client</td></tr>
+        <tr><td>Sep 12</td><td>Starbucks &mdash; Working lunch</td><td class="c"><span class="cat-badge">Meals</span></td><td class="r">$18.40</td><td class="c"><span class="receipt-tag">&lt; $25</span></td><td>Internal call</td></tr>
+        <tr><td>Sep 17</td><td>Uber &mdash; Client meeting (FiDi)</td><td class="c"><span class="cat-badge">Travel</span></td><td class="r">$31.80</td><td class="c">&#10003;</td><td>Beacon Health</td></tr>
+        <tr><td>Sep 17</td><td>Beacon Health &mdash; Working dinner</td><td class="c"><span class="cat-badge">Meals</span></td><td class="r">$94.60</td><td class="c">&#10003;</td><td>Whitmore + 2 clients</td></tr>
+        <tr><td>Sep 19</td><td>AWS re:Invent (Early Bird)</td><td class="c"><span class="cat-badge">Other</span></td><td class="r">$37.00</td><td class="c">&#10003;</td><td>Reservation deposit</td></tr>
+        <tr><td>Sep 23</td><td>Uber &mdash; Airport transfer</td><td class="c"><span class="cat-badge">Travel</span></td><td class="r">$52.70</td><td class="c">&#10003;</td><td>JFK departure</td></tr>
+        <tr><td>Sep 24&ndash;26</td><td>Delta &mdash; NYC&#8594;BOS roundtrip</td><td class="c"><span class="cat-badge">Travel</span></td><td class="r">$400.40</td><td class="c">&#10003;</td><td>Boston partner meetings</td></tr>
+        <tr><td>Sep 24</td><td>Fairmont Copley &mdash; 2 nights</td><td class="c"><span class="cat-badge">Lodging</span></td><td class="r">$&mdash;</td><td class="c"><span class="receipt-required">PENDING</span></td><td>Receipt requested from hotel</td></tr>
+        <tr><td>Sep 25</td><td>Legal Sea Foods &mdash; Team Dinner</td><td class="c"><span class="cat-badge">Meals</span></td><td class="r">$142.80</td><td class="c">&#10003;</td><td>5 attendees (Northwind team)</td></tr>
+        <tr><td>Sep 26</td><td>Various meals (Boston)</td><td class="c"><span class="cat-badge">Meals</span></td><td class="r">$48.80</td><td class="c">&#10003;</td><td>Receipts consolidated</td></tr>
+        <tr><td>Sep 27</td><td>Staples &mdash; Presentation supplies</td><td class="c"><span class="cat-badge">Other</span></td><td class="r">$24.00</td><td class="c"><span class="receipt-tag">&lt; $25</span></td><td>Binding + color prints</td></tr>
+        <tr><td>Sep 28</td><td>MTA Monthly Card</td><td class="c"><span class="cat-badge">Travel</span></td><td class="r">$132.00</td><td class="c">&#10003;</td><td>Sep NYC transit</td></tr>
+        <tr><td>Sep 30</td><td>Various coffee / incidentals</td><td class="c"><span class="cat-badge">Meals</span></td><td class="r">$69.40</td><td class="c"><span class="receipt-tag">Consolidated</span></td><td>Month total &lt; $25 each</td></tr>
+        <tr class="total-row">
+          <td colspan="3"><strong>Total Reimbursement Requested</strong></td>
+          <td class="r"><strong>$4,030.00</strong></td>
+          <td class="c">&mdash;</td>
+          <td>&mdash;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="policy-note">
+    <strong>Policy reminder:</strong> Meals per-diem cap $75/day solo, $120/day with clients. Lodging cap $450/night (major metro approved). All receipts &ge;$25 must be attached. Client entertainment requires names of all attendees. Amounts over $500 require VP approval prior to incurring.
+  </p>
+
+  <!-- Approval Block -->
+  <h2 style="margin-bottom:0.75rem;">Approval Chain</h2>
+  <div class="approval-grid">
+    <div class="approval-card">
+      <div class="appr-header">Employee</div>
+      <div class="appr-body">
+        <div class="appr-row"><strong>Jordan Whitmore</strong>Sales &amp; BD Director</div>
+        <div class="appr-row">I certify these expenses are accurate, business-related, and comply with company policy.</div>
+        <div class="sig-line"><span class="sig-label">Signature &amp; Date</span></div>
+      </div>
+    </div>
+    <div class="approval-card">
+      <div class="appr-header">Manager Approval</div>
+      <div class="appr-body">
+        <div class="appr-row"><strong>{{PREPARED_BY}}</strong>VP, Revenue</div>
+        <div class="appr-row">I approve this expense report and confirm business purpose.</div>
+        <div class="sig-line"><span class="sig-label">Signature &amp; Date</span></div>
+      </div>
+    </div>
+    <div class="approval-card">
+      <div class="appr-header">Finance / AP</div>
+      <div class="appr-body">
+        <div class="appr-row"><strong>Accounts Payable</strong>Finance Operations</div>
+        <div class="appr-row">Amount approved for payment. Reimbursement via next payroll cycle.</div>
+        <div class="sig-line"><span class="sig-label">Processed By &amp; Date</span></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="doc-footer">
+    <span>Northwind Capital &mdash; Finance &amp; Accounting</span>
+    <span>Period: {{PERIOD}}</span>
+    <span>Prepared by: {{PREPARED_BY}}</span>
+    <span>v{{VERSION}}</span>
+  </footer>
+
+</div>
+</body>
+</html>

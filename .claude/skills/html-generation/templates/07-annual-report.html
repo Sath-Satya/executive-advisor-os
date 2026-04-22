@@ -1,0 +1,463 @@
+<!--
+TEMPLATE: annual-report
+CATEGORY: Executive / Board
+USE WHEN: Producing a long-form annual report with a cover section, table of contents, narrative chapters, and CSS-only data visualisations for shareholders or regulators.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Annual Report {{YEAR}} — Meridian Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream-dark: #ede9e0;
+      --cream-mid: #f2efe9;
+      --navy: #0e1b2e;
+      --navy-mid: #1a2f4a;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --green: #2d7a5f;
+      --red: #9e2a2b;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream-dark);
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    /* ── Cover ── */
+    .cover-page {
+      background: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 5rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover-page::before {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 55%; height: 70%;
+      background: linear-gradient(135deg, transparent 40%, rgba(184,150,90,0.08) 100%);
+      pointer-events: none;
+    }
+    .cover-year {
+      font-family: 'DM Mono', monospace;
+      font-size: 8rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.04);
+      letter-spacing: -0.05em;
+      position: absolute;
+      bottom: 1rem; right: 2rem;
+      line-height: 1;
+      user-select: none;
+    }
+    .cover-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 1.5rem;
+    }
+    .cover-page h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+    .cover-tag {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.5);
+      max-width: 400px;
+      line-height: 1.55;
+      margin-bottom: 3rem;
+    }
+    .cover-bar {
+      width: 50px;
+      height: 3px;
+      background: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .cover-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Layout ── */
+    .report-body { max-width: 820px; margin: 0 auto; padding: 0 2.5rem 5rem; }
+
+    /* ── TOC ── */
+    .toc-section {
+      background: var(--cream);
+      padding: 3rem 3rem;
+      margin-bottom: 0;
+      border-bottom: 2px solid var(--gold);
+    }
+    .toc-section h2 {
+      font-size: 0.65rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .toc-list {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .toc-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.88rem;
+    }
+    .toc-item:nth-child(odd):not(:last-child) { padding-right: 2rem; }
+    .toc-item:nth-child(even) { padding-left: 2rem; border-left: 1px solid var(--border); }
+    .toc-item a {
+      color: var(--navy);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .toc-item a:hover { color: var(--gold); }
+    .toc-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    /* ── Chapter headings ── */
+    .chapter {
+      padding-top: 3.5rem;
+      margin-bottom: 3rem;
+    }
+    .chapter-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .chapter h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 2px solid var(--gold);
+    }
+    .chapter p {
+      font-size: 0.95rem;
+      color: var(--ink);
+      line-height: 1.8;
+      margin-bottom: 1.2rem;
+    }
+    .chapter p strong { color: var(--navy); }
+
+    /* ── Callout stat ── */
+    .stat-callout {
+      display: flex;
+      gap: 0.5rem;
+      align-items: baseline;
+      margin: 1.5rem 0;
+      padding: 1.2rem 1.5rem;
+      background: var(--cream-dark);
+      border-left: 3px solid var(--gold);
+    }
+    .stat-callout .stat-num {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .stat-callout .stat-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      max-width: 280px;
+    }
+
+    /* ── CSS bar chart ── */
+    .bar-chart {
+      margin: 2rem 0;
+    }
+    .bar-chart-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.7rem;
+    }
+    .bar-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      min-width: 50px;
+      text-align: right;
+    }
+    .bar-track {
+      flex: 1;
+      height: 22px;
+      background: var(--cream-dark);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      background: var(--navy);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      padding-left: 0.5rem;
+      transition: width 0;
+    }
+    .bar-fill.gold { background: var(--gold); }
+    .bar-fill.muted { background: var(--muted); }
+    .bar-value {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      color: rgba(255,255,255,0.8);
+      white-space: nowrap;
+    }
+
+    /* ── Financial table ── */
+    .fin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin: 1.5rem 0;
+    }
+    .fin-table thead th {
+      background: var(--navy);
+      color: rgba(255,255,255,0.75);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 400;
+      padding: 0.7rem 1rem;
+      text-align: right;
+    }
+    .fin-table thead th:first-child { text-align: left; }
+    .fin-table tbody tr { border-bottom: 1px solid var(--border); }
+    .fin-table tbody tr.total { border-top: 2px solid var(--gold); font-weight: 600; }
+    .fin-table tbody td {
+      padding: 0.75rem 1rem;
+      text-align: right;
+      color: var(--ink);
+    }
+    .fin-table tbody td:first-child { text-align: left; color: var(--navy); font-weight: 500; }
+    .positive { color: var(--green); }
+    .negative { color: var(--red); }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 4rem;
+      padding: 1.5rem 0;
+      border-top: 2px solid var(--gold);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      color: var(--muted);
+    }
+    footer strong { color: var(--navy); }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; }
+      .cover-page { min-height: auto; padding: 3cm; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .cover-year { display: none; }
+      .report-body { padding: 0 2cm 3cm; }
+      .fin-table thead th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      @page { size: A4 portrait; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover page -->
+  <div class="cover-page">
+    <span class="cover-year" aria-hidden="true">2027</span>
+    <p class="cover-eyebrow">Annual Report &mdash; Fiscal Year 2027</p>
+    <h1>Meridian Health Annual Report</h1>
+    <p class="cover-tag">Building trust, at scale, across a four-state region. Year one of our three-year digital transformation.</p>
+    <div class="cover-bar"></div>
+    <p class="cover-meta">MERIDIAN HEALTH &mdash; FISCAL YEAR ENDED 31 DECEMBER 2027 &mdash; {{DATE}}</p>
+  </div>
+
+  <!-- Table of Contents -->
+  <nav class="toc-section" aria-label="Table of contents">
+    <h2>Contents</h2>
+    <ul class="toc-list">
+      <li class="toc-item"><a href="#letter">Letter from the CEO</a><span class="toc-num">01</span></li>
+      <li class="toc-item"><a href="#performance">Business Performance</a><span class="toc-num">02</span></li>
+      <li class="toc-item"><a href="#digital">Digital Transformation</a><span class="toc-num">03</span></li>
+      <li class="toc-item"><a href="#financials">Financial Summary</a><span class="toc-num">04</span></li>
+      <li class="toc-item"><a href="#people">Our People</a><span class="toc-num">05</span></li>
+      <li class="toc-item"><a href="#outlook">2028 Outlook</a><span class="toc-num">06</span></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="report-body">
+
+      <article class="chapter" id="letter">
+        <p class="chapter-tag">01 &mdash; Letter from the CEO</p>
+        <h2>A Year of Decisions That Will Define a Decade</h2>
+        <p>Fiscal year 2027 was not the most comfortable year in Meridian Health's history. We made a $8.4 million bet on our digital future when many of our peers were waiting for certainty. <strong>We launched a new patient platform, reorganised our technology team, and navigated an ICD-11 migration that cost us more than we planned.</strong> We did all of this while growing revenue 18% year-over-year and achieving the highest patient satisfaction scores in our 22-year history.</p>
+        <p>I am not reporting a perfect year. The claim denial rate story is one I will address directly with our investors and our team. What I will say is this: we now have the root cause fully understood, the fix is in flight, and the underlying capability we built — a modern, API-first platform — means we will never be in this position again.</p>
+        <p>The year ahead is one of execution. The platform is built. The teams are aligned. The strategy is approved. 2028 is the year we prove that the investment was worth it.</p>
+      </article>
+
+      <article class="chapter" id="performance">
+        <p class="chapter-tag">02 &mdash; Business Performance</p>
+        <h2>Growth Metrics &amp; Operational Results</h2>
+
+        <div class="stat-callout">
+          <span class="stat-num">$148M</span>
+          <span class="stat-desc">Total revenue for FY 2027, up 18% from $125M in FY 2026</span>
+        </div>
+
+        <p>Revenue growth was driven primarily by the two new specialist clinics opened in Q1 2027, both of which reached capacity six weeks ahead of plan. The digital channel — still nascent — contributed $4.2M of incremental revenue through reduced no-shows and higher follow-up appointment rates.</p>
+
+        <div class="bar-chart" role="img" aria-label="Revenue by segment bar chart">
+          <p class="bar-chart-title">Revenue by Segment &mdash; FY 2027 ($M)</p>
+          <div class="bar-row">
+            <span class="bar-label">Primary</span>
+            <div class="bar-track"><div class="bar-fill" style="width:78%"><span class="bar-value">$78.4M</span></div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Specialist</span>
+            <div class="bar-track"><div class="bar-fill gold" style="width:48%"><span class="bar-value">$48.2M</span></div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Digital</span>
+            <div class="bar-track"><div class="bar-fill muted" style="width:14%"><span class="bar-value">$14.1M</span></div></div>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">Other</span>
+            <div class="bar-track"><div class="bar-fill muted" style="width:8%"><span class="bar-value">$7.3M</span></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter" id="digital">
+        <p class="chapter-tag">03 &mdash; Digital Transformation</p>
+        <h2>Platform Launch &amp; First-Year Results</h2>
+        <p>The patient portal launched on 1 June 2027 and registered 44,000 users within its first 45 days — 46% ahead of forecast. By year-end, portal monthly active users had reached 68,000, representing 22% of our total active patient base. The platform's AI scheduling assistant reduced average appointment wait time by 22%, which was the primary driver of the 11-point year-over-year NPS improvement.</p>
+        <p>The 55+ adoption challenge — digital appointment share at 8% for this cohort versus our 22% target — was the primary digital underperformance of the year. A targeted UX accessibility programme launched in August 2027 has improved this to 14% by year-end, with a 25% target by end of Q2 2028.</p>
+
+        <div class="stat-callout">
+          <span class="stat-num">48</span>
+          <span class="stat-desc">Patient NPS at year-end 2027, the highest in company history and 17 points above the industry median of 31</span>
+        </div>
+      </article>
+
+      <article class="chapter" id="financials">
+        <p class="chapter-tag">04 &mdash; Financial Summary</p>
+        <h2>Income Statement Highlights</h2>
+        <table class="fin-table">
+          <thead>
+            <tr>
+              <th>Line Item</th>
+              <th>FY 2026</th>
+              <th>FY 2027</th>
+              <th>Change</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total Revenue</td>
+              <td>$125.4M</td>
+              <td>$148.0M</td>
+              <td class="positive">+18.0%</td>
+            </tr>
+            <tr>
+              <td>Cost of Services</td>
+              <td>$82.2M</td>
+              <td>$97.5M</td>
+              <td class="negative">+18.6%</td>
+            </tr>
+            <tr>
+              <td>Gross Profit</td>
+              <td>$43.2M</td>
+              <td>$50.5M</td>
+              <td class="positive">+16.9%</td>
+            </tr>
+            <tr>
+              <td>Operating Expenses</td>
+              <td>$28.1M</td>
+              <td>$34.8M</td>
+              <td class="negative">+23.8%</td>
+            </tr>
+            <tr>
+              <td>Platform Investment (one-time)</td>
+              <td>&mdash;</td>
+              <td>$8.4M</td>
+              <td>&mdash;</td>
+            </tr>
+            <tr class="total">
+              <td>Net Operating Income</td>
+              <td>$15.1M</td>
+              <td>$7.3M</td>
+              <td class="negative">&minus;51.7%</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="font-size:0.82rem; color:var(--muted);">Net operating income decline reflects the $8.4M platform investment classified as operating expense in FY 2027. On a normalised basis, operating income grew 4.2% year-over-year.</p>
+      </article>
+
+      <article class="chapter" id="outlook">
+        <p class="chapter-tag">06 &mdash; 2028 Outlook</p>
+        <h2>What the Board Has Approved for 2028</h2>
+        <p>The board has approved a 2028 plan built on three commitments: reaching 400,000 active patients through organic growth and the Phoenix market entry, delivering the revenue cycle automation that was deferred from 2027, and completing the FHIR R4 compliance work ahead of the CMS January 2028 deadline.</p>
+        <p>Revenue guidance for 2028 is $172-180M, reflecting 16-22% growth. The platform investment tailwind is expected to drive operating leverage: gross margin improvement from 34.1% to 37-38% as digital appointment share grows and administrative automation takes effect. Platform-related one-time expenses are substantially behind us.</p>
+      </article>
+
+    </div>
+  </main>
+
+  <footer>
+    <div><strong>Meridian Health</strong> &mdash; Annual Report FY 2027</div>
+    <div>Audience: Shareholders &amp; Regulators &nbsp;|&nbsp; {{DATE}} &nbsp;|&nbsp; {{VERSION}}</div>
+  </footer>
+
+</body>
+</html>

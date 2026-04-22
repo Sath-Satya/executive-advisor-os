@@ -1,0 +1,591 @@
+<!--
+TEMPLATE: technical-spec
+CATEGORY: Reports / Documents
+USE WHEN: Documenting a technical design specification with goals/non-goals, architecture diagram (SVG), data model, API endpoints, and rollout plan.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{SPEC_TITLE}} — Technical Spec</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #16202e;
+      --surface3: #1a2636;
+      --border: #1e2d3e;
+      --border2: #253545;
+      --primary: #3b9eff;
+      --primary-dim: rgba(59,158,255,0.12);
+      --accent: #2dd4a0;
+      --accent-dim: rgba(45,212,160,0.1);
+      --secondary: #a78bfa;
+      --secondary-dim: rgba(167,139,250,0.1);
+      --warn: #f0a050;
+      --warn-dim: rgba(240,160,80,0.1);
+      --error: #f06070;
+      --error-dim: rgba(240,96,112,0.1);
+      --text: #d0d8e4;
+      --text2: #a0aabb;
+      --muted: #8899ac;
+      --subtle: #556677;
+      --mono: 'DM Mono', 'Cascadia Code', 'Fira Code', monospace;
+      --sans: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* ── Header ── */
+    .spec-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 2.5rem 2rem 2rem; }
+    .hdr-inner { max-width: 960px; margin: 0 auto; }
+    .spec-badge-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .spec-type {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 3px;
+      border: 1px solid;
+    }
+    .spec-type.rfc { border-color: rgba(59,158,255,0.3); color: var(--primary); background: var(--primary-dim); }
+    .spec-type.design { border-color: rgba(167,139,250,0.3); color: var(--secondary); background: var(--secondary-dim); }
+    .spec-status { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); border: 1px solid rgba(45,212,160,0.25); padding: 0.2rem 0.5rem; border-radius: 3px; }
+    .spec-id { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+    h1 { font-size: 1.8rem; font-weight: 600; color: #fff; line-height: 1.25; margin-bottom: 0.75rem; }
+    .spec-desc { font-size: 0.95rem; color: var(--text2); max-width: 660px; margin-bottom: 1.5rem; }
+    .spec-meta { display: flex; flex-wrap: wrap; gap: 2rem; border-top: 1px solid var(--border); padding-top: 1.25rem; }
+    .spec-meta-label { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); display: block; margin-bottom: 0.2rem; }
+    .spec-meta-value { font-size: 0.875rem; color: var(--text2); }
+
+    /* ── TOC sidebar layout ── */
+    .spec-body {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 0;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    /* ── TOC sidebar ── */
+    .spec-toc {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 2rem 0;
+    }
+    .toc-heading {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      padding: 0 1.25rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+    .toc-nav { list-style: none; }
+    .toc-nav li { }
+    .toc-nav a {
+      display: block;
+      padding: 0.35rem 1.25rem;
+      font-size: 0.8rem;
+      font-family: var(--mono);
+      color: var(--muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .toc-nav a:hover { color: var(--primary); border-left-color: var(--primary); background: var(--primary-dim); }
+    .toc-nav .toc-section-label { padding: 0.75rem 1.25rem 0.25rem; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--subtle); display: block; }
+
+    /* ── Main content ── */
+    .spec-main { padding: 2.5rem 2.5rem 4rem; }
+    .spec-section { margin-bottom: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+    .spec-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .section-eyebrow { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--primary); display: block; margin-bottom: 0.4rem; }
+    h2 { font-size: 1.2rem; font-weight: 600; color: #fff; line-height: 1.3; margin-bottom: 1.25rem; }
+    h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-top: 1.75rem; margin-bottom: 0.5rem; padding-left: 0.75rem; border-left: 2px solid var(--primary); }
+    h4 { font-size: 0.875rem; font-weight: 600; color: var(--text2); margin-top: 1.25rem; margin-bottom: 0.4rem; }
+    p { margin-bottom: 1rem; color: var(--text2); font-size: 0.925rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Goals/Non-goals ── */
+    .goals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 1.25rem 0; }
+    .goals-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem 1.5rem; }
+    .goals-card-title { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; display: block; }
+    .goals-card.goals .goals-card-title { color: var(--accent); }
+    .goals-card.non-goals .goals-card-title { color: var(--error); }
+    .goals-list { list-style: none; }
+    .goals-list li { padding: 0.35rem 0 0.35rem 1.25rem; position: relative; font-size: 0.875rem; color: var(--text2); border-bottom: 1px solid var(--border); }
+    .goals-list li:last-child { border-bottom: none; }
+    .goals-card.goals .goals-list li::before { content: '+'; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); font-weight: 700; }
+    .goals-card.non-goals .goals-list li::before { content: '-'; position: absolute; left: 0; color: var(--error); font-family: var(--mono); font-weight: 700; }
+
+    /* ── Architecture diagram ── */
+    .arch-figure { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem; margin: 1.25rem 0; overflow: hidden; }
+    .arch-figure svg { width: 100%; display: block; }
+    figcaption { font-size: 0.78rem; color: var(--muted); font-style: italic; text-align: center; margin-top: 0.75rem; }
+
+    /* ── Code block ── */
+    .code-block { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; margin: 1.25rem 0; overflow: hidden; }
+    .code-header { background: rgba(255,255,255,0.04); padding: 0.5rem 1rem; display: flex; align-items: center; gap: 0.75rem; border-bottom: 1px solid var(--border); }
+    .code-lang { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); }
+    .code-caption { font-size: 0.75rem; color: var(--muted); }
+    .code-block pre { padding: 1.25rem 1.5rem; overflow-x: auto; font-family: var(--mono); font-size: 0.8rem; line-height: 1.6; color: #c9d1d9; tab-size: 2; }
+    .kw { color: #79c0ff; }
+    .str { color: #a5d6ff; }
+    .cm { color: #6b8099; }
+    .tp { color: #f0983a; }
+    .fn { color: #d2a8ff; }
+    .num { color: #79c0ff; }
+
+    /* ── Data model table ── */
+    .table-wrap { overflow-x: auto; margin: 1.25rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    caption { text-align: left; font-size: 0.72rem; font-family: var(--mono); color: var(--muted); margin-bottom: 0.5rem; }
+    th { background: var(--surface2); color: var(--text); font-weight: 500; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.65rem 1rem; text-align: left; border-bottom: 2px solid var(--border2); }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text2); }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .type-tag { font-family: var(--mono); font-size: 0.72rem; color: var(--secondary); }
+    .pk-tag { font-family: var(--mono); font-size: 0.62rem; color: var(--warn); background: var(--warn-dim); padding: 0.1rem 0.35rem; border-radius: 2px; }
+    .fk-tag { font-family: var(--mono); font-size: 0.62rem; color: var(--primary); background: var(--primary-dim); padding: 0.1rem 0.35rem; border-radius: 2px; }
+    .req-tag { font-family: var(--mono); font-size: 0.62rem; color: var(--accent); background: var(--accent-dim); padding: 0.1rem 0.35rem; border-radius: 2px; }
+
+    /* ── API endpoint table ── */
+    .method { display: inline-block; padding: 0.15rem 0.45rem; border-radius: 3px; font-family: var(--mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.04em; }
+    .get { background: rgba(45,212,160,0.12); color: var(--accent); }
+    .post { background: var(--primary-dim); color: var(--primary); }
+    .put { background: var(--warn-dim); color: var(--warn); }
+    .delete { background: var(--error-dim); color: var(--error); }
+    .patch { background: var(--secondary-dim); color: var(--secondary); }
+    .endpoint-path { font-family: var(--mono); font-size: 0.82rem; color: var(--text); }
+
+    /* ── Callout ── */
+    .callout { padding: 1rem 1.25rem; border-radius: 4px; margin: 1.25rem 0; font-size: 0.875rem; }
+    .callout-info { background: var(--primary-dim); border-left: 3px solid var(--primary); color: var(--text2); }
+    .callout-warn { background: var(--warn-dim); border-left: 3px solid var(--warn); color: var(--text2); }
+    .callout-title { font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem; display: block; }
+    .callout-info .callout-title { color: var(--primary); }
+    .callout-warn .callout-title { color: var(--warn); }
+
+    /* ── Rollout phases ── */
+    .rollout-phases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.25rem 0; }
+    .rollout-phase { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem; }
+    .phase-num { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); display: block; margin-bottom: 0.4rem; }
+    .phase-name { font-weight: 600; font-size: 0.9rem; color: var(--text); margin-bottom: 0.25rem; display: block; }
+    .phase-window { font-family: var(--mono); font-size: 0.72rem; color: var(--primary); margin-bottom: 0.75rem; display: block; }
+    .phase-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── Footer ── */
+    .spec-footer { background: var(--surface); border-top: 1px solid var(--border); color: var(--muted); padding: 1.5rem 2rem; font-size: 0.75rem; font-family: var(--mono); }
+    .spec-footer .hdr-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+    .footer-brand { color: var(--primary); }
+    .footer-div { color: var(--border2); margin: 0 0.5rem; }
+
+    /* ── Print ── */
+    @media print {
+      @page { margin: 2cm; size: A4; }
+      body { background: #fff; color: #111; font-size: 10pt; }
+      .spec-body { display: block; }
+      .spec-toc { display: none; }
+      .spec-main { padding: 0; }
+      .spec-header { background: #fff; border-bottom: 2px solid #333; }
+      h1 { color: #111; }
+      h2, h3, h4 { color: #111; }
+      p, td { color: #333; }
+      .code-block { background: #f4f4f4; border-color: #ccc; }
+      .code-block pre { color: #111; }
+      .arch-figure, .goals-card, .rollout-phase { background: #f9f9f9; border-color: #ccc; }
+      .spec-footer { background: #fff; border-top: 1px solid #ccc; color: #555; }
+      .spec-section { break-inside: avoid; border-bottom: 1px solid #ccc; }
+      .goals-grid, .rollout-phases { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="spec-header">
+    <div class="hdr-inner">
+      <div class="spec-badge-row">
+        <span class="spec-type design">Design Doc</span>
+        <span class="spec-status">Review</span>
+        <span class="spec-id">{{SPEC_ID}}</span>
+      </div>
+      <h1>{{SPEC_TITLE}}</h1>
+      <p class="spec-desc">{{SPEC_DESCRIPTION}} — Technical design specification covering architecture, data model, API surface, and phased rollout plan. Pending engineering review and architecture sign-off.</p>
+      <div class="spec-meta">
+        <div><span class="spec-meta-label">Author</span><span class="spec-meta-value">{{AUTHOR}}</span></div>
+        <div><span class="spec-meta-label">Reviewers</span><span class="spec-meta-value">{{REVIEWERS}}</span></div>
+        <div><span class="spec-meta-label">Created</span><span class="spec-meta-value">{{DATE}}</span></div>
+        <div><span class="spec-meta-label">Target Launch</span><span class="spec-meta-value">{{TARGET_LAUNCH}}</span></div>
+        <div><span class="spec-meta-label">Version</span><span class="spec-meta-value">{{VERSION}}</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Body with TOC sidebar ── -->
+  <div class="spec-body">
+
+    <!-- TOC Sidebar -->
+    <nav class="spec-toc" aria-label="Document navigation">
+      <span class="toc-heading">Contents</span>
+      <ul class="toc-nav">
+        <li><a href="#goals">Goals &amp; Non-Goals</a></li>
+        <li><a href="#background">Background</a></li>
+        <li><span class="toc-section-label">Design</span></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#data-model">Data Model</a></li>
+        <li><a href="#api">API Endpoints</a></li>
+        <li><a href="#auth">Auth &amp; Security</a></li>
+        <li><span class="toc-section-label">Quality</span></li>
+        <li><a href="#testing">Testing Strategy</a></li>
+        <li><a href="#observability">Observability</a></li>
+        <li><span class="toc-section-label">Delivery</span></li>
+        <li><a href="#rollout">Rollout Plan</a></li>
+        <li><a href="#risks">Risks &amp; Mitigations</a></li>
+        <li><a href="#open-questions">Open Questions</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="spec-main">
+
+      <!-- Goals -->
+      <section class="spec-section" id="goals">
+        <span class="section-eyebrow">Section 01</span>
+        <h2>Goals and Non-Goals</h2>
+        <div class="goals-grid">
+          <div class="goals-card goals">
+            <span class="goals-card-title">Goals (In Scope)</span>
+            <ul class="goals-list">
+              <li>Provide a real-time AI evidence retrieval API for PA reviewers consuming FHIR-formatted clinical data</li>
+              <li>Return a structured evidence bundle within 5 seconds at p95 under production load</li>
+              <li>Support multi-tenant isolation: each health plan's data is logically separated</li>
+              <li>Provide a guideline-matched recommendation with confidence score and source citations</li>
+              <li>Log every inference request with full provenance for HIPAA audit trail compliance</li>
+            </ul>
+          </div>
+          <div class="goals-card non-goals">
+            <span class="goals-card-title">Non-Goals (Explicitly Excluded)</span>
+            <ul class="goals-list">
+              <li>Replace clinical reviewer judgment — AI recommendations are advisory only</li>
+              <li>Support real-time streaming (WebSocket) in this phase — REST only</li>
+              <li>Build the reviewer UI — that is owned by the PA workflow team</li>
+              <li>Train or fine-tune the underlying LLM — we use the hosted inference endpoint</li>
+              <li>Handle inbound provider submissions — out of scope for this API</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Background -->
+      <section class="spec-section" id="background">
+        <span class="section-eyebrow">Section 02</span>
+        <h2>Background and Motivation</h2>
+        <p>Clinical reviewers currently spend 41 minutes per PA request gathering evidence from six disparate source systems. This spec defines the API that consolidates that retrieval into a single endpoint, formats the result as a structured evidence bundle, and runs it through an AI model to produce a guideline-anchored summary.</p>
+        <p>The AI Evidence API will be consumed by the PA Review UI (owned by the workflow team) and must meet latency, availability, and compliance requirements appropriate for a system that directly supports clinical determinations affecting member care.</p>
+
+        <div class="callout callout-info">
+          <span class="callout-title">Dependency</span>
+          This spec assumes the FHIR Data Aggregation Service (spec TECH-2024-041) is deployed and reachable. The AI Evidence API does not own the source data — it queries and transforms FHIR bundles produced upstream.
+        </div>
+      </section>
+
+      <!-- Architecture -->
+      <section class="spec-section" id="architecture">
+        <span class="section-eyebrow">Section 03</span>
+        <h2>System Architecture</h2>
+        <p>The AI Evidence API is a stateless Python FastAPI service deployed as a containerized workload on Azure Container Apps. It orchestrates calls to the FHIR Aggregation Service, the AI Inference endpoint (Azure OpenAI), and the Audit Log Service, then assembles and returns a structured JSON response.</p>
+
+        <figure class="arch-figure" aria-label="Architecture diagram showing PA Review UI calling AI Evidence API which calls three downstream services">
+          <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI Evidence API architecture. PA Review UI calls AI Evidence API. AI Evidence API calls FHIR Aggregation Service, Azure OpenAI, and Audit Log Service.">
+            <defs>
+              <marker id="arrow2" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L7,3 z" fill="#3b9eff"/>
+              </marker>
+            </defs>
+            <!-- PA Review UI -->
+            <rect x="10" y="100" width="120" height="60" rx="6" fill="#16202e" stroke="#253545" stroke-width="1.5"/>
+            <text x="70" y="126" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#a0aabb">PA Review</text>
+            <text x="70" y="142" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#a0aabb">UI</text>
+
+            <!-- AI Evidence API (center) -->
+            <rect x="190" y="80" width="160" height="100" rx="6" fill="#16202e" stroke="#3b9eff" stroke-width="2"/>
+            <text x="270" y="122" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" fill="#3b9eff" font-weight="600">AI Evidence</text>
+            <text x="270" y="140" text-anchor="middle" font-family="DM Mono, monospace" font-size="10" fill="#3b9eff" font-weight="600">API</text>
+            <text x="270" y="160" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="8" fill="#556677">FastAPI / Container Apps</text>
+
+            <!-- FHIR Service -->
+            <rect x="430" y="30" width="130" height="55" rx="6" fill="#16202e" stroke="#253545" stroke-width="1.5"/>
+            <text x="495" y="54" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#a0aabb">FHIR Aggregation</text>
+            <text x="495" y="70" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#a0aabb">Service</text>
+
+            <!-- Azure OpenAI -->
+            <rect x="430" y="110" width="130" height="55" rx="6" fill="#16202e" stroke="#253545" stroke-width="1.5"/>
+            <text x="495" y="134" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#a0aabb">Azure OpenAI</text>
+            <text x="495" y="150" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#2dd4a0">GPT-4o</text>
+
+            <!-- Audit Log -->
+            <rect x="430" y="190" width="130" height="55" rx="6" fill="#16202e" stroke="#253545" stroke-width="1.5"/>
+            <text x="495" y="214" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#a0aabb">Audit Log</text>
+            <text x="495" y="230" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#a0aabb">Service</text>
+
+            <!-- Arrows -->
+            <line x1="130" y1="130" x2="188" y2="130" stroke="#3b9eff" stroke-width="1.5" marker-end="url(#arrow2)"/>
+            <line x1="350" y1="108" x2="428" y2="70" stroke="#3b9eff" stroke-width="1.5" marker-end="url(#arrow2)"/>
+            <line x1="350" y1="130" x2="428" y2="137" stroke="#3b9eff" stroke-width="1.5" marker-end="url(#arrow2)"/>
+            <line x1="350" y1="152" x2="428" y2="200" stroke="#3b9eff" stroke-width="1.5" marker-end="url(#arrow2)"/>
+
+            <!-- Labels -->
+            <text x="155" y="122" font-family="DM Mono, monospace" font-size="8" fill="#3b9eff">REST</text>
+            <text x="372" y="85" font-family="DM Mono, monospace" font-size="8" fill="#556677">FHIR R4</text>
+            <text x="372" y="130" font-family="DM Mono, monospace" font-size="8" fill="#556677">HTTPS</text>
+            <text x="372" y="172" font-family="DM Mono, monospace" font-size="8" fill="#556677">async</text>
+
+            <!-- Azure boundary -->
+            <rect x="420" y="15" width="280" height="245" rx="8" fill="none" stroke="#1e2d3e" stroke-width="1" stroke-dasharray="4,4"/>
+            <text x="555" y="252" text-anchor="middle" font-family="DM Mono, monospace" font-size="8" fill="#556677">Azure Cloud</text>
+
+            <!-- Cache box -->
+            <rect x="580" y="95" width="90" height="40" rx="4" fill="#111820" stroke="#253545" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="625" y="112" text-anchor="middle" font-family="DM Mono, monospace" font-size="8" fill="#556677">Redis Cache</text>
+            <text x="625" y="126" text-anchor="middle" font-family="DM Mono, monospace" font-size="7" fill="#556677">30-min TTL</text>
+            <line x1="560" y1="137" x2="578" y2="122" stroke="#253545" stroke-width="1" stroke-dasharray="2,2"/>
+          </svg>
+          <figcaption>Figure 1. AI Evidence API architecture. The API orchestrates FHIR data retrieval, AI inference, and audit logging. Redis cache reduces FHIR re-fetching for same-member requests within 30 minutes.</figcaption>
+        </figure>
+      </section>
+
+      <!-- Data Model -->
+      <section class="spec-section" id="data-model">
+        <span class="section-eyebrow">Section 04</span>
+        <h2>Data Model</h2>
+        <p>The API does not own persistent state beyond the audit log. The core entities are the <code style="font-family:var(--mono);font-size:0.85em;color:var(--secondary);">EvidenceRequest</code> (input) and the <code style="font-family:var(--mono);font-size:0.85em;color:var(--secondary);">EvidenceBundle</code> (response). Both are defined as Pydantic models.</p>
+
+        <h3>EvidenceRequest Schema</h3>
+        <div class="table-wrap">
+          <table>
+            <caption>Table 1. EvidenceRequest — inbound request payload</caption>
+            <thead><tr><th scope="col">Field</th><th scope="col">Type</th><th scope="col">Required</th><th scope="col">Description</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-family:var(--mono);font-size:0.82em">pa_request_id</code></td><td><span class="type-tag">UUID</span></td><td><span class="req-tag">required</span></td><td>Unique identifier for the PA request from the workflow system</td></tr>
+              <tr><td><code style="font-family:var(--mono);font-size:0.82em">member_id</code></td><td><span class="type-tag">str</span></td><td><span class="req-tag">required</span></td><td>Health plan member identifier (not SSN)</td></tr>
+              <tr><td><code style="font-family:var(--mono);font-size:0.82em">procedure_code</code></td><td><span class="type-tag">str</span></td><td><span class="req-tag">required</span></td><td>CPT or HCPCS code for the requested procedure</td></tr>
+              <tr><td><code style="font-family:var(--mono);font-size:0.82em">guideline_version</code></td><td><span class="type-tag">str</span></td><td><span class="req-tag">required</span></td><td>InterQual or MCG guideline version ID to apply</td></tr>
+              <tr><td><code style="font-family:var(--mono);font-size:0.82em">lookback_days</code></td><td><span class="type-tag">int</span></td><td>optional</td><td>Claims/notes lookback window. Default: 365</td></tr>
+              <tr><td><code style="font-family:var(--mono);font-size:0.82em">reviewer_id</code></td><td><span class="type-tag">str</span></td><td><span class="req-tag">required</span></td><td>Credentialed reviewer ID for audit trail</td></tr>
+              <tr><td><code style="font-family:var(--mono);font-size:0.82em">plan_id</code></td><td><span class="type-tag">str</span> <span class="pk-tag">tenant</span></td><td><span class="req-tag">required</span></td><td>Health plan tenant identifier — used for data isolation</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>EvidenceBundle Response Schema</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">JSON</span>
+            <span class="code-caption">EvidenceBundle — success response (200)</span>
+          </div>
+          <pre>{
+  <span class="str">"request_id"</span>: <span class="str">"uuid-v4"</span>,
+  <span class="str">"pa_request_id"</span>: <span class="str">"uuid-v4"</span>,
+  <span class="str">"generated_at"</span>: <span class="str">"2024-11-01T09:22:41Z"</span>,
+  <span class="str">"model_version"</span>: <span class="str">"gpt-4o-2024-08-06"</span>,
+  <span class="str">"guideline_version"</span>: <span class="str">"interqual-2024.q3"</span>,
+  <span class="str">"recommendation"</span>: {
+    <span class="str">"verdict"</span>: <span class="str">"approve"</span>,  <span class="cm">// approve | pend | deny</span>
+    <span class="str">"confidence"</span>: <span class="num">0.87</span>,
+    <span class="str">"rationale"</span>: <span class="str">"Member meets 4 of 4 mandatory criteria..."</span>
+  },
+  <span class="str">"evidence"</span>: {
+    <span class="str">"criteria_met"</span>: [<span class="str">"C1"</span>, <span class="str">"C2"</span>, <span class="str">"C4"</span>],
+    <span class="str">"criteria_unmet"</span>: [],
+    <span class="str">"criteria_unclear"</span>: [<span class="str">"C3"</span>],
+    <span class="str">"source_documents"</span>: [
+      { <span class="str">"type"</span>: <span class="str">"claim"</span>, <span class="str">"id"</span>: <span class="str">"CLM-20241001-4892"</span>, <span class="str">"relevance"</span>: <span class="str">"high"</span> }
+    ]
+  },
+  <span class="str">"audit_token"</span>: <span class="str">"sha256-hash-of-request-params"</span>
+}</pre>
+        </div>
+      </section>
+
+      <!-- API Endpoints -->
+      <section class="spec-section" id="api">
+        <span class="section-eyebrow">Section 05</span>
+        <h2>API Endpoints</h2>
+        <p>All endpoints are versioned under <code style="font-family:var(--mono);font-size:0.85em;color:var(--secondary);">/api/v1/</code> and require JWT bearer authentication. Rate limiting: 60 requests per reviewer per minute.</p>
+
+        <div class="table-wrap">
+          <table>
+            <caption>Table 2. AI Evidence API endpoint inventory</caption>
+            <thead>
+              <tr><th scope="col">Method</th><th scope="col">Path</th><th scope="col">Description</th><th scope="col">Auth</th><th scope="col">SLA</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="method post">POST</span></td>
+                <td class="endpoint-path">/api/v1/evidence</td>
+                <td>Generate evidence bundle for a PA request. Primary endpoint.</td>
+                <td>JWT + plan scope</td>
+                <td>p95 &lt; 5s</td>
+              </tr>
+              <tr>
+                <td><span class="method get">GET</span></td>
+                <td class="endpoint-path">/api/v1/evidence/{request_id}</td>
+                <td>Retrieve a previously generated evidence bundle by its request ID (cached for 30 min).</td>
+                <td>JWT + plan scope</td>
+                <td>p95 &lt; 200ms</td>
+              </tr>
+              <tr>
+                <td><span class="method get">GET</span></td>
+                <td class="endpoint-path">/api/v1/guidelines</td>
+                <td>List available guideline versions the API can apply.</td>
+                <td>JWT</td>
+                <td>p95 &lt; 100ms</td>
+              </tr>
+              <tr>
+                <td><span class="method get">GET</span></td>
+                <td class="endpoint-path">/api/v1/health</td>
+                <td>Health check — returns service status and upstream dependency status.</td>
+                <td>None</td>
+                <td>p95 &lt; 50ms</td>
+              </tr>
+              <tr>
+                <td><span class="method get">GET</span></td>
+                <td class="endpoint-path">/api/v1/audit/{request_id}</td>
+                <td>Retrieve the full audit trail for an evidence request. HIPAA compliance endpoint.</td>
+                <td>JWT + audit scope</td>
+                <td>p95 &lt; 500ms</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Auth & Security -->
+      <section class="spec-section" id="auth">
+        <span class="section-eyebrow">Section 06</span>
+        <h2>Authentication and Security</h2>
+        <p>All requests require a short-lived JWT issued by the health plan's identity provider (Azure Entra External ID). The JWT must contain a <code style="font-family:var(--mono);font-size:0.85em;color:var(--secondary);">plan_id</code> claim that matches the request body — the API enforces this at the middleware layer to prevent cross-tenant data access.</p>
+
+        <div class="callout callout-warn">
+          <span class="callout-title">HIPAA Requirement</span>
+          All API calls that touch ePHI must be logged with the reviewer ID, plan ID, member ID (hashed), and audit token. The audit log write is synchronous — a failed audit log write returns a 500 and does not return the evidence bundle.
+        </div>
+
+        <p>TLS 1.2 minimum is enforced at the Azure API Management gateway. Secrets are stored in Azure Key Vault and loaded via Managed Identity — no secrets in environment variables or application configuration files.</p>
+      </section>
+
+      <!-- Testing -->
+      <section class="spec-section" id="testing">
+        <span class="section-eyebrow">Section 07</span>
+        <h2>Testing Strategy</h2>
+        <p>Testing follows the project's TDD-workflow requirements. The AI inference layer is tested against a deterministic mock that returns fixture responses — tests do not call the live Azure OpenAI endpoint.</p>
+        <ul style="margin: 0.75rem 0 0 1.5rem; color: var(--text2); font-size: 0.9rem;">
+          <li style="margin-bottom: 0.5rem;"><strong style="color:var(--text)">Unit tests</strong> — Pydantic model validation, evidence parsing, guideline matching logic. Target: 85% line coverage.</li>
+          <li style="margin-bottom: 0.5rem;"><strong style="color:var(--text)">Integration tests</strong> — FHIR client against a local FHIR R4 test server. Audit log write verification.</li>
+          <li style="margin-bottom: 0.5rem;"><strong style="color:var(--text)">Contract tests</strong> — Pact consumer contracts against the PA Review UI team's expected request/response shapes.</li>
+          <li><strong style="color:var(--text)">Load tests</strong> — k6 load test at 1,000 concurrent requests. P95 latency must remain below 5s. Scheduled to run in staging before each production deploy.</li>
+        </ul>
+      </section>
+
+      <!-- Observability -->
+      <section class="spec-section" id="observability">
+        <span class="section-eyebrow">Section 08</span>
+        <h2>Observability</h2>
+        <p>All telemetry is emitted to Azure Monitor via OpenTelemetry SDK. Each request generates a trace with spans for FHIR retrieval, cache lookup, AI inference, and audit log write. The following metrics are recorded per request:</p>
+        <ul style="margin: 0.75rem 0 0 1.5rem; color: var(--text2); font-size: 0.9rem;">
+          <li style="margin-bottom: 0.4rem;"><code style="font-family:var(--mono);font-size:0.82em;color:var(--secondary);">evidence_api.request.duration_ms</code> — end-to-end latency histogram</li>
+          <li style="margin-bottom: 0.4rem;"><code style="font-family:var(--mono);font-size:0.82em;color:var(--secondary);">evidence_api.fhir.retrieval_ms</code> — FHIR upstream latency</li>
+          <li style="margin-bottom: 0.4rem;"><code style="font-family:var(--mono);font-size:0.82em;color:var(--secondary);">evidence_api.ai.confidence_score</code> — AI confidence distribution</li>
+          <li style="margin-bottom: 0.4rem;"><code style="font-family:var(--mono);font-size:0.82em;color:var(--secondary);">evidence_api.cache.hit_rate</code> — Redis cache efficiency</li>
+          <li><code style="font-family:var(--mono);font-size:0.82em;color:var(--secondary);">evidence_api.error.rate</code> — error rate by type (upstream, validation, timeout)</li>
+        </ul>
+      </section>
+
+      <!-- Rollout Plan -->
+      <section class="spec-section" id="rollout">
+        <span class="section-eyebrow">Section 09</span>
+        <h2>Rollout Plan</h2>
+        <div class="rollout-phases">
+          <div class="rollout-phase">
+            <span class="phase-num">Phase 1</span>
+            <span class="phase-name">Internal Pilot</span>
+            <span class="phase-window">{{PHASE_1_DATE}}</span>
+            <p class="phase-desc">Deploy to staging. 5 internal reviewers using the new API alongside the legacy manual process. Compare evidence bundle accuracy against manual gold standard. No real-time traffic.</p>
+          </div>
+          <div class="rollout-phase">
+            <span class="phase-num">Phase 2</span>
+            <span class="phase-name">Controlled Rollout</span>
+            <span class="phase-window">{{PHASE_2_DATE}}</span>
+            <p class="phase-desc">Enable for 20% of production PA requests via feature flag. Monitor latency, error rate, and reviewer override rate. Full rollback capability within 5 minutes.</p>
+          </div>
+          <div class="rollout-phase">
+            <span class="phase-num">Phase 3</span>
+            <span class="phase-name">General Availability</span>
+            <span class="phase-window">{{PHASE_3_DATE}}</span>
+            <p class="phase-desc">Enable for 100% of PA requests. Decommission legacy manual evidence-gathering workflow. 30-day hypercare period with elevated monitoring.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Risks -->
+      <section class="spec-section" id="risks">
+        <span class="section-eyebrow">Section 10</span>
+        <h2>Risks and Mitigations</h2>
+        <div class="table-wrap">
+          <table>
+            <caption>Table 3. Design risks and mitigation strategies</caption>
+            <thead><tr><th scope="col">Risk</th><th scope="col">Likelihood</th><th scope="col">Mitigation</th></tr></thead>
+            <tbody>
+              <tr><td>Azure OpenAI rate limit reached during peak hours (09:00–11:00 PST)</td><td>Medium</td><td>Request Azure quota increase before Phase 2. Implement exponential backoff with jitter. Queue overflow falls back to evidence retrieval without AI recommendation.</td></tr>
+              <tr><td>FHIR Aggregation Service latency spikes causing p95 breach</td><td>Medium</td><td>Set 3-second timeout on FHIR call. Partial response (cached prior data) returned if FHIR is slow. Cache hit rate target: 35% within 60 days.</td></tr>
+              <tr><td>AI model output format inconsistency breaks evidence parser</td><td>Low</td><td>Structured output mode enforced via JSON schema constraint on Azure OpenAI request. Parser unit-tested against 200 golden-set examples.</td></tr>
+              <tr><td>Memory leak in inference pipeline (per post-mortem INC-2024-047)</td><td>Low</td><td>30-minute post-deploy soak test mandatory. Container memory limit set to 2GB with OOM restart policy.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Open Questions -->
+      <section class="spec-section" id="open-questions">
+        <span class="section-eyebrow">Section 11</span>
+        <h2>Open Questions</h2>
+        <ol style="margin: 0 0 0 1.5rem; color: var(--text2); font-size: 0.9rem;">
+          <li style="margin-bottom: 0.75rem;"><strong style="color:var(--text)">Guideline version pinning:</strong> Should the API always use the latest guideline version, or should the workflow system pass a specific version? Pinning ensures reproducibility; latest ensures current clinical standards. Decision needed from clinical leadership by {{DECISION_DATE}}.</li>
+          <li style="margin-bottom: 0.75rem;"><strong style="color:var(--text)">Audit log retention:</strong> Legal requires 7 years. Compliance requires 6 years. Using the more restrictive (7 years) for now — confirm with legal counsel.</li>
+          <li><strong style="color:var(--text)">Confidence threshold for auto-approval:</strong> Should requests above 0.95 confidence be auto-approved without reviewer touch? Requires clinical governance review before any automation is implemented. Out of scope for this spec.</li>
+        </ol>
+      </section>
+
+    </main>
+  </div><!-- .spec-body -->
+
+  <!-- ── Footer ── -->
+  <footer class="spec-footer">
+    <div class="hdr-inner">
+      <span><span class="footer-brand">SponAItech</span> <span class="footer-div">|</span> html-generation skill v1.1</span>
+      <span>Version {{VERSION}} <span class="footer-div">|</span> {{DATE}} <span class="footer-div">|</span> {{CLASSIFICATION}}</span>
+    </div>
+  </footer>
+
+</body>
+</html>

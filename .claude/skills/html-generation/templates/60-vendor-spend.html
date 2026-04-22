@@ -1,0 +1,504 @@
+<!--
+TEMPLATE: vendor-spend
+CATEGORY: Finance
+USE WHEN: Analyzing vendor spend across the supplier base — top 20 vendors, category concentration, YoY change, contract status, and a CSS conic-gradient donut chart — for procurement or CFO review.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Spend Analysis &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --cream2: #ede9e0;
+      --section-bg: #e8e4dc;
+      --fav: #2d6a4f;
+      --fav-bg: #f0faf5;
+      --unfav: #b91c1c;
+      --unfav-bg: #fff5f5;
+      --caution: #92400e;
+      --caution-bg: #fffbeb;
+      /* Category palette */
+      --c1: #3b9eff; /* Cloud & Infra */
+      --c2: #2dd4a0; /* SaaS Tools */
+      --c3: #b8965a; /* Professional Services */
+      --c4: #a78bfa; /* HR & Benefits */
+      --c5: #f0a050; /* Marketing */
+      --c6: #64748b; /* Other */
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .page { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+
+    /* Header */
+    .doc-header {
+      border-top: 4px solid var(--navy);
+      padding-top: 1.75rem;
+      margin-bottom: 2rem;
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+    h1 { font-size: 1.55rem; font-weight: 700; color: var(--navy); letter-spacing: -0.4px; }
+    .doc-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .meta-right { text-align: right; font-size: 0.78rem; color: var(--muted); line-height: 1.9; flex-shrink: 0; }
+    .meta-right strong { color: var(--ink); }
+
+    /* Summary KPI bar */
+    .kpi-bar {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 640px) { .kpi-bar { grid-template-columns: repeat(2, 1fr); } }
+    .kpi-card {
+      background: #fff; padding: 0.9rem 1.1rem;
+      border-right: 1px solid var(--border);
+    }
+    .kpi-card:last-child { border-right: none; }
+    .kpi-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; }
+    .kpi-value { font-size: 1.5rem; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--navy); font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .kpi-sub { font-size: 0.72rem; margin-top: 0.25rem; }
+    .kpi-sub.pos { color: var(--fav); }
+    .kpi-sub.neg { color: var(--unfav); }
+    .kpi-sub.muted { color: var(--muted); }
+
+    /* Two-col layout: table + chart */
+    .layout { display: grid; grid-template-columns: 1fr 260px; gap: 2rem; align-items: start; }
+    @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } }
+
+    /* Section heading */
+    .section-header {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #fff;
+      background: var(--navy);
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0;
+    }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.8rem; font-variant-numeric: tabular-nums;
+    }
+    caption { font-size: 0.68rem; color: var(--muted); text-align: left; padding-bottom: 0.45rem; font-style: italic; }
+    thead tr { background: var(--cream2); }
+    thead th {
+      padding: 0.45rem 0.7rem;
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; min-width: 28px; }
+    thead th.th-left { text-align: left; min-width: 140px; }
+    thead th:not(.th-left):not(:first-child) { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: var(--cream2); }
+    tbody td { padding: 0.45rem 0.7rem; }
+    tbody td.td-right { text-align: right; font-family: 'DM Mono', monospace; font-size: 0.78rem; }
+    tbody td.td-center { text-align: center; }
+    tr.total-row td {
+      background: var(--navy); color: #fff; font-weight: 700;
+      border-top: 2px solid var(--gold);
+    }
+    tr.total-row td.td-right { text-align: right; font-family: 'DM Mono', monospace; }
+
+    /* Rank number */
+    .rank { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--muted); font-weight: 500; }
+
+    /* Category dot */
+    .cat-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 0.35rem; vertical-align: middle; }
+
+    /* Status pill */
+    .pill { display: inline-block; padding: 0.1rem 0.45rem; border-radius: 10px; font-size: 0.68rem; font-weight: 600; }
+    .pill-ok  { background: var(--fav-bg); color: var(--fav); }
+    .pill-warn { background: var(--caution-bg); color: var(--caution); }
+    .pill-bad  { background: var(--unfav-bg); color: var(--unfav); }
+    .pill-muted { background: var(--cream2); color: var(--muted); }
+
+    /* YoY change */
+    .pos { color: var(--unfav); font-weight: 600; } /* spend increase = unfavorable */
+    .neg { color: var(--fav); font-weight: 600; }   /* spend decrease = favorable */
+    .neu { color: var(--muted); }
+
+    /* Right panel */
+    .right-panel { }
+
+    /* Donut chart (CSS conic-gradient) */
+    .donut-block {
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .donut-block h2 {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--navy);
+      margin-bottom: 1rem;
+    }
+    .donut-container {
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    }
+    .donut {
+      width: 140px; height: 140px; border-radius: 50%;
+      background: conic-gradient(
+        var(--c1) 0% 32%,
+        var(--c2) 32% 56%,
+        var(--c3) 56% 73%,
+        var(--c4) 73% 85%,
+        var(--c5) 85% 93%,
+        var(--c6) 93% 100%
+      );
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .donut-hole {
+      width: 80px; height: 80px; background: var(--cream2);
+      border-radius: 50%; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .donut-hole .total { font-size: 0.9rem; font-weight: 700; color: var(--navy); font-family: 'DM Mono', monospace; }
+    .donut-hole .label { font-size: 0.58rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .legend-list { width: 100%; }
+    .legend-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.3rem 0; border-bottom: 1px solid var(--border); font-size: 0.75rem;
+    }
+    .legend-row:last-child { border-bottom: none; }
+    .legend-left { display: flex; align-items: center; gap: 0.45rem; }
+    .legend-pct { font-family: 'DM Mono', monospace; font-weight: 600; color: var(--ink); font-size: 0.75rem; }
+
+    /* Concentration risk callout */
+    .risk-callout {
+      border-radius: 6px; padding: 0.85rem 1rem;
+      border-left: 4px solid var(--caution);
+      background: var(--caution-bg);
+    }
+    .risk-callout .callout-label {
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--caution); margin-bottom: 0.3rem;
+    }
+    .risk-callout .callout-title { font-weight: 600; font-size: 0.85rem; color: var(--ink); margin-bottom: 0.2rem; }
+    .risk-callout .callout-body { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 2rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      font-size: 0.7rem; color: var(--muted); flex-wrap: wrap; gap: 0.5rem;
+    }
+
+    @media print {
+      @page { size: A4 landscape; margin: 1.5cm; }
+      body { font-size: 10pt; background: #fff; }
+      .page { padding: 0; max-width: 100%; }
+      .layout { grid-template-columns: 1fr 220px; }
+      .section-header, tr.total-row td { background: #1c1a18 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="doc-header">
+    <div>
+      <p class="eyebrow">Northwind Capital &mdash; Procurement &amp; Finance</p>
+      <h1>Vendor Spend Analysis</h1>
+      <p class="doc-sub">FY2024 &nbsp;|&nbsp; Top 20 Vendors &nbsp;|&nbsp; USD thousands</p>
+    </div>
+    <div class="meta-right">
+      <strong>Annual Procurement Review</strong><br>
+      Prepared: {{PREPARED_BY}}<br>
+      v{{VERSION}} &nbsp;|&nbsp; {{PERIOD}}
+    </div>
+  </header>
+
+  <!-- KPI bar -->
+  <div class="kpi-bar">
+    <div class="kpi-card">
+      <div class="kpi-label">Total Spend (Top 20)</div>
+      <div class="kpi-value">$6.83M</div>
+      <div class="kpi-sub pos">&#9650; +11.4% vs FY2023</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">% of Total Opex</div>
+      <div class="kpi-value">30.7%</div>
+      <div class="kpi-sub muted">Total opex $22.3M</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Contracts Expiring &lt;90d</div>
+      <div class="kpi-value">4</div>
+      <div class="kpi-sub neg">Renewal action req.</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Top-5 Concentration</div>
+      <div class="kpi-value">54.2%</div>
+      <div class="kpi-sub neg">&#9650; High concentration</div>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- Main table -->
+    <div>
+      <div class="section-header">Top 20 Vendors by Annual Spend</div>
+      <div class="table-wrap">
+        <table aria-label="Top 20 vendors by annual spend — Northwind Capital FY2024">
+          <caption>USD thousands. YoY = change vs FY2023. Status = contract health. Exp = contract expiry.</caption>
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col" class="th-left">Vendor</th>
+              <th scope="col" class="th-left">Category</th>
+              <th scope="col">FY2024</th>
+              <th scope="col">FY2023</th>
+              <th scope="col">YoY %</th>
+              <th scope="col">Exp</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rank">1</td><td><strong>Amazon Web Services</strong></td>
+              <td><span class="cat-dot" style="background:var(--c1);"></span>Cloud &amp; Infra</td>
+              <td class="td-right">$1,240</td><td class="td-right">$1,020</td>
+              <td class="td-right pos">+21.6%</td><td class="td-center">Dec&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">2</td><td><strong>Salesforce</strong></td>
+              <td><span class="cat-dot" style="background:var(--c2);"></span>SaaS Tools</td>
+              <td class="td-right">$620</td><td class="td-right">$580</td>
+              <td class="td-right pos">+6.9%</td><td class="td-center">Mar&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-warn">Renewing</span></td>
+            </tr>
+            <tr>
+              <td class="rank">3</td><td><strong>Accenture (consulting)</strong></td>
+              <td><span class="cat-dot" style="background:var(--c3);"></span>Prof. Services</td>
+              <td class="td-right">$580</td><td class="td-right">$490</td>
+              <td class="td-right pos">+18.4%</td><td class="td-center">Jun&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">4</td><td><strong>Microsoft Azure</strong></td>
+              <td><span class="cat-dot" style="background:var(--c1);"></span>Cloud &amp; Infra</td>
+              <td class="td-right">$440</td><td class="td-right">$380</td>
+              <td class="td-right pos">+15.8%</td><td class="td-center">Dec&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">5</td><td><strong>Workday</strong></td>
+              <td><span class="cat-dot" style="background:var(--c4);"></span>HR &amp; Benefits</td>
+              <td class="td-right">$418</td><td class="td-right">$395</td>
+              <td class="td-right pos">+5.8%</td><td class="td-center">Jan&nbsp;26</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">6</td><td>Snowflake</td>
+              <td><span class="cat-dot" style="background:var(--c2);"></span>SaaS Tools</td>
+              <td class="td-right">$390</td><td class="td-right">$310</td>
+              <td class="td-right pos">+25.8%</td><td class="td-center">Aug&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">7</td><td>Deloitte (audit)</td>
+              <td><span class="cat-dot" style="background:var(--c3);"></span>Prof. Services</td>
+              <td class="td-right">$365</td><td class="td-right">$340</td>
+              <td class="td-right pos">+7.4%</td><td class="td-center">Dec&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">8</td><td>HubSpot</td>
+              <td><span class="cat-dot" style="background:var(--c5);"></span>Marketing</td>
+              <td class="td-right">$310</td><td class="td-right">$280</td>
+              <td class="td-right pos">+10.7%</td><td class="td-center">Feb&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-warn">Expiring</span></td>
+            </tr>
+            <tr>
+              <td class="rank">9</td><td>Okta</td>
+              <td><span class="cat-dot" style="background:var(--c2);"></span>SaaS Tools</td>
+              <td class="td-right">$285</td><td class="td-right">$260</td>
+              <td class="td-right pos">+9.6%</td><td class="td-center">Nov&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">10</td><td>PagerDuty</td>
+              <td><span class="cat-dot" style="background:var(--c2);"></span>SaaS Tools</td>
+              <td class="td-right">$148</td><td class="td-right">$142</td>
+              <td class="td-right pos">+4.2%</td><td class="td-center">Sep&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">11</td><td>Zendesk</td>
+              <td><span class="cat-dot" style="background:var(--c2);"></span>SaaS Tools</td>
+              <td class="td-right">$142</td><td class="td-right">$148</td>
+              <td class="td-right neg">&minus;4.1%</td><td class="td-center">May&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-warn">Renewing</span></td>
+            </tr>
+            <tr>
+              <td class="rank">12</td><td>Google Workspace</td>
+              <td><span class="cat-dot" style="background:var(--c2);"></span>SaaS Tools</td>
+              <td class="td-right">$128</td><td class="td-right">$112</td>
+              <td class="td-right pos">+14.3%</td><td class="td-center">Dec&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">13</td><td>Rippling</td>
+              <td><span class="cat-dot" style="background:var(--c4);"></span>HR &amp; Benefits</td>
+              <td class="td-right">$120</td><td class="td-right">$100</td>
+              <td class="td-right pos">+20.0%</td><td class="td-center">Jan&nbsp;26</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">14</td><td>Cloudflare</td>
+              <td><span class="cat-dot" style="background:var(--c1);"></span>Cloud &amp; Infra</td>
+              <td class="td-right">$116</td><td class="td-right">$98</td>
+              <td class="td-right pos">+18.4%</td><td class="td-center">Mar&nbsp;26</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">15</td><td>Datadog</td>
+              <td><span class="cat-dot" style="background:var(--c1);"></span>Cloud &amp; Infra</td>
+              <td class="td-right">$112</td><td class="td-right">$88</td>
+              <td class="td-right pos">+27.3%</td><td class="td-center">Jun&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">16</td><td>LinkedIn Talent</td>
+              <td><span class="cat-dot" style="background:var(--c4);"></span>HR &amp; Benefits</td>
+              <td class="td-right">$98</td><td class="td-right">$120</td>
+              <td class="td-right neg">&minus;18.3%</td><td class="td-center">Dec&nbsp;24</td>
+              <td class="td-center"><span class="pill pill-bad">Expired</span></td>
+            </tr>
+            <tr>
+              <td class="rank">17</td><td>Semrush</td>
+              <td><span class="cat-dot" style="background:var(--c5);"></span>Marketing</td>
+              <td class="td-right">$82</td><td class="td-right">$76</td>
+              <td class="td-right pos">+7.9%</td><td class="td-center">Jul&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">18</td><td>Carta (equity mgmt)</td>
+              <td><span class="cat-dot" style="background:var(--c6);"></span>Other</td>
+              <td class="td-right">$78</td><td class="td-right">$72</td>
+              <td class="td-right pos">+8.3%</td><td class="td-center">Oct&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-ok">Active</span></td>
+            </tr>
+            <tr>
+              <td class="rank">19</td><td>Notion</td>
+              <td><span class="cat-dot" style="background:var(--c2);"></span>SaaS Tools</td>
+              <td class="td-right">$64</td><td class="td-right">$58</td>
+              <td class="td-right pos">+10.3%</td><td class="td-center">Apr&nbsp;25</td>
+              <td class="td-center"><span class="pill pill-warn">Expiring</span></td>
+            </tr>
+            <tr>
+              <td class="rank">20</td><td>Stripe (payment processing)</td>
+              <td><span class="cat-dot" style="background:var(--c6);"></span>Other</td>
+              <td class="td-right">$97</td><td class="td-right">$82</td>
+              <td class="td-right pos">+18.3%</td><td class="td-center">N/A</td>
+              <td class="td-center"><span class="pill pill-muted">Usage</span></td>
+            </tr>
+            <tr class="total-row">
+              <td colspan="3">Top-20 Total</td>
+              <td class="td-right">$6,833</td>
+              <td class="td-right">$6,131</td>
+              <td class="td-right pos">+11.4%</td>
+              <td colspan="2"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right panel: Donut + risk callout -->
+    <div class="right-panel">
+      <p style="font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Category Breakdown</p>
+      <div class="donut-block">
+        <h2>Spend by Category (FY2024)</h2>
+        <div class="donut-container">
+          <div class="donut" role="img" aria-label="Category spend donut chart. Cloud and Infra 32%, SaaS Tools 24%, Professional Services 17%, HR and Benefits 12%, Marketing 8%, Other 7%">
+            <div class="donut-hole">
+              <span class="total">$6.8M</span>
+              <span class="label">Total</span>
+            </div>
+          </div>
+          <div class="legend-list">
+            <div class="legend-row">
+              <div class="legend-left"><span class="cat-dot" style="background:var(--c1);"></span>Cloud &amp; Infra</div>
+              <span class="legend-pct">32%</span>
+            </div>
+            <div class="legend-row">
+              <div class="legend-left"><span class="cat-dot" style="background:var(--c2);"></span>SaaS Tools</div>
+              <span class="legend-pct">24%</span>
+            </div>
+            <div class="legend-row">
+              <div class="legend-left"><span class="cat-dot" style="background:var(--c3);"></span>Prof. Services</div>
+              <span class="legend-pct">17%</span>
+            </div>
+            <div class="legend-row">
+              <div class="legend-left"><span class="cat-dot" style="background:var(--c4);"></span>HR &amp; Benefits</div>
+              <span class="legend-pct">12%</span>
+            </div>
+            <div class="legend-row">
+              <div class="legend-left"><span class="cat-dot" style="background:var(--c5);"></span>Marketing</div>
+              <span class="legend-pct">8%</span>
+            </div>
+            <div class="legend-row">
+              <div class="legend-left"><span class="cat-dot" style="background:var(--c6);"></span>Other</div>
+              <span class="legend-pct">7%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- YoY change summary -->
+      <div style="background:var(--cream2);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:1.25rem;">
+        <p style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--navy);margin-bottom:0.75rem;">YoY Spend Change</p>
+        <div style="display:flex;flex-direction:column;gap:0.4rem;">
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;"><span style="color:var(--muted);">Cloud &amp; Infra</span><span style="font-family:'DM Mono',monospace;color:var(--unfav);font-weight:600;">+21.1%</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;"><span style="color:var(--muted);">SaaS Tools</span><span style="font-family:'DM Mono',monospace;color:var(--unfav);font-weight:600;">+10.4%</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;"><span style="color:var(--muted);">Prof. Services</span><span style="font-family:'DM Mono',monospace;color:var(--unfav);font-weight:600;">+13.0%</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;"><span style="color:var(--muted);">HR &amp; Benefits</span><span style="font-family:'DM Mono',monospace;color:var(--fav);font-weight:600;">+3.2%</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;"><span style="color:var(--muted);">Marketing</span><span style="font-family:'DM Mono',monospace;color:var(--fav);font-weight:600;">+9.5%</span></div>
+        </div>
+      </div>
+
+      <!-- Concentration risk callout -->
+      <div class="risk-callout">
+        <div class="callout-label">&#9654; Concentration Risk</div>
+        <div class="callout-title">AWS accounts for 18.1% of top-20 spend</div>
+        <div class="callout-body">Single-vendor dependency on AWS warrants a multi-cloud assessment in H1 2025. Consider negotiating EDP (Enterprise Discount Program) to lock 3-yr pricing and reduce YoY growth of +21.6%.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="doc-footer">
+    <span>Northwind Capital &mdash; Procurement &amp; Finance</span>
+    <span>Period: {{PERIOD}}</span>
+    <span>Prepared by: {{PREPARED_BY}}</span>
+    <span>v{{VERSION}}</span>
+  </footer>
+
+</div>
+</body>
+</html>

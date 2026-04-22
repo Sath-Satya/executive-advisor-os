@@ -1,0 +1,344 @@
+<!--
+TEMPLATE: budget-variance
+CATEGORY: Finance
+USE WHEN: Comparing budget vs actual spend with variance analysis, color-coded thresholds, and commentary callouts — for monthly/quarterly management reporting.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget vs Actual Variance Report &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --cream2: #ede9e0;
+      --section-bg: #e8e4dc;
+      --fav: #2d6a4f;
+      --fav-bg: #f0faf5;
+      --fav-border: #86efac;
+      --caution: #92400e;
+      --caution-bg: #fffbeb;
+      --caution-border: #fde68a;
+      --unfav: #b91c1c;
+      --unfav-bg: #fff5f5;
+      --unfav-border: #fca5a5;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .page { max-width: 960px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+
+    /* Header */
+    .doc-header {
+      border-top: 4px solid var(--navy);
+      padding-top: 1.75rem;
+      margin-bottom: 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+    h1 { font-size: 1.55rem; font-weight: 700; color: var(--navy); letter-spacing: -0.4px; }
+    .doc-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+    .meta-right { text-align: right; font-size: 0.78rem; color: var(--muted); line-height: 1.9; flex-shrink: 0; }
+    .meta-right strong { color: var(--ink); }
+
+    /* Legend */
+    .legend {
+      display: flex; gap: 1.25rem; flex-wrap: wrap;
+      font-size: 0.72rem; margin-bottom: 1.5rem;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .legend-swatch {
+      width: 12px; height: 12px; border-radius: 2px;
+    }
+    .sw-fav { background: var(--fav); }
+    .sw-caution { background: #d97706; }
+    .sw-unfav { background: var(--unfav); }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; margin-bottom: 1.75rem; }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.82rem; font-variant-numeric: tabular-nums;
+    }
+    caption { font-size: 0.7rem; color: var(--muted); text-align: left; padding-bottom: 0.5rem; font-style: italic; }
+    thead tr { background: var(--navy); color: #fff; }
+    thead th {
+      padding: 0.6rem 0.75rem;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; min-width: 180px; }
+    thead th:not(:first-child) { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: var(--cream2); }
+    tbody td { padding: 0.5rem 0.75rem; }
+    tbody td:not(:first-child) { text-align: right; font-family: 'DM Mono', monospace; font-size: 0.8rem; }
+    tr.indented td:first-child { padding-left: 1.6rem; color: var(--muted); }
+    tr.section-header td {
+      background: var(--navy); color: #fff;
+      font-weight: 600; font-size: 0.72rem; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.45rem 0.75rem; border: none;
+    }
+    tr.subtotal td { background: var(--section-bg); font-weight: 600; border-bottom: 2px solid var(--border); }
+    tr.total-row td { background: var(--navy); color: #fff; font-weight: 700; border-top: 2px solid var(--gold); }
+    tr.spacer { height: 0.3rem; } tr.spacer td { padding: 0; border: none; }
+
+    /* Variance badge */
+    .var-badge {
+      display: inline-block;
+      padding: 0.15rem 0.45rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: 'DM Mono', monospace;
+    }
+    .var-fav { background: var(--fav-bg); color: var(--fav); border: 1px solid var(--fav-border); }
+    .var-caution { background: var(--caution-bg); color: var(--caution); border: 1px solid var(--caution-border); }
+    .var-unfav { background: var(--unfav-bg); color: var(--unfav); border: 1px solid var(--unfav-border); }
+    .var-neutral { color: var(--muted); }
+
+    /* Commentary callouts */
+    .callouts { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1.75rem; }
+    .callout {
+      border-radius: 6px;
+      padding: 0.9rem 1rem;
+      border-left: 4px solid;
+    }
+    .callout-unfav { border-color: var(--unfav); background: var(--unfav-bg); }
+    .callout-caution { border-color: #d97706; background: var(--caution-bg); }
+    .callout-fav { border-color: var(--fav); background: var(--fav-bg); }
+    .callout-label {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; margin-bottom: 0.3rem;
+    }
+    .callout-unfav .callout-label { color: var(--unfav); }
+    .callout-caution .callout-label { color: var(--caution); }
+    .callout-fav .callout-label { color: var(--fav); }
+    .callout-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.2rem; color: var(--ink); }
+    .callout-body { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+    /* Section heading */
+    h2 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--navy); margin: 0 0 0.75rem; }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 2rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      font-size: 0.7rem; color: var(--muted); flex-wrap: wrap; gap: 0.5rem;
+    }
+
+    @media print {
+      @page { size: A4; margin: 2cm; }
+      body { font-size: 11pt; background: #fff; }
+      .page { padding: 0; max-width: 100%; }
+      thead tr, tr.section-header td, tr.total-row td { background: #1c1a18 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      tr.subtotal td { background: #e8e4dc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="doc-header">
+    <div>
+      <p class="eyebrow">Northwind Capital &mdash; Management Reporting</p>
+      <h1>Budget vs Actual Variance Report</h1>
+      <p class="doc-sub">Q3 {{PERIOD}} &nbsp;(July &ndash; September) &nbsp;|&nbsp; USD in thousands (000s)</p>
+    </div>
+    <div class="meta-right">
+      <strong>Month-end close: Sep 30</strong><br>
+      Prepared: {{PREPARED_BY}}<br>
+      v{{VERSION}}
+    </div>
+  </header>
+
+  <div class="legend">
+    <span class="legend-item"><span class="legend-swatch sw-fav"></span> Favorable (&gt;+1%)</span>
+    <span class="legend-item"><span class="legend-swatch sw-caution"></span> Caution (0 to &plusmn;5%)</span>
+    <span class="legend-item"><span class="legend-swatch sw-unfav"></span> Unfavorable (&gt;&minus;5%)</span>
+    <span style="color:var(--muted);">Variance&nbsp;% = (Actual &minus; Budget) / Budget</span>
+  </div>
+
+  <div class="table-wrap">
+    <table aria-label="Budget vs Actual Variance — Northwind Capital Q3 2024">
+      <caption>USD thousands. Favorable variance = actual revenue &gt; budget or actual expense &lt; budget.</caption>
+      <thead>
+        <tr>
+          <th scope="col">Line Item</th>
+          <th scope="col">Budget</th>
+          <th scope="col">Actual</th>
+          <th scope="col">Variance&nbsp;$</th>
+          <th scope="col">Variance&nbsp;%</th>
+          <th scope="col">Prior Q3</th>
+          <th scope="col">YoY&nbsp;%</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="section-header"><td colspan="7">Revenue</td></tr>
+        <tr class="indented">
+          <td>Subscription Revenue</td>
+          <td>$7,800</td><td>$8,120</td><td>$320</td>
+          <td><span class="var-badge var-fav">+4.1%</span></td>
+          <td>$6,420</td><td class="var-neutral">+26.5%</td>
+        </tr>
+        <tr class="indented">
+          <td>Professional Services</td>
+          <td>$1,600</td><td>$1,540</td><td>($60)</td>
+          <td><span class="var-badge var-caution">&minus;3.8%</span></td>
+          <td>$1,310</td><td class="var-neutral">+17.6%</td>
+        </tr>
+        <tr class="indented">
+          <td>Licensing &amp; Other</td>
+          <td>$490</td><td>$410</td><td>($80)</td>
+          <td><span class="var-badge var-unfav">&minus;16.3%</span></td>
+          <td>$490</td><td class="var-neutral">&minus;16.3%</td>
+        </tr>
+        <tr class="subtotal">
+          <td>Total Revenue</td>
+          <td>$9,890</td><td>$10,070</td><td>$180</td>
+          <td><span class="var-badge var-fav">+1.8%</span></td>
+          <td>$8,220</td><td class="var-neutral">+22.5%</td>
+        </tr>
+
+        <tr class="spacer"><td colspan="7"></td></tr>
+
+        <tr class="section-header"><td colspan="7">Cost of Revenue</td></tr>
+        <tr class="indented">
+          <td>Infrastructure &amp; Hosting</td>
+          <td>$950</td><td>$1,007</td><td>($57)</td>
+          <td><span class="var-badge var-caution">&minus;6.0%</span></td>
+          <td>$840</td><td class="var-neutral">+19.9%</td>
+        </tr>
+        <tr class="indented">
+          <td>Customer Support</td>
+          <td>$700</td><td>$720</td><td>($20)</td>
+          <td><span class="var-badge var-caution">&minus;2.9%</span></td>
+          <td>$610</td><td class="var-neutral">+18.0%</td>
+        </tr>
+        <tr class="indented">
+          <td>Third-Party Licenses</td>
+          <td>$310</td><td>$295</td><td>$15</td>
+          <td><span class="var-badge var-fav">+4.8%</span></td>
+          <td>$285</td><td class="var-neutral">+3.5%</td>
+        </tr>
+        <tr class="subtotal">
+          <td>Total COGS</td>
+          <td>$1,960</td><td>$2,022</td><td>($62)</td>
+          <td><span class="var-badge var-caution">&minus;3.2%</span></td>
+          <td>$1,735</td><td class="var-neutral">+16.5%</td>
+        </tr>
+        <tr class="subtotal">
+          <td>Gross Profit</td>
+          <td>$7,930</td><td>$8,048</td><td>$118</td>
+          <td><span class="var-badge var-fav">+1.5%</span></td>
+          <td>$6,485</td><td class="var-neutral">+24.1%</td>
+        </tr>
+
+        <tr class="spacer"><td colspan="7"></td></tr>
+
+        <tr class="section-header"><td colspan="7">Operating Expenses</td></tr>
+        <tr class="indented">
+          <td>Sales &amp; Marketing</td>
+          <td>$2,350</td><td>$2,518</td><td>($168)</td>
+          <td><span class="var-badge var-unfav">&minus;7.1%</span></td>
+          <td>$2,050</td><td class="var-neutral">+22.8%</td>
+        </tr>
+        <tr class="indented">
+          <td>Research &amp; Development</td>
+          <td>$1,900</td><td>$1,860</td><td>$40</td>
+          <td><span class="var-badge var-fav">+2.1%</span></td>
+          <td>$1,580</td><td class="var-neutral">+17.7%</td>
+        </tr>
+        <tr class="indented">
+          <td>General &amp; Administrative</td>
+          <td>$880</td><td>$905</td><td>($25)</td>
+          <td><span class="var-badge var-caution">&minus;2.8%</span></td>
+          <td>$760</td><td class="var-neutral">+19.1%</td>
+        </tr>
+        <tr class="indented">
+          <td>Depreciation &amp; Amortization</td>
+          <td>$320</td><td>$320</td><td>&mdash;</td>
+          <td><span class="var-badge var-fav">&mdash;</span></td>
+          <td>$295</td><td class="var-neutral">+8.5%</td>
+        </tr>
+        <tr class="subtotal">
+          <td>Total OpEx</td>
+          <td>$5,450</td><td>$5,603</td><td>($153)</td>
+          <td><span class="var-badge var-caution">&minus;2.8%</span></td>
+          <td>$4,685</td><td class="var-neutral">+19.6%</td>
+        </tr>
+
+        <tr class="spacer"><td colspan="7"></td></tr>
+
+        <tr class="total-row">
+          <td>Operating Income (EBIT)</td>
+          <td>$2,480</td><td>$2,445</td><td>($35)</td>
+          <td><span class="var-badge var-caution">&minus;1.4%</span></td>
+          <td>$1,800</td><td class="var-neutral">+35.8%</td>
+        </tr>
+        <tr class="total-row">
+          <td>Net Income</td>
+          <td>$2,050</td><td>$1,995</td><td>($55)</td>
+          <td><span class="var-badge var-caution">&minus;2.7%</span></td>
+          <td>$1,470</td><td class="var-neutral">+35.7%</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Commentary &amp; Callouts</h2>
+  <div class="callouts">
+    <div class="callout callout-unfav">
+      <div class="callout-label">&#9660; Unfavorable &mdash; Watch Item</div>
+      <div class="callout-title">Sales &amp; Marketing Overage &#x2014; $168K</div>
+      <div class="callout-body">Q3 demand-gen campaign launched in August ran $140K over plan due to higher CPC on paid search. Pipeline coverage remains 3.2&times; so overage was deliberate. Reforecast approved by CFO.</div>
+    </div>
+    <div class="callout callout-unfav">
+      <div class="callout-label">&#9660; Unfavorable &mdash; Revenue Risk</div>
+      <div class="callout-title">Licensing Revenue Miss &mdash; $80K (16%)</div>
+      <div class="callout-body">Three legacy OEM deals expired without renewal in July. Renewal pipeline is thin; Q4 guidance adjusted down by $120K. BD team briefed on 2025 pricing reset.</div>
+    </div>
+    <div class="callout callout-caution">
+      <div class="callout-label">&#9650; Watch &mdash; Infrastructure</div>
+      <div class="callout-title">Cloud Infra Costs Trending Up</div>
+      <div class="callout-body">Hosting overages of $57K driven by three data-intensive enterprise accounts onboarded in Q3. Unit economics improving but volume scaling requires renegotiation of AWS committed-use discounts by Q4.</div>
+    </div>
+    <div class="callout callout-fav">
+      <div class="callout-label">&#9650; Favorable</div>
+      <div class="callout-title">R&amp;D Under Budget &mdash; $40K</div>
+      <div class="callout-body">Two open headcount positions unfilled through September. Search reactivated in October. Savings partially offset by contractor spend; net favorable $40K vs plan.</div>
+    </div>
+  </div>
+
+  <footer class="doc-footer">
+    <span>Northwind Capital &mdash; Management Reporting</span>
+    <span>Period: {{PERIOD}}</span>
+    <span>Prepared by: {{PREPARED_BY}}</span>
+    <span>v{{VERSION}}</span>
+  </footer>
+
+</div>
+</body>
+</html>

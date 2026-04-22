@@ -1,0 +1,446 @@
+<!--
+TEMPLATE: incident-timeline
+CATEGORY: Dashboard / Analytics
+USE WHEN: You need a post-incident timeline page with events, severity tags (alert/detection/mitigation/resolved), duration chips, and a narrative — post-mortem or RCA document.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incident Report &mdash; INC-2026-0142</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #18222e;
+      --border: #1e2d40;
+      --primary: #3b9eff;
+      --secondary: #a78bfa;
+      --accent: #2dd4a0;
+      --warning: #f0a050;
+      --error: #f06070;
+      --text: #d0d8e4;
+      --muted: #556677;
+      --font: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* incident header */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+    }
+    .inc-meta {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 0.6rem; flex-wrap: wrap;
+    }
+    .sev-badge {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--mono);
+    }
+    .sev-p1 { background: rgba(240,96,112,0.2); color: var(--error); border: 1px solid rgba(240,96,112,0.4); }
+    .sev-p2 { background: rgba(240,160,80,0.2); color: var(--warning); border: 1px solid rgba(240,160,80,0.4); }
+    .sev-p3 { background: rgba(59,158,255,0.2); color: var(--primary); border: 1px solid rgba(59,158,255,0.4); }
+    .inc-id { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+    .resolved-badge {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.2rem 0.6rem; border-radius: 4px;
+      background: rgba(45,212,160,0.15); color: var(--accent);
+      border: 1px solid rgba(45,212,160,0.3);
+      font-size: 0.75rem; font-weight: 600;
+    }
+    header h1 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.3px; color: #fff; margin-bottom: 0.3rem; }
+    header .sub { font-size: 0.85rem; color: #8899ac; }
+
+    main { max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+    .section-label {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem;
+    }
+
+    /* impact summary cards */
+    .impact-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    .impact-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.85rem 1rem; text-align: center;
+    }
+    .ic-val { font-size: 1.4rem; font-weight: 700; font-family: var(--mono); color: #fff; line-height: 1; }
+    .ic-lbl { font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* timeline */
+    .timeline { position: relative; margin-bottom: 2rem; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 80px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .tl-event {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      position: relative;
+    }
+    .tl-time {
+      width: 80px;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      font-family: var(--mono);
+      color: var(--muted);
+      padding-top: 1rem;
+      text-align: right;
+      padding-right: 1rem;
+    }
+    .tl-dot-col {
+      width: 0;
+      flex-shrink: 0;
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+    .tl-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      position: absolute;
+      top: 1.1rem;
+      left: -5px;
+      z-index: 1;
+      border: 2px solid var(--bg);
+    }
+    .dot-alert    { background: var(--error);    box-shadow: 0 0 8px rgba(240,96,112,0.5); }
+    .dot-detect   { background: var(--warning);  }
+    .dot-mitigate { background: var(--primary);  }
+    .dot-resolve  { background: var(--accent);   box-shadow: 0 0 8px rgba(45,212,160,0.4); }
+    .dot-update   { background: var(--secondary); }
+    .dot-action   { background: var(--muted); }
+
+    .tl-content {
+      flex: 1;
+      padding: 0.75rem 0 0.75rem 1.5rem;
+      border-bottom: 1px solid rgba(30,45,64,0.6);
+    }
+    .tl-event:last-child .tl-content { border-bottom: none; }
+
+    .tl-header {
+      display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.3rem;
+    }
+    .tl-tag {
+      display: inline-block;
+      padding: 0.1rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      font-family: var(--mono);
+    }
+    .tag-alert    { background: rgba(240,96,112,0.2); color: var(--error); }
+    .tag-detect   { background: rgba(240,160,80,0.2); color: var(--warning); }
+    .tag-mitigate { background: rgba(59,158,255,0.2); color: var(--primary); }
+    .tag-resolve  { background: rgba(45,212,160,0.2); color: var(--accent); }
+    .tag-update   { background: rgba(167,139,250,0.2); color: var(--secondary); }
+    .tag-action   { background: rgba(85,102,119,0.3); color: var(--muted); }
+
+    .tl-title { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+    .tl-body  { font-size: 0.83rem; color: #8899ac; line-height: 1.55; }
+    .tl-actor { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; font-family: var(--mono); }
+
+    .duration-chip {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-family: var(--mono);
+      color: var(--muted);
+      margin-left: 0.4rem;
+    }
+
+    /* RCA section */
+    .rca-section { margin-bottom: 2rem; }
+    .rca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .rca-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: 1rem 1.1rem;
+    }
+    .rca-card h3 { font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 0.6rem; }
+    .rca-card ul { list-style: none; padding: 0; }
+    .rca-card ul li { font-size: 0.82rem; color: #8899ac; padding: 0.25rem 0; border-top: 1px solid rgba(30,45,64,0.6); }
+    .rca-card ul li:first-child { border-top: none; }
+    .rca-card ul li::before { content: '&#9492; '; color: var(--muted); }
+
+    /* action items */
+    .action-list { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--muted); text-align: left; padding: 0.5rem 0.85rem;
+      border-bottom: 1px solid var(--border); background: var(--surface2);
+    }
+    td { font-size: 0.82rem; padding: 0.55rem 0.85rem; border-top: 1px solid rgba(30,45,64,0.8); vertical-align: middle; }
+    tr:hover td { background: rgba(59,158,255,0.03); }
+
+    .pri-chip {
+      display: inline-block; padding: 0.1rem 0.45rem; border-radius: 4px;
+      font-size: 0.68rem; font-weight: 600; font-family: var(--mono);
+    }
+    .p-crit  { background: rgba(240,96,112,0.15); color: var(--error); }
+    .p-high  { background: rgba(240,160,80,0.15); color: var(--warning); }
+    .p-med   { background: rgba(59,158,255,0.15); color: var(--primary); }
+    .status-open   { color: var(--warning); font-family: var(--mono); font-size: 0.78rem; }
+    .status-progress { color: var(--primary); font-family: var(--mono); font-size: 0.78rem; }
+    .status-done   { color: var(--accent); font-family: var(--mono); font-size: 0.78rem; }
+
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      color: var(--muted); padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.72rem; font-family: var(--mono); gap: 1rem; flex-wrap: wrap;
+    }
+
+    @media (max-width: 650px) {
+      main { padding: 1rem; }
+      .rca-grid { grid-template-columns: 1fr; }
+      .timeline::before { left: 60px; }
+      .tl-time { width: 60px; font-size: 0.68rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="inc-meta">
+    <span class="sev-badge sev-p1">SEV-1</span>
+    <span class="inc-id">INC-2026-0142</span>
+    <span class="resolved-badge">&#9679; Resolved</span>
+  </div>
+  <h1>Data Pipeline Degraded Throughput &mdash; Production</h1>
+  <div class="sub">2026-04-14 &bull; 09:23 UTC &ndash; 09:51 UTC &bull; Duration: 28 minutes &bull; Services affected: Data Pipeline, Analytics Engine (partial)</div>
+</header>
+
+<main>
+
+  <p class="section-label">Impact Summary</p>
+  <div class="impact-row" role="region" aria-label="Incident impact metrics">
+    <div class="impact-card"><div class="ic-val">28m</div><div class="ic-lbl">Total duration</div></div>
+    <div class="impact-card"><div class="ic-val" style="color:var(--warning)">880K</div><div class="ic-lbl">Msgs backlogged</div></div>
+    <div class="impact-card"><div class="ic-val" style="color:var(--warning)">1.4%</div><div class="ic-lbl">Peak error rate</div></div>
+    <div class="impact-card"><div class="ic-val">2</div><div class="ic-lbl">Services impacted</div></div>
+    <div class="impact-card"><div class="ic-val" style="color:var(--accent)">0</div><div class="ic-lbl">Data loss events</div></div>
+    <div class="impact-card"><div class="ic-val" style="color:var(--accent)">0</div><div class="ic-lbl">Customers notified</div></div>
+  </div>
+
+  <p class="section-label">Event Timeline</p>
+  <div class="timeline" role="region" aria-label="Incident event timeline">
+
+    <div class="tl-event">
+      <div class="tl-time">09:23</div>
+      <div class="tl-dot-col"><div class="tl-dot dot-alert" aria-hidden="true"></div></div>
+      <div class="tl-content">
+        <div class="tl-header">
+          <span class="tl-tag tag-alert">ALERT</span>
+          <span class="tl-title">PagerDuty fired &mdash; Kafka consumer lag &gt; 2M threshold</span>
+        </div>
+        <p class="tl-body">Automated alert triggered on `kafka.consumer.lag` exceeding the 2,000,000 message threshold across the `data-events` topic. On-call engineer paged.</p>
+        <div class="tl-actor">Automated &bull; PagerDuty &bull; On-call: @eng-oncall</div>
+      </div>
+    </div>
+
+    <div class="tl-event">
+      <div class="tl-time">09:27</div>
+      <div class="tl-dot-col"><div class="tl-dot dot-action" aria-hidden="true"></div></div>
+      <div class="tl-content">
+        <div class="tl-header">
+          <span class="tl-tag tag-update">RESPONSE</span>
+          <span class="tl-title">On-call engineer acknowledged alert and began investigation</span>
+        </div>
+        <p class="tl-body">Lag at 2.4M messages. Initial triage: consumer CPU and memory normal. Checked recent deployments &mdash; none in past 6 hours. Began reviewing autoscaler metrics.</p>
+        <div class="tl-actor">@sre-oncall-primary</div>
+      </div>
+    </div>
+
+    <div class="tl-event">
+      <div class="tl-time">09:31</div>
+      <div class="tl-dot-col"><div class="tl-dot dot-detect" aria-hidden="true"></div></div>
+      <div class="tl-content">
+        <div class="tl-header">
+          <span class="tl-tag tag-detect">ROOT CAUSE IDENTIFIED</span>
+          <span class="tl-title">Autoscaler min-replica count misconfigured to 1 (was 4)</span>
+          <span class="duration-chip">+8 min</span>
+        </div>
+        <p class="tl-body">Autoscaler manifest showed `minReplicas: 1` after a routine infra config PR merged on 2026-04-13 22:00 UTC. The Kafka consumer fleet scaled down to 1 replica during an overnight traffic trough and failed to scale back up due to a cooldown misconfiguration. Root cause: PR #4812 changed `minReplicas` from 4 to 1 without SRE review.</p>
+        <div class="tl-actor">@sre-oncall-primary</div>
+      </div>
+    </div>
+
+    <div class="tl-event">
+      <div class="tl-time">09:35</div>
+      <div class="tl-dot-col"><div class="tl-dot dot-action" aria-hidden="true"></div></div>
+      <div class="tl-content">
+        <div class="tl-header">
+          <span class="tl-tag tag-update">ESCALATION</span>
+          <span class="tl-title">Incident channel opened, SRE lead and Data Eng lead paged</span>
+        </div>
+        <p class="tl-body">Incident Slack channel #inc-2026-0142 created. SRE lead @sre-lead and Data Engineering lead @data-lead joined. Decision made to manually scale out immediately rather than fix the autoscaler config under pressure.</p>
+        <div class="tl-actor">@sre-oncall-primary</div>
+      </div>
+    </div>
+
+    <div class="tl-event">
+      <div class="tl-time">09:42</div>
+      <div class="tl-dot-col"><div class="tl-dot dot-mitigate" aria-hidden="true"></div></div>
+      <div class="tl-content">
+        <div class="tl-header">
+          <span class="tl-tag tag-mitigate">MITIGATION APPLIED</span>
+          <span class="tl-title">Manual scale-out to 6 replicas, lag beginning to reduce</span>
+          <span class="duration-chip">+19 min</span>
+        </div>
+        <p class="tl-body">kubectl command issued to scale `kafka-consumer-data-events` deployment to 6 replicas. Consumer lag immediately began decreasing at ~120K msgs/min. Error rate dropped from 1.4% to 0.3% within 3 minutes.</p>
+        <div class="tl-actor">@sre-lead</div>
+      </div>
+    </div>
+
+    <div class="tl-event">
+      <div class="tl-time">09:49</div>
+      <div class="tl-dot-col"><div class="tl-dot dot-action" aria-hidden="true"></div></div>
+      <div class="tl-content">
+        <div class="tl-header">
+          <span class="tl-tag tag-update">PATCH DEPLOYED</span>
+          <span class="tl-title">Autoscaler minReplicas restored to 4 via hotfix PR #4818</span>
+        </div>
+        <p class="tl-body">Emergency PR merged with proper SRE approval. `minReplicas` reverted to 4, `scaleDownCooldown` extended to 15 minutes. Deployment verified in staging, applied to production.</p>
+        <div class="tl-actor">@data-lead &bull; PR #4818 reviewed by @sre-lead</div>
+      </div>
+    </div>
+
+    <div class="tl-event">
+      <div class="tl-time">09:51</div>
+      <div class="tl-dot-col"><div class="tl-dot dot-resolve" aria-hidden="true"></div></div>
+      <div class="tl-content">
+        <div class="tl-header">
+          <span class="tl-tag tag-resolve">RESOLVED</span>
+          <span class="tl-title">Full throughput restored, incident closed</span>
+          <span class="duration-chip">Total: 28 min</span>
+        </div>
+        <p class="tl-body">Consumer lag returned to zero. Error rate at 0.02% (within SLO). All 6 consumers healthy. Incident declared resolved. Post-mortem scheduled for 2026-04-16 14:00 UTC.</p>
+        <div class="tl-actor">@sre-lead</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="rca-section" aria-labelledby="rca-heading">
+    <p class="section-label" id="rca-heading">Root Cause &amp; Contributing Factors</p>
+    <div class="rca-grid">
+      <div class="rca-card">
+        <h3>Root Cause</h3>
+        <ul>
+          <li>PR #4812 changed autoscaler `minReplicas` from 4 &#8594; 1 without SRE review gate</li>
+          <li>Deployment landed during off-hours (22:00 UTC); scale-down triggered overnight</li>
+          <li>`scaleDownCooldown` of 2 minutes insufficient to prevent aggressive scale-down</li>
+        </ul>
+      </div>
+      <div class="rca-card">
+        <h3>Contributing Factors</h3>
+        <ul>
+          <li>No autoscaler config change policy requiring SRE sign-off</li>
+          <li>Lag alert threshold too high (2M) &mdash; should fire earlier at 500K</li>
+          <li>No canary deployment for infra config changes</li>
+          <li>Runbook for consumer lag mitigation lacked manual scale-out steps</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <p class="section-label">Action Items</p>
+  <div class="action-list">
+    <table>
+      <thead>
+        <tr>
+          <th>Action</th>
+          <th>Owner</th>
+          <th>Priority</th>
+          <th>Due</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Add SRE review requirement for autoscaler config PRs (CODEOWNERS)</td>
+          <td>@sre-lead</td>
+          <td><span class="pri-chip p-crit">Critical</span></td>
+          <td style="font-family:var(--mono);font-size:0.8rem">2026-04-22</td>
+          <td class="status-done">&#9679; Done</td>
+        </tr>
+        <tr>
+          <td>Lower Kafka lag alert threshold from 2M &#8594; 500K messages</td>
+          <td>@sre-oncall-primary</td>
+          <td><span class="pri-chip p-crit">Critical</span></td>
+          <td style="font-family:var(--mono);font-size:0.8rem">2026-04-22</td>
+          <td class="status-done">&#9679; Done</td>
+        </tr>
+        <tr>
+          <td>Update runbook to include manual scale-out as first mitigation step</td>
+          <td>@data-lead</td>
+          <td><span class="pri-chip p-high">High</span></td>
+          <td style="font-family:var(--mono);font-size:0.8rem">2026-04-25</td>
+          <td class="status-progress">&#9672; In Progress</td>
+        </tr>
+        <tr>
+          <td>Implement autoscaler change validation in CI (fail if minReplicas &lt; 3)</td>
+          <td>@platform-eng</td>
+          <td><span class="pri-chip p-high">High</span></td>
+          <td style="font-family:var(--mono);font-size:0.8rem">2026-05-02</td>
+          <td class="status-open">&#9675; Open</td>
+        </tr>
+        <tr>
+          <td>Extend scaleDownCooldown to 15 min for all stateful consumers</td>
+          <td>@data-lead</td>
+          <td><span class="pri-chip p-med">Medium</span></td>
+          <td style="font-family:var(--mono);font-size:0.8rem">2026-05-09</td>
+          <td class="status-open">&#9675; Open</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer>
+  <span>INC-2026-0142 &mdash; Post-Incident Report</span>
+  <span>v{{VERSION}}</span>
+  <span>Published {{UPDATED}}</span>
+  <span>Author: SRE Team &bull; Northwind Capital</span>
+</footer>
+
+</body>
+</html>

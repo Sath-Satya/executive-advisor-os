@@ -1,0 +1,501 @@
+<!--
+TEMPLATE: classified-briefing
+CATEGORY: Executive / Board
+USE WHEN: Creating a government or defense-style intelligence briefing with classified document aesthetics — stamps, redaction blocks, monospace typography, and formal section structure. Effective for high-stakes internal threat/risk briefings or dramatic effect in executive presentations.
+PALETTE: Classified (monochrome red/black — standalone, not Executive or Dark)
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLASSIFIED BRIEFING — {{DOCID}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f0ece3;
+      --paper-dark: #e4dfd4;
+      --ink: #18160f;
+      --red: #a01a1a;
+      --red2: #c42020;
+      --muted: #5a554a;
+      --border: #b8b2a0;
+      --redact: #18160f;
+      --stamp-red: #c42020;
+      --stamp-green: #1a5c2a;
+      --stamp-blue: #1a2e5c;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Mono', 'Courier New', Courier, monospace;
+      background: #2a2520;
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    /* ── Document wrapper ── */
+    .document {
+      max-width: 820px;
+      margin: 3rem auto;
+      background: var(--paper);
+      box-shadow: 0 0 0 1px var(--border), 0 8px 60px rgba(0,0,0,0.6);
+      position: relative;
+    }
+
+    /* ── Classification banners ── */
+    .class-banner {
+      background: var(--red2);
+      color: #fff;
+      text-align: center;
+      padding: 0.45rem 1rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .class-banner.top { border-bottom: 2px solid var(--red); }
+    .class-banner.bottom { border-top: 2px solid var(--red); }
+
+    /* ── Document body ── */
+    .doc-body {
+      padding: 3rem 3.5rem 2.5rem;
+      position: relative;
+    }
+
+    /* ── Header block ── */
+    .doc-header {
+      border: 2px solid var(--ink);
+      padding: 1.5rem 1.8rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .doc-header::after {
+      content: 'CLASSIFIED';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-15deg);
+      font-size: 5rem;
+      font-weight: 500;
+      color: rgba(160,26,26,0.07);
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .header-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.3rem;
+      margin-bottom: 0.3rem;
+      font-size: 0.78rem;
+    }
+    .header-row .field-label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-size: 0.68rem;
+    }
+    .header-row .field-value {
+      color: var(--ink);
+    }
+    .doc-title {
+      text-align: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 1.2rem 0;
+      padding: 0.9rem 0;
+    }
+    .doc-title .title-text {
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .doc-title .title-sub {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+    .header-stamps {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+    }
+    .stamp {
+      display: inline-block;
+      border: 2.5px solid;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 500;
+      border-radius: 2px;
+    }
+    .stamp-red   { border-color: var(--stamp-red);   color: var(--stamp-red); }
+    .stamp-green { border-color: var(--stamp-green); color: var(--stamp-green); }
+    .stamp-blue  { border-color: var(--stamp-blue);  color: var(--stamp-blue); }
+
+    /* ── Section ── */
+    .section {
+      margin-bottom: 2rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .section-num {
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      min-width: 2.5rem;
+    }
+    .section-title {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .section-class {
+      margin-left: auto;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--red);
+    }
+    .section p {
+      font-size: 0.85rem;
+      color: var(--ink);
+      line-height: 1.75;
+      margin-bottom: 0.9rem;
+    }
+
+    /* ── Redaction block ── */
+    .redacted {
+      display: inline;
+      background: var(--redact);
+      color: var(--redact);
+      user-select: none;
+      border-radius: 1px;
+      padding: 0 0.15em;
+    }
+    .redacted-block {
+      display: block;
+      background: var(--redact);
+      height: 1em;
+      margin: 0.15em 0;
+      border-radius: 1px;
+      max-width: 70%;
+    }
+
+    /* ── Threat matrix table ── */
+    .threat-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+    }
+    .threat-table thead th {
+      background: var(--ink);
+      color: rgba(240,236,227,0.9);
+      text-align: left;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+    .threat-table tbody tr { border-bottom: 1px solid var(--border); }
+    .threat-table tbody td {
+      padding: 0.55rem 0.8rem;
+      color: var(--ink);
+      vertical-align: top;
+    }
+    .threat-table tbody td:first-child {
+      font-weight: 500;
+      color: var(--red);
+    }
+    .level-badge {
+      display: inline-block;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.1rem 0.4rem;
+      border-radius: 1px;
+    }
+    .level-critical { background: #a01a1a; color: #fff; }
+    .level-high     { background: #c05010; color: #fff; }
+    .level-medium   { background: #6a6010; color: #fff; }
+    .level-low      { background: #2a5020; color: #fff; }
+
+    /* ── Key facts ── */
+    .key-facts {
+      border: 1px solid var(--border);
+      background: var(--paper-dark);
+      padding: 1rem 1.3rem;
+      margin: 1rem 0;
+    }
+    .key-facts .kf-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+    .key-facts ul {
+      list-style: none;
+      padding: 0;
+    }
+    .key-facts ul li {
+      font-size: 0.83rem;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink);
+      display: flex;
+      gap: 0.8rem;
+    }
+    .key-facts ul li:last-child { border-bottom: none; }
+    .key-facts ul li::before {
+      content: '\25B6';
+      color: var(--red);
+      font-size: 0.6rem;
+      padding-top: 0.2rem;
+    }
+
+    /* ── Handling instructions ── */
+    .handling {
+      border: 1px dashed var(--border);
+      padding: 1rem 1.3rem;
+      margin-top: 2rem;
+    }
+    .handling .h-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .handling p {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Page numbers ── */
+    .page-num {
+      text-align: center;
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-top: 1.5rem;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Footer ── */
+    .doc-footer {
+      padding: 1rem 3.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      background: var(--paper-dark);
+    }
+    .doc-footer p {
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+    .doc-footer strong { color: var(--ink); }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; }
+      .document { box-shadow: none; max-width: 100%; margin: 0; }
+      .class-banner { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .threat-table thead th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .level-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      @page { size: A4 portrait; margin: 1.5cm 2cm; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="document">
+
+    <!-- Top classification banner -->
+    <div class="class-banner top">
+      SECRET // NOFORN // REL TO MERIDIAN HEALTH / BOARD-PRINCIPALS
+    </div>
+
+    <div class="doc-body">
+
+      <!-- Document header -->
+      <header class="doc-header">
+        <div class="header-row">
+          <div><span class="field-label">Document ID:</span> <span class="field-value">MH-SEC-2027-0847</span></div>
+          <div><span class="field-label">Prepared by:</span> <span class="field-value">Strategic Intelligence Group</span></div>
+        </div>
+        <div class="header-row">
+          <div><span class="field-label">Date:</span> <span class="field-value">{{DATE}}</span></div>
+          <div><span class="field-label">Version:</span> <span class="field-value">{{VERSION}}</span></div>
+        </div>
+        <div class="header-row">
+          <div><span class="field-label">Originator:</span> <span class="field-value">Office of the CEO, Meridian Health</span></div>
+          <div><span class="field-label">Authorised by:</span> <span class="field-value">E. Vasquez, CEO</span></div>
+        </div>
+
+        <div class="doc-title">
+          <p class="title-text">Competitive Threat Intelligence Briefing</p>
+          <p class="title-sub">Subject: Digital Health Platform Market — Threat Assessment Q3 2027</p>
+        </div>
+
+        <div class="header-stamps">
+          <span class="stamp stamp-red">Eyes Only</span>
+          <span class="stamp stamp-green">Approved: E. Vasquez</span>
+          <span class="stamp stamp-blue">Board Principals</span>
+          <span class="stamp stamp-red">No External Distribution</span>
+        </div>
+      </header>
+
+      <!-- Section 1 -->
+      <section class="section" aria-labelledby="s1-heading">
+        <div class="section-header">
+          <span class="section-num">SEC. 1</span>
+          <h2 class="section-title" id="s1-heading">Executive Summary</h2>
+          <span class="section-class">(S // BOARD)</span>
+        </div>
+        <p>This briefing assesses the competitive threat landscape facing Meridian Health's digital platform strategy as of Q3 2027. Intelligence gathered from <span class="redacted">REDACTED</span> sources and open-source analysis indicates that two primary competitors have advanced their platform capabilities beyond previously assessed timelines. The threat to Meridian's patient acquisition and retention in contested markets is assessed as <strong>HIGH</strong> and time-sensitive.</p>
+        <p>Meridian's window of asymmetric advantage — the 9-month lead period identified in the August 2026 board briefing — has compressed to an estimated <strong>5-6 months</strong> as of the date of this document. Immediate action on digital adoption acceleration and market entry is recommended.</p>
+      </section>
+
+      <!-- Key facts box -->
+      <div class="key-facts" role="complementary" aria-label="Key intelligence facts">
+        <p class="kf-label">Key Intelligence Facts</p>
+        <ul>
+          <li>BlueRidge Health shipped AI scheduling integration in May 2027 — 14 weeks ahead of our estimated timeline.</li>
+          <li>Summit Health has contracted with <span class="redacted">REDACTED</span> for a 55+ patient UX redesign, suggesting awareness of the same demographic gap we have identified.</li>
+          <li>Regional competitor <span class="redacted">REDACTED</span> is reported to be in advanced acquisition discussions with <span class="redacted">REDACTED</span> patient portal platform. If completed, this would give them overnight scale in digital engagement.</li>
+          <li>Meridian's portal NPS advantage (48 vs industry median 31) is assessed as durable for 6-9 months absent further investment.</li>
+        </ul>
+      </div>
+
+      <!-- Section 2 -->
+      <section class="section" aria-labelledby="s2-heading">
+        <div class="section-header">
+          <span class="section-num">SEC. 2</span>
+          <h2 class="section-title" id="s2-heading">Threat Assessment Matrix</h2>
+          <span class="section-class">(S // BOARD)</span>
+        </div>
+        <p>The following threats are assessed against Meridian's current strategic position. Threat level reflects probability-weighted impact over a 12-month horizon.</p>
+        <table class="threat-table">
+          <thead>
+            <tr>
+              <th>Threat Actor</th>
+              <th>Threat Type</th>
+              <th>Level</th>
+              <th>Assessment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>BlueRidge Health</td>
+              <td>AI scheduling parity</td>
+              <td><span class="level-badge level-critical">Critical</span></td>
+              <td>Now operational in all markets. Differentiation gap closed Q2 2027.</td>
+            </tr>
+            <tr>
+              <td>Summit Health</td>
+              <td>55+ cohort targeting</td>
+              <td><span class="level-badge level-high">High</span></td>
+              <td>UX redesign in progress. Estimated go-live Q4 2027. Directly targets our adoption gap.</td>
+            </tr>
+            <tr>
+              <td><span class="redacted">REDACTED</span></td>
+              <td>Acquisition (portal platform)</td>
+              <td><span class="level-badge level-high">High</span></td>
+              <td>Unconfirmed. If transaction closes, immediate scale risk in Phoenix corridor.</td>
+            </tr>
+            <tr>
+              <td>Regulatory change</td>
+              <td>FHIR R4 enforcement</td>
+              <td><span class="level-badge level-medium">Medium</span></td>
+              <td>CMS deadline January 2028. Non-compliant competitors face penalty; Meridian on track.</td>
+            </tr>
+            <tr>
+              <td>Staffing market</td>
+              <td>Engineering talent</td>
+              <td><span class="level-badge level-low">Low</span></td>
+              <td>Compensation benchmarking within range. No imminent risk assessed.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Section 3 -->
+      <section class="section" aria-labelledby="s3-heading">
+        <div class="section-header">
+          <span class="section-num">SEC. 3</span>
+          <h2 class="section-title" id="s3-heading">Source Reliability &amp; Limitations</h2>
+          <span class="section-class">(S // BOARD)</span>
+        </div>
+        <p>Intelligence contained in this briefing is derived from open-source analysis (OSINT), industry analyst reporting, and <span class="redacted">REDACTED</span> channel intelligence. Source reliability is rated <strong>B-2</strong> (Usually Reliable / Probably True) per standard assessment criteria.</p>
+        <p>Specific claims regarding <span class="redacted">REDACTED</span> acquisition discussions are based on a single source assessed as <strong>C-3</strong> (Fairly Reliable / Possibly True) and should be treated as unconfirmed pending corroboration. The threat level assigned reflects this uncertainty.</p>
+        <p>
+          <span class="redacted-block"></span>
+          <span class="redacted-block" style="max-width:55%"></span>
+          <span class="redacted-block" style="max-width:80%"></span>
+        </p>
+        <p style="font-size:0.72rem; color:var(--muted);">[SECTION 3.2 — 3 paragraphs redacted per directive MH-EXEC-2027-0041. Contact Office of General Counsel for unredacted version.]</p>
+      </section>
+
+      <!-- Section 4 -->
+      <section class="section" aria-labelledby="s4-heading">
+        <div class="section-header">
+          <span class="section-num">SEC. 4</span>
+          <h2 class="section-title" id="s4-heading">Recommended Actions</h2>
+          <span class="section-class">(S // BOARD)</span>
+        </div>
+        <p>Based on the threat assessment above, the Strategic Intelligence Group recommends the following immediate actions for board consideration:</p>
+        <p><strong>1. ACCELERATE</strong> — The 55+ accessibility sprint timeline should be compressed from 12 weeks to 8 weeks. If Summit Health goes live in Q4 2027 with a competitive 55+ UX, Meridian's first-mover advantage in this cohort is eliminated. Estimated additional cost to compress timeline: $180K.</p>
+        <p><strong>2. MONITOR</strong> — Establish a formal 30-day monitoring cadence on the <span class="redacted">REDACTED</span> acquisition. If the transaction closes, a Board-level response briefing should be convened within 72 hours. Pre-brief the Phoenix market entry team on contingency options.</p>
+        <p><strong>3. MAINTAIN</strong> — Current FHIR R4 compliance trajectory is adequate. No acceleration recommended. Competitors falling behind this deadline create a short-term regulatory moat for Meridian in markets where CMS enforcement is active.</p>
+
+        <div class="handling">
+          <p class="h-label">Handling Instructions</p>
+          <p>This document is authorised for distribution to Board Principals only. Do not forward, copy, or excerpt without written authorisation from the Office of the CEO. Printed copies must be retrieved at meeting conclusion and returned to the document control officer. Digital copies must be stored in the Board secure document repository only. Retention period: 7 years.</p>
+        </div>
+      </section>
+
+      <p class="page-num">PAGE 1 OF 1 &nbsp;&nbsp;|&nbsp;&nbsp; DOC ID: MH-SEC-2027-0847 &nbsp;&nbsp;|&nbsp;&nbsp; {{VERSION}}</p>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="doc-footer">
+      <p><strong>MERIDIAN HEALTH</strong> &mdash; STRATEGIC INTELLIGENCE GROUP</p>
+      <p>{{DATE}} &nbsp;|&nbsp; {{VERSION}}</p>
+    </div>
+
+    <!-- Bottom classification banner -->
+    <div class="class-banner bottom">
+      SECRET // NOFORN // REL TO MERIDIAN HEALTH / BOARD-PRINCIPALS
+    </div>
+
+  </div>
+
+</body>
+</html>

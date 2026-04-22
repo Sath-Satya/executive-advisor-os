@@ -1,0 +1,397 @@
+<!--
+TEMPLATE: ab-comparison
+CATEGORY: Dashboard / Analytics
+USE WHEN: You need an A/B test result comparison page with Variant A vs Variant B side-by-side metrics, statistical confidence, and a verdict — product experiment results, feature flag analysis.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A/B Test Results &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f7f4ef;
+      --cream2: #edeae3;
+      --cream3: #e4e0d8;
+      --navy: #0e1b2e;
+      --navy2: #1a2e47;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --green: #2dd4a0;
+      --green-dark: #0a7a5a;
+      --amber: #f0a050;
+      --red: #f06070;
+      --purple: #a78bfa;
+      --blue: #3b9eff;
+      --variant-a: #3b9eff;
+      --variant-b: #a78bfa;
+      --font: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .logo { width: 36px; height: 36px; border-radius: 6px; background: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; color: var(--navy); }
+    header h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.3px; }
+    header .meta { font-size: 0.78rem; color: #94a3b8; font-family: var(--mono); }
+    .exp-badge {
+      font-size: 0.78rem; font-family: var(--mono); color: #94a3b8;
+      border: 1px solid #2a3f5a; border-radius: 4px; padding: 0.25rem 0.65rem;
+    }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+
+    .section-label {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.85rem;
+    }
+
+    /* experiment meta */
+    .exp-meta-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    .exp-meta-card {
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.85rem 1rem; text-align: center;
+    }
+    .emc-val { font-size: 1.2rem; font-weight: 700; font-family: var(--mono); color: var(--navy); line-height: 1; }
+    .emc-lbl { font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* variant headers */
+    .variant-headers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .variant-header {
+      padding: 1.1rem 1.35rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .vh-a {
+      background: rgba(59,158,255,0.07);
+      border: 2px solid rgba(59,158,255,0.3);
+    }
+    .vh-b {
+      background: rgba(167,139,250,0.07);
+      border: 2px solid rgba(167,139,250,0.3);
+    }
+    .variant-label {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 0.35rem;
+    }
+    .vl-a { color: var(--variant-a); }
+    .vl-b { color: var(--variant-b); }
+    .variant-name { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.2rem; }
+    .variant-desc { font-size: 0.8rem; color: var(--muted); }
+    .variant-n { font-size: 0.78rem; font-family: var(--mono); color: var(--muted); margin-top: 0.35rem; }
+
+    /* comparison table */
+    .comparison-section { margin-bottom: 2rem; }
+    .comp-table-wrap {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    .comp-head th {
+      font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em; color: var(--muted);
+      padding: 0.6rem 1rem; border-bottom: 1px solid var(--border);
+      background: var(--cream);
+    }
+    .comp-head th:nth-child(2) { color: var(--variant-a); }
+    .comp-head th:nth-child(3) { color: var(--variant-b); }
+    td {
+      font-size: 0.88rem; padding: 0.75rem 1rem;
+      border-top: 1px solid var(--cream2);
+      vertical-align: middle;
+    }
+    tr:hover td { background: #faf9f7; }
+    td:not(:first-child) { text-align: right; font-family: var(--mono); }
+
+    .metric-name { font-weight: 500; color: var(--ink); }
+    .metric-sub  { font-size: 0.75rem; color: var(--muted); font-family: var(--font); font-weight: 400; }
+
+    .val-a { color: #1a60c0; font-weight: 600; }
+    .val-b { color: #6038c0; font-weight: 600; }
+
+    .lift-pos { color: var(--green-dark); font-weight: 600; }
+    .lift-neg { color: #b52030; font-weight: 600; }
+    .lift-neu { color: var(--muted); }
+
+    .conf-badge {
+      display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px;
+      font-size: 0.72rem; font-weight: 600;
+    }
+    .conf-high   { background: rgba(45,212,160,0.12); color: var(--green-dark); }
+    .conf-medium { background: rgba(240,160,80,0.12); color: #a05c10; }
+    .conf-low    { background: rgba(240,96,112,0.12); color: #b52030; }
+
+    .winner-a { background: rgba(59,158,255,0.04); }
+    .winner-b { background: rgba(167,139,250,0.04); }
+
+    /* visual bar comparison */
+    .bar-comparison {
+      display: flex; flex-direction: column; gap: 1.1rem; margin-bottom: 2rem;
+    }
+    .bc-row {}
+    .bc-label {
+      font-size: 0.82rem; font-weight: 500; color: var(--ink); margin-bottom: 0.4rem;
+    }
+    .bc-bars { display: flex; flex-direction: column; gap: 0.25rem; }
+    .bc-bar-row { display: flex; align-items: center; gap: 0.6rem; }
+    .bc-variant { font-size: 0.72rem; font-weight: 600; width: 14px; flex-shrink: 0; }
+    .bc-track { flex: 1; height: 18px; background: var(--cream2); border-radius: 4px; overflow: hidden; position: relative; }
+    .bc-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 0.4rem; }
+    .bc-fill .bv { font-size: 0.7rem; font-family: var(--mono); color: rgba(255,255,255,0.9); font-weight: 600; }
+    .fill-a { background: rgba(59,158,255,0.8); }
+    .fill-b { background: rgba(167,139,250,0.8); }
+
+    /* verdict banner */
+    .verdict-banner {
+      padding: 1.25rem 1.5rem;
+      border-radius: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .verdict-win-b { background: rgba(167,139,250,0.08); border: 2px solid rgba(167,139,250,0.35); }
+    .verdict-inconclusive { background: rgba(240,160,80,0.08); border: 2px solid rgba(240,160,80,0.3); }
+    .verdict-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .verdict-title { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; }
+    .verdict-body  { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+    .verdict-rec   { font-size: 0.85rem; font-weight: 600; color: var(--ink); margin-top: 0.5rem; }
+
+    footer {
+      background: var(--navy); color: #64748b; padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.75rem; font-family: var(--mono); gap: 1rem; flex-wrap: wrap;
+    }
+
+    @media (max-width: 640px) {
+      main { padding: 1rem; }
+      .variant-headers { grid-template-columns: 1fr; }
+      .comp-head th:nth-child(4), td:nth-child(4) { display: none; }
+    }
+    @media print {
+      body { background: #fff; }
+      header { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo" aria-hidden="true">NC</div>
+    <div>
+      <h1>Northwind Capital &mdash; A/B Test Results</h1>
+      <div class="meta">Experiment: Onboarding Redesign v2 &bull; 2026-04-01 &ndash; 2026-04-20</div>
+    </div>
+  </div>
+  <span class="exp-badge">EXP-2026-014</span>
+</header>
+
+<main>
+
+  <p class="section-label">Experiment Summary</p>
+  <div class="exp-meta-row" role="region" aria-label="Experiment metadata">
+    <div class="exp-meta-card"><div class="emc-val">21</div><div class="emc-lbl">Days running</div></div>
+    <div class="exp-meta-card"><div class="emc-val">14,820</div><div class="emc-lbl">Total users</div></div>
+    <div class="exp-meta-card"><div class="emc-val">50/50</div><div class="emc-lbl">Split ratio</div></div>
+    <div class="exp-meta-card"><div class="emc-val" style="color:var(--green-dark)">95%</div><div class="emc-lbl">Confidence target</div></div>
+    <div class="exp-meta-card"><div class="emc-val">4</div><div class="emc-lbl">Primary metrics</div></div>
+    <div class="exp-meta-card"><div class="emc-val" style="color:var(--purple)">B wins</div><div class="emc-lbl">Verdict</div></div>
+  </div>
+
+  <p class="section-label">Variants</p>
+  <div class="variant-headers">
+    <div class="variant-header vh-a">
+      <div class="variant-label vl-a">Variant A &mdash; Control</div>
+      <div class="variant-name">Current Onboarding Flow</div>
+      <div class="variant-desc">5-step wizard with required profile fields, help docs sidebar</div>
+      <div class="variant-n">n = 7,388 users</div>
+    </div>
+    <div class="variant-header vh-b">
+      <div class="variant-label vl-b">Variant B &mdash; Treatment</div>
+      <div class="variant-name">Redesigned Progressive Onboarding</div>
+      <div class="variant-desc">3-step wizard with optional fields, in-context hints, skip-able steps</div>
+      <div class="variant-n">n = 7,432 users</div>
+    </div>
+  </div>
+
+  <p class="section-label">Metric Comparison</p>
+  <div class="comp-table-wrap">
+    <table>
+      <thead class="comp-head">
+        <tr>
+          <th>Metric</th>
+          <th>Variant A (Control)</th>
+          <th>Variant B (Treatment)</th>
+          <th>Lift</th>
+          <th>Confidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="winner-b">
+          <td>
+            <div class="metric-name">Onboarding Completion Rate</div>
+            <div class="metric-sub">Primary</div>
+          </td>
+          <td class="val-a">62.4%</td>
+          <td class="val-b">78.1%</td>
+          <td><span class="lift-pos">&#9650; +15.7pp</span></td>
+          <td><span class="conf-badge conf-high">99.2%</span></td>
+        </tr>
+        <tr class="winner-b">
+          <td>
+            <div class="metric-name">Day-7 Retention</div>
+            <div class="metric-sub">Primary</div>
+          </td>
+          <td class="val-a">41.2%</td>
+          <td class="val-b">48.6%</td>
+          <td><span class="lift-pos">&#9650; +7.4pp</span></td>
+          <td><span class="conf-badge conf-high">97.1%</span></td>
+        </tr>
+        <tr class="winner-b">
+          <td>
+            <div class="metric-name">Time to First Value</div>
+            <div class="metric-sub">Primary (lower is better)</div>
+          </td>
+          <td class="val-a">18.4 min</td>
+          <td class="val-b">11.2 min</td>
+          <td><span class="lift-pos">&#9660; -7.2 min</span></td>
+          <td><span class="conf-badge conf-high">98.4%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="metric-name">Support Ticket Rate</div>
+            <div class="metric-sub">Primary (lower is better)</div>
+          </td>
+          <td class="val-a">8.2%</td>
+          <td class="val-b">7.8%</td>
+          <td><span class="lift-neu">&mdash; -0.4pp</span></td>
+          <td><span class="conf-badge conf-low">61%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="metric-name">Profile Completion %</div>
+            <div class="metric-sub">Secondary</div>
+          </td>
+          <td class="val-a">84.1%</td>
+          <td class="val-b">71.3%</td>
+          <td><span class="lift-neg">&#9660; -12.8pp</span></td>
+          <td><span class="conf-badge conf-high">96.0%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="metric-name">NPS Score (Onboarding)</div>
+            <div class="metric-sub">Secondary</div>
+          </td>
+          <td class="val-a">34</td>
+          <td class="val-b">52</td>
+          <td><span class="lift-pos">&#9650; +18</span></td>
+          <td><span class="conf-badge conf-medium">88.5%</span></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="metric-name">Day-30 Activation</div>
+            <div class="metric-sub">Secondary</div>
+          </td>
+          <td class="val-a">29.4%</td>
+          <td class="val-b">33.2%</td>
+          <td><span class="lift-pos">&#9650; +3.8pp</span></td>
+          <td><span class="conf-badge conf-medium">84.2%</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="section-label">Visual Comparison</p>
+  <div class="bar-comparison" role="region" aria-label="Visual metric comparison">
+    <div class="bc-row">
+      <div class="bc-label">Onboarding Completion Rate</div>
+      <div class="bc-bars">
+        <div class="bc-bar-row"><span class="bc-variant vl-a">A</span><div class="bc-track"><div class="bc-fill fill-a" style="width:62.4%"><span class="bv">62.4%</span></div></div></div>
+        <div class="bc-bar-row"><span class="bc-variant vl-b">B</span><div class="bc-track"><div class="bc-fill fill-b" style="width:78.1%"><span class="bv">78.1%</span></div></div></div>
+      </div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">Day-7 Retention</div>
+      <div class="bc-bars">
+        <div class="bc-bar-row"><span class="bc-variant vl-a">A</span><div class="bc-track"><div class="bc-fill fill-a" style="width:41.2%"><span class="bv">41.2%</span></div></div></div>
+        <div class="bc-bar-row"><span class="bc-variant vl-b">B</span><div class="bc-track"><div class="bc-fill fill-b" style="width:48.6%"><span class="bv">48.6%</span></div></div></div>
+      </div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">Onboarding NPS</div>
+      <div class="bc-bars">
+        <div class="bc-bar-row"><span class="bc-variant vl-a">A</span><div class="bc-track"><div class="bc-fill fill-a" style="width:34%"><span class="bv">34</span></div></div></div>
+        <div class="bc-bar-row"><span class="bc-variant vl-b">B</span><div class="bc-track"><div class="bc-fill fill-b" style="width:52%"><span class="bv">52</span></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="section-label">Verdict &amp; Recommendation</p>
+  <div class="verdict-banner verdict-win-b" role="region" aria-label="Experiment verdict">
+    <div class="verdict-icon" aria-hidden="true">&#9670;</div>
+    <div>
+      <div class="verdict-title">Variant B wins on 3 of 4 primary metrics with high confidence</div>
+      <p class="verdict-body">
+        Variant B (Progressive Onboarding) demonstrates statistically significant improvement in completion rate (+15.7pp, 99.2% confidence), Day-7 retention (+7.4pp, 97.1%), and time-to-first-value (&minus;7.2 min, 98.4%). The support ticket reduction is directionally positive but not yet significant at 95%.
+      </p>
+      <p class="verdict-body" style="margin-top:0.4rem">
+        Trade-off: Profile completion rate decreased 12.8pp under Variant B due to optional fields. This is acceptable given the primary objective is activation, not data completeness. A follow-up progressive profile-completion nudge should be scoped.
+      </p>
+      <p class="verdict-rec">
+        Recommendation: Ship Variant B to 100% of users. Scope profile-completion follow-up as EXP-2026-015. Monitor Day-30 activation for 2 additional weeks.
+      </p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>Northwind Capital &mdash; A/B Test Results &bull; EXP-2026-014</span>
+  <span>v{{VERSION}}</span>
+  <span>Updated {{UPDATED}}</span>
+  <span>Source: Experimentation Platform</span>
+</footer>
+
+</body>
+</html>

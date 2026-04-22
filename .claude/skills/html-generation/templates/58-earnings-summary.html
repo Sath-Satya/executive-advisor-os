@@ -1,0 +1,339 @@
+<!--
+TEMPLATE: earnings-summary
+CATEGORY: Finance
+USE WHEN: Presenting a quarterly earnings one-pager for executives — headline KPIs, YoY/QoQ deltas, segment breakdown, guidance summary, and CEO commentary block.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q3 2024 Earnings Summary &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --cream2: #ede9e0;
+      --section-bg: #e8e4dc;
+      --fav: #2d6a4f;
+      --fav-bg: #f0faf5;
+      --unfav: #b91c1c;
+      --unfav-bg: #fff5f5;
+      --caution: #92400e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .page { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+
+    /* Header */
+    .doc-header {
+      border-top: 4px solid var(--navy);
+      padding-top: 1.75rem;
+      margin-bottom: 2rem;
+    }
+    .header-band {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem; margin-bottom: 1.25rem;
+    }
+    .eyebrow { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+    h1 { font-size: 1.6rem; font-weight: 700; color: var(--navy); letter-spacing: -0.4px; }
+    .doc-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .meta-right { text-align: right; font-size: 0.78rem; color: var(--muted); line-height: 1.9; flex-shrink: 0; }
+    .meta-right strong { color: var(--ink); }
+
+    /* Headline KPI grid */
+    .kpi-row {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 640px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+    .kpi-card {
+      background: #fff;
+      padding: 1rem 1.25rem;
+      border-right: 1px solid var(--border);
+    }
+    .kpi-card:last-child { border-right: none; }
+    .kpi-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--navy); font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .kpi-delta { font-size: 0.72rem; margin-top: 0.3rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .delta-yoy, .delta-qoq {
+      display: inline-flex; align-items: center; gap: 0.2rem;
+      font-weight: 600; font-family: 'DM Mono', monospace; font-size: 0.72rem;
+    }
+    .delta-label { font-size: 0.62rem; color: var(--muted); font-weight: 400; font-family: 'DM Sans', sans-serif; }
+    .pos { color: var(--fav); }
+    .neg { color: var(--unfav); }
+    .neu { color: var(--muted); }
+
+    /* Two-column layout for body */
+    .body-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.75rem; }
+    @media (max-width: 640px) { .body-grid { grid-template-columns: 1fr; } }
+
+    /* Section header */
+    .section-header {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #fff;
+      background: var(--navy);
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0;
+    }
+
+    /* Segment table */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.8rem; font-variant-numeric: tabular-nums;
+    }
+    caption { font-size: 0.68rem; color: var(--muted); text-align: left; padding-bottom: 0.4rem; font-style: italic; }
+    thead tr { background: var(--cream2); }
+    thead th {
+      padding: 0.45rem 0.7rem;
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; }
+    thead th:not(:first-child) { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: var(--cream2); }
+    tbody td { padding: 0.45rem 0.7rem; }
+    tbody td:not(:first-child) { text-align: right; font-family: 'DM Mono', monospace; font-size: 0.78rem; }
+    tr.total-row td { background: var(--navy); color: #fff; font-weight: 700; }
+    tr.total-row td:not(:first-child) { font-family: 'DM Mono', monospace; }
+    .col-pos { color: var(--fav); }
+    .col-neg { color: var(--unfav); }
+
+    /* Guidance block */
+    .guidance-table {
+      width: 100%; border-collapse: collapse; font-size: 0.8rem;
+    }
+    .guidance-table tr { border-bottom: 1px solid var(--border); }
+    .guidance-table tr:last-child { border-bottom: none; }
+    .guidance-table td { padding: 0.5rem 0.7rem; }
+    .guidance-table td:first-child { color: var(--muted); font-size: 0.78rem; }
+    .guidance-table td:last-child { text-align: right; font-family: 'DM Mono', monospace; font-weight: 600; color: var(--navy); }
+    .guidance-table tr.highlight td { background: var(--cream2); }
+
+    /* CEO quote block */
+    .quote-block {
+      border-left: 4px solid var(--gold);
+      background: var(--cream2);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.75rem;
+      border-radius: 0 8px 8px 0;
+    }
+    .quote-text {
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    }
+    .quote-attribution { font-size: 0.75rem; color: var(--muted); }
+    .quote-attribution strong { color: var(--ink); }
+
+    /* Full-width section */
+    .full-section { margin-bottom: 1.75rem; }
+
+    /* Key metrics strip */
+    .metrics-strip {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+      border: 1px solid var(--border); border-radius: 6px; overflow: hidden;
+      margin-bottom: 1.75rem;
+    }
+    .metric-cell { background: #fff; padding: 0.7rem 1rem; border-right: 1px solid var(--border); }
+    .metric-cell:last-child { border-right: none; }
+    .metric-cell .mc-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 0.2rem; }
+    .metric-cell .mc-val { font-size: 1rem; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--navy); font-variant-numeric: tabular-nums; }
+    .metric-cell .mc-note { font-size: 0.68rem; color: var(--muted); margin-top: 0.1rem; }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 2rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      font-size: 0.7rem; color: var(--muted); flex-wrap: wrap; gap: 0.5rem;
+    }
+
+    @media print {
+      @page { size: A4; margin: 2cm; }
+      body { font-size: 11pt; background: #fff; }
+      .page { padding: 0; max-width: 100%; }
+      .section-header, tr.total-row td { background: #1c1a18 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .kpi-card { background: #fff !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="doc-header">
+    <div class="header-band">
+      <div>
+        <p class="eyebrow">Northwind Capital &mdash; Investor Relations</p>
+        <h1>Q3 2024 Earnings Summary</h1>
+        <p class="doc-sub">Three months ended September 30, 2024 &nbsp;|&nbsp; USD in millions</p>
+      </div>
+      <div class="meta-right">
+        <strong>Earnings Release: Oct 22, 2024</strong><br>
+        Prepared: {{PREPARED_BY}}<br>
+        v{{VERSION}}
+      </div>
+    </div>
+  </header>
+
+  <!-- Headline KPIs -->
+  <div class="kpi-row" role="list" aria-label="Q3 2024 headline financial metrics">
+    <div class="kpi-card" role="listitem">
+      <div class="kpi-label">Revenue</div>
+      <div class="kpi-value">$10.1M</div>
+      <div class="kpi-delta">
+        <span class="delta-yoy pos">&#9650; +22.5% <span class="delta-label">YoY</span></span>
+        <span class="delta-qoq pos">&#9650; +2.2% <span class="delta-label">QoQ</span></span>
+      </div>
+    </div>
+    <div class="kpi-card" role="listitem">
+      <div class="kpi-label">EPS (Diluted)</div>
+      <div class="kpi-value">$0.42</div>
+      <div class="kpi-delta">
+        <span class="delta-yoy pos">&#9650; +27.3% <span class="delta-label">YoY</span></span>
+        <span class="delta-qoq pos">&#9650; +2.4% <span class="delta-label">QoQ</span></span>
+      </div>
+    </div>
+    <div class="kpi-card" role="listitem">
+      <div class="kpi-label">Gross Margin</div>
+      <div class="kpi-value">79.9%</div>
+      <div class="kpi-delta">
+        <span class="delta-yoy pos">&#9650; +1.1 pts <span class="delta-label">YoY</span></span>
+        <span class="delta-qoq neu">&#9644; flat <span class="delta-label">QoQ</span></span>
+      </div>
+    </div>
+    <div class="kpi-card" role="listitem">
+      <div class="kpi-label">ARR</div>
+      <div class="kpi-value">$40.1M</div>
+      <div class="kpi-delta">
+        <span class="delta-yoy pos">&#9650; +21.2% <span class="delta-label">YoY</span></span>
+        <span class="delta-qoq pos">&#9650; +5.0% <span class="delta-label">QoQ</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Additional metrics strip -->
+  <div class="metrics-strip">
+    <div class="metric-cell"><div class="mc-label">Net Revenue Retention</div><div class="mc-val">114%</div><div class="mc-note">vs 111% prior year</div></div>
+    <div class="metric-cell"><div class="mc-label">Free Cash Flow</div><div class="mc-val">$2.7M</div><div class="mc-note">26.8% FCF margin</div></div>
+    <div class="metric-cell"><div class="mc-label">Customers &gt;$100K ARR</div><div class="mc-val">48</div><div class="mc-note">+12 vs Q3&apos;23</div></div>
+  </div>
+
+  <!-- Body: Segment + Guidance -->
+  <div class="body-grid">
+
+    <!-- Segment breakdown -->
+    <div>
+      <div class="section-header">Revenue by Segment</div>
+      <div class="table-wrap">
+        <table aria-label="Q3 2024 revenue breakdown by segment — Northwind Capital">
+          <caption>USD millions. YoY = year-over-year growth vs Q3 2023.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Segment</th>
+              <th scope="col">Q3 2024</th>
+              <th scope="col">Q3 2023</th>
+              <th scope="col">YoY</th>
+              <th scope="col">Mix</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Subscription</td><td>$8.1M</td><td>$6.4M</td><td class="col-pos">+26.6%</td><td>80.5%</td></tr>
+            <tr><td>Professional Services</td><td>$1.5M</td><td>$1.3M</td><td class="col-pos">+15.4%</td><td>15.2%</td></tr>
+            <tr><td>Licensing &amp; Other</td><td>$0.4M</td><td>$0.5M</td><td class="col-neg">&minus;16.0%</td><td>4.3%</td></tr>
+            <tr class="total-row"><td>Total Revenue</td><td>$10.1M</td><td>$8.2M</td><td>+22.5%</td><td>100%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section-header" style="margin-top:1.25rem;">Geographic Mix</div>
+      <div class="table-wrap">
+        <table aria-label="Q3 2024 revenue by geography">
+          <thead>
+            <tr>
+              <th scope="col">Region</th>
+              <th scope="col">Q3 2024</th>
+              <th scope="col">Mix</th>
+              <th scope="col">YoY</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>North America</td><td>$7.3M</td><td>72.3%</td><td class="col-pos">+20.8%</td></tr>
+            <tr><td>EMEA</td><td>$1.9M</td><td>18.8%</td><td class="col-pos">+29.2%</td></tr>
+            <tr><td>Asia Pacific</td><td>$0.9M</td><td>8.9%</td><td class="col-pos">+18.4%</td></tr>
+            <tr class="total-row"><td>Total</td><td>$10.1M</td><td>100%</td><td>+22.5%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Guidance -->
+    <div>
+      <div class="section-header">Q4 2024 Guidance</div>
+      <table class="guidance-table" aria-label="Q4 2024 and full-year 2024 financial guidance">
+        <tbody>
+          <tr class="highlight"><td>Q4 Revenue (midpoint)</td><td>$10.8M &ndash; $11.0M</td></tr>
+          <tr><td>Q4 Non-GAAP EPS</td><td>$0.44 &ndash; $0.46</td></tr>
+          <tr><td>Q4 Gross Margin</td><td>~80% &ndash; 81%</td></tr>
+          <tr><td>Q4 Operating Margin</td><td>~24% &ndash; 26%</td></tr>
+          <tr class="highlight"><td colspan="2" style="font-weight:600;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);padding-top:0.75rem;">Full Year 2024</td></tr>
+          <tr><td>FY Revenue</td><td>$39.8M &ndash; $40.1M</td></tr>
+          <tr><td>FY Non-GAAP EPS</td><td>$1.61 &ndash; $1.65</td></tr>
+          <tr><td>FY Gross Margin</td><td>~79.5% &ndash; 80%</td></tr>
+          <tr><td>FY FCF Margin</td><td>~25% &ndash; 27%</td></tr>
+          <tr><td>Net New ARR</td><td>$9.0M &ndash; $9.5M</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-header" style="margin-top:1.25rem;">Key Metrics</div>
+      <table class="guidance-table" aria-label="Q3 2024 key operating metrics">
+        <tbody>
+          <tr><td>Total Customers</td><td>612</td></tr>
+          <tr><td>Net Revenue Retention</td><td>114%</td></tr>
+          <tr><td>Dollar-Based Expansion</td><td>21%</td></tr>
+          <tr><td>Magic Number</td><td>0.74&times;</td></tr>
+          <tr><td>Months to Recover CAC</td><td>14 months</td></tr>
+          <tr><td>LTV:CAC</td><td>4.6&times;</td></tr>
+          <tr><td>Net Promoter Score</td><td>62</td></tr>
+          <tr><td>Employee Count</td><td>284 FTE</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CEO Quote -->
+  <div class="quote-block">
+    <p class="quote-text">&ldquo;Q3 was another quarter of durable, efficient growth. We expanded our $100K+ customer cohort by 33% year-over-year and delivered strong NRR of 114%, reflecting deep product adoption and healthy retention. With $8.4M of cash on the balance sheet and an expanding free cash flow profile, we are well-positioned to invest in the product roadmap while maintaining the capital discipline our investors have come to expect.&rdquo;</p>
+    <p class="quote-attribution"><strong>Morgan Alcott</strong> &mdash; Chief Executive Officer, Northwind Capital</p>
+  </div>
+
+  <footer class="doc-footer">
+    <span>Northwind Capital &mdash; Investor Relations &bull; Earnings Release</span>
+    <span>Period: {{PERIOD}}</span>
+    <span>Prepared by: {{PREPARED_BY}}</span>
+    <span>v{{VERSION}}</span>
+  </footer>
+
+</div>
+</body>
+</html>

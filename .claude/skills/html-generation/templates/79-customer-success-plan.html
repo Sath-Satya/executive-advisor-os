@@ -1,0 +1,576 @@
+<!--
+TEMPLATE: Customer Success Plan
+CATEGORY: Sales
+USE WHEN: Building and presenting a post-signature customer success plan covering success criteria, adoption milestones, risks, resources, QBR cadence, executive sponsors, and a 30/60/90-day plan.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Success Plan &mdash; Meridian Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --white: #ffffff;
+      --green: #2dd4a0;
+      --amber: #f0a050;
+      --red: #f06070;
+      --purple: #a78bfa;
+      --blue: #3b9eff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #e8e4dc;
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .page {
+      background: var(--white);
+      width: 860px;
+      margin: 0 auto;
+      box-shadow: 0 4px 32px rgba(14,27,46,0.12);
+    }
+    /* Header */
+    .header {
+      background: var(--navy);
+      padding: 44px 60px 36px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; right: -40px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      border: 32px solid rgba(184,150,90,0.1);
+    }
+    .header-tag {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 10px;
+    }
+    .header-title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+    }
+    .header-sub {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 5px;
+    }
+    .header-right {
+      text-align: right;
+      padding-top: 4px;
+    }
+    .header-right .csm-label {
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 4px;
+    }
+    .header-right .csm-name {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.85);
+      font-weight: 500;
+    }
+    .header-right .plan-date {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 4px;
+    }
+    /* Body */
+    .body { padding: 40px 60px; }
+    .section { margin-bottom: 32px; }
+    .section-title {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+    /* Success criteria */
+    .crit-table { width: 100%; border-collapse: collapse; }
+    .crit-table th {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .crit-table td {
+      padding: 10px 12px;
+      font-size: 0.77rem;
+      border-bottom: 1px solid #ede9e1;
+      vertical-align: middle;
+    }
+    .crit-table tr:last-child td { border-bottom: none; }
+    .crit-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .cs-target { color: var(--muted); }
+    .cs-achieved { color: #1a8a68; }
+    .cs-inprogress { color: #a06020; }
+    /* Adoption milestones */
+    .milestone-list { list-style: none; }
+    .milestone-item {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid #ede9e1;
+      align-items: flex-start;
+    }
+    .milestone-item:last-child { border-bottom: none; }
+    .ms-check {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .ms-done { background: rgba(45,212,160,0.15); color: #1a8a68; border: 2px solid #2dd4a0; }
+    .ms-active { background: rgba(240,160,80,0.15); color: #a06020; border: 2px dashed #f0a050; }
+    .ms-future { background: var(--cream); color: var(--muted); border: 2px solid var(--border); }
+    .ms-body { flex: 1; }
+    .ms-title { font-size: 0.8rem; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+    .ms-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
+    .ms-date { font-size: 0.65rem; color: var(--gold); font-weight: 600; }
+    /* Executive sponsors */
+    .sponsor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .sponsor-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .sponsor-side {
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+    .sponsor-name { font-size: 0.82rem; font-weight: 600; color: var(--navy); }
+    .sponsor-title { font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+    .sponsor-focus { font-size: 0.68rem; color: var(--ink); margin-top: 8px; line-height: 1.35; }
+    /* QBR Cadence */
+    .qbr-table { width: 100%; border-collapse: collapse; }
+    .qbr-table th {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .qbr-table td {
+      padding: 9px 12px;
+      font-size: 0.77rem;
+      border-bottom: 1px solid #ede9e1;
+    }
+    .qbr-table tr:last-child td { border-bottom: none; }
+    /* 30/60/90 */
+    .plan-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .plan-col {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .plan-header {
+      padding: 10px 14px;
+      background: var(--navy);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--gold2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .plan-body { padding: 12px 14px; }
+    .plan-task {
+      display: flex;
+      gap: 8px;
+      padding: 7px 0;
+      border-bottom: 1px solid #ede9e1;
+      font-size: 0.73rem;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+    .plan-task:last-child { border-bottom: none; }
+    .plan-task::before {
+      content: '\2022';
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    /* Risk table */
+    .risk-table { width: 100%; border-collapse: collapse; }
+    .risk-table th {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .risk-table td {
+      padding: 10px 12px;
+      font-size: 0.77rem;
+      border-bottom: 1px solid #ede9e1;
+    }
+    .risk-table tr:last-child td { border-bottom: none; }
+    .risk-pill {
+      display: inline-block;
+      font-size: 0.55rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .rp-high { background: rgba(240,96,112,0.12); color: #c03040; }
+    .rp-med { background: rgba(240,160,80,0.14); color: #a06020; }
+    .rp-low { background: rgba(45,212,160,0.12); color: #1a8a68; }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 13px 60px;
+      display: flex;
+      justify-content: space-between;
+    }
+    footer span { font-size: 0.62rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="header-tag">Customer Success Plan &bull; Post-Signature</div>
+      <div class="header-title">Meridian Health<br />Success Plan</div>
+      <div class="header-sub">Member Engagement Suite Expansion &bull; Effective May 1, 2026</div>
+    </div>
+    <div class="header-right">
+      <div class="csm-label">Customer Success Manager</div>
+      <div class="csm-name">{{OWNER}}</div>
+      <div class="plan-date">Plan Date: {{DATE}}</div>
+      <div class="plan-date">Review Cadence: Quarterly</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- Success Criteria -->
+    <div class="section">
+      <div class="section-title">Mutually Agreed Success Criteria</div>
+      <table class="crit-table">
+        <thead>
+          <tr>
+            <th>Criterion</th>
+            <th>Target</th>
+            <th>Measurement</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Platform adoption rate across activated seats</td>
+            <td>&ge;85% weekly active</td>
+            <td>Platform analytics dashboard</td>
+            <td><span class="crit-status cs-target">&#9675; Target</span></td>
+          </tr>
+          <tr>
+            <td>Care gap closure rate improvement</td>
+            <td>&ge;+10pp vs Q1 2026 baseline (55%)</td>
+            <td>HEDIS measurement, 90-day review</td>
+            <td><span class="crit-status cs-target">&#9675; Target</span></td>
+          </tr>
+          <tr>
+            <td>Member outreach cost per contact</td>
+            <td>&le;$2.50 (vs $2.85 baseline)</td>
+            <td>Finance report, quarterly</td>
+            <td><span class="crit-status cs-target">&#9675; Target</span></td>
+          </tr>
+          <tr>
+            <td>Admin task time reduction (case managers)</td>
+            <td>&le;20% of FTE hours (vs 24% now)</td>
+            <td>Time tracking study at 90 days</td>
+            <td><span class="crit-status cs-target">&#9675; Target</span></td>
+          </tr>
+          <tr>
+            <td>NPS score (Member Engagement Suite users)</td>
+            <td>&ge;+45</td>
+            <td>In-app NPS survey, 90-day mark</td>
+            <td><span class="crit-status cs-target">&#9675; Target</span></td>
+          </tr>
+          <tr>
+            <td>CSAT on support interactions</td>
+            <td>&ge;85 / 100</td>
+            <td>Post-ticket survey</td>
+            <td><span class="crit-status cs-achieved">&#10003; Baseline 74 (improving)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Adoption Milestones -->
+    <div class="section">
+      <div class="section-title">Adoption Milestones</div>
+      <ul class="milestone-list">
+        <li class="milestone-item">
+          <div class="ms-check ms-done">&#10003;</div>
+          <div class="ms-body">
+            <div class="ms-title">Contract Signed &amp; BAA Amended</div>
+            <div class="ms-desc">Master agreement executed; custom data exhibit attached; PO issued by Meridian procurement.</div>
+          </div>
+          <div class="ms-date">Apr 30, 2026</div>
+        </li>
+        <li class="milestone-item">
+          <div class="ms-check ms-active">&#9679;</div>
+          <div class="ms-body">
+            <div class="ms-title">Implementation Kickoff &amp; Data Requirements</div>
+            <div class="ms-desc">Kickoff meeting held; member data schema documented; SSO configuration underway with James Tran.</div>
+          </div>
+          <div class="ms-date">May 7, 2026</div>
+        </li>
+        <li class="milestone-item">
+          <div class="ms-check ms-future">&mdash;</div>
+          <div class="ms-body">
+            <div class="ms-title">UAT &mdash; Priya&rsquo;s Pilot Group (20 users)</div>
+            <div class="ms-desc">20 pilot users from Care Management team complete UAT. Pass criteria: &ge;90% task completion, zero P1 defects.</div>
+          </div>
+          <div class="ms-date">May 28&ndash;Jun 11</div>
+        </li>
+        <li class="milestone-item">
+          <div class="ms-check ms-future">&mdash;</div>
+          <div class="ms-body">
+            <div class="ms-title">Full Go-Live &mdash; 1,000 Seats</div>
+            <div class="ms-desc">All 1,000 seats provisioned. Admin training delivered (3 sessions). CSM assigned for ongoing support.</div>
+          </div>
+          <div class="ms-date">Jun 15, 2026</div>
+        </li>
+        <li class="milestone-item">
+          <div class="ms-check ms-future">&mdash;</div>
+          <div class="ms-body">
+            <div class="ms-title">30-Day Adoption Check</div>
+            <div class="ms-desc">Usage report shared with Priya Nair. Target: &ge;65% of seats activated. Address any onboarding friction.</div>
+          </div>
+          <div class="ms-date">Jul 15, 2026</div>
+        </li>
+        <li class="milestone-item">
+          <div class="ms-check ms-future">&mdash;</div>
+          <div class="ms-body">
+            <div class="ms-title">90-Day ROI Review</div>
+            <div class="ms-desc">Present ROI actuals to Dr. Park and Priya Nair. Confirm success criteria progress. Discuss expansion roadmap.</div>
+          </div>
+          <div class="ms-date">Sep 15, 2026</div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Executive Sponsors -->
+    <div class="section">
+      <div class="section-title">Executive Sponsors &amp; Key Contacts</div>
+      <div class="sponsor-grid">
+        <div class="sponsor-card">
+          <div class="sponsor-side">Meridian Health &mdash; Exec Sponsor</div>
+          <div class="sponsor-name">Dr. Susan Park</div>
+          <div class="sponsor-title">Chief Medical Officer</div>
+          <div class="sponsor-focus">Focus: ROI, HEDIS outcomes, board-level reporting. Engaged quarterly via QBR.</div>
+        </div>
+        <div class="sponsor-card">
+          <div class="sponsor-side">Meridian Health &mdash; Champion</div>
+          <div class="sponsor-name">Priya Nair</div>
+          <div class="sponsor-title">Director, Care Management</div>
+          <div class="sponsor-focus">Focus: Day-to-day adoption, care gap metrics, user experience. Monthly check-in.</div>
+        </div>
+        <div class="sponsor-card">
+          <div class="sponsor-side">Meridian Health &mdash; Technical</div>
+          <div class="sponsor-name">James Tran</div>
+          <div class="sponsor-title">IT Project Lead</div>
+          <div class="sponsor-focus">Focus: Integration, SSO, data pipelines, tickets. Weekly during implementation.</div>
+        </div>
+        <div class="sponsor-card">
+          <div class="sponsor-side">SponAI &mdash; CSM</div>
+          <div class="sponsor-name">{{OWNER}}</div>
+          <div class="sponsor-title">Customer Success Manager</div>
+          <div class="sponsor-focus">Primary contact. Owns success plan execution and escalation management.</div>
+        </div>
+        <div class="sponsor-card">
+          <div class="sponsor-side">SponAI &mdash; Exec Sponsor</div>
+          <div class="sponsor-name">Sarah Okonkwo</div>
+          <div class="sponsor-title">VP Customer Success</div>
+          <div class="sponsor-focus">Engages at QBR and escalations. Paired with Dr. Park at executive level.</div>
+        </div>
+        <div class="sponsor-card">
+          <div class="sponsor-side">SponAI &mdash; Implementation</div>
+          <div class="sponsor-name">Raj Mehta</div>
+          <div class="sponsor-title">Implementation Lead</div>
+          <div class="sponsor-focus">Owns technical delivery through go-live. Transitions to CSM at Jun 15.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QBR Cadence -->
+    <div class="section">
+      <div class="section-title">Review &amp; Communication Cadence</div>
+      <table class="qbr-table">
+        <thead>
+          <tr>
+            <th>Touchpoint</th>
+            <th>Frequency</th>
+            <th>Participants</th>
+            <th>Agenda Focus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Weekly Standup (implementation)</td>
+            <td>Weekly &bull; May&ndash;Jun</td>
+            <td>James Tran + Raj Mehta</td>
+            <td>Implementation progress, blockers, UAT status</td>
+          </tr>
+          <tr>
+            <td>Monthly Adoption Review</td>
+            <td>Monthly</td>
+            <td>Priya Nair + {{OWNER}}</td>
+            <td>Usage metrics, feature adoption, support issues</td>
+          </tr>
+          <tr>
+            <td>Quarterly Business Review (QBR)</td>
+            <td>Quarterly</td>
+            <td>Dr. Park, Marcus Webb, Priya Nair + SponAI exec</td>
+            <td>ROI outcomes, roadmap, next-quarter success plan</td>
+          </tr>
+          <tr>
+            <td>Executive Briefing</td>
+            <td>Bi-annual</td>
+            <td>Dr. Park + Sarah Okonkwo</td>
+            <td>Strategic alignment, renewal discussion, product roadmap</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 30/60/90 Plan -->
+    <div class="section">
+      <div class="section-title">30 / 60 / 90-Day Plan</div>
+      <div class="plan-grid">
+        <div class="plan-col">
+          <div class="plan-header">Days 1&ndash;30 &bull; Foundation</div>
+          <div class="plan-body">
+            <div class="plan-task">Complete SSO integration with James Tran</div>
+            <div class="plan-task">Import member data segment (Medicaid population)</div>
+            <div class="plan-task">Configure outreach templates for HEDIS gap campaigns</div>
+            <div class="plan-task">Deliver Admin training: 3 sessions with Priya&rsquo;s leads</div>
+            <div class="plan-task">UAT sign-off with 20 pilot users</div>
+            <div class="plan-task">Go-live June 15 with all 1,000 seats active</div>
+          </div>
+        </div>
+        <div class="plan-col">
+          <div class="plan-header">Days 31&ndash;60 &bull; Activation</div>
+          <div class="plan-body">
+            <div class="plan-task">Monitor DAU/WAU; target &ge;65% activation at Day 30</div>
+            <div class="plan-task">Launch first HEDIS outreach campaign end-to-end</div>
+            <div class="plan-task">Address any onboarding friction from support tickets</div>
+            <div class="plan-task">Share 30-day adoption report with Priya Nair</div>
+            <div class="plan-task">Validate data pipeline accuracy with James Tran</div>
+            <div class="plan-task">Collect first NPS survey from active users</div>
+          </div>
+        </div>
+        <div class="plan-col">
+          <div class="plan-header">Days 61&ndash;90 &bull; Value Proof</div>
+          <div class="plan-body">
+            <div class="plan-task">Compile 90-day ROI report with actual vs baseline metrics</div>
+            <div class="plan-task">Present ROI to Dr. Park + Priya Nair (Sep 15 review)</div>
+            <div class="plan-task">Confirm CSAT improvement to &ge;85 target</div>
+            <div class="plan-task">Identify top 3 power users for internal advocacy program</div>
+            <div class="plan-task">Propose next expansion conversation (Claims AI POC)</div>
+            <div class="plan-task">Update success plan for Year 2 success criteria</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Risks -->
+    <div class="section">
+      <div class="section-title">Success Plan Risks</div>
+      <table class="risk-table">
+        <thead>
+          <tr>
+            <th>Risk</th>
+            <th>Level</th>
+            <th>Mitigation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>James Tran&rsquo;s availability during SSO build (other IT projects competing)</td>
+            <td><span class="risk-pill rp-med">Med</span></td>
+            <td>Weekly hold booked April 22&ndash;Jun 14; Marcus Webb as escalation contact if blocked</td>
+          </tr>
+          <tr>
+            <td>Low adoption if case managers don&rsquo;t see immediate workflow benefit</td>
+            <td><span class="risk-pill rp-med">Med</span></td>
+            <td">Priya Nair delivering internal change management comms; SponAI providing adoption playbook templates</td>
+          </tr>
+          <tr>
+            <td>CDO data governance review delays member data import</td>
+            <td><span class="risk-pill rp-low">Low</span></td>
+            <td>Custom data exhibit pre-approved; Sasha Moreno briefed. Escalate to CMO if needed.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Customer Success Plan &bull; Meridian Health &bull; Member Engagement Suite &bull; SponAI Consulting</span>
+    <span>v{{VERSION}} &bull; {{DATE}} &bull; {{OWNER}}</span>
+  </footer>
+</div>
+</body>
+</html>

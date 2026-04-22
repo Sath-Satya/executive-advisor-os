@@ -1,0 +1,357 @@
+<!--
+TEMPLATE: exec-brief-cream
+CATEGORY: Executive / Board
+USE WHEN: Delivering a concise executive briefing to a board or senior leadership team — classic boardroom aesthetic required.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Briefing — {{TITLE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream-dark: #ede9e0;
+      --navy: #0e1b2e;
+      --navy-mid: #1a2f4a;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --red: #c0392b;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem 4rem;
+    }
+
+    /* ── Header ── */
+    .doc-header {
+      border-top: 4px solid var(--navy);
+      padding-top: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    .doc-header .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .doc-header h1 {
+      font-size: 1.9rem;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+    .doc-header .meta-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      margin-top: 0.8rem;
+    }
+    .doc-header .meta-row span strong {
+      color: var(--ink);
+    }
+
+    /* ── Gold divider ── */
+    .gold-rule {
+      border: none;
+      border-top: 1.5px solid var(--gold);
+      margin: 2rem 0;
+      opacity: 0.6;
+    }
+
+    /* ── Situation block ── */
+    .situation-block {
+      background: var(--navy);
+      color: #e8e4dc;
+      padding: 1.5rem 2rem;
+      margin-bottom: 2.5rem;
+      border-left: 4px solid var(--gold);
+    }
+    .situation-block .label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 0.5rem;
+    }
+    .situation-block p {
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    /* ── Sections ── */
+    section { margin-bottom: 2.25rem; }
+    section h2 {
+      font-size: 0.68rem;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid var(--border);
+    }
+    section p {
+      font-size: 0.95rem;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+    }
+
+    /* ── Finding items ── */
+    .findings-list {
+      list-style: none;
+      padding: 0;
+    }
+    .findings-list li {
+      display: flex;
+      gap: 1rem;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.93rem;
+    }
+    .findings-list li:last-child { border-bottom: none; }
+    .finding-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--gold);
+      min-width: 1.8rem;
+      padding-top: 0.1rem;
+    }
+    .finding-text strong {
+      display: block;
+      color: var(--navy);
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    .finding-text span { color: var(--muted); font-size: 0.88rem; }
+
+    /* ── Stakes callout ── */
+    .stakes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 0.5rem;
+    }
+    .stake-cell {
+      background: var(--cream-dark);
+      padding: 1.1rem 1.2rem;
+    }
+    .stake-cell .stake-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .stake-cell .stake-value {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+    }
+    .stake-cell .stake-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    /* ── Recommendation box ── */
+    .recommendation {
+      background: var(--cream-dark);
+      border-left: 4px solid var(--navy);
+      padding: 1.4rem 1.8rem;
+      margin-top: 0.5rem;
+    }
+    .recommendation .rec-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 0.6rem;
+      font-weight: 500;
+    }
+    .recommendation p {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      margin-bottom: 0.5rem;
+    }
+    .recommendation .action-items {
+      list-style: none;
+      padding: 0;
+      margin-top: 0.8rem;
+    }
+    .recommendation .action-items li {
+      display: flex;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      padding: 0.4rem 0;
+      color: var(--ink);
+    }
+    .recommendation .action-items li::before {
+      content: '\2192';
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 3.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.67rem;
+      color: var(--muted);
+    }
+    footer .footer-brand {
+      font-weight: 500;
+      color: var(--navy);
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; }
+      .page { max-width: 100%; padding: 2cm 2.5cm; }
+      .situation-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .stakes-grid { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      footer { position: fixed; bottom: 1cm; left: 2.5cm; right: 2.5cm; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="page">
+
+      <header class="doc-header">
+        <p class="eyebrow">Executive Briefing &mdash; Confidential</p>
+        <h1>Market Entry Decision:<br>Meridian Health Digital Platform</h1>
+        <div class="meta-row">
+          <span><strong>Prepared for:</strong> Board of Directors</span>
+          <span><strong>Date:</strong> {{DATE}}</span>
+          <span><strong>Version:</strong> {{VERSION}}</span>
+          <span><strong>Classification:</strong> Board Restricted</span>
+        </div>
+      </header>
+
+      <div class="situation-block">
+        <p class="label">Situation</p>
+        <p>Meridian Health faces a strategic inflection point. Three competing health networks have launched AI-assisted patient engagement platforms in the past eight months, capturing early adopter share in our primary markets. A decision on platform investment — or deliberate deferral — must be made before the Q3 capital planning cycle closes on 15 August.</p>
+      </div>
+
+      <section aria-labelledby="stakes-heading">
+        <h2 id="stakes-heading">What Is at Stake</h2>
+        <div class="stakes-grid">
+          <div class="stake-cell">
+            <p class="stake-label">Revenue at Risk</p>
+            <p class="stake-value">$42M</p>
+            <p class="stake-desc">Annual contract value in contested accounts</p>
+          </div>
+          <div class="stake-cell">
+            <p class="stake-label">Time Window</p>
+            <p class="stake-value">9 mo.</p>
+            <p class="stake-desc">Before competitor feature parity closes</p>
+          </div>
+          <div class="stake-cell">
+            <p class="stake-label">Investment Ask</p>
+            <p class="stake-value">$8.4M</p>
+            <p class="stake-desc">18-month platform buildout estimate</p>
+          </div>
+        </div>
+      </section>
+
+      <hr class="gold-rule">
+
+      <section aria-labelledby="findings-heading">
+        <h2 id="findings-heading">Key Findings</h2>
+        <ul class="findings-list">
+          <li>
+            <span class="finding-number">01</span>
+            <div class="finding-text">
+              <strong>Competitor velocity is accelerating</strong>
+              <span>BlueRidge and Summit Health each shipped two major platform releases in Q1 2026. Their combined patient portal adoption rate is now 34% versus Meridian's 11%.</span>
+            </div>
+          </li>
+          <li>
+            <span class="finding-number">02</span>
+            <div class="finding-text">
+              <strong>Internal capability gap is bridgeable</strong>
+              <span>Meridian's existing Salesforce Health Cloud implementation provides a viable foundation. Gap analysis indicates 14 weeks to MVP readiness with current vendor relationships.</span>
+            </div>
+          </li>
+          <li>
+            <span class="finding-number">03</span>
+            <div class="finding-text">
+              <strong>Patient demand is documented and growing</strong>
+              <span>CAHPS survey data (n = 4,200) shows 68% of patients aged 30&ndash;54 would switch providers for a better digital experience. This segment represents 61% of Meridian's billable volume.</span>
+            </div>
+          </li>
+          <li>
+            <span class="finding-number">04</span>
+            <div class="finding-text">
+              <strong>Regulatory runway is favorable</strong>
+              <span>CMS interoperability rules effective January 2027 mandate FHIR R4 API access. Proactive investment now yields a compliance dividend and avoids penalty exposure estimated at $2.1M annually.</span>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <hr class="gold-rule">
+
+      <section aria-labelledby="recommendation-heading">
+        <h2 id="recommendation-heading">Recommendation</h2>
+        <div class="recommendation">
+          <p class="rec-label">Board Action Required</p>
+          <p>Authorize Phase 1 platform investment of $3.2M by 1 September 2026 to fund discovery, architecture, and an 8-week MVP build targeting three priority markets. Approve conditional Phase 2 release of $5.2M contingent on MVP net promoter score exceeding 42 and six-month retention above 74%.</p>
+          <p>Delay beyond Q3 capital freeze forfeits the 9-month lead window and elevates revenue-at-risk from $42M to an estimated $67M by mid-2027.</p>
+          <ul class="action-items" aria-label="Immediate actions">
+            <li>CEO to convene Platform Steering Committee by 18 August</li>
+            <li>CFO to ringfence Phase 1 capital allocation in Q3 budget revision</li>
+            <li>CTO to issue RFP to two qualified implementation partners by 25 August</li>
+            <li>CMO to brief top-10 key accounts on roadmap by 30 September</li>
+          </ul>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <span class="footer-brand">Meridian Health &mdash; Board Restricted</span>
+    <span>Audience: Board of Directors &nbsp;|&nbsp; Author: Strategy &amp; Analytics</span>
+    <span>{{DATE}} &nbsp;|&nbsp; {{VERSION}}</span>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!--
+TEMPLATE: Territory Plan
+CATEGORY: Sales
+USE WHEN: Defining a rep or team's territory coverage, quota breakdown, account tiering, and pipeline-to-quota strategy for a planning cycle.
+PALETTE: Light clean
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Territory Plan &mdash; Pacific Northwest &bull; FY 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --navy: #1a2a42;
+      --blue: #3b9eff;
+      --blue-light: rgba(59,158,255,0.08);
+      --ink: #1c2533;
+      --muted: #677489;
+      --border: #e0e6ef;
+      --green: #2dd4a0;
+      --amber: #f0a050;
+      --red: #f06070;
+      --purple: #a78bfa;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .page {
+      background: var(--surface);
+      width: 860px;
+      margin: 0 auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 24px rgba(26,42,66,0.08);
+      overflow: hidden;
+    }
+    .header {
+      background: var(--navy);
+      padding: 36px 48px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .header-left {}
+    .header-tag {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+    .header-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+    .header-sub {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+    }
+    .header-right {
+      text-align: right;
+    }
+    .header-right .quota-label {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 4px;
+    }
+    .header-right .quota-val {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: -0.5px;
+    }
+    .body { padding: 36px 48px; }
+    .section { margin-bottom: 32px; }
+    .section-title {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .stat-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .stat-label {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .stat-val {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.3px;
+    }
+    .stat-sub { font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+    /* Territory definition */
+    .terr-list { list-style: none; }
+    .terr-list li {
+      padding: 8px 0;
+      font-size: 0.8rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .terr-list li:last-child { border-bottom: none; }
+    .terr-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--blue);
+      flex-shrink: 0;
+    }
+    /* Quota breakdown table */
+    .q-table { width: 100%; border-collapse: collapse; }
+    .q-table th {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .q-table td {
+      padding: 10px 10px;
+      font-size: 0.78rem;
+      border-bottom: 1px solid #ecf0f6;
+    }
+    .q-table tr:last-child td { border-bottom: none; }
+    .q-table tfoot td {
+      border-top: 2px solid var(--border);
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: var(--navy);
+    }
+    /* Account tier blocks */
+    .tier-wrap { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    .tier-card {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .tier-header {
+      padding: 10px 14px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .tier-a .tier-header { background: var(--navy); }
+    .tier-b .tier-header { background: #2e5080; }
+    .tier-c .tier-header { background: #4a6890; }
+    .tier-body { padding: 12px 14px; background: var(--bg); }
+    .tier-stat { font-size: 1.5rem; font-weight: 700; color: var(--navy); }
+    .tier-desc { font-size: 0.7rem; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+    .tier-accounts { margin-top: 10px; }
+    .tier-accounts li {
+      font-size: 0.72rem;
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border);
+      list-style: none;
+      color: var(--ink);
+    }
+    .tier-accounts li:last-child { border-bottom: none; }
+    /* Coverage ratio */
+    .ratio-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+    .ratio-label { font-size: 0.75rem; color: var(--ink); min-width: 140px; }
+    .ratio-bar-bg {
+      flex: 1;
+      height: 16px;
+      background: #e0e6ef;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .ratio-bar { height: 100%; border-radius: 6px; }
+    .ratio-val { font-size: 0.75rem; font-weight: 600; min-width: 60px; text-align: right; }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 12px 48px;
+      display: flex;
+      justify-content: space-between;
+    }
+    footer span { font-size: 0.62rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="header-tag">Territory Plan &bull; FY 2026</div>
+      <div class="header-title">Pacific Northwest Region</div>
+      <div class="header-sub">Oregon &bull; Washington &bull; Idaho &bull; Healthcare &amp; Life Sciences Vertical</div>
+    </div>
+    <div class="header-right">
+      <div class="quota-label">Annual Quota</div>
+      <div class="quota-val">$2,400,000</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- Territory Snapshot -->
+    <div class="section">
+      <div class="section-title">Territory Snapshot</div>
+      <div class="grid-4">
+        <div class="stat-card">
+          <div class="stat-label">Total Named Accounts</div>
+          <div class="stat-val">48</div>
+          <div class="stat-sub">Active + Prospective</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Customers</div>
+          <div class="stat-val">14</div>
+          <div class="stat-sub">$1.04M current ARR</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Open Pipeline</div>
+          <div class="stat-val">$3.8M</div>
+          <div class="stat-sub">Weighted: $1.62M</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Coverage Ratio</div>
+          <div class="stat-val" style="color:var(--green);">1.6x</div>
+          <div class="stat-sub">Target &ge; 3x for comfort</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Territory Definition -->
+    <div class="section">
+      <div class="section-title">Territory Definition</div>
+      <div class="grid-2">
+        <div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-bottom:10px;">Geographic Coverage</p>
+          <ul class="terr-list">
+            <li><span class="terr-dot"></span>Oregon (all counties)</li>
+            <li><span class="terr-dot"></span>Washington (all counties)</li>
+            <li><span class="terr-dot"></span>Idaho (all counties)</li>
+            <li><span class="terr-dot"></span>Excludes Seattle enterprise accounts &gt;5K employees (handed to Major Accounts team)</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-bottom:10px;">Vertical Focus</p>
+          <ul class="terr-list">
+            <li><span class="terr-dot"></span>Healthcare Payers (regional health plans)</li>
+            <li><span class="terr-dot"></span>Integrated Delivery Networks (IDNs)</li>
+            <li><span class="terr-dot"></span>Specialty &amp; Ambulatory Groups</li>
+            <li><span class="terr-dot"></span>Health Tech / Digital Health (secondary)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quota Breakdown -->
+    <div class="section">
+      <div class="section-title">Quota Breakdown by Source</div>
+      <table class="q-table">
+        <thead>
+          <tr>
+            <th>Source</th>
+            <th>Quota</th>
+            <th>% of Total</th>
+            <th>Current Pipeline</th>
+            <th>Gap</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Existing Customer Expansion</td>
+            <td>$960,000</td>
+            <td>40%</td>
+            <td>$1,200,000</td>
+            <td style="color:var(--green);">+$240K covered</td>
+          </tr>
+          <tr>
+            <td>Existing Customer Renewal Upsell</td>
+            <td>$480,000</td>
+            <td>20%</td>
+            <td>$620,000</td>
+            <td style="color:var(--green);">+$140K covered</td>
+          </tr>
+          <tr>
+            <td>New Logo (Net New)</td>
+            <td>$720,000</td>
+            <td>30%</td>
+            <td>$1,580,000</td>
+            <td style="color:var(--green);">+$860K covered</td>
+          </tr>
+          <tr>
+            <td>Partner-Sourced Deals</td>
+            <td>$240,000</td>
+            <td>10%</td>
+            <td>$400,000</td>
+            <td style="color:var(--green);">+$160K covered</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>Total</td>
+            <td>$2,400,000</td>
+            <td>100%</td>
+            <td>$3,800,000</td>
+            <td style="color:var(--green);">1.6x covered</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Account Tiering -->
+    <div class="section">
+      <div class="section-title">Account Tiering (A / B / C)</div>
+      <div class="tier-wrap">
+        <div class="tier-card tier-a">
+          <div class="tier-header">Tier A &mdash; Strategic (Top 10)</div>
+          <div class="tier-body">
+            <div class="tier-stat">10</div>
+            <div class="tier-desc">Weekly contact cadence. QBRs required. ACV &gt;$150K or expansion potential &gt;$200K.</div>
+            <ul class="tier-accounts" style="margin-top:10px;">
+              <li>Meridian Health ($325K ARR)</li>
+              <li>Cascade IDN ($215K ARR)</li>
+              <li>Olympic Medical Center ($180K ARR)</li>
+              <li>PeakCare Health Plan ($155K ARR)</li>
+              <li>Columbia Basin Health ($140K ARR)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tier-card tier-b">
+          <div class="tier-header">Tier B &mdash; Growth (Top 11&ndash;25)</div>
+          <div class="tier-body">
+            <div class="tier-stat">15</div>
+            <div class="tier-desc">Bi-weekly contact. Bi-annual QBR. ACV $50K&ndash;$149K or pipeline in-quarter.</div>
+            <ul class="tier-accounts" style="margin-top:10px;">
+              <li>Rainier Health Group ($95K ARR)</li>
+              <li>Northwest Specialty Clinic ($82K)</li>
+              <li>Puget Health Alliance ($74K ARR)</li>
+              <li>Eagle Rock Medical Group ($61K)</li>
+              <li>+11 more accounts</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tier-card tier-c">
+          <div class="tier-header">Tier C &mdash; Nurture (26&ndash;48)</div>
+          <div class="tier-body">
+            <div class="tier-stat">23</div>
+            <div class="tier-desc">Monthly touches, email + webinar. ACV &lt;$50K or early prospect. Monitor for tier promotion.</div>
+            <ul class="tier-accounts" style="margin-top:10px;">
+              <li>Valley Physicians Group</li>
+              <li>Summit Health Partners</li>
+              <li>Lakeview Community Health</li>
+              <li>Horizon Ambulatory Services</li>
+              <li>+19 more prospects</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coverage Plan -->
+    <div class="section">
+      <div class="section-title">Pipeline-to-Quota Coverage Ratio by Quarter</div>
+      <div class="ratio-row">
+        <div class="ratio-label">Q1 2026 (Closed/Won)</div>
+        <div class="ratio-bar-bg"><div class="ratio-bar" style="width:38%;background:var(--green);"></div></div>
+        <div class="ratio-val" style="color:var(--green);">$912K / $600K</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">Q2 2026 (Committed)</div>
+        <div class="ratio-bar-bg"><div class="ratio-bar" style="width:54%;background:var(--blue);"></div></div>
+        <div class="ratio-val">$1.3M / $600K</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">Q3 2026 (Pipeline)</div>
+        <div class="ratio-bar-bg"><div class="ratio-bar" style="width:42%;background:var(--amber);"></div></div>
+        <div class="ratio-val" style="color:var(--amber);">$1.0M / $600K</div>
+      </div>
+      <div class="ratio-row">
+        <div class="ratio-label">Q4 2026 (Early Stage)</div>
+        <div class="ratio-bar-bg"><div class="ratio-bar" style="width:25%;background:var(--purple);"></div></div>
+        <div class="ratio-val" style="color:var(--muted);">$590K / $600K</div>
+      </div>
+      <p style="font-size:0.68rem;color:var(--muted);margin-top:10px;">Q4 pipeline gap: <strong style="color:var(--red);">$10K short</strong>. 3 prospecting campaigns planned Aug&ndash;Sep to close gap.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Territory Plan &bull; Pacific Northwest &bull; FY 2026 &bull; SponAI Consulting</span>
+    <span>v{{VERSION}} &bull; {{DATE}} &bull; {{OWNER}}</span>
+  </footer>
+</div>
+</body>
+</html>

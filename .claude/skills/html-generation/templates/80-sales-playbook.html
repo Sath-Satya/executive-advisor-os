@@ -1,0 +1,548 @@
+<!--
+TEMPLATE: Sales Playbook / Battlecard
+CATEGORY: Sales
+USE WHEN: Equipping a sales rep with an ICP-focused battlecard covering ideal customer profile, discovery questions, competitive positioning, objection handling, demo script, and pricing guidance.
+PALETTE: Light clean
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Playbook &mdash; Healthcare Payer Vertical &bull; SponAI AI Workflow Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --navy: #1a2a42;
+      --blue: #3b9eff;
+      --blue-light: rgba(59,158,255,0.07);
+      --ink: #1c2533;
+      --muted: #677489;
+      --border: #e0e6ef;
+      --green: #2dd4a0;
+      --amber: #f0a050;
+      --red: #f06070;
+      --purple: #a78bfa;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .page {
+      background: var(--surface);
+      width: 920px;
+      margin: 0 auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 24px rgba(26,42,66,0.08);
+      overflow: hidden;
+    }
+    /* Header */
+    .header {
+      background: var(--navy);
+      padding: 28px 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-tag {
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+    .header-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+    .header-sub { font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 3px; }
+    .header-right { text-align: right; }
+    .version-tag {
+      display: inline-block;
+      background: rgba(59,158,255,0.2);
+      color: var(--blue);
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .owner-tag { font-size: 0.62rem; color: rgba(255,255,255,0.35); margin-top: 6px; font-family: 'DM Mono', monospace; }
+    /* Body layout */
+    .body { padding: 28px 44px; }
+    .section { margin-bottom: 26px; }
+    .section-title {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 5px;
+      margin-bottom: 14px;
+    }
+    /* ICP grid */
+    .icp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .icp-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 15px;
+    }
+    .icp-label {
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .icp-val { font-size: 0.8rem; font-weight: 600; color: var(--navy); line-height: 1.4; }
+    /* Two column layout */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 0; }
+    .panel {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+    .panel-title {
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pt-blue { color: var(--blue); }
+    .pt-green { color: #1a8a68; }
+    .pt-red { color: #c03040; }
+    /* Discovery questions */
+    .q-list { list-style: none; }
+    .q-list li {
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.77rem;
+      color: var(--ink);
+      display: flex;
+      gap: 8px;
+      line-height: 1.4;
+    }
+    .q-list li:last-child { border-bottom: none; }
+    .q-num {
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--blue);
+      min-width: 18px;
+      font-family: 'DM Mono', monospace;
+      margin-top: 2px;
+    }
+    /* Competitor positioning */
+    .comp-table { width: 100%; border-collapse: collapse; }
+    .comp-table th {
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 7px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .comp-table td {
+      padding: 9px 12px;
+      font-size: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.4;
+    }
+    .comp-table tr:last-child td { border-bottom: none; }
+    .comp-name { font-weight: 600; color: var(--navy); }
+    .strength { color: #1a6abf; font-size: 0.68rem; }
+    .weakness { color: #c03040; font-size: 0.68rem; }
+    .our-win { color: #1a8a68; font-size: 0.68rem; }
+    /* Objections */
+    .obj-list { list-style: none; }
+    .obj-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .obj-item:last-child { margin-bottom: 0; }
+    .obj-q {
+      padding: 9px 14px;
+      background: rgba(240,96,112,0.05);
+      font-size: 0.77rem;
+      font-weight: 600;
+      color: var(--navy);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .obj-q::before {
+      content: 'Q';
+      font-size: 0.6rem;
+      font-weight: 700;
+      background: rgba(240,96,112,0.15);
+      color: #c03040;
+      padding: 2px 5px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .obj-a {
+      padding: 9px 14px;
+      font-size: 0.75rem;
+      color: var(--ink);
+      line-height: 1.45;
+      display: flex;
+      gap: 8px;
+    }
+    .obj-a::before {
+      content: 'A';
+      font-size: 0.6rem;
+      font-weight: 700;
+      background: rgba(45,212,160,0.15);
+      color: #1a8a68;
+      padding: 2px 5px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    /* Demo script */
+    .demo-step {
+      display: flex;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .demo-step:last-child { border-bottom: none; }
+    .demo-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.62rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .demo-body { flex: 1; }
+    .demo-title { font-size: 0.78rem; font-weight: 600; color: var(--navy); margin-bottom: 2px; }
+    .demo-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
+    .demo-time { font-size: 0.6rem; color: var(--blue); font-weight: 600; white-space: nowrap; margin-top: 2px; }
+    /* Pricing guidance */
+    .pricing-table { width: 100%; border-collapse: collapse; }
+    .pricing-table th {
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 7px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .pricing-table td {
+      padding: 10px 12px;
+      font-size: 0.77rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .pricing-table tr:last-child td { border-bottom: none; }
+    .floor-tag {
+      font-size: 0.56rem;
+      font-weight: 700;
+      background: rgba(240,96,112,0.12);
+      color: #c03040;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-left: 6px;
+      text-transform: uppercase;
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 12px 44px;
+      display: flex;
+      justify-content: space-between;
+    }
+    footer span { font-size: 0.6rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="header-tag">Sales Playbook &bull; Battlecard &bull; Healthcare Payer Vertical</div>
+      <div class="header-title">SponAI AI Workflow Platform &mdash; Payer Battlecard</div>
+      <div class="header-sub">For internal use only &bull; Do not share with prospects</div>
+    </div>
+    <div class="header-right">
+      <span class="version-tag">v{{VERSION}} &bull; {{DATE}}</span>
+      <div class="owner-tag">Owner: {{OWNER}}</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- ICP -->
+    <div class="section">
+      <div class="section-title">Ideal Customer Profile (ICP) &mdash; Healthcare Payer</div>
+      <div class="icp-grid">
+        <div class="icp-card">
+          <div class="icp-label">Org Size</div>
+          <div class="icp-val">500&ndash;10,000 employees<br />1M+ covered lives</div>
+        </div>
+        <div class="icp-card">
+          <div class="icp-label">Plan Type</div>
+          <div class="icp-val">Medicaid MCO, Commercial HMO/PPO, Dual-eligible (DSNP)</div>
+        </div>
+        <div class="icp-card">
+          <div class="icp-label">Pain Points (Must Have 2+)</div>
+          <div class="icp-val">Manual care gap outreach, HEDIS miss, high admin burden</div>
+        </div>
+        <div class="icp-card">
+          <div class="icp-label">Budget Signal</div>
+          <div class="icp-val">Quality bonus program or value-based contract; IT modernization budget</div>
+        </div>
+        <div class="icp-card">
+          <div class="icp-label">Buying Role</div>
+          <div class="icp-val">CMO or VP Quality as economic buyer; Dir. Care Management as champion</div>
+        </div>
+        <div class="icp-card">
+          <div class="icp-label">Technology Stack</div>
+          <div class="icp-val">Epic EHR (preferred), Salesforce Health Cloud, or homegrown. Okta/SSO present.</div>
+        </div>
+        <div class="icp-card">
+          <div class="icp-label">Target ACV Range</div>
+          <div class="icp-val">$125,000 &ndash; $850,000<br />Multi-year preferred</div>
+        </div>
+        <div class="icp-card">
+          <div class="icp-label">Disqualifiers</div>
+          <div class="icp-val">FFS-only model, &lt;50K lives, no IT sponsor, &lt;6-month runway to HEDIS season</div>
+        </div>
+        <div class="icp-card">
+          <div class="icp-label">Best Reference</div>
+          <div class="icp-val">Meridian Health (Portland, OR) &mdash; ask Priya Nair (with permission)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discovery Questions -->
+    <div class="section">
+      <div class="section-title">Discovery Questions (By Stage)</div>
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-title pt-blue">Stage 1 &mdash; Qualification</div>
+          <ul class="q-list">
+            <li><span class="q-num">01</span>What&rsquo;s your current care gap closure rate, and how does it compare to your state benchmark?</li>
+            <li><span class="q-num">02</span>How are your case managers spending their time today &mdash; what percentage is administrative versus direct member engagement?</li>
+            <li><span class="q-num">03</span>Do you have a quality bonus program or value-based arrangement where HEDIS scores directly affect revenue?</li>
+            <li><span class="q-num">04</span>Who owns the member outreach strategy &mdash; is it centralized or distributed by program line?</li>
+            <li><span class="q-num">05</span>What does your current outreach stack look like &mdash; batch SMS, IVR, manual calling?</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel-title pt-blue">Stage 2 &mdash; Technical Discovery</div>
+          <ul class="q-list">
+            <li><span class="q-num">06</span>What EHR are you on, and do you have an existing data integration layer or API gateway?</li>
+            <li><span class="q-num">07</span>How do you currently manage member consent and communication channel preferences for HIPAA compliance?</li>
+            <li><span class="q-num">08</span>Who controls your data governance policy &mdash; is there a CDO or Chief Compliance Officer we need to engage?</li>
+            <li><span class="q-num">09</span>What does your IT project queue look like for H2 &mdash; are there competing infrastructure priorities?</li>
+            <li><span class="q-num">10</span>Have you evaluated any AI-powered outreach platforms before? What happened?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Competitive Positioning -->
+    <div class="section">
+      <div class="section-title">Competitor Positioning</div>
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Competitor</th>
+            <th>Their Strength</th>
+            <th>Their Weakness</th>
+            <th>Our Win</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="comp-name">CareConnect Pro</span></td>
+            <td><span class="strength">Brand recognition, large install base, deep Medicaid workflows</span></td>
+            <td><span class="weakness">No AI-native layer; UI is dated; implementation takes 6+ months; no ROI guarantees</span></td>
+            <td><span class="our-win">Prove faster time-to-value with pilot ROI in 30 days; AI-first outreach vs rule-based; 18% lower TCO</span></td>
+          </tr>
+          <tr>
+            <td><span class="comp-name">Epic Cosmos</span></td>
+            <td><span class="strength">Embedded in EHR workflow; IT teams already familiar; bundled pricing attractive</span></td>
+            <td><span class="weakness">Analytics-heavy, not action-oriented; no omnichannel outreach engine; Epic implementation required to unlock features</span></td>
+            <td><span class="our-win">Pre-built Epic connector; SponAI is action-oriented (outreach + workflow, not just insights); no Epic upgrade required</span></td>
+          </tr>
+          <tr>
+            <td><span class="comp-name">HealthBeam (New Entrant)</span></td>
+            <td><span class="strength">Lower price point; modern UI; founder-led agility</span></td>
+            <td><span class="weakness">Limited enterprise references; no HIPAA compliance certifications beyond BAA; shallow Medicaid-specific config</span></td>
+            <td><span class="our-win">Enterprise-grade security (SOC 2 Type II, HITRUST); deep Medicaid workflow templates; proven ROI at Meridian scale</span></td>
+          </tr>
+          <tr>
+            <td><span class="comp-name">Build Internally</span></td>
+            <td><span class="strength">Full control; theoretically cheaper long-term</span></td>
+            <td><span class="weakness">18&ndash;24 month build timeline; ongoing maintenance burden; IT talent shortage in health plans</span></td>
+            <td><span class="our-win">30-day time to value; zero maintenance overhead; continuously improving AI models. Ask: &ldquo;What is your IT team&rsquo;s current sprint backlog?&rdquo;</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Objection Handling -->
+    <div class="section">
+      <div class="section-title">Objection Handling</div>
+      <ul class="obj-list">
+        <li class="obj-item">
+          <div class="obj-q">We already have Epic for outreach &mdash; why do we need a separate platform?</div>
+          <div class="obj-a">Epic gives you the data &mdash; SponAI gives you the action engine. Our pre-built Epic connector means you can act on Epic insights through AI-driven outreach without any Epic upgrade. Ask: &ldquo;How many HEDIS gaps do you close today by exporting a list from Epic and manually calling members?&rdquo;</div>
+        </li>
+        <li class="obj-item">
+          <div class="obj-q">We&rsquo;re concerned about AI compliance and HIPAA in member communications.</div>
+          <div class="obj-a">We&rsquo;re SOC 2 Type II and HITRUST certified. Every outreach is governed by your existing consent configuration. Our CDO brief covers the full data governance model &mdash; most CDOs approve within 2 weeks. Meridian&rsquo;s CDO signed off after a single technical review session.</div>
+        </li>
+        <li class="obj-item">
+          <div class="obj-q">Your price is too high &mdash; CareConnect quoted us 18% less.</div>
+          <div class="obj-a">CareConnect&rsquo;s standard implementation alone is $40K+ and takes 6 months. Our full implementation is $24K and go-live in 45 days. On a 3-year TCO basis, we&rsquo;re typically 12&ndash;15% less. Can I walk you through the TCO comparison?</div>
+        </li>
+        <li class="obj-item">
+          <div class="obj-q">We don&rsquo;t have budget this cycle.</div>
+          <div class="obj-a">A lot of our payer customers initially said the same thing &mdash; and then we showed them how quality bonuses fund the investment. If a 10pp improvement in care gap closure generates $480K in quality bonuses for a plan your size, the ROI positive from Day 91. Let me show you the Meridian Health case study.</div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Demo Script -->
+    <div class="section">
+      <div class="section-title">Demo Script Outline (45 Minutes)</div>
+      <div class="demo-step">
+        <div class="demo-num">1</div>
+        <div class="demo-body">
+          <div class="demo-title">Open with the Business Problem (Not the Product)</div>
+          <div class="demo-desc">Restate what you heard in discovery. &ldquo;You told us that 38% of your case manager time goes to admin tasks. Today I want to show you what Priya Nair&rsquo;s team at Meridian did to cut that to 24% in 90 days.&rdquo;</div>
+        </div>
+        <div class="demo-time">5 min</div>
+      </div>
+      <div class="demo-step">
+        <div class="demo-num">2</div>
+        <div class="demo-body">
+          <div class="demo-title">Care Gap Analytics Dashboard</div>
+          <div class="demo-desc">Show HEDIS-mapped gap view by member segment. Highlight &ldquo;actionable today&rdquo; list. Point out drill-down by provider group. Let buyer click.</div>
+        </div>
+        <div class="demo-time">8 min</div>
+      </div>
+      <div class="demo-step">
+        <div class="demo-num">3</div>
+        <div class="demo-body">
+          <div class="demo-title">AI Outreach Workflow (Core Differentiator)</div>
+          <div class="demo-desc">Live demo: create a HEDIS outreach campaign from the gap list. Show AI-generated personalized message variant. Show omnichannel scheduling (SMS + voice + portal). Show consent check. Launch campaign. This is the &ldquo;wow moment.&rdquo;</div>
+        </div>
+        <div class="demo-time">12 min</div>
+      </div>
+      <div class="demo-step">
+        <div class="demo-num">4</div>
+        <div class="demo-body">
+          <div class="demo-title">Results &amp; ROI Dashboard</div>
+          <div class="demo-desc">Show Meridian&rsquo;s actual 90-day results view (with permission). Care gap rate before/after. Outreach cost trend. Time saved per FTE. Connect these directly to the buyer&rsquo;s stated KPIs from discovery.</div>
+        </div>
+        <div class="demo-time">8 min</div>
+      </div>
+      <div class="demo-step">
+        <div class="demo-num">5</div>
+        <div class="demo-body">
+          <div class="demo-title">Security &amp; Integration Slide (for CDO / IT)</div>
+          <div class="demo-desc">Quick compliance summary: SOC 2, HITRUST, BAA, Epic connector. Show SSO/Okta setup screen. Keep under 3 minutes unless CDO is in the room.</div>
+        </div>
+        <div class="demo-time">5 min</div>
+      </div>
+      <div class="demo-step">
+        <div class="demo-num">6</div>
+        <div class="demo-body">
+          <div class="demo-title">Proposed Pilot &amp; Next Steps</div>
+          <div class="demo-desc">Offer a 30-day paid pilot at reduced commitment. Define pilot success criteria on the call. Book a follow-up with economic buyer before leaving the demo. Never leave without a confirmed next step.</div>
+        </div>
+        <div class="demo-time">7 min</div>
+      </div>
+    </div>
+
+    <!-- Pricing Guidance -->
+    <div class="section">
+      <div class="section-title">Pricing Guidance (Healthcare Payer)</div>
+      <table class="pricing-table">
+        <thead>
+          <tr>
+            <th>Package</th>
+            <th>List Price</th>
+            <th>Discount Floor</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AI Workflow Automation Core (annual)</td>
+            <td>$120/seat/yr</td>
+            <td>$100/seat <span class="floor-tag">Floor</span></td>
+            <td>Multi-year discount: 8% yr-2, 12% yr-3. No single-year below $110.</td>
+          </tr>
+          <tr>
+            <td>Care Gap Analytics</td>
+            <td>$500/seat/yr</td>
+            <td>$430/seat <span class="floor-tag">Floor</span></td>
+            <td>Bundle with Core for 10% combined discount. Requires minimum 100 seats.</td>
+          </tr>
+          <tr>
+            <td>Member Engagement Suite</td>
+            <td>$110/seat/yr</td>
+            <td>$100/seat <span class="floor-tag">Floor</span></td>
+            <td>Expansion discount for existing customers: up to 9.1% (precedent: Meridian). New logo: no discount below list without VP approval.</td>
+          </tr>
+          <tr>
+            <td>Implementation (standard)</td>
+            <td>$28,000</td>
+            <td>$20,000 <span class="floor-tag">Floor</span></td>
+            <td>Existing customer expansion: up to 20% off if prior infra reused. CS VP approval required below $24K.</td>
+          </tr>
+          <tr>
+            <td>Claims AI Copilot (POC)</td>
+            <td>$85,000/yr</td>
+            <td>$70,000 <span class="floor-tag">Floor</span></td>
+            <td>POC at no cost for strategic accounts (Tier A only) with CMO sponsor and 90-day close commitment. VP Sales approval required.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.67rem;color:var(--muted);margin-top:10px;background:rgba(240,160,80,0.07);border:1px solid rgba(240,160,80,0.2);padding:8px 12px;border-radius:6px;">Discount authority: 0&ndash;5% = Rep &bull; 6&ndash;10% = VP Sales &bull; &gt;10% = CFO + VP Sales. Never disclose floor pricing to prospects. Start at list, discount only after economic buyer identified.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Sales Playbook &bull; Healthcare Payer &bull; SponAI AI Workflow Platform &bull; INTERNAL ONLY</span>
+    <span>v{{VERSION}} &bull; {{DATE}} &bull; {{OWNER}}</span>
+  </footer>
+</div>
+</body>
+</html>

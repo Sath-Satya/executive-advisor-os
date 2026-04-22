@@ -1,0 +1,509 @@
+<!--
+TEMPLATE: Deal Desk Memo
+CATEGORY: Sales
+USE WHEN: Seeking internal deal desk approval for a non-standard deal, including deviations from standard pricing or terms, revenue impact, strategic fit, risk assessment, and approval chain.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deal Desk Memo &mdash; Meridian Health Expansion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --white: #ffffff;
+      --green: #2dd4a0;
+      --amber: #f0a050;
+      --red: #f06070;
+      --purple: #a78bfa;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #e8e4dc;
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .page {
+      background: var(--white);
+      width: 860px;
+      margin: 0 auto;
+      box-shadow: 0 4px 32px rgba(14,27,46,0.12);
+    }
+    /* Memo header bar */
+    .memo-header {
+      background: var(--navy);
+      padding: 28px 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .memo-type {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 6px;
+    }
+    .memo-subject {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+    .memo-status {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .status-pending { background: rgba(240,160,80,0.2); color: #f0a050; border: 1px solid rgba(240,160,80,0.35); }
+    .status-approved { background: rgba(45,212,160,0.2); color: #2dd4a0; border: 1px solid rgba(45,212,160,0.35); }
+    .memo-id { font-size: 0.62rem; color: rgba(255,255,255,0.35); font-family: 'DM Mono', monospace; }
+    /* Memo fields */
+    .memo-fields {
+      border-bottom: 2px solid var(--border);
+      padding: 16px 56px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .mf-item {
+      padding: 10px 0;
+      border-right: 1px solid var(--border);
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+    .mf-item:first-child { padding-left: 0; }
+    .mf-item:last-child { border-right: none; }
+    .mf-label {
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .mf-val { font-size: 0.78rem; font-weight: 500; color: var(--ink); }
+    /* Body */
+    .body { padding: 32px 56px; }
+    .section { margin-bottom: 28px; }
+    .section-title {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+    /* Deal summary table */
+    .deal-table { width: 100%; border-collapse: collapse; }
+    .deal-table th {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .deal-table td {
+      padding: 10px 12px;
+      font-size: 0.78rem;
+      border-bottom: 1px solid #ede9e1;
+    }
+    .deal-table tr:last-child td { border-bottom: none; }
+    /* Deviations */
+    .dev-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .dev-card:last-child { margin-bottom: 0; }
+    .dev-header {
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: var(--cream);
+    }
+    .dev-title { font-size: 0.8rem; font-weight: 600; color: var(--navy); }
+    .dev-tag {
+      font-size: 0.55rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .dt-price { background: rgba(240,160,80,0.15); color: #a06020; }
+    .dt-term { background: rgba(167,139,250,0.15); color: #6b52d4; }
+    .dt-sla { background: rgba(59,158,255,0.12); color: #1a6abf; }
+    .dev-body { padding: 12px 16px; }
+    .dev-row { display: flex; gap: 16px; }
+    .dev-col { flex: 1; }
+    .dev-col label {
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .dev-col p { font-size: 0.75rem; color: var(--ink); line-height: 1.4; }
+    /* Revenue impact */
+    .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .impact-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .impact-label { font-size: 0.56rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+    .impact-val { font-size: 1.2rem; font-weight: 700; color: var(--navy); letter-spacing: -0.3px; }
+    .impact-sub { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+    /* Risk + Strategic fit */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .eval-list { list-style: none; }
+    .eval-list li {
+      display: flex;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #ede9e1;
+      font-size: 0.76rem;
+      line-height: 1.4;
+    }
+    .eval-list li:last-child { border-bottom: none; }
+    .eval-icon {
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .ei-pro { background: rgba(45,212,160,0.12); color: #1a8a68; }
+    .ei-risk { background: rgba(240,96,112,0.12); color: #c03040; }
+    /* Approval chain */
+    .approval-chain {
+      display: flex;
+      gap: 0;
+      align-items: flex-start;
+    }
+    .approver {
+      flex: 1;
+      text-align: center;
+      position: relative;
+    }
+    .approver::after {
+      content: '\2192';
+      position: absolute;
+      right: -10px;
+      top: 12px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    .approver:last-child::after { display: none; }
+    .approver-dot {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      margin: 0 auto 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+    .ap-done { background: rgba(45,212,160,0.15); color: #1a8a68; border: 2px solid #2dd4a0; }
+    .ap-active { background: rgba(240,160,80,0.15); color: #a06020; border: 2px dashed #f0a050; }
+    .ap-pending { background: var(--cream); color: var(--muted); border: 2px solid var(--border); }
+    .approver-name { font-size: 0.68rem; font-weight: 600; color: var(--navy); }
+    .approver-role { font-size: 0.6rem; color: var(--muted); }
+    .approver-date { font-size: 0.58rem; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 3px; }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 13px 56px;
+      display: flex;
+      justify-content: space-between;
+    }
+    footer span { font-size: 0.62rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="memo-header">
+    <div>
+      <div class="memo-type">Deal Desk Memo &bull; Approval Required</div>
+      <div class="memo-subject">Meridian Health &mdash; Member Engagement Expansion</div>
+    </div>
+    <div class="memo-status">
+      <span class="status-badge status-pending">Pending Approval</span>
+      <span class="memo-id">DDM-2026-0041 &bull; Submitted {{DATE}}</span>
+    </div>
+  </div>
+
+  <div class="memo-fields">
+    <div class="mf-item">
+      <div class="mf-label">Account</div>
+      <div class="mf-val">Meridian Health</div>
+    </div>
+    <div class="mf-item">
+      <div class="mf-label">ACV (This Deal)</div>
+      <div class="mf-val">$120,000</div>
+    </div>
+    <div class="mf-item">
+      <div class="mf-label">Close Date</div>
+      <div class="mf-val">April 30, 2026</div>
+    </div>
+    <div class="mf-item">
+      <div class="mf-label">Account Owner</div>
+      <div class="mf-val">{{OWNER}}</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- Deal Structure -->
+    <div class="section">
+      <div class="section-title">Deal Structure Summary</div>
+      <table class="deal-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Standard</th>
+            <th>This Deal</th>
+            <th>Variance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Member Engagement Suite &mdash; 1,000 seats</td>
+            <td>$110/seat &bull; $110,000</td>
+            <td>$100/seat &bull; $100,000</td>
+            <td style="color:#a06020;">&minus;9.1% ($10,000)</td>
+          </tr>
+          <tr>
+            <td>Implementation &amp; Onboarding</td>
+            <td>$28,000 flat</td>
+            <td>$24,000 flat</td>
+            <td style="color:#a06020;">&minus;14.3% ($4,000)</td>
+          </tr>
+          <tr>
+            <td>Contract Term</td>
+            <td>Annual</td>
+            <td>3-year</td>
+            <td style="color:#1a8a68;">Favorable (multi-year)</td>
+          </tr>
+          <tr>
+            <td>Payment Terms</td>
+            <td>Net-30</td>
+            <td>Net-30</td>
+            <td>No deviation</td>
+          </tr>
+          <tr>
+            <td>BAA / DPA Amendment</td>
+            <td>Standard</td>
+            <td>Standard + 1 custom data exhibit</td>
+            <td style="color:#a06020;">Minor legal review needed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Deviations -->
+    <div class="section">
+      <div class="section-title">Deviations from Standard</div>
+
+      <div class="dev-card">
+        <div class="dev-header">
+          <div class="dev-title">Pricing Discount &mdash; 9.1% below list on license fees</div>
+          <span class="dev-tag dt-price">Pricing</span>
+        </div>
+        <div class="dev-body">
+          <div class="dev-row">
+            <div class="dev-col">
+              <label>Justification</label>
+              <p>Loyalty discount for 3-year commit by an existing strategic customer ($325K ARR). Competitive pressure from CareConnect Pro who quoted $95/seat. Matching to defend account and accelerate multi-year commitment.</p>
+            </div>
+            <div class="dev-col">
+              <label>Precedent</label>
+              <p>3 comparable multi-year deals in H2 2025 approved at 8&ndash;12% discount for 3-year term. Within standard VP approval threshold.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dev-card">
+        <div class="dev-header">
+          <div class="dev-title">Implementation Fee Reduction &mdash; $4,000 below standard rate</div>
+          <span class="dev-tag dt-price">Pricing</span>
+        </div>
+        <div class="dev-body">
+          <div class="dev-row">
+            <div class="dev-col">
+              <label>Justification</label>
+              <p>Customer already has SSO, data pipelines, and admin training from core platform. Actual implementation effort is materially less than a greenfield deploy. Pricing reflects actual scope, not a commercial concession.</p>
+            </div>
+            <div class="dev-col">
+              <label>Precedent</label>
+              <p>Existing customer expansion implementation discounts up to 20% approved by Customer Success VP when prior infrastructure is reused.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dev-card">
+        <div class="dev-header">
+          <div class="dev-title">Custom Data Exhibit in BAA</div>
+          <span class="dev-tag dt-term">Legal / Terms</span>
+        </div>
+        <div class="dev-body">
+          <div class="dev-row">
+            <div class="dev-col">
+              <label>Justification</label>
+              <p>Meridian&rsquo;s CDO requested a supplementary data exhibit defining permitted AI training use-cases. Legal reviewed draft; low risk, aligns with standard DPA language. No derogation from data ownership terms.</p>
+            </div>
+            <div class="dev-col">
+              <label>Legal Sign-off</label>
+              <p>Legal team pre-approved exhibit language on April 8, 2026 (Legal Ticket L-0342). Standard execution; no escalation required.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue Impact -->
+    <div class="section">
+      <div class="section-title">Revenue Impact</div>
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-label">New ACV (This Deal)</div>
+          <div class="impact-val">$120,000</div>
+          <div class="impact-sub">Year 1 including impl. fee</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-label">Recurring ACV (Yr 2&ndash;3)</div>
+          <div class="impact-val">$100,000</div>
+          <div class="impact-sub">License only, CPI uplift</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-label">3-Year TCV</div>
+          <div class="impact-val">$320,000</div>
+          <div class="impact-sub">Lock-in at multi-year rate</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-label">Total Account ACV Post-Close</div>
+          <div class="impact-val">$445,000</div>
+          <div class="impact-sub">Core + Expansion combined</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-label">Revenue Concession (vs List)</div>
+          <div class="impact-val" style="color:#a06020;">$14,000</div>
+          <div class="impact-sub">Yr 1 only; standard Y2+ pricing</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-label">Strategic Value</div>
+          <div class="impact-val" style="color:#1a8a68;">High</div>
+          <div class="impact-sub">Blocks competitive window 3 years</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Strategic Fit and Risk -->
+    <div class="section">
+      <div class="section-title">Strategic Fit &amp; Risk Assessment</div>
+      <div class="two-col">
+        <div>
+          <p style="font-size:0.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Strategic Rationale</p>
+          <ul class="eval-list">
+            <li><span class="eval-icon ei-pro">&#43;</span>Locks in $320K TCV from a Tier A strategic account; removes 3-year competitive window</li>
+            <li><span class="eval-icon ei-pro">&#43;</span>Reference customer for healthcare payer vertical &mdash; Priya Nair agreed to co-present at SponAI Summit 2026</li>
+            <li><span class="eval-icon ei-pro">&#43;</span>Accelerates Claims AI POC approval via expanded relationship depth</li>
+            <li><span class="eval-icon ei-pro">&#43;</span>Establishes template for multi-year loyalty pricing program (3 similar prospects in pipeline)</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:0.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Risk Factors</p>
+          <ul class="eval-list">
+            <li><span class="eval-icon ei-risk">&minus;</span>Discount precedent: must ensure 9% is floor, not starting point for future negotiations with this account</li>
+            <li><span class="eval-icon ei-risk">&minus;</span>Custom data exhibit: sets minor precedent for CDO-driven legal adds; legal to track volume</li>
+            <li><span class="eval-icon ei-risk">&minus;</span>Close date pressure: if budget freeze materializes in Q3, deal must close before April 30 to protect ACV in Q2</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Approval Chain -->
+    <div class="section">
+      <div class="section-title">Approval Chain</div>
+      <div class="approval-chain">
+        <div class="approver">
+          <div class="approver-dot ap-done">&#10003;</div>
+          <div class="approver-name">{{OWNER}}</div>
+          <div class="approver-role">Account Executive</div>
+          <div class="approver-date">Apr 14, 2026</div>
+        </div>
+        <div class="approver">
+          <div class="approver-dot ap-done">&#10003;</div>
+          <div class="approver-name">Sarah Okonkwo</div>
+          <div class="approver-role">CS VP</div>
+          <div class="approver-date">Apr 15, 2026</div>
+        </div>
+        <div class="approver">
+          <div class="approver-dot ap-active">&#9673;</div>
+          <div class="approver-name">Daniel Kim</div>
+          <div class="approver-role">VP Sales</div>
+          <div class="approver-date">Pending</div>
+        </div>
+        <div class="approver">
+          <div class="approver-dot ap-pending">&mdash;</div>
+          <div class="approver-name">Rachel Torres</div>
+          <div class="approver-role">Legal</div>
+          <div class="approver-date">Not yet</div>
+        </div>
+        <div class="approver">
+          <div class="approver-dot ap-pending">&mdash;</div>
+          <div class="approver-name">CFO Office</div>
+          <div class="approver-role">Finance Review</div>
+          <div class="approver-date">Not yet</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Deal Desk Memo DDM-2026-0041 &bull; Meridian Health &bull; SponAI Consulting &bull; Internal Confidential</span>
+    <span>v{{VERSION}} &bull; {{DATE}} &bull; {{OWNER}}</span>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!--
+TEMPLATE: savings-tracker
+CATEGORY: ROI / Business Case
+USE WHEN: Tracking running savings across multiple initiatives with target/actual/remaining amounts, monthly trend bars, and a cumulative savings KPI.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savings Tracker &mdash; Meridian Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #0a0e14;
+      --surface:  #111820;
+      --surface2: #162030;
+      --surface3: #0d1520;
+      --primary:  #3b9eff;
+      --accent:   #2dd4a0;
+      --accent-dim: rgba(45,212,160,0.08);
+      --secondary:#a78bfa;
+      --warn:     #f0a050;
+      --warn-dim: rgba(240,160,80,0.10);
+      --error:    #f06070;
+      --error-dim:rgba(240,96,112,0.08);
+      --text:     #d0d8e4;
+      --muted:    #8899ac;
+      --subtle:   #4a5a6a;
+      --border:   rgba(255,255,255,0.07);
+      --border-strong: rgba(255,255,255,0.12);
+      --font:     'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono:     'DM Mono', 'Cascadia Code', monospace;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; min-height: 100vh; }
+
+    .header { background: var(--surface3); border-bottom: 1px solid var(--border-strong); padding: 1.5rem 2.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .header-left .brand { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.3rem; }
+    .header-left h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.3px; }
+    .header-left .meta { font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; }
+    .header-right { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); text-align: right; }
+
+    main { max-width: 1040px; margin: 0 auto; padding: 1.75rem 1.5rem 3rem; }
+
+    h2 { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+
+    /* Top KPIs */
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.75rem; }
+    .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.1rem; }
+    .kpi .kv { font-family: var(--mono); font-size: 1.5rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+    .kpi .kl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 0.35rem; }
+    .kpi .ks { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+    .kpi.green { border-color: rgba(45,212,160,0.25); }
+    .kpi.green .kv { color: var(--accent); }
+    .kpi.blue { border-color: rgba(59,158,255,0.25); }
+    .kpi.blue .kv { color: var(--primary); }
+    .kpi.amber { border-color: rgba(240,160,80,0.25); }
+    .kpi.amber .kv { color: var(--warn); }
+
+    /* Initiatives table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.83rem; margin-bottom: 1.75rem; }
+    caption { text-align: left; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-bottom: 0.5rem; }
+    thead th { background: var(--surface2); color: var(--muted); padding: 0.5rem 0.75rem; font-weight: 600; font-size: 0.78rem; text-align: left; border-bottom: 1px solid var(--border-strong); }
+    thead th.num { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:hover { background: var(--surface); }
+    td { padding: 0.55rem 0.75rem; color: var(--text); }
+    td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    td.muted { color: var(--muted); font-size: 0.8rem; }
+    tfoot td { font-weight: 700; border-top: 1px solid var(--border-strong); padding: 0.6rem 0.75rem; background: var(--surface); }
+    tfoot td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--accent); }
+
+    /* Status pill */
+    .sp { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.12rem 0.45rem; border-radius: 3px; }
+    .sp-on  { background: rgba(45,212,160,0.12); color: var(--accent); border: 1px solid rgba(45,212,160,0.2); }
+    .sp-at  { background: rgba(240,160,80,0.10); color: var(--warn);  border: 1px solid rgba(240,160,80,0.2); }
+    .sp-beh { background: rgba(240,96,112,0.10); color: var(--error); border: 1px solid rgba(240,96,112,0.2); }
+    .sp-pln { background: rgba(167,139,250,0.10); color: var(--secondary); border: 1px solid rgba(167,139,250,0.2); }
+
+    /* Progress bar */
+    .pb-wrap { display: flex; align-items: center; gap: 0.5rem; }
+    .pb { height: 7px; background: var(--surface2); border-radius: 4px; flex: 1; overflow: hidden; min-width: 60px; }
+    .pb-fill { height: 100%; border-radius: 4px; }
+    .pb-green  { background: var(--accent); }
+    .pb-amber  { background: var(--warn); }
+    .pb-red    { background: var(--error); }
+    .pb-purple { background: var(--secondary); }
+    .pb-pct { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); min-width: 38px; text-align: right; }
+
+    /* SVG bar chart */
+    .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem 1rem; margin-bottom: 1.75rem; }
+    .chart-panel h2 { margin-bottom: 0.75rem; }
+    svg.bars { display: block; width: 100%; height: 180px; overflow: visible; }
+
+    footer { max-width: 1040px; margin: 0 auto; padding: 1rem 1.5rem 2rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border); font-family: var(--mono); }
+    @media print { body{background:#fff;color:#1c1a18;font-size:13px;} main,footer{max-width:100%;} .header{background:#0e1b2e;-webkit-print-color-adjust:exact;print-color-adjust:exact;} }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="brand">Meridian Health &bull; Enterprise Program Office &bull; Savings Tracker</div>
+    <h1>Initiative Savings Tracker &mdash; FY2026</h1>
+    <div class="meta">As of April 2026 &bull; YTD: $1,847,000 realized vs. $2,460,000 target</div>
+  </div>
+  <div class="header-right">CONFIDENTIAL<br>CFO Distribution</div>
+</div>
+
+<main>
+
+  <div class="kpis">
+    <div class="kpi green"><div class="kv">$1,847,000</div><div class="kl">YTD Savings Realized</div><div class="ks">Q1&ndash;Q2 cumulative</div></div>
+    <div class="kpi blue"><div class="kv">$2,460,000</div><div class="kl">YTD Target</div><div class="ks">Q1&ndash;Q2 plan</div></div>
+    <div class="kpi amber"><div class="kv">75.1%</div><div class="kl">Realization Rate</div><div class="ks">vs. 90% plan threshold</div></div>
+    <div class="kpi green"><div class="kv">$12,950,000</div><div class="kl">5-Yr Total Target</div><div class="ks">All active initiatives</div></div>
+  </div>
+
+  <!-- Monthly trend bar chart -->
+  <div class="chart-panel">
+    <h2>Monthly Savings Trend &mdash; Jan&ndash;Apr 2026</h2>
+    <!--
+      Monthly actuals vs. targets
+      Jan: target $410K, actual $388K
+      Feb: target $410K, actual $402K
+      Mar: target $410K, actual $521K (claims automation strong month)
+      Apr: target $410K (partial), actual $536K (run-rate)
+      Chart: 4 months, each with target bar (navy) + actual bar (accent)
+      Max value: ~600K. Height 140px. 100K = 23.3px
+      Bar width: 40px. Group spacing: 120px. Start x=60
+    -->
+    <svg class="bars" viewBox="0 0 720 180" aria-label="Monthly savings Jan-Apr 2026, target vs actual">
+      <!-- Y axis -->
+      <line x1="52" y1="10" x2="52" y2="148" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <!-- Y labels -->
+      <text x="48" y="150" text-anchor="end" font-size="9" fill="#8899ac" font-family="DM Mono,monospace">$0</text>
+      <text x="48" y="104" text-anchor="end" font-size="9" fill="#8899ac" font-family="DM Mono,monospace">$200K</text>
+      <text x="48" y="58"  text-anchor="end" font-size="9" fill="#8899ac" font-family="DM Mono,monospace">$400K</text>
+      <text x="48" y="12"  text-anchor="end" font-size="9" fill="#8899ac" font-family="DM Mono,monospace">$600K</text>
+      <!-- gridlines -->
+      <line x1="52" y1="104" x2="680" y2="104" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="3,3"/>
+      <line x1="52" y1="58"  x2="680" y2="58"  stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <!-- Jan: target 410K→h=63.9, actual 388K→h=60.4 -->
+      <rect x="72"  y="86.1" width="38" height="63.9" fill="rgba(59,158,255,0.25)" rx="2"/>
+      <rect x="113" y="89.6" width="38" height="60.4" fill="#2dd4a0" rx="2"/>
+      <text x="110" y="165" text-anchor="middle" font-size="9" fill="#8899ac" font-family="DM Mono,monospace">Jan</text>
+
+      <!-- Feb: target 410K, actual 402K→h=62.6 -->
+      <rect x="205" y="86.1" width="38" height="63.9" fill="rgba(59,158,255,0.25)" rx="2"/>
+      <rect x="246" y="87.4" width="38" height="62.6" fill="#2dd4a0" rx="2"/>
+      <text x="243" y="165" text-anchor="middle" font-size="9" fill="#8899ac" font-family="DM Mono,monospace">Feb</text>
+
+      <!-- Mar: target 410K, actual 521K→h=81.1 (above target) -->
+      <rect x="338" y="86.1" width="38" height="63.9" fill="rgba(59,158,255,0.25)" rx="2"/>
+      <rect x="379" y="68.9" width="38" height="81.1" fill="#2dd4a0" rx="2"/>
+      <text x="376" y="165" text-anchor="middle" font-size="9" fill="#8899ac" font-family="DM Mono,monospace">Mar</text>
+
+      <!-- Apr: target 410K (partial month shown), actual 536K→h=83.4 -->
+      <rect x="471" y="86.1" width="38" height="63.9" fill="rgba(59,158,255,0.25)" rx="2"/>
+      <rect x="512" y="66.6" width="38" height="83.4" fill="#2dd4a0" rx="2"/>
+      <text x="509" y="165" text-anchor="middle" font-size="9" fill="#8899ac" font-family="DM Mono,monospace">Apr</text>
+
+      <!-- Legend -->
+      <rect x="580" y="25" width="12" height="10" fill="rgba(59,158,255,0.25)" rx="1"/>
+      <text x="596" y="34" font-size="9" fill="#8899ac" font-family="DM Sans,sans-serif">Target</text>
+      <rect x="580" y="42" width="12" height="10" fill="#2dd4a0" rx="1"/>
+      <text x="596" y="51" font-size="9" fill="#8899ac" font-family="DM Sans,sans-serif">Actual</text>
+    </svg>
+  </div>
+
+  <!-- Initiatives table -->
+  <h2>Savings by Initiative</h2>
+  <table>
+    <caption>All active savings initiatives &mdash; target vs. actual vs. remaining (FY2026 YTD)</caption>
+    <thead>
+      <tr>
+        <th scope="col">Initiative</th>
+        <th scope="col">Owner</th>
+        <th scope="col" class="num">Annual Target</th>
+        <th scope="col" class="num">YTD Target</th>
+        <th scope="col" class="num">YTD Actual</th>
+        <th scope="col" class="num">Remaining</th>
+        <th scope="col">Progress</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Claims Automation (AI)</strong></td>
+        <td class="muted">VP Operations</td>
+        <td class="num">$1,100,000</td>
+        <td class="num">$550,000</td>
+        <td class="num">$918,000</td>
+        <td class="num" style="color:var(--accent);">($368,000)</td>
+        <td>
+          <div class="pb-wrap">
+            <div class="pb"><div class="pb-fill pb-green" style="width:83%;"></div></div>
+            <span class="pb-pct">167%</span>
+          </div>
+        </td>
+        <td><span class="sp sp-on">Exceeded</span></td>
+      </tr>
+      <tr>
+        <td>Infrastructure Consolidation</td>
+        <td class="muted">CTO</td>
+        <td class="num">$480,000</td>
+        <td class="num">$240,000</td>
+        <td class="num">$232,000</td>
+        <td class="num">$8,000</td>
+        <td>
+          <div class="pb-wrap">
+            <div class="pb"><div class="pb-fill pb-green" style="width:48%;"></div></div>
+            <span class="pb-pct">97%</span>
+          </div>
+        </td>
+        <td><span class="sp sp-on">On Track</span></td>
+      </tr>
+      <tr>
+        <td>Vendor Contract Renegotiation</td>
+        <td class="muted">CFO</td>
+        <td class="num">$360,000</td>
+        <td class="num">$180,000</td>
+        <td class="num">$180,000</td>
+        <td class="num">$0</td>
+        <td>
+          <div class="pb-wrap">
+            <div class="pb"><div class="pb-fill pb-green" style="width:50%;"></div></div>
+            <span class="pb-pct">100%</span>
+          </div>
+        </td>
+        <td><span class="sp sp-on">On Track</span></td>
+      </tr>
+      <tr>
+        <td>Provider Portal Self-Service</td>
+        <td class="muted">VP Provider Rel.</td>
+        <td class="num">$290,000</td>
+        <td class="num">$145,000</td>
+        <td class="num">$71,000</td>
+        <td class="num">$74,000</td>
+        <td>
+          <div class="pb-wrap">
+            <div class="pb"><div class="pb-fill pb-amber" style="width:24%;"></div></div>
+            <span class="pb-pct">49%</span>
+          </div>
+        </td>
+        <td><span class="sp sp-at">At Risk</span></td>
+      </tr>
+      <tr>
+        <td>Utilization Management Automation</td>
+        <td class="muted">CMO</td>
+        <td class="num">$220,000</td>
+        <td class="num">$110,000</td>
+        <td class="num">$82,000</td>
+        <td class="num">$28,000</td>
+        <td>
+          <div class="pb-wrap">
+            <div class="pb"><div class="pb-fill pb-amber" style="width:37%;"></div></div>
+            <span class="pb-pct">75%</span>
+          </div>
+        </td>
+        <td><span class="sp sp-at">At Risk</span></td>
+      </tr>
+      <tr>
+        <td>Print &amp; Mail Digitization</td>
+        <td class="muted">VP Operations</td>
+        <td class="num">$145,000</td>
+        <td class="num">$72,500</td>
+        <td class="num">$68,000</td>
+        <td class="num">$4,500</td>
+        <td>
+          <div class="pb-wrap">
+            <div class="pb"><div class="pb-fill pb-green" style="width:47%;"></div></div>
+            <span class="pb-pct">94%</span>
+          </div>
+        </td>
+        <td><span class="sp sp-on">On Track</span></td>
+      </tr>
+      <tr>
+        <td>SaaS License Right-sizing (Q3 start)</td>
+        <td class="muted">CTO</td>
+        <td class="num">$190,000</td>
+        <td class="num">&mdash;</td>
+        <td class="num">&mdash;</td>
+        <td class="num">$190,000</td>
+        <td>
+          <div class="pb-wrap">
+            <div class="pb"><div class="pb-fill pb-purple" style="width:0%;"></div></div>
+            <span class="pb-pct">0%</span>
+          </div>
+        </td>
+        <td><span class="sp sp-pln">Planned</span></td>
+      </tr>
+      <tr>
+        <td>Workforce Optimization Phase 2 (Q3)</td>
+        <td class="muted">CHRO</td>
+        <td class="num">$275,000</td>
+        <td class="num">&mdash;</td>
+        <td class="num">&mdash;</td>
+        <td class="num">$275,000</td>
+        <td>
+          <div class="pb-wrap">
+            <div class="pb"><div class="pb-fill pb-purple" style="width:0%;"></div></div>
+            <span class="pb-pct">0%</span>
+          </div>
+        </td>
+        <td><span class="sp sp-pln">Planned</span></td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2"><strong>Total</strong></td>
+        <td class="num"><strong>$3,060,000</strong></td>
+        <td class="num"><strong>$1,297,500</strong></td>
+        <td class="num"><strong>$1,551,000</strong></td>
+        <td class="num"><strong>$211,500</strong></td>
+        <td colspan="2"><strong style="font-family:var(--mono);color:var(--accent);">119.5% YTD</strong></td>
+      </tr>
+    </tfoot>
+  </table>
+
+</main>
+
+<footer>
+  <span>Meridian Health &mdash; Enterprise Program Office &bull; Savings Tracker FY2026</span>
+  <span>v{{VERSION}} &bull; {{DATE}} &bull; CONFIDENTIAL &mdash; {{CLASSIFICATION}}</span>
+</footer>
+
+</body>
+</html>

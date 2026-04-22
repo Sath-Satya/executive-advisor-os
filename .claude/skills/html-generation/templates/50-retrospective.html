@@ -1,0 +1,701 @@
+<!--
+TEMPLATE: Sprint Retrospective
+CATEGORY: Admin / Operations
+USE WHEN: Capturing sprint retrospective outcomes — what went well, what didn't, action items, and team sentiment — at the close of a sprint or delivery cycle.
+PALETTE: Retro warm
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sprint Retrospective — SponAI Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #faf7f2;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #e2dbd0;
+      --white: #ffffff;
+      /* Retro palette */
+      --went-well: #2dd4a0;
+      --went-well-bg: #effaf6;
+      --went-well-border: #a7f3d8;
+      --didnt-go: #f0a050;
+      --didnt-go-bg: #fef6ec;
+      --didnt-go-border: #fcd4a4;
+      --action: #3b9eff;
+      --action-bg: #eff6ff;
+      --action-border: #bfdbfe;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #e8e0d4;
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .page {
+      background: var(--cream);
+      width: 860px;
+      margin: 0 auto;
+      padding: 48px 52px 56px;
+      box-shadow: 0 4px 32px rgba(14,27,46,0.1);
+      border-radius: 4px;
+    }
+    /* Page header */
+    .retro-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid var(--navy);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+    .header-left .doc-type {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .header-left h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+    }
+    .header-left .sprint-range {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .header-right { text-align: right; }
+    .velocity-block {
+      background: var(--navy);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 6px;
+      text-align: center;
+    }
+    .velocity-block .v-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      opacity: 0.7;
+      margin-bottom: 4px;
+    }
+    .velocity-block .v-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 1.8rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .velocity-block .v-sub { font-size: 0.68rem; opacity: 0.6; margin-top: 2px; }
+    /* Sprint stats strip */
+    .stats-strip {
+      display: flex;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      background: var(--white);
+    }
+    .stat-cell {
+      flex: 1;
+      padding: 12px 16px;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .stat-cell:last-child { border-right: none; }
+    .stat-cell .s-label {
+      font-size: 0.58rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .stat-cell .s-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .stat-cell .s-delta {
+      font-size: 0.68rem;
+      margin-top: 2px;
+    }
+    .delta-up { color: var(--went-well); }
+    .delta-down { color: var(--didnt-go); }
+    .delta-flat { color: var(--muted); }
+    /* Team */
+    .team-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .team-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+    .team-chip {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 3px 10px 3px 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--ink);
+    }
+    .tc-dot {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+    }
+    /* Mood row */
+    .mood-section { margin-bottom: 28px; }
+    .mood-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .mood-row {
+      display: flex;
+      gap: 8px;
+    }
+    .mood-card {
+      flex: 1;
+      border-radius: 6px;
+      padding: 10px 12px;
+      text-align: center;
+      border: 2px solid transparent;
+    }
+    .mood-card.active { border-color: currentColor; }
+    .mood-card.mood-5 { background: #effaf6; color: var(--went-well); }
+    .mood-card.mood-4 { background: #f0fdf4; color: #16a34a; }
+    .mood-card.mood-3 { background: #fef9e7; color: #d97706; }
+    .mood-card.mood-2 { background: var(--didnt-go-bg); color: var(--didnt-go); }
+    .mood-card.mood-1 { background: #fff1f2; color: #e11d48; }
+    .mood-card .mood-icon {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .mood-card .mood-score {
+      font-family: 'DM Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .mood-card .mood-votes {
+      font-size: 0.65rem;
+      opacity: 0.75;
+      margin-top: 2px;
+    }
+    /* Three column layout */
+    .retro-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .retro-col { display: flex; flex-direction: column; }
+    .col-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 6px 6px 0 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0;
+    }
+    .col-header.went-well { background: var(--went-well); color: #fff; }
+    .col-header.didnt-go { background: var(--didnt-go); color: #fff; }
+    .col-header.action { background: var(--action); color: #fff; }
+    .col-header .col-icon {
+      width: 18px; height: 18px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.55rem;
+      font-weight: 900;
+    }
+    .col-items {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      background: var(--white);
+      padding: 4px 0;
+    }
+    .retro-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .retro-item:last-child { border-bottom: none; }
+    .ri-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+    .went-well-dot { background: var(--went-well); }
+    .didnt-go-dot { background: var(--didnt-go); }
+    .action-dot { background: var(--action); }
+    .ri-text { font-size: 0.8rem; line-height: 1.5; color: var(--ink); }
+    .ri-text .ri-votes {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .ri-owner {
+      font-size: 0.68rem;
+      color: var(--action);
+      font-weight: 600;
+      margin-top: 2px;
+      display: block;
+    }
+    /* Action items table */
+    .section-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-bottom: 24px;
+    }
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    thead th {
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.66rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td { padding: 9px 12px; vertical-align: top; }
+    .status-open {
+      display: inline-block;
+      background: var(--action-bg);
+      color: var(--action);
+      border: 1px solid var(--action-border);
+      font-size: 0.62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 1px 6px; border-radius: 3px;
+    }
+    .status-done {
+      display: inline-block;
+      background: var(--went-well-bg);
+      color: #047857;
+      border: 1px solid var(--went-well-border);
+      font-size: 0.62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 1px 6px; border-radius: 3px;
+    }
+    .due-col { font-family: 'DM Mono', monospace; font-size: 0.78rem; }
+    /* Lessons section */
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .lesson-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+    .lesson-card .lc-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .lesson-card p {
+      font-size: 0.82rem;
+      color: var(--ink);
+      line-height: 1.55;
+    }
+    /* Footer */
+    .retro-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .retro-footer p { font-size: 0.67rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+    .next-sprint {
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 4px;
+      font-family: 'DM Mono', monospace;
+    }
+    /* Print */
+    @page { size: A4 landscape; margin: 1.5cm; }
+    @media print {
+      body { background: none; padding: 0; }
+      .page { box-shadow: none; width: 100%; }
+      thead { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .col-header { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .velocity-block { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .next-sprint { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .mood-card { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" role="main">
+    <!-- Header -->
+    <header class="retro-header">
+      <div class="header-left">
+        <div class="doc-type">Sprint Retrospective</div>
+        <h1>Sprint 7 &mdash; Claims AI Integration</h1>
+        <div class="sprint-range">SponAI Consulting &times; Meridian Health &nbsp;&middot;&nbsp; 2026-04-07 &ndash; 2026-04-18</div>
+      </div>
+      <div class="header-right">
+        <div class="velocity-block" aria-label="Sprint velocity: 42 story points">
+          <div class="v-label">Velocity</div>
+          <div class="v-val">42</div>
+          <div class="v-sub">story points</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats strip -->
+    <section class="stats-strip" aria-label="Sprint statistics">
+      <div class="stat-cell">
+        <div class="s-label">Stories Completed</div>
+        <div class="s-val">14 / 15</div>
+        <div class="s-delta delta-up">+2 vs. Sprint 6</div>
+      </div>
+      <div class="stat-cell">
+        <div class="s-label">Bugs Closed</div>
+        <div class="s-val">8</div>
+        <div class="s-delta delta-flat">&#8212; same as Sprint 6</div>
+      </div>
+      <div class="stat-cell">
+        <div class="s-label">Bugs Opened</div>
+        <div class="s-val">3</div>
+        <div class="s-delta delta-up">-5 vs. Sprint 6</div>
+      </div>
+      <div class="stat-cell">
+        <div class="s-label">Test Coverage</div>
+        <div class="s-val">84%</div>
+        <div class="s-delta delta-up">+3pp vs. Sprint 6</div>
+      </div>
+      <div class="stat-cell">
+        <div class="s-label">Deployment</div>
+        <div class="s-val">QA</div>
+        <div class="s-delta delta-flat">On schedule</div>
+      </div>
+      <div class="stat-cell">
+        <div class="s-label">Avg Cycle Time</div>
+        <div class="s-val">1.8d</div>
+        <div class="s-delta delta-up">-0.4d vs. Sprint 6</div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section aria-label="Team members">
+      <div class="team-row">
+        <span class="team-label">Team:</span>
+        <div class="team-chip"><div class="tc-dot" style="background:#b8965a;">ST</div>S. Thiagarajan</div>
+        <div class="team-chip"><div class="tc-dot" style="background:#0e1b2e;">DK</div>D. Kim</div>
+        <div class="team-chip"><div class="tc-dot" style="background:#1a7a4a;">AV</div>A. Vargas</div>
+        <div class="team-chip"><div class="tc-dot" style="background:#0891b2;">LN</div>L. N. Chen</div>
+        <div class="team-chip"><div class="tc-dot" style="background:#7c3aed;">MO</div>M. Owens</div>
+        <div class="team-chip"><div class="tc-dot" style="background:#d97706;">RP</div>R. Patel</div>
+      </div>
+    </section>
+
+    <!-- Team Mood -->
+    <section aria-label="Team mood indicators">
+      <div class="mood-section">
+        <div class="mood-label">Team Mood This Sprint</div>
+        <div class="mood-row" role="list">
+          <div class="mood-card mood-5 active" role="listitem" aria-label="Excited: 2 votes">
+            <div class="mood-icon">Excited</div>
+            <div class="mood-score">+5</div>
+            <div class="mood-votes">2 votes</div>
+          </div>
+          <div class="mood-card mood-4" role="listitem" aria-label="Positive: 3 votes">
+            <div class="mood-icon">Positive</div>
+            <div class="mood-score">+4</div>
+            <div class="mood-votes">3 votes</div>
+          </div>
+          <div class="mood-card mood-3" role="listitem" aria-label="Neutral: 1 vote">
+            <div class="mood-icon">Neutral</div>
+            <div class="mood-score">+3</div>
+            <div class="mood-votes">1 vote</div>
+          </div>
+          <div class="mood-card mood-2" role="listitem" aria-label="Drained: 0 votes">
+            <div class="mood-icon">Drained</div>
+            <div class="mood-score">+2</div>
+            <div class="mood-votes">0 votes</div>
+          </div>
+          <div class="mood-card mood-1" role="listitem" aria-label="Frustrated: 0 votes">
+            <div class="mood-icon">Frustrated</div>
+            <div class="mood-score">+1</div>
+            <div class="mood-votes">0 votes</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Three columns: Went Well / Didn't Go Well / Action Items -->
+    <section aria-label="Retrospective feedback">
+      <div class="retro-columns">
+
+        <!-- Went Well -->
+        <div class="retro-col">
+          <div class="col-header went-well" role="heading" aria-level="2">
+            <div class="col-icon" aria-hidden="true">+</div>
+            Went Well
+          </div>
+          <ul class="col-items" aria-label="Things that went well">
+            <li class="retro-item">
+              <div class="ri-dot went-well-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                CI/CD pipeline ran without failures for 8 consecutive days <span class="ri-votes">(5 votes)</span>
+              </div>
+            </li>
+            <li class="retro-item">
+              <div class="ri-dot went-well-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                Pair programming on the triage engine surfaced 3 edge cases before QA <span class="ri-votes">(4 votes)</span>
+              </div>
+            </li>
+            <li class="retro-item">
+              <div class="ri-dot went-well-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                Clear ticket definitions meant zero scope clarifications mid-sprint <span class="ri-votes">(3 votes)</span>
+              </div>
+            </li>
+            <li class="retro-item">
+              <div class="ri-dot went-well-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                Meridian's DK turned around sandbox access in under 2 hours <span class="ri-votes">(2 votes)</span>
+              </div>
+            </li>
+            <li class="retro-item">
+              <div class="ri-dot went-well-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                Test coverage jumped 3pp — TDD discipline is paying off <span class="ri-votes">(2 votes)</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Didn't Go Well -->
+        <div class="retro-col">
+          <div class="col-header didnt-go" role="heading" aria-level="2">
+            <div class="col-icon" aria-hidden="true">&#8722;</div>
+            Didn't Go Well
+          </div>
+          <ul class="col-items" aria-label="Things that didn't go well">
+            <li class="retro-item">
+              <div class="ri-dot didnt-go-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                De-identification API docs were 2 weeks out of date, caused 1-day rework on D3 <span class="ri-votes">(5 votes)</span>
+              </div>
+            </li>
+            <li class="retro-item">
+              <div class="ri-dot didnt-go-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                Async callout pattern decision dragged across two standups; should have been async Slack decision <span class="ri-votes">(4 votes)</span>
+              </div>
+            </li>
+            <li class="retro-item">
+              <div class="ri-dot didnt-go-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                1 story carried over due to late dependency from Meridian Epic team (not in scope, but blocked us) <span class="ri-votes">(3 votes)</span>
+              </div>
+            </li>
+            <li class="retro-item">
+              <div class="ri-dot didnt-go-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                Sprint review recording missed 15 minutes; client stakeholders couldn't watch async <span class="ri-votes">(1 vote)</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Action Items (inline quick wins) -->
+        <div class="retro-col">
+          <div class="col-header action" role="heading" aria-level="2">
+            <div class="col-icon" aria-hidden="true">&#10003;</div>
+            Quick Actions
+          </div>
+          <ul class="col-items" aria-label="Quick action items from retrospective">
+            <li class="retro-item">
+              <div class="ri-dot action-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                Request updated de-id API docs from Meridian before each sprint
+                <span class="ri-owner">Owner: M. Owens &mdash; Sprint 8</span>
+              </div>
+            </li>
+            <li class="retro-item">
+              <div class="ri-dot action-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                Add "decision needed" Slack thread template to team handbook to avoid standup bottlenecks
+                <span class="ri-owner">Owner: S. Thiagarajan &mdash; Sprint 8</span>
+              </div>
+            </li>
+            <li class="retro-item">
+              <div class="ri-dot action-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                Escalate Epic team dependency to Meridian VP; add to risk register with formal ETA
+                <span class="ri-owner">Owner: R. Patel &mdash; Sprint 8</span>
+              </div>
+            </li>
+            <li class="retro-item">
+              <div class="ri-dot action-dot" aria-hidden="true"></div>
+              <div class="ri-text">
+                Switch sprint review recording to cloud backup with auto-upload link in review notes
+                <span class="ri-owner">Owner: L. N. Chen &mdash; Sprint 8</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Formal action items table -->
+    <section aria-label="Formal action items table">
+      <div class="section-label">Action Items &mdash; Sprint 8 Commitments</div>
+      <table>
+        <caption>All items tracked in Jira board MRDH-Sprint8. Status reviewed at Sprint 8 planning.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Who</th>
+            <th scope="col">What</th>
+            <th scope="col">By When</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;color:var(--navy);">M. Owens</td>
+            <td>Establish recurring process to pull fresh de-id API docs at sprint start; validate against actual endpoints</td>
+            <td class="due-col">2026-04-29</td>
+            <td><span class="status-open">Open</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;color:var(--navy);">S. Thiagarajan</td>
+            <td>Draft "decision needed" Slack thread template and add to team handbook (Notion)</td>
+            <td class="due-col">2026-04-24</td>
+            <td><span class="status-open">Open</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;color:var(--navy);">R. Patel</td>
+            <td>Escalate Epic team dependency to CTO; add formal ETA to project risk register</td>
+            <td class="due-col">2026-04-23</td>
+            <td><span class="status-open">Open</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;color:var(--navy);">L. N. Chen</td>
+            <td>Configure Zoom cloud recording auto-upload for sprint review; test before Sprint 8 review</td>
+            <td class="due-col">2026-04-30</td>
+            <td><span class="status-open">Open</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;color:var(--navy);">D. Kim</td>
+            <td>Merge carried-over story MRDH-142 in Sprint 8 as first priority; unblock QA lane</td>
+            <td class="due-col">2026-04-23</td>
+            <td><span class="status-open">Open</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Lessons Learned -->
+    <section aria-label="Lessons learned">
+      <div class="section-label">Lessons Learned</div>
+      <div class="lessons-grid">
+        <div class="lesson-card">
+          <div class="lc-num">L-01</div>
+          <p>Pair programming on complex AI logic before QA reliably surfaces integration edge cases that solo review misses. Expand this practice to all D3-tier deliverables in Phase 3.</p>
+        </div>
+        <div class="lesson-card">
+          <div class="lc-num">L-02</div>
+          <p>External API documentation from clients should be validated against live endpoints at sprint kickoff, not assumed current. Build a lightweight contract-test step into sprint planning.</p>
+        </div>
+        <div class="lesson-card">
+          <div class="lc-num">L-03</div>
+          <p>Clear ticket definitions eliminated mid-sprint scope questions entirely. Invest the extra 20 minutes at sprint planning to write acceptance criteria in full sentences, not bullet fragments.</p>
+        </div>
+        <div class="lesson-card">
+          <div class="lc-num">L-04</div>
+          <p>Architecture decisions that block multiple engineers should have a time-boxed async decision window (24h) before escalating to a synchronous session. This prevents standup bottlenecks.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="retro-footer">
+      <p>Facilitated by S. Thiagarajan &middot; RETRO-2026-SPR7 &middot; v{{VERSION}} &middot; {{DATE}}</p>
+      <div class="next-sprint" aria-label="Next sprint identifier">Sprint 8 &rarr; 2026-04-21</div>
+    </footer>
+  </main>
+</body>
+</html>

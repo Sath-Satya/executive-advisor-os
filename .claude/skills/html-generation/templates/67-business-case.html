@@ -1,0 +1,325 @@
+<!--
+TEMPLATE: business-case
+CATEGORY: ROI / Business Case
+USE WHEN: Building a full formal business case document covering executive summary, problem statement, options, recommended option, financial analysis, risks, and implementation plan for leadership approval.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Case &mdash; Meridian Health Claims Automation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:  #f7f4ef;
+      --cream2: #edeae3;
+      --cream3: #e4e0d8;
+      --navy:   #0e1b2e;
+      --navy2:  #1a2e47;
+      --gold:   #b8965a;
+      --gold-light: #f5e9d3;
+      --ink:    #1c1a18;
+      --muted:  #6b6560;
+      --border: #ddd8ce;
+      --go:     #2d6a4f;
+      --go-bg:  #d1fae5;
+      --hold:   #92400e;
+      --hold-bg:#fef3c7;
+      --nogo:   #b91c1c;
+      --nogo-bg:#fee2e2;
+      --font:   'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --serif:  'DM Serif Display', Georgia, serif;
+      --mono:   'DM Mono', 'Cascadia Code', monospace;
+    }
+    body { font-family: var(--font); background: var(--cream); color: var(--ink); font-size: 15px; line-height: 1.7; }
+
+    /* Cover header */
+    .cover { background: var(--navy); color: #fff; padding: 3rem 3rem 2.5rem; position: relative; }
+    .cover-label { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 0.5rem; }
+    .cover h1 { font-family: var(--serif); font-size: 2.1rem; font-weight: 400; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 0.5rem; }
+    .cover .subtitle { font-size: 1rem; color: rgba(255,255,255,0.65); margin-bottom: 1.5rem; }
+    .cover-meta { display: grid; grid-template-columns: repeat(4, auto); gap: 2rem; }
+    .cover-meta-item .cm-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 0.2rem; }
+    .cover-meta-item .cm-val { font-size: 0.9rem; color: rgba(255,255,255,0.85); }
+    .cover-divider { width: 48px; height: 3px; background: var(--gold); margin: 1.75rem 0 1.25rem; }
+
+    main { max-width: 820px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+    /* Section headers */
+    .section { margin-bottom: 2.5rem; }
+    .section-num { display: inline-block; font-family: var(--mono); font-size: 0.72rem; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 0.35rem; }
+    .section h2 { font-family: var(--serif); font-size: 1.45rem; font-weight: 400; letter-spacing: -0.3px; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; margin-bottom: 1rem; color: var(--navy); }
+    .section h3 { font-size: 0.88rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 1.25rem 0 0.5rem; }
+
+    p { margin-bottom: 0.85rem; color: var(--ink); }
+    ul { margin: 0.5rem 0 0.85rem 1.25rem; }
+    ul li { margin-bottom: 0.3rem; }
+
+    /* Executive summary box */
+    .exec-box { background: var(--gold-light); border: 1px solid #e8d5a0; border-radius: 8px; padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+    .exec-box .eb-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+    .exec-box p { color: var(--ink); margin-bottom: 0.65rem; }
+    .exec-box p:last-child { margin-bottom: 0; }
+
+    /* Financial summary table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin-bottom: 1rem; }
+    caption { text-align: left; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding-bottom: 0.5rem; }
+    thead th { background: var(--navy); color: #fff; padding: 0.5rem 0.75rem; font-weight: 600; font-size: 0.8rem; text-align: left; }
+    thead th.num { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:nth-child(even) { background: var(--cream2); }
+    td { padding: 0.45rem 0.75rem; }
+    td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    tfoot td { font-weight: 700; border-top: 2px solid var(--navy); padding: 0.5rem 0.75rem; }
+    tfoot td.num { text-align: right; font-family: var(--mono); }
+
+    /* Options comparison */
+    .options-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem; }
+    .opt-card { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 1rem; }
+    .opt-card.recommended { border-color: var(--go); border-width: 2px; }
+    .opt-card .oc-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 0.35rem; }
+    .opt-card.recommended .oc-title { color: var(--go); }
+    .opt-card .oc-desc { font-size: 0.8rem; color: var(--muted); }
+    .opt-card .oc-tco { font-family: var(--mono); font-size: 0.85rem; margin-top: 0.5rem; font-variant-numeric: tabular-nums; }
+    .opt-card .oc-badge { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.12rem 0.4rem; border-radius: 3px; margin-top: 0.4rem; }
+    .badge-go { background: var(--go-bg); color: var(--go); }
+    .badge-hold { background: var(--hold-bg); color: var(--hold); }
+    .badge-nogo { background: var(--nogo-bg); color: var(--nogo); }
+
+    /* Risk table */
+    .risk-badge { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.1rem 0.45rem; border-radius: 3px; }
+    .rb-high { background: var(--nogo-bg); color: var(--nogo); }
+    .rb-med  { background: var(--hold-bg); color: var(--hold); }
+    .rb-low  { background: var(--go-bg); color: var(--go); }
+
+    /* Implementation plan */
+    .timeline { list-style: none; position: relative; padding-left: 1.5rem; margin-bottom: 1rem; }
+    .timeline::before { content: ''; position: absolute; left: 0.35rem; top: 0.3rem; bottom: 0.3rem; width: 2px; background: var(--border); }
+    .tl-item { position: relative; margin-bottom: 1rem; }
+    .tl-item::before { content: ''; position: absolute; left: -1.15rem; top: 0.45rem; width: 10px; height: 10px; border-radius: 50%; background: var(--navy); border: 2px solid var(--cream); box-shadow: 0 0 0 1px var(--navy); }
+    .tl-item .tl-phase { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.15rem; }
+    .tl-item .tl-title { font-weight: 600; font-size: 0.9rem; }
+    .tl-item .tl-desc { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* Approval block */
+    .approval { background: var(--cream2); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; }
+    .approval h3 { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+    .approval-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .appr-line { border-bottom: 1px solid var(--border); padding-bottom: 0.25rem; height: 40px; }
+    .appr-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.35rem; }
+
+    .note { background: var(--cream2); border-left: 3px solid var(--gold); padding: 0.75rem 1rem; font-size: 0.82rem; color: var(--muted); border-radius: 0 4px 4px 0; margin-bottom: 1rem; }
+
+    footer { max-width: 820px; margin: 0 auto; padding: 1rem 1.5rem 2rem; display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--border); font-family: var(--mono); }
+    @media print { body{background:#fff;font-size:13px;} main,footer{max-width:100%;} .cover{-webkit-print-color-adjust:exact;print-color-adjust:exact;} }
+  </style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-label">Business Case &bull; Confidential</div>
+  <h1>Claims Automation Initiative</h1>
+  <div class="subtitle">Meridian Health &mdash; Enterprise Technology Investment Proposal</div>
+  <div class="cover-divider"></div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><div class="cm-label">Prepared By</div><div class="cm-val">Enterprise Program Office</div></div>
+    <div class="cover-meta-item"><div class="cm-label">Date</div><div class="cm-val">April 2026</div></div>
+    <div class="cover-meta-item"><div class="cm-label">Investment Ask</div><div class="cm-val">$4,200,000</div></div>
+    <div class="cover-meta-item"><div class="cm-label">Status</div><div class="cm-val">Pending Board Approval</div></div>
+  </div>
+</div>
+
+<main>
+
+  <!-- 1. Executive Summary -->
+  <div class="section">
+    <div class="section-num">01</div>
+    <h2>Executive Summary</h2>
+    <div class="exec-box">
+      <div class="eb-label">Summary</div>
+      <p>Meridian Health processes 4.2 million medical claims annually. Approximately 38% require manual review due to legacy adjudication system limitations, costing $8.6 million per year in labor and generating a 14-day average resolution cycle. This business case recommends investing $4.2 million in a cloud-native AI claims automation platform (ClaimAI Pro) to automate 85% of routine adjudications.</p>
+      <p>The investment returns a 5-year NPV of $3.66 million at a 9% discount rate, an IRR of 38.4%, and a simple payback period of 2.3 years. Annual run-rate benefits of $2.65 million begin from Year 2.</p>
+    </div>
+    <p><strong>Recommendation:</strong> Approve the $4.2M capital authorization and proceed to vendor contracting and implementation planning in Q2 2026.</p>
+  </div>
+
+  <!-- 2. Problem Statement -->
+  <div class="section">
+    <div class="section-num">02</div>
+    <h2>Problem Statement</h2>
+    <h3>Current State</h3>
+    <p>Meridian&rsquo;s claims adjudication process relies on a 12-year-old on-premises system purchased in 2014. The platform lacks machine learning capabilities and requires claims examiners to manually review all complex, duplicate, and out-of-network claims.</p>
+    <ul>
+      <li>38% of 4.2M annual claims (1.59M claims) require manual review</li>
+      <li>Average examiner cost per manual claim: $5.40</li>
+      <li>Total annual manual adjudication cost: $8.59M</li>
+      <li>Average resolution cycle: 14 calendar days (CMS target: 30 days; industry best: 3&ndash;5 days)</li>
+      <li>Denial-and-appeal rate: 12.4% (industry benchmark: 7.1%)</li>
+      <li>Estimated overpayment and fraud exposure: $2.1M annually</li>
+    </ul>
+    <h3>Business Impact</h3>
+    <p>The slow resolution cycle directly affects member satisfaction (&minus;18 NPS vs. regional peers) and creates regulatory risk. CMS flagged Meridian in Q3 2025 for excessive denial appeal rates, raising Star Rating risk. Continued status quo is estimated to cost $7.0M over 5 years in compounding infrastructure and staffing expense.</p>
+  </div>
+
+  <!-- 3. Options Considered -->
+  <div class="section">
+    <div class="section-num">03</div>
+    <h2>Options Considered</h2>
+    <div class="options-grid">
+      <div class="opt-card">
+        <div class="oc-title">Option A: Status Quo</div>
+        <div class="oc-desc">Maintain legacy system with incremental patches. No material improvement to manual review rate or cycle time.</div>
+        <div class="oc-tco">5-Yr TCO: $7,018,000</div>
+        <span class="oc-badge badge-nogo">Not Recommended</span>
+      </div>
+      <div class="opt-card recommended">
+        <div class="oc-title">Option B: SaaS AI Platform &#10003;</div>
+        <div class="oc-desc">ClaimAI Pro cloud-native platform. Go-live in 4 months. 85% auto-adjudication rate. No infrastructure investment.</div>
+        <div class="oc-tco">5-Yr TCO: $3,844,500</div>
+        <span class="oc-badge badge-go">Recommended</span>
+      </div>
+      <div class="opt-card">
+        <div class="oc-title">Option C: Custom Build</div>
+        <div class="oc-desc">Internal Azure development. Go-live in 14 months. High execution risk and FTE dependency. Highest upfront cost.</div>
+        <div class="oc-tco">5-Yr TCO: $6,809,000</div>
+        <span class="oc-badge badge-hold">High Risk</span>
+      </div>
+    </div>
+    <p class="note">Option B (SaaS) selected on three criteria: lowest 5-year TCO ($3.84M vs. $6.81M custom), fastest time-to-value (4 months vs. 14 months), and lowest execution risk. See 64-tco-comparison for full breakdown.</p>
+  </div>
+
+  <!-- 4. Financial Analysis -->
+  <div class="section">
+    <div class="section-num">04</div>
+    <h2>Financial Analysis</h2>
+    <table>
+      <caption>Summary Financial Model &mdash; Option B (SaaS Platform)</caption>
+      <thead>
+        <tr><th scope="col">Metric</th><th scope="col" class="num">Value</th><th scope="col">Interpretation</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Total Investment (Y0)</td><td class="num">$4,200,000</td><td>Capital authorization requested</td></tr>
+        <tr><td>Annual Benefit (full run-rate)</td><td class="num">$2,650,000</td><td>From Year 2 (60% ramp in Year 1)</td></tr>
+        <tr><td>Annual Ongoing Cost</td><td class="num">$380,000</td><td>Licensing + support + FTE</td></tr>
+        <tr><td>5-Year NPV (9% WACC)</td><td class="num">$3,657,000</td><td>Positive &mdash; value-creating investment</td></tr>
+        <tr><td>IRR</td><td class="num">38.4%</td><td>Exceeds 9% hurdle by 29.4 pp</td></tr>
+        <tr><td>Simple Payback Period</td><td class="num">2.3 years</td><td>Break-even at Month 28</td></tr>
+        <tr><td>5-Year ROI</td><td class="num">143%</td><td>$2.43 returned per $1 invested</td></tr>
+        <tr><td>Benefit-Cost Ratio</td><td class="num">2.00x</td><td>Benefits = 2&times; total 5-year costs</td></tr>
+      </tbody>
+    </table>
+    <p>Detailed year-by-year cash flow in 61-roi-calculator.html. Sensitivity analysis shows project remains NPV-positive at discount rates up to 30% (see 63-npv-irr-summary.html).</p>
+  </div>
+
+  <!-- 5. Risk Assessment -->
+  <div class="section">
+    <div class="section-num">05</div>
+    <h2>Risk Assessment</h2>
+    <table>
+      <caption>Key Risks and Mitigations</caption>
+      <thead>
+        <tr><th scope="col">Risk</th><th scope="col">Likelihood</th><th scope="col">Impact</th><th scope="col">Level</th><th scope="col">Mitigation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Benefit realization below 75%</td>
+          <td>Low</td><td>High</td>
+          <td><span class="risk-badge rb-med">Medium</span></td>
+          <td>Quarterly value realization reviews; escalation at &lt;80%</td>
+        </tr>
+        <tr>
+          <td>Vendor lock-in / price escalation</td>
+          <td>Medium</td><td>Medium</td>
+          <td><span class="risk-badge rb-med">Medium</span></td>
+          <td>5-year fixed-price contract; data portability clause in SLA</td>
+        </tr>
+        <tr>
+          <td>Change management / adoption</td>
+          <td>Medium</td><td>High</td>
+          <td><span class="risk-badge rb-high">High</span></td>
+          <td>Dedicated change manager; training program for 18 affected FTEs</td>
+        </tr>
+        <tr>
+          <td>HIPAA compliance / data breach</td>
+          <td>Low</td><td>Critical</td>
+          <td><span class="risk-badge rb-high">High</span></td>
+          <td>BAA signed; SOC 2 Type II certification required; annual pen-test</td>
+        </tr>
+        <tr>
+          <td>Integration complexity with legacy EHR</td>
+          <td>Medium</td><td>Medium</td>
+          <td><span class="risk-badge rb-med">Medium</span></td>
+          <td>Vendor-provided HL7/FHIR adapter; 4-week integration sprint budgeted</td>
+        </tr>
+        <tr>
+          <td>Key personnel dependency</td>
+          <td>Low</td><td>Low</td>
+          <td><span class="risk-badge rb-low">Low</span></td>
+          <td>Two-person project team structure; cross-training required</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 6. Implementation Plan -->
+  <div class="section">
+    <div class="section-num">06</div>
+    <h2>Implementation Plan</h2>
+    <ul class="timeline">
+      <li class="tl-item">
+        <div class="tl-phase">Q2 2026 &mdash; Months 1&ndash;2</div>
+        <div class="tl-title">Procurement &amp; Contracting</div>
+        <div class="tl-desc">Execute vendor contract, finalize BAA, provision sandbox environment. Assign project manager and technical lead.</div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-phase">Q2 2026 &mdash; Months 3&ndash;4</div>
+        <div class="tl-title">Integration &amp; Configuration</div>
+        <div class="tl-desc">HL7/FHIR integration with Epic EHR. Claims workflow configuration. HIPAA audit trail setup. UAT with claims team.</div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-phase">Q3 2026 &mdash; Month 5</div>
+        <div class="tl-title">Pilot Go-Live (10% Volume)</div>
+        <div class="tl-desc">Soft launch on 10% of claim volume. Monitor auto-adjudication rate, error rate, and cycle time. Tune ML models.</div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-phase">Q3 2026 &mdash; Month 6</div>
+        <div class="tl-title">Full Go-Live</div>
+        <div class="tl-desc">100% claim volume. Legacy system retired from active processing (retained as read-only for 90 days). Benefits tracking begins.</div>
+      </li>
+      <li class="tl-item">
+        <div class="tl-phase">Q4 2026 &mdash; Month 9</div>
+        <div class="tl-title">Value Realization Review</div>
+        <div class="tl-desc">First formal value realization report (see 66-value-realization template). Adjust forecast if needed.</div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Approval -->
+  <div class="section">
+    <div class="section-num">07</div>
+    <h2>Authorization Request</h2>
+    <p>This business case requests Board of Directors authorization for a capital expenditure of <strong>$4,200,000</strong> for the Claims Automation Initiative. Ongoing annual budget of <strong>$380,000</strong> to be included in FY2027 operating budget submission.</p>
+    <div class="approval">
+      <h3>Signature Block</h3>
+      <div class="approval-grid">
+        <div><div class="appr-line"></div><div class="appr-label">Chief Financial Officer</div></div>
+        <div><div class="appr-line"></div><div class="appr-label">Chief Technology Officer</div></div>
+        <div><div class="appr-line"></div><div class="appr-label">Chief Executive Officer</div></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>Meridian Health &mdash; Business Case: Claims Automation Initiative</span>
+  <span>v{{VERSION}} &bull; {{DATE}} &bull; CONFIDENTIAL &mdash; {{CLASSIFICATION}}</span>
+</footer>
+
+</body>
+</html>

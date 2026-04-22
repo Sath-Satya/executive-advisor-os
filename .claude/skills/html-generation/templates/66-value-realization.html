@@ -1,0 +1,281 @@
+<!--
+TEMPLATE: value-realization
+CATEGORY: ROI / Business Case
+USE WHEN: Producing a post-implementation value realization report showing promised vs. realized benefits, variance explanations, and next-phase recommendations.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Value Realization Report &mdash; Meridian Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:       #0a0e14;
+      --surface:  #111820;
+      --surface2: #162030;
+      --surface3: #0d1520;
+      --primary:  #3b9eff;
+      --accent:   #2dd4a0;
+      --accent-dim: rgba(45,212,160,0.08);
+      --warn:     #f0a050;
+      --warn-dim: rgba(240,160,80,0.10);
+      --error:    #f06070;
+      --error-dim:rgba(240,96,112,0.08);
+      --text:     #d0d8e4;
+      --muted:    #8899ac;
+      --subtle:   #4a5a6a;
+      --border:   rgba(255,255,255,0.07);
+      --border-strong: rgba(255,255,255,0.12);
+      --go:       #2dd4a0;
+      --go-dim:   rgba(45,212,160,0.12);
+      --hold:     #f0a050;
+      --hold-dim: rgba(240,160,80,0.10);
+      --nogo:     #f06070;
+      --nogo-dim: rgba(240,96,112,0.10);
+      --font:     'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono:     'DM Mono', 'Cascadia Code', monospace;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.65; min-height: 100vh; }
+
+    .header { background: var(--surface3); border-bottom: 1px solid var(--border-strong); padding: 1.75rem 2.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .header-brand { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.35rem; }
+    .header h1 { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.3px; color: var(--text); }
+    .header-meta { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .header-right { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); text-align: right; }
+    .phase-badge { display: inline-block; background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(45,212,160,0.25); border-radius: 3px; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.6rem; }
+
+    main { max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+    h2 { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+
+    /* Score strip */
+    .score-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin: 1.5rem 0 1.75rem; }
+    .scard { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.9rem 1rem; text-align: center; }
+    .scard .sv { font-family: var(--mono); font-size: 1.5rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+    .scard .sl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 0.35rem; }
+    .scard.green { border-color: rgba(45,212,160,0.3); }
+    .scard.green .sv { color: var(--go); }
+    .scard.amber { border-color: rgba(240,160,80,0.3); }
+    .scard.amber .sv { color: var(--hold); }
+    .scard.red { border-color: rgba(240,96,112,0.3); }
+    .scard.red .sv { color: var(--nogo); }
+
+    /* Benefits table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.83rem; margin-bottom: 1.75rem; }
+    caption { text-align: left; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-bottom: 0.5rem; }
+    thead th { background: var(--surface2); color: var(--muted); padding: 0.5rem 0.75rem; font-weight: 600; font-size: 0.78rem; text-align: left; border-bottom: 1px solid var(--border-strong); }
+    thead th.num { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: var(--surface); }
+    td { padding: 0.5rem 0.75rem; color: var(--text); }
+    td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    td.muted { color: var(--muted); font-size: 0.82rem; }
+    tfoot td { font-weight: 700; border-top: 1px solid var(--border-strong); padding: 0.55rem 0.75rem; background: var(--surface); }
+    tfoot td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+    .status-pill { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.15rem 0.55rem; border-radius: 3px; }
+    .sp-green { background: var(--go-dim); color: var(--go); border: 1px solid rgba(45,212,160,0.2); }
+    .sp-amber { background: var(--hold-dim); color: var(--hold); border: 1px solid rgba(240,160,80,0.2); }
+    .sp-red   { background: var(--nogo-dim); color: var(--nogo); border: 1px solid rgba(240,96,112,0.2); }
+
+    /* variance bars */
+    .var-bar-wrap { display: flex; align-items: center; gap: 0.5rem; }
+    .var-bar { height: 8px; border-radius: 4px; min-width: 4px; }
+
+    /* recommendations */
+    .rec-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.75rem; }
+    .rec-item { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.9rem 1.1rem; display: flex; gap: 0.9rem; align-items: flex-start; }
+    .rec-num { background: var(--primary); color: #fff; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; margin-top: 0.1rem; }
+    .rec-body .rt { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+    .rec-body .rd { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+    .rec-body .rtag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.1rem 0.45rem; border-radius: 3px; margin-top: 0.4rem; background: rgba(59,158,255,0.15); color: var(--primary); border: 1px solid rgba(59,158,255,0.2); }
+
+    .note { background: var(--surface); border-left: 3px solid var(--warn); padding: 0.75rem 1rem; font-size: 0.82rem; color: var(--muted); border-radius: 0 4px 4px 0; }
+
+    footer { max-width: 1000px; margin: 0 auto; padding: 1rem 1.5rem 2rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border); font-family: var(--mono); }
+    @media print { body{background:#fff;color:#1c1a18;font-size:13px;} .header{background:#0e1b2e;} main,footer{max-width:100%;} header{-webkit-print-color-adjust:exact;print-color-adjust:exact;} }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-brand">Meridian Health &bull; Customer Success &bull; Post-Implementation</div>
+    <h1>Value Realization Report &mdash; Claims Automation Initiative</h1>
+    <div class="header-meta">Review Period: Q1 2026 (Month 9 Post Go-Live) &bull; Prepared April 2026 &nbsp;<span class="phase-badge">Phase 1 Complete</span></div>
+  </div>
+  <div class="header-right">CONFIDENTIAL<br>Executive Sponsor Only</div>
+</div>
+
+<main>
+
+  <div class="score-strip">
+    <div class="scard green"><div class="sv">$1,847,000</div><div class="sl">Benefits Realized (9 mo)</div></div>
+    <div class="scard amber"><div class="sv">$1,989,000</div><div class="sl">Benefits Promised (9 mo)</div></div>
+    <div class="scard amber"><div class="sv">92.8%</div><div class="sl">Realization Rate</div></div>
+    <div class="scard green"><div class="sv">On Track</div><div class="sl">5-Year Target Status</div></div>
+  </div>
+
+  <!-- Promised vs realized table -->
+  <div>
+    <h2>Promised vs. Realized Benefits &mdash; Month 9</h2>
+    <table>
+      <caption>Benefit realization by workstream. Variance explanation required for items below 85%.</caption>
+      <thead>
+        <tr>
+          <th scope="col">Benefit Area</th>
+          <th scope="col">Owner</th>
+          <th scope="col" class="num">Promised (9 mo)</th>
+          <th scope="col" class="num">Realized (9 mo)</th>
+          <th scope="col" class="num">Variance</th>
+          <th scope="col">Realization %</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Claims adjudication labor</td>
+          <td class="muted">VP Operations</td>
+          <td class="num">$862,500</td>
+          <td class="num">$918,000</td>
+          <td class="num" style="color:var(--go);">+$55,500</td>
+          <td>
+            <div class="var-bar-wrap"><div class="var-bar" style="width:60px;background:var(--go);"></div><span style="font-family:var(--mono);font-size:0.82rem;">106.4%</span></div>
+          </td>
+          <td><span class="status-pill sp-green">Exceeded</span></td>
+        </tr>
+        <tr>
+          <td>Fraud &amp; error avoidance</td>
+          <td class="muted">Chief Compliance</td>
+          <td class="num">$360,000</td>
+          <td class="num">$374,000</td>
+          <td class="num" style="color:var(--go);">+$14,000</td>
+          <td>
+            <div class="var-bar-wrap"><div class="var-bar" style="width:62px;background:var(--go);"></div><span style="font-family:var(--mono);font-size:0.82rem;">103.9%</span></div>
+          </td>
+          <td><span class="status-pill sp-green">Exceeded</span></td>
+        </tr>
+        <tr>
+          <td>Rework &amp; appeals reduction</td>
+          <td class="muted">VP Clinical Ops</td>
+          <td class="num">$180,000</td>
+          <td class="num">$142,000</td>
+          <td class="num" style="color:var(--hold);">($38,000)</td>
+          <td>
+            <div class="var-bar-wrap"><div class="var-bar" style="width:47px;background:var(--hold);"></div><span style="font-family:var(--mono);font-size:0.82rem;">78.9%</span></div>
+          </td>
+          <td><span class="status-pill sp-amber">At Risk</span></td>
+        </tr>
+        <tr>
+          <td>IT infrastructure retirement</td>
+          <td class="muted">CTO</td>
+          <td class="num">$120,000</td>
+          <td class="num">$120,000</td>
+          <td class="num">$0</td>
+          <td>
+            <div class="var-bar-wrap"><div class="var-bar" style="width:60px;background:var(--go);"></div><span style="font-family:var(--mono);font-size:0.82rem;">100.0%</span></div>
+          </td>
+          <td><span class="status-pill sp-green">On Track</span></td>
+        </tr>
+        <tr>
+          <td>Regulatory penalty avoidance</td>
+          <td class="muted">Chief Compliance</td>
+          <td class="num">$135,000</td>
+          <td class="num">$135,000</td>
+          <td class="num">$0</td>
+          <td>
+            <div class="var-bar-wrap"><div class="var-bar" style="width:60px;background:var(--go);"></div><span style="font-family:var(--mono);font-size:0.82rem;">100.0%</span></div>
+          </td>
+          <td><span class="status-pill sp-green">On Track</span></td>
+        </tr>
+        <tr>
+          <td>Provider portal efficiency</td>
+          <td class="muted">VP Provider Rel.</td>
+          <td class="num">$90,000</td>
+          <td class="num">$44,000</td>
+          <td class="num" style="color:var(--nogo);">($46,000)</td>
+          <td>
+            <div class="var-bar-wrap"><div class="var-bar" style="width:29px;background:var(--nogo);"></div><span style="font-family:var(--mono);font-size:0.82rem;">48.9%</span></div>
+          </td>
+          <td><span class="status-pill sp-red">Below Target</span></td>
+        </tr>
+        <tr>
+          <td>Member NPS / satisfaction</td>
+          <td class="muted">CMO</td>
+          <td class="num">$241,500</td>
+          <td class="num">$114,000</td>
+          <td class="num" style="color:var(--hold);">($127,500)</td>
+          <td>
+            <div class="var-bar-wrap"><div class="var-bar" style="width:28px;background:var(--hold);"></div><span style="font-family:var(--mono);font-size:0.82rem;">47.2%</span></div>
+          </td>
+          <td><span class="status-pill sp-amber">At Risk</span></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td><strong>Total</strong></td>
+          <td></td>
+          <td class="num"><strong>$1,989,000</strong></td>
+          <td class="num"><strong>$1,847,000</strong></td>
+          <td class="num" style="color:var(--hold);"><strong>($142,000)</strong></td>
+          <td colspan="2"><strong style="font-family:var(--mono);">92.8%</strong> &mdash; overall on track for 5-yr target</td>
+        </tr>
+      </tfoot>
+    </table>
+    <p class="note">Rework/appeals shortfall: provider training delayed 6 weeks by contract dispute; recovery expected in Q2. Provider portal: API integration took 3 additional sprints; full go-live June 2026. Member NPS benefit is long-lag; measurement window too short at 9 months.</p>
+  </div>
+
+  <!-- Recommendations -->
+  <div>
+    <h2>Next-Phase Recommendations</h2>
+    <ul class="rec-list">
+      <li class="rec-item">
+        <div class="rec-num">1</div>
+        <div class="rec-body">
+          <div class="rt">Accelerate provider portal API completion (target: June 2026)</div>
+          <div class="rd">Current 48.9% realization on provider portal is the single largest risk to 5-year benefit target. Assign 2 additional integration engineers. Estimated catch-up benefit: $36K/quarter from Q3 2026.</div>
+          <span class="rtag">Priority: High</span>
+        </div>
+      </li>
+      <li class="rec-item">
+        <div class="rec-num">2</div>
+        <div class="rec-body">
+          <div class="rt">Launch provider training program for appeals reduction (Q2 2026)</div>
+          <div class="rd">78.9% realization on rework reduction is recoverable once provider documentation training completes. Budget $45K for training cohort. Expected to close gap by Q3 2026.</div>
+          <span class="rtag">Priority: Medium</span>
+        </div>
+      </li>
+      <li class="rec-item">
+        <div class="rec-num">3</div>
+        <div class="rec-body">
+          <div class="rt">Extend member NPS measurement window to 18 months before re-forecasting</div>
+          <div class="rd">Member satisfaction benefits are long-lag (12&ndash;18 months). Recommend holding forecast steady and re-evaluating at Month 18 review. No remediation action needed at this stage.</div>
+          <span class="rtag">Priority: Low &mdash; Monitor</span>
+        </div>
+      </li>
+      <li class="rec-item">
+        <div class="rec-num">4</div>
+        <div class="rec-body">
+          <div class="rt">Initiate Phase 2 scoping: predictive denial prevention module</div>
+          <div class="rd">Labor savings (+6.4% above target) indicate platform has headroom. Predictive module could capture an additional $800K&ndash;$1.2M annually. Recommend feasibility study in Q2 2026.</div>
+          <span class="rtag">Priority: Strategic</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  <span>Meridian Health &mdash; Claims Automation Initiative &bull; Value Realization</span>
+  <span>v{{VERSION}} &bull; {{DATE}} &bull; CONFIDENTIAL &mdash; {{CLASSIFICATION}}</span>
+</footer>
+
+</body>
+</html>

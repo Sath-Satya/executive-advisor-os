@@ -1,0 +1,422 @@
+<!--
+TEMPLATE: exec-brief-dark
+CATEGORY: Executive / Board
+USE WHEN: Delivering an executive briefing to a technical leadership team or internal engineering executives who prefer a dark-themed format.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical Executive Brief — {{TITLE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #162030;
+      --primary: #3b9eff;
+      --primary-dim: rgba(59,158,255,0.12);
+      --secondary: #a78bfa;
+      --accent: #2dd4a0;
+      --accent-dim: rgba(45,212,160,0.1);
+      --warn: #f0a050;
+      --error: #f06070;
+      --text: #d0d8e4;
+      --muted: #8899ac;
+      --subtle: #556677;
+      --border: rgba(255,255,255,0.07);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem 5rem;
+    }
+
+    /* ── Top classification bar ── */
+    .classification-bar {
+      background: var(--primary);
+      color: #fff;
+      text-align: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.4rem 0;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── Header ── */
+    .doc-header { margin-bottom: 2.5rem; }
+    .doc-header .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 0.6rem;
+    }
+    .doc-header h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .doc-header h1 .accent { color: var(--primary); }
+    .meta-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .meta-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.25rem 0.7rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+    .meta-chip strong { color: var(--text); }
+
+    /* ── Situation strip ── */
+    .situation-strip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--primary);
+      padding: 1.4rem 1.8rem;
+      margin-bottom: 2.5rem;
+    }
+    .situation-strip .strip-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 0.6rem;
+    }
+    .situation-strip p {
+      font-size: 0.97rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── Section ── */
+    section { margin-bottom: 2.5rem; }
+    section h2 {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Metrics row ── */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 0.25rem;
+    }
+    .metric-cell {
+      background: var(--surface);
+      padding: 1.2rem 1rem;
+      transition: background 0.15s;
+    }
+    .metric-cell:hover { background: var(--surface2); }
+    .metric-value {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .metric-value.green { color: var(--accent); }
+    .metric-value.yellow { color: var(--warn); }
+    .metric-value.red { color: var(--error); }
+    .metric-value.blue { color: var(--primary); }
+    .metric-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--subtle);
+      margin-top: 0.35rem;
+    }
+    .metric-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    /* ── Finding cards ── */
+    .findings-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .finding-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1rem 1.3rem;
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+    .finding-index {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--secondary);
+      min-width: 2rem;
+      padding-top: 0.05rem;
+    }
+    .finding-body strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+    .finding-body span {
+      font-size: 0.87rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .severity-badge {
+      margin-left: auto;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      align-self: flex-start;
+    }
+    .badge-high { background: rgba(240,96,112,0.15); color: var(--error); }
+    .badge-med  { background: rgba(240,160,80,0.15); color: var(--warn); }
+    .badge-low  { background: rgba(45,212,160,0.12); color: var(--accent); }
+
+    /* ── Recommendation ── */
+    .rec-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--accent);
+      padding: 1.6rem 1.8rem;
+    }
+    .rec-box .rec-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .rec-box p {
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 0.7rem;
+    }
+    .action-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .action-list li {
+      display: flex;
+      gap: 0.8rem;
+      font-size: 0.88rem;
+      color: var(--text);
+      align-items: flex-start;
+    }
+    .action-list li .arrow {
+      color: var(--accent);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.55;
+    }
+    .action-list li .owner {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--secondary);
+      margin-left: 0.3rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 4rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--subtle);
+    }
+    footer .footer-left .brand { color: var(--primary); font-weight: 500; }
+    footer .footer-right { text-align: right; }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; color: #111; }
+      .page { padding: 2cm 2.5cm; }
+      .classification-bar { background: #333 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .metrics-row, .finding-card, .rec-box { border-color: #ccc; background: #f8f8f8 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .metric-value.green { color: #1a7a60 !important; }
+      .metric-value.blue  { color: #1a4a8a !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="classification-bar">Internal Use Only &mdash; Technical Leadership</div>
+
+  <main>
+    <div class="page">
+
+      <header class="doc-header">
+        <p class="eyebrow">Technical Executive Brief</p>
+        <h1>Infrastructure Modernisation:<br><span class="accent">Meridian Health</span> Platform Decision</h1>
+        <div class="meta-chips">
+          <span class="meta-chip"><strong>Audience:</strong> CTO / VP Engineering</span>
+          <span class="meta-chip"><strong>Date:</strong> {{DATE}}</span>
+          <span class="meta-chip"><strong>Version:</strong> {{VERSION}}</span>
+          <span class="meta-chip"><strong>Domain:</strong> Platform Engineering</span>
+        </div>
+      </header>
+
+      <div class="situation-strip">
+        <p class="strip-label">Context</p>
+        <p>Meridian Health's current patient-facing stack runs on a 2019-era monolith with a 94-day mean time to feature delivery. Three competitor platforms operating on modern cloud-native architectures are shipping weekly. Technical leadership must evaluate whether to modernise in-place, migrate to a new platform, or acquire a solution — and present a recommendation to the Board by 30 August.</p>
+      </div>
+
+      <section aria-labelledby="metrics-heading">
+        <h2 id="metrics-heading">Current State Metrics</h2>
+        <div class="metrics-row">
+          <div class="metric-cell">
+            <p class="metric-value yellow">94d</p>
+            <p class="metric-label">Mean Feature Lead Time</p>
+            <p class="metric-sub">Industry median: 18 days</p>
+          </div>
+          <div class="metric-cell">
+            <p class="metric-value red">99.1%</p>
+            <p class="metric-label">Uptime (12-mo trailing)</p>
+            <p class="metric-sub">SLA target: 99.9%</p>
+          </div>
+          <div class="metric-cell">
+            <p class="metric-value green">23</p>
+            <p class="metric-label">Engineers Available</p>
+            <p class="metric-sub">12 cloud-experienced</p>
+          </div>
+          <div class="metric-cell">
+            <p class="metric-value blue">$2.1M</p>
+            <p class="metric-label">Annual Infra Spend</p>
+            <p class="metric-sub">38% uncommitted headroom</p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="findings-heading">
+        <h2 id="findings-heading">Technical Findings</h2>
+        <ul class="findings-list">
+          <li class="finding-card">
+            <span class="finding-index">F-01</span>
+            <div class="finding-body">
+              <strong>Monolith has a 14-module blast radius</strong>
+              <span>A single deployment touches all 14 patient-facing modules simultaneously. Six production incidents in 2025 stemmed from unrelated changes to the billing module triggering cascading failures in appointment scheduling.</span>
+            </div>
+            <span class="severity-badge badge-high">High</span>
+          </li>
+          <li class="finding-card">
+            <span class="finding-index">F-02</span>
+            <div class="finding-body">
+              <strong>Salesforce Health Cloud foundation is production-ready</strong>
+              <span>Existing SFHC implementation covers 80% of required patient engagement capabilities. A targeted integration layer can bridge the remaining gap within the estimated 14-week window at lower risk than a full rebuild.</span>
+            </div>
+            <span class="severity-badge badge-low">Opportunity</span>
+          </li>
+          <li class="finding-card">
+            <span class="finding-index">F-03</span>
+            <div class="finding-body">
+              <strong>API surface is not FHIR R4 compliant</strong>
+              <span>Current HL7 v2.x integrations will require a mandatory migration layer before the CMS January 2027 deadline. Building this as part of the platform modernisation is 40% cheaper than a standalone retrofit project.</span>
+            </div>
+            <span class="severity-badge badge-med">Medium</span>
+          </li>
+          <li class="finding-card">
+            <span class="finding-index">F-04</span>
+            <div class="finding-body">
+              <strong>Team capability gap is addressable in 8 weeks</strong>
+              <span>12 of 23 engineers have cloud certifications. A structured upskilling sprint on Azure Container Apps + API Management closes the remaining gap without external hires, preserving institutional knowledge.</span>
+            </div>
+            <span class="severity-badge badge-low">Manageable</span>
+          </li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="rec-heading">
+        <h2 id="rec-heading">Recommendation</h2>
+        <div class="rec-box">
+          <p class="rec-label">Technical Leadership Recommendation</p>
+          <p>Adopt a strangler-fig migration pattern over 18 months. Extract the three highest-traffic modules (scheduling, patient messaging, care plan) as independently deployable services in the first 6 months. Retain the monolith for non-critical modules until services are proven stable. Do not pursue a full rewrite — the risk profile does not justify the timeline.</p>
+          <p>Estimated outcome: mean feature lead time falls from 94 days to under 12 days by month 12; uptime target 99.95% by month 18.</p>
+          <ul class="action-list" aria-label="Immediate actions">
+            <li>
+              <span class="arrow">&#8594;</span>
+              <span>Present strangler-fig architecture to Board on 28 August <span class="owner">[CTO]</span></span>
+            </li>
+            <li>
+              <span class="arrow">&#8594;</span>
+              <span>Provision Azure Container Apps environment for pilot module by 5 September <span class="owner">[VP Eng]</span></span>
+            </li>
+            <li>
+              <span class="arrow">&#8594;</span>
+              <span>Begin FHIR R4 gap analysis sprint on 9 September <span class="owner">[Platform Team]</span></span>
+            </li>
+            <li>
+              <span class="arrow">&#8594;</span>
+              <span>Initiate 8-week upskilling programme for remaining 11 engineers <span class="owner">[Engineering Manager]</span></span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-left">
+      <span class="brand">Meridian Health</span> &mdash; Technical Executive Brief<br>
+      Audience: CTO / VP Engineering &nbsp;&nbsp;|&nbsp;&nbsp; Author: Platform Architecture Team
+    </div>
+    <div class="footer-right">
+      {{DATE}}<br>{{VERSION}}
+    </div>
+  </footer>
+</body>
+</html>

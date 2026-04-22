@@ -1,0 +1,576 @@
+<!--
+TEMPLATE: kb-article
+CATEGORY: Docs / Product Communications
+USE WHEN: Publishing a help center or knowledge base article with TL;DR, step-by-step guide, related articles, and feedback footer.
+PALETTE: Light clean
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to connect a Snowflake source — Meridian Help</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f6f8fb;
+      --navy: #0e1b2e;
+      --navy-mid: #1e3356;
+      --blue: #3b9eff;
+      --blue-light: #eaf4ff;
+      --green: #2dd4a0;
+      --green-light: #e8faf5;
+      --amber: #f0a050;
+      --text: #1c2a3a;
+      --muted: #5a7184;
+      --border: #dce5f0;
+      --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* Header */
+    .site-header {
+      background: var(--navy);
+      padding: 0.9rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .site-header .logo { color: #fff; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .site-header .nav-links { display: flex; gap: 1.5rem; margin-left: auto; }
+    .site-header .nav-links a { color: rgba(255,255,255,0.6); font-size: 0.85rem; text-decoration: none; }
+    .site-header .nav-links a:hover { color: #fff; }
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 6px;
+      padding: 0.35rem 0.85rem;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .breadcrumb a { color: var(--blue); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb-sep { color: var(--border); }
+
+    /* Layout */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* Article */
+    article h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--navy);
+      margin-bottom: 0.6rem;
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .article-meta .tag {
+      display: inline-flex;
+      align-items: center;
+      background: var(--blue-light);
+      color: var(--blue);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .article-meta .read-time { display: flex; align-items: center; gap: 0.3rem; }
+
+    /* TL;DR box */
+    .tldr-box {
+      background: linear-gradient(135deg, var(--blue-light) 0%, #f0f8ff 100%);
+      border: 1px solid rgba(59,158,255,0.25);
+      border-left: 4px solid var(--blue);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .tldr-box .tldr-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .tldr-box p { font-size: 0.9rem; color: var(--text); margin: 0; }
+
+    /* Body prose */
+    article p { font-size: 0.9rem; color: var(--text); margin-bottom: 0.85rem; }
+    article h2 { font-size: 1.15rem; font-weight: 600; color: var(--navy); margin: 2rem 0 0.75rem; }
+    article h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin: 1.25rem 0 0.5rem; }
+    article ul, article ol { margin-left: 1.25rem; margin-bottom: 0.85rem; }
+    article li { font-size: 0.9rem; color: var(--text); margin-bottom: 0.35rem; }
+    article a { color: var(--blue); text-decoration: none; }
+    article a:hover { text-decoration: underline; }
+
+    /* Inline code */
+    code {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85em;
+      background: #edf2fb;
+      border: 1px solid #d4def0;
+      border-radius: 4px;
+      padding: 1px 6px;
+      color: var(--navy);
+    }
+
+    /* Code block */
+    pre {
+      background: var(--navy);
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.65;
+      overflow-x: auto;
+      color: #c8d8e8;
+      margin: 0.75rem 0 1rem;
+    }
+    pre code { background: none; border: none; padding: 0; color: inherit; font-size: inherit; }
+    .kw { color: #a78bfa; }
+    .str { color: #2dd4a0; }
+    .cm { color: #55667a; font-style: italic; }
+
+    /* Step list */
+    .step-list { list-style: none; margin: 0 0 1.25rem; padding: 0; }
+    .step-list > li {
+      display: flex;
+      gap: 0.9rem;
+      align-items: flex-start;
+      margin-bottom: 1.1rem;
+    }
+    .step-num {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-body { flex: 1; }
+    .step-body strong { display: block; font-size: 0.9rem; color: var(--navy); margin-bottom: 0.2rem; }
+    .step-body p { margin-bottom: 0; font-size: 0.875rem; }
+
+    /* Callout */
+    .callout {
+      display: flex;
+      gap: 0.65rem;
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      margin: 1rem 0;
+      font-size: 0.875rem;
+    }
+    .callout svg { flex-shrink: 0; margin-top: 1px; }
+    .callout-tip  { background: var(--green-light); border: 1px solid rgba(45,212,160,0.25); color: var(--text); }
+    .callout-tip strong { color: #0e8a6b; }
+
+    /* Screenshot placeholder */
+    .screenshot-placeholder {
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      text-align: center;
+      margin: 1rem 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+    .screenshot-placeholder svg { margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto; }
+
+    /* Was this helpful */
+    .helpful-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-top: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .helpful-block p { font-size: 0.9rem; font-weight: 500; color: var(--navy); margin: 0; flex: 1; }
+    .helpful-btns { display: flex; gap: 0.5rem; }
+    .helpful-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.4rem 1rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .helpful-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+    .helpful-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+    /* Sidebar */
+    .sidebar { position: sticky; top: 1.5rem; }
+    .sidebar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar-card h3 {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-family: 'DM Mono', monospace;
+    }
+    .related-link {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.85rem;
+      transition: color 0.15s;
+    }
+    .related-link:last-child { border-bottom: none; }
+    .related-link:hover { color: var(--blue); }
+    .related-link svg { flex-shrink: 0; margin-top: 2px; color: var(--blue); }
+    .contact-support {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .support-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.55rem 0.85rem;
+      font-size: 0.82rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .support-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .support-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+    /* Footer */
+    .doc-footer {
+      border-top: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .doc-footer a { color: var(--muted); text-decoration: none; }
+    .doc-footer a:hover { color: var(--blue); }
+
+    @media(max-width:780px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header" role="banner">
+    <a href="#" class="logo" aria-label="Meridian Help Center">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <rect width="20" height="20" rx="4" fill="rgba(59,158,255,0.25)"/>
+        <path d="M5 10h10M10 5l5 5-5 5" stroke="#3b9eff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Meridian Help
+    </a>
+    <nav class="nav-links" aria-label="Help center navigation">
+      <a href="#">Getting Started</a>
+      <a href="#">Connectors</a>
+      <a href="#">API</a>
+    </nav>
+    <div class="search-box" role="search" aria-label="Search articles">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+        <circle cx="5.5" cy="5.5" r="4.5" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 10l-1.5-1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      Search articles&hellip;
+    </div>
+  </header>
+
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="#">Help Center</a>
+    <span class="breadcrumb-sep" aria-hidden="true">/</span>
+    <a href="#">Connectors</a>
+    <span class="breadcrumb-sep" aria-hidden="true">/</span>
+    <span>Snowflake</span>
+  </nav>
+
+  <div class="layout">
+
+    <!-- Article -->
+    <article>
+      <h1>How to connect a Snowflake source</h1>
+
+      <div class="article-meta">
+        <span class="tag">Connectors</span>
+        <span class="read-time">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/>
+            <path d="M6 3.5V6l2 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          5 min read
+        </span>
+        <span>Updated: April 1, 2026</span>
+        <span>Views: 4,218</span>
+      </div>
+
+      <!-- TL;DR -->
+      <div class="tldr-box" role="note" aria-label="Summary">
+        <div class="tldr-label">TL;DR</div>
+        <p>Create a dedicated Snowflake service account with read-only access, generate an RSA keypair, add it in Meridian under <strong>Connectors &rarr; Snowflake</strong>, and paste your account identifier. Your first dataset will be ready in under 2 minutes.</p>
+      </div>
+
+      <!-- Prerequisites -->
+      <h2>Before you begin</h2>
+      <ul>
+        <li>Snowflake account with <code>SYSADMIN</code> or <code>SECURITYADMIN</code> role access (to create the service user)</li>
+        <li>Meridian workspace with <strong>Admin</strong> or <strong>Connector Manager</strong> role</li>
+        <li><code>openssl</code> available locally (for keypair generation)</li>
+      </ul>
+
+      <!-- Steps -->
+      <h2>Steps</h2>
+
+      <ol class="step-list" aria-label="Connection steps">
+        <li>
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Create a read-only service user in Snowflake</strong>
+            <p>Run the following SQL in a Snowflake worksheet. Replace <code>YOUR_WAREHOUSE</code> and <code>YOUR_DATABASE</code> with your actual names.</p>
+            <pre><code><span class="cm">-- Create role and user</span>
+<span class="kw">CREATE</span> ROLE meridian_reader;
+<span class="kw">GRANT</span> USAGE <span class="kw">ON</span> WAREHOUSE YOUR_WAREHOUSE <span class="kw">TO</span> ROLE meridian_reader;
+<span class="kw">GRANT</span> USAGE <span class="kw">ON</span> DATABASE YOUR_DATABASE <span class="kw">TO</span> ROLE meridian_reader;
+<span class="kw">GRANT</span> SELECT <span class="kw">ON</span> ALL TABLES <span class="kw">IN</span> SCHEMA YOUR_DATABASE.PUBLIC <span class="kw">TO</span> ROLE meridian_reader;
+
+<span class="kw">CREATE</span> USER meridian_svc
+    LOGIN_NAME = <span class="str">'meridian_svc'</span>
+    DEFAULT_ROLE = meridian_reader
+    MUST_CHANGE_PASSWORD = <span class="str">FALSE</span>;
+
+<span class="kw">GRANT</span> ROLE meridian_reader <span class="kw">TO</span> USER meridian_svc;</code></pre>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Generate an RSA keypair</strong>
+            <p>Snowflake connector uses key-pair authentication — more secure than password-based access.</p>
+            <pre><code><span class="cm"># Generate private key (keep this secret)</span>
+openssl genrsa -out meridian_rsa.pem 2048
+
+<span class="cm"># Extract public key</span>
+openssl rsa -in meridian_rsa.pem -pubout -out meridian_rsa_pub.pem</code></pre>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Assign the public key to the Snowflake user</strong>
+            <p>Copy the content of <code>meridian_rsa_pub.pem</code> (everything between the header and footer lines) and run:</p>
+            <pre><code><span class="kw">ALTER</span> USER meridian_svc SET RSA_PUBLIC_KEY=<span class="str">'MIIBIjANBgkq...(your public key)...'</span>;</code></pre>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Add the connector in Meridian</strong>
+            <p>Go to <strong>Settings &rarr; Connectors &rarr; Add connector &rarr; Snowflake</strong>. Fill in the fields:</p>
+            <div class="screenshot-placeholder" role="img" aria-label="Screenshot placeholder: Snowflake connector form">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                <rect width="32" height="32" rx="6" fill="var(--border)"/>
+                <rect x="6" y="8" width="20" height="14" rx="2" stroke="var(--muted)" stroke-width="1.5"/>
+                <circle cx="11" cy="13" r="2" stroke="var(--muted)" stroke-width="1.5"/>
+                <path d="M6 20l6-4 4 3 4-5 6 6" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+              Snowflake connector form screenshot
+            </div>
+            <ul>
+              <li><strong>Account identifier:</strong> <code>orgname-accountname</code> (find in Snowflake &rarr; Admin &rarr; Accounts)</li>
+              <li><strong>Username:</strong> <code>meridian_svc</code></li>
+              <li><strong>Private key:</strong> paste the contents of <code>meridian_rsa.pem</code></li>
+              <li><strong>Warehouse:</strong> <code>YOUR_WAREHOUSE</code></li>
+            </ul>
+          </div>
+        </li>
+
+        <li>
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <strong>Test the connection</strong>
+            <p>Click <strong>Test connection</strong>. You should see a green <strong>Connected</strong> badge within 10 seconds. If the test fails, see <a href="#">Troubleshooting Snowflake connections</a>.</p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="callout callout-tip">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="7" stroke="#2dd4a0" stroke-width="1.4"/>
+          <path d="M5 8l2 2 4-4" stroke="#2dd4a0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div><strong>Best practice:</strong> Restrict the <code>meridian_reader</code> role to specific schemas instead of granting access to all tables. This follows the principle of least privilege and reduces your attack surface.</div>
+      </div>
+
+      <!-- Was this helpful? -->
+      <div class="helpful-block" role="complementary" aria-label="Article feedback">
+        <p>Was this article helpful?</p>
+        <div class="helpful-btns">
+          <button class="helpful-btn" aria-label="Yes, this was helpful">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M4 7V12H2V7h2zm2-4l3 3v5H5V7L7 3z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            Yes
+          </button>
+          <button class="helpful-btn" aria-label="No, this was not helpful">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M10 7V2h2v5h-2zm-2 4L5 8V3h4v4l-1 4z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            No
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" aria-label="Related content">
+
+      <div class="sidebar-card">
+        <h3>Related Articles</h3>
+        <a href="#" class="related-link">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M3 6.5h7M7 4l2.5 2.5L7 9" stroke="#3b9eff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Troubleshooting Snowflake connections
+        </a>
+        <a href="#" class="related-link">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M3 6.5h7M7 4l2.5 2.5L7 9" stroke="#3b9eff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Connect a BigQuery source
+        </a>
+        <a href="#" class="related-link">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M3 6.5h7M7 4l2.5 2.5L7 9" stroke="#3b9eff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Managing connector credentials
+        </a>
+        <a href="#" class="related-link">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M3 6.5h7M7 4l2.5 2.5L7 9" stroke="#3b9eff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Dataset refresh schedules
+        </a>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Still Need Help?</h3>
+        <div class="contact-support">
+          <a href="#" class="support-btn" aria-label="Chat with support">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 2h10v8H8l-3 2V10H2V2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            Chat with support
+          </a>
+          <a href="#" class="support-btn" aria-label="Submit a ticket">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M5 7h4M5 5h4M5 9h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            Submit a ticket
+          </a>
+        </div>
+      </div>
+
+      <div class="sidebar-card" style="background:var(--navy);border-color:transparent">
+        <h3 style="color:rgba(208,216,228,0.6)">Community</h3>
+        <p style="font-size:0.82rem;color:rgba(208,216,228,0.55);margin-bottom:0.75rem">Join 3,400+ Meridian users sharing tips and integrations.</p>
+        <a href="#" style="display:inline-flex;align-items:center;gap:0.4rem;background:rgba(59,158,255,0.15);color:#3b9eff;border:1px solid rgba(59,158,255,0.3);border-radius:6px;padding:0.45rem 0.9rem;font-size:0.82rem;text-decoration:none">
+          Visit Community &rarr;
+        </a>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <footer class="doc-footer" role="contentinfo">
+    <span>Meridian Help Center &mdash; v{{VERSION}} &mdash; {{DATE}}</span>
+    <span>Owner: Developer Experience</span>
+    <a href="#">Suggest an edit</a>
+  </footer>
+
+</body>
+</html>

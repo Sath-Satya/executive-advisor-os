@@ -1,0 +1,383 @@
+<!--
+TEMPLATE: forecast-model
+CATEGORY: Finance
+USE WHEN: Presenting a rolling 12-month revenue/cost/cash forecast with assumptions panel and base/upside/downside scenario tabs — for CFO reviews or board planning sessions.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>12-Month Forecast Model &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #172030;
+      --border: #1e2d40;
+      --border2: #253548;
+      --primary: #3b9eff;
+      --accent: #2dd4a0;
+      --warning: #f0a050;
+      --error: #f06070;
+      --text: #d0d8e4;
+      --muted: #8899ac;
+      --subtle: #556677;
+      --gold: #b8965a;
+      --fav: #2dd4a0;
+      --unfav: #f06070;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .page { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+    /* Header */
+    .doc-header {
+      border-top: 3px solid var(--primary);
+      padding-top: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+    .eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary); margin-bottom: 0.35rem; }
+    h1 { font-size: 1.5rem; font-weight: 700; color: #fff; letter-spacing: -0.4px; }
+    .doc-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .meta-right { text-align: right; font-size: 0.78rem; color: var(--muted); line-height: 1.9; flex-shrink: 0; }
+    .meta-right strong { color: var(--text); }
+
+    /* Layout: main + aside */
+    .layout { display: grid; grid-template-columns: 1fr 260px; gap: 1.5rem; align-items: start; }
+    @media (max-width: 800px) { .layout { grid-template-columns: 1fr; } }
+
+    /* Scenario tabs */
+    .scenario-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      width: fit-content;
+    }
+    .tab {
+      padding: 0.45rem 1.1rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: default;
+      background: var(--surface);
+      color: var(--muted);
+      border-right: 1px solid var(--border);
+      letter-spacing: 0.04em;
+    }
+    .tab:last-child { border-right: none; }
+    .tab.active-base { background: var(--primary); color: #fff; }
+    .tab.active-up { background: var(--accent); color: #0a0e14; }
+    .tab.active-dn { background: var(--warning); color: #0a0e14; }
+    .tab-note { font-size: 0.7rem; color: var(--muted); margin-bottom: 1rem; font-style: italic; }
+
+    /* Section heading */
+    .section-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--primary);
+      margin-bottom: 0.5rem; margin-top: 1.25rem;
+    }
+    .section-label:first-of-type { margin-top: 0; }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; margin-bottom: 0; }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.75rem; font-variant-numeric: tabular-nums;
+      min-width: 700px;
+    }
+    caption { font-size: 0.68rem; color: var(--muted); text-align: left; padding-bottom: 0.4rem; font-style: italic; }
+    thead tr { background: var(--surface2); }
+    thead th {
+      padding: 0.5rem 0.55rem;
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em;
+      text-transform: uppercase; color: var(--muted);
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; min-width: 130px; position: sticky; left: 0; background: var(--surface2); }
+    thead th:not(:first-child) { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: var(--surface2); }
+    tbody td { padding: 0.42rem 0.55rem; }
+    tbody td:first-child { position: sticky; left: 0; background: var(--surface); color: var(--text); font-weight: 500; }
+    tbody tr:hover td:first-child { background: var(--surface2); }
+    tbody td:not(:first-child) { text-align: right; font-family: 'DM Mono', monospace; color: var(--text); }
+    tr.indented td:first-child { padding-left: 1.4rem; color: var(--muted); font-weight: 400; }
+    tr.subtotal td { background: var(--surface2); font-weight: 600; border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2); }
+    tr.subtotal td:first-child { background: var(--surface2); }
+    tr.total-row td { background: #0d1929; font-weight: 700; border-top: 1px solid var(--primary); color: #fff; }
+    tr.total-row td:first-child { background: #0d1929; color: #fff; }
+    tr.spacer td { padding: 0; border: none; height: 0.25rem; background: transparent; }
+    .hi { color: var(--accent); }
+    .lo { color: var(--error); }
+    .neutral { color: var(--muted); }
+
+    /* Assumptions panel */
+    .assumptions {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+    .assumptions h2 {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    .assump-group { margin-bottom: 1rem; }
+    .assump-group-label {
+      font-size: 0.63rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.5rem;
+    }
+    .assump-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.35rem 0;
+      border-bottom: 1px solid var(--border);
+      gap: 0.5rem;
+    }
+    .assump-row:last-child { border-bottom: none; }
+    .assump-label { font-size: 0.75rem; color: var(--muted); }
+    .assump-value { font-size: 0.75rem; font-family: 'DM Mono', monospace; font-weight: 600; color: var(--text); flex-shrink: 0; }
+    .assump-value.up { color: var(--accent); }
+    .assump-value.dn { color: var(--error); }
+    .assump-divider { border: none; border-top: 1px solid var(--border); margin: 0.75rem 0; }
+
+    /* KPI row */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 800px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+    }
+    .kpi-label { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.35rem; }
+    .kpi-value { font-size: 1.35rem; font-weight: 700; font-family: 'DM Mono', monospace; color: #fff; font-variant-numeric: tabular-nums; }
+    .kpi-delta { font-size: 0.72rem; margin-top: 0.2rem; }
+    .kpi-delta.up { color: var(--accent); }
+    .kpi-delta.dn { color: var(--error); }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 2rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      font-size: 0.68rem; color: var(--muted); flex-wrap: wrap; gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="doc-header">
+    <div>
+      <p class="eyebrow">Northwind Capital &mdash; Financial Planning &amp; Analysis</p>
+      <h1>Rolling 12-Month Forecast</h1>
+      <p class="doc-sub">Jan 2025 &ndash; Dec 2025 &nbsp;|&nbsp; Base Scenario &nbsp;|&nbsp; USD in thousands</p>
+    </div>
+    <div class="meta-right">
+      <strong>As of: Jan 1, {{PERIOD}}</strong><br>
+      Prepared: {{PREPARED_BY}}<br>
+      v{{VERSION}}
+    </div>
+  </header>
+
+  <!-- KPI Cards -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">FY Revenue (Base)</div>
+      <div class="kpi-value">$45.8M</div>
+      <div class="kpi-delta up">&#9650; +14.5% vs FY2024</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Gross Margin</div>
+      <div class="kpi-value">81.2%</div>
+      <div class="kpi-delta up">&#9650; +1.3 pts</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">EBITDA Margin</div>
+      <div class="kpi-value">29.4%</div>
+      <div class="kpi-delta up">&#9650; +2.0 pts</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Ending Cash (Dec)</div>
+      <div class="kpi-value">$11.6M</div>
+      <div class="kpi-delta up">&#9650; +$3.2M vs Dec&apos;24</div>
+    </div>
+  </div>
+
+  <!-- Scenario tabs (label-only, no JS) -->
+  <div class="scenario-tabs" role="tablist" aria-label="Forecast scenarios">
+    <div class="tab active-base" role="tab" aria-selected="true">&#9679; Base</div>
+    <div class="tab" role="tab" aria-selected="false">&#9651; Upside</div>
+    <div class="tab" role="tab" aria-selected="false">&#9661; Downside</div>
+  </div>
+  <p class="tab-note">Showing Base scenario. See 57-scenario-analysis for full three-scenario comparison.</p>
+
+  <!-- Main layout: table + assumptions -->
+  <div class="layout">
+    <div>
+      <!-- Revenue -->
+      <p class="section-label">Revenue (USD 000s)</p>
+      <div class="table-wrap">
+        <table aria-label="12-Month Revenue Forecast — Northwind Capital Base Scenario 2025">
+          <caption>Monthly forecast. Amounts in USD thousands (Base scenario).</caption>
+          <thead>
+            <tr>
+              <th scope="col">Line</th>
+              <th scope="col">Jan</th><th scope="col">Feb</th><th scope="col">Mar</th>
+              <th scope="col">Apr</th><th scope="col">May</th><th scope="col">Jun</th>
+              <th scope="col">Jul</th><th scope="col">Aug</th><th scope="col">Sep</th>
+              <th scope="col">Oct</th><th scope="col">Nov</th><th scope="col">Dec</th>
+              <th scope="col">FY25</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="indented"><td>Subscription</td>
+              <td>$2,820</td><td>$2,870</td><td>$2,920</td><td>$2,970</td><td>$3,040</td><td>$3,100</td>
+              <td>$3,170</td><td>$3,220</td><td>$3,290</td><td>$3,360</td><td>$3,430</td><td>$3,510</td>
+              <td class="hi">$37,700</td>
+            </tr>
+            <tr class="indented"><td>Services</td>
+              <td>$530</td><td>$540</td><td>$560</td><td>$580</td><td>$590</td><td>$610</td>
+              <td>$620</td><td>$630</td><td>$640</td><td>$660</td><td>$680</td><td>$700</td>
+              <td class="hi">$7,340</td>
+            </tr>
+            <tr class="indented"><td>Licensing</td>
+              <td>$60</td><td>$60</td><td>$65</td><td>$65</td><td>$65</td><td>$70</td>
+              <td>$70</td><td>$70</td><td>$70</td><td>$75</td><td>$75</td><td>$75</td>
+              <td class="neutral">$820</td>
+            </tr>
+            <tr class="subtotal"><td>Total Revenue</td>
+              <td>$3,410</td><td>$3,470</td><td>$3,545</td><td>$3,615</td><td>$3,695</td><td>$3,780</td>
+              <td>$3,860</td><td>$3,920</td><td>$4,000</td><td>$4,095</td><td>$4,185</td><td>$4,285</td>
+              <td class="hi"><strong>$45,860</strong></td>
+            </tr>
+            <tr class="spacer"><td colspan="14"></td></tr>
+            <!-- Cost -->
+            <tr class="indented"><td>COGS</td>
+              <td>$645</td><td>$656</td><td>$671</td><td>$685</td><td>$700</td><td>$716</td>
+              <td>$731</td><td>$743</td><td>$757</td><td>$775</td><td>$793</td><td>$812</td>
+              <td class="neutral">$8,684</td>
+            </tr>
+            <tr class="subtotal"><td>Gross Profit</td>
+              <td>$2,765</td><td>$2,814</td><td>$2,874</td><td>$2,930</td><td>$2,995</td><td>$3,064</td>
+              <td>$3,129</td><td>$3,177</td><td>$3,243</td><td>$3,320</td><td>$3,392</td><td>$3,473</td>
+              <td class="hi"><strong>$37,176</strong></td>
+            </tr>
+            <tr class="spacer"><td colspan="14"></td></tr>
+            <!-- OpEx -->
+            <tr class="indented"><td>S&amp;M</td>
+              <td>$820</td><td>$833</td><td>$851</td><td>$867</td><td>$887</td><td>$907</td>
+              <td>$927</td><td>$941</td><td>$960</td><td>$983</td><td>$1,004</td><td>$1,028</td>
+              <td class="neutral">$11,008</td>
+            </tr>
+            <tr class="indented"><td>R&amp;D</td>
+              <td>$640</td><td>$648</td><td>$660</td><td>$673</td><td>$688</td><td>$703</td>
+              <td>$717</td><td>$729</td><td>$742</td><td>$759</td><td>$776</td><td>$793</td>
+              <td class="neutral">$8,528</td>
+            </tr>
+            <tr class="indented"><td>G&amp;A</td>
+              <td>$310</td><td>$314</td><td>$320</td><td>$326</td><td>$332</td><td>$340</td>
+              <td>$346</td><td>$351</td><td>$358</td><td>$366</td><td>$373</td><td>$382</td>
+              <td class="neutral">$4,118</td>
+            </tr>
+            <tr class="spacer"><td colspan="14"></td></tr>
+            <tr class="total-row"><td>EBITDA</td>
+              <td>$995</td><td>$1,019</td><td>$1,043</td><td>$1,064</td><td>$1,088</td><td>$1,114</td>
+              <td>$1,139</td><td>$1,156</td><td>$1,183</td><td>$1,212</td><td>$1,239</td><td>$1,270</td>
+              <td class="hi"><strong>$13,522</strong></td>
+            </tr>
+            <tr class="spacer"><td colspan="14"></td></tr>
+            <!-- Cash -->
+            <tr class="indented"><td>Operating CF</td>
+              <td>$880</td><td>$902</td><td>$924</td><td>$943</td><td>$965</td><td>$988</td>
+              <td>$1,011</td><td>$1,027</td><td>$1,050</td><td>$1,076</td><td>$1,100</td><td>$1,128</td>
+              <td class="hi">$11,994</td>
+            </tr>
+            <tr class="indented"><td>Capex</td>
+              <td>($120)</td><td>($120)</td><td>($120)</td><td>($120)</td><td>($120)</td><td>($120)</td>
+              <td>($120)</td><td>($120)</td><td>($120)</td><td>($120)</td><td>($120)</td><td>($120)</td>
+              <td class="lo">($1,440)</td>
+            </tr>
+            <tr class="total-row"><td>Ending Cash</td>
+              <td>$8,780</td><td>$9,162</td><td>$9,566</td><td>$9,989</td><td>$10,434</td><td>$10,902</td>
+              <td>$11,393</td><td>$11,700</td><td>$12,130</td><td>$12,586</td><td>$13,066</td><td>$11,594</td>
+              <td class="hi"><strong>$11,594</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Assumptions sidebar -->
+    <aside class="assumptions" aria-label="Forecast assumptions">
+      <h2>Assumptions Panel</h2>
+
+      <div class="assump-group">
+        <div class="assump-group-label">Growth</div>
+        <div class="assump-row"><span class="assump-label">MoM Subscr. growth</span><span class="assump-value up">+2.2%</span></div>
+        <div class="assump-row"><span class="assump-label">Services growth (FY)</span><span class="assump-value up">+14.7%</span></div>
+        <div class="assump-row"><span class="assump-label">Licensing (flat)</span><span class="assump-value">+0%</span></div>
+      </div>
+      <hr class="assump-divider">
+      <div class="assump-group">
+        <div class="assump-group-label">Unit Economics</div>
+        <div class="assump-row"><span class="assump-label">Gross Margin target</span><span class="assump-value up">81%</span></div>
+        <div class="assump-row"><span class="assump-label">CAC (blended)</span><span class="assump-value">$4,200</span></div>
+        <div class="assump-row"><span class="assump-label">LTV:CAC ratio</span><span class="assump-value up">4.8&times;</span></div>
+        <div class="assump-row"><span class="assump-label">Net Revenue Churn</span><span class="assump-value">0.8%/mo</span></div>
+        <div class="assump-row"><span class="assump-label">Avg ACV</span><span class="assump-value">$38,400</span></div>
+      </div>
+      <hr class="assump-divider">
+      <div class="assump-group">
+        <div class="assump-group-label">Cost Structure</div>
+        <div class="assump-row"><span class="assump-label">S&amp;M as % Rev</span><span class="assump-value">24%</span></div>
+        <div class="assump-row"><span class="assump-label">R&amp;D as % Rev</span><span class="assump-value">18.6%</span></div>
+        <div class="assump-row"><span class="assump-label">G&amp;A as % Rev</span><span class="assump-value">9.0%</span></div>
+        <div class="assump-row"><span class="assump-label">Annual capex</span><span class="assump-value dn">$1.44M</span></div>
+        <div class="assump-row"><span class="assump-label">Headcount adds</span><span class="assump-value">+12 FTE</span></div>
+      </div>
+      <hr class="assump-divider">
+      <div class="assump-group">
+        <div class="assump-group-label">Scenarios (vs Base)</div>
+        <div class="assump-row"><span class="assump-label">Upside growth</span><span class="assump-value up">+3.5% MoM</span></div>
+        <div class="assump-row"><span class="assump-label">Upside churn</span><span class="assump-value up">0.5%</span></div>
+        <div class="assump-row"><span class="assump-label">Downside growth</span><span class="assump-value dn">+1.2% MoM</span></div>
+        <div class="assump-row"><span class="assump-label">Downside churn</span><span class="assump-value dn">1.8%</span></div>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="doc-footer">
+    <span>Northwind Capital &mdash; FP&amp;A Confidential</span>
+    <span>Period: {{PERIOD}}</span>
+    <span>Prepared by: {{PREPARED_BY}}</span>
+    <span>v{{VERSION}}</span>
+  </footer>
+
+</div>
+</body>
+</html>

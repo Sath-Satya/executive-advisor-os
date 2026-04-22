@@ -1,0 +1,505 @@
+<!--
+TEMPLATE: post-mortem
+CATEGORY: Reports / Documents
+USE WHEN: Documenting an incident post-mortem with timeline, impact summary, root cause analysis, contributing factors, and action items.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post-Mortem — {{INCIDENT_ID}} — {{INCIDENT_TITLE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #16202e;
+      --border: #1e2d3e;
+      --border2: #253545;
+      --primary: #3b9eff;
+      --primary-dim: rgba(59,158,255,0.15);
+      --accent: #2dd4a0;
+      --accent-dim: rgba(45,212,160,0.12);
+      --secondary: #a78bfa;
+      --secondary-dim: rgba(167,139,250,0.12);
+      --warn: #f0a050;
+      --warn-dim: rgba(240,160,80,0.12);
+      --error: #f06070;
+      --error-dim: rgba(240,96,112,0.15);
+      --text: #d0d8e4;
+      --text2: #a0aabb;
+      --muted: #8899ac;
+      --subtle: #556677;
+      --mono: 'DM Mono', 'Cascadia Code', 'Fira Code', monospace;
+      --sans: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* ── Header ── */
+    .pm-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+    }
+    .hdr-inner { max-width: 860px; margin: 0 auto; }
+    .pm-sev-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .pm-sev {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.25rem 0.6rem;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+    .pm-sev.sev1 { background: var(--error-dim); color: var(--error); border: 1px solid rgba(240,96,112,0.3); }
+    .pm-sev.sev2 { background: var(--warn-dim); color: var(--warn); border: 1px solid rgba(240,160,80,0.3); }
+    .pm-sev.sev3 { background: var(--primary-dim); color: var(--primary); border: 1px solid rgba(59,158,255,0.3); }
+    .pm-status {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      border: 1px solid rgba(45,212,160,0.3);
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+    }
+    .pm-incident-id { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+    h1 { font-size: 1.75rem; font-weight: 600; color: #fff; line-height: 1.25; margin-bottom: 0.75rem; }
+    .pm-meta { display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+    .pm-meta-item {}
+    .pm-meta-label { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); display: block; margin-bottom: 0.2rem; }
+    .pm-meta-value { font-size: 0.875rem; color: var(--text2); }
+
+    /* ── Impact strip ── */
+    .impact-strip {
+      background: var(--error-dim);
+      border-bottom: 1px solid rgba(240,96,112,0.25);
+    }
+    .impact-inner { max-width: 860px; margin: 0 auto; padding: 1.25rem 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0; }
+    .impact-stat { text-align: center; padding: 0.5rem; border-right: 1px solid rgba(240,96,112,0.2); }
+    .impact-stat:last-child { border-right: none; }
+    .impact-value { display: block; font-size: 1.8rem; font-weight: 700; color: var(--error); line-height: 1.1; font-family: var(--mono); }
+    .impact-label { font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(240,96,112,0.7); }
+
+    /* ── Nav strip ── */
+    .pm-nav { background: var(--surface2); border-bottom: 1px solid var(--border); overflow-x: auto; }
+    .pm-nav-inner { max-width: 860px; margin: 0 auto; display: flex; }
+    .pm-nav a { display: inline-block; padding: 0.7rem 1.1rem; color: var(--muted); text-decoration: none; font-size: 0.78rem; font-family: var(--mono); letter-spacing: 0.04em; white-space: nowrap; border-right: 1px solid var(--border); transition: background 0.15s, color 0.15s; }
+    .pm-nav a:first-child { border-left: 1px solid var(--border); }
+    .pm-nav a:hover { background: var(--primary-dim); color: var(--primary); }
+
+    /* ── Body layout ── */
+    .doc-wrap { max-width: 860px; margin: 0 auto; padding: 0 2rem 4rem; }
+
+    /* ── Sections ── */
+    .pm-section { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+    .pm-section:last-child { border-bottom: none; }
+    .section-eyebrow { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--primary); display: block; margin-bottom: 0.5rem; }
+    h2 { font-size: 1.25rem; font-weight: 600; color: #fff; line-height: 1.3; margin-bottom: 1.25rem; }
+    h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); margin-top: 1.75rem; margin-bottom: 0.5rem; }
+    p { margin-bottom: 1rem; color: var(--text2); font-size: 0.95rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Summary box ── */
+    .summary-box { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--primary); border-radius: 4px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
+    .summary-box p { font-size: 0.925rem; }
+
+    /* ── Timeline ── */
+    .timeline { list-style: none; position: relative; padding-left: 2.5rem; margin: 1.25rem 0; }
+    .timeline::before { content: ''; position: absolute; left: 0.45rem; top: 0.5rem; bottom: 0.5rem; width: 2px; background: var(--border2); }
+    .timeline-item { position: relative; padding: 0 0 1.75rem 0.75rem; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot {
+      position: absolute; left: -2rem; top: 0.25rem;
+      width: 0.9rem; height: 0.9rem;
+      border-radius: 50%;
+      border: 2px solid var(--border2);
+      background: var(--bg);
+    }
+    .timeline-dot.detect { border-color: var(--warn); background: var(--warn); }
+    .timeline-dot.impact { border-color: var(--error); background: var(--error); }
+    .timeline-dot.mitigate { border-color: var(--primary); }
+    .timeline-dot.resolve { border-color: var(--accent); background: var(--accent); }
+    .timeline-dot.normal { border-color: var(--muted); }
+    .timeline-time { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); display: block; margin-bottom: 0.25rem; }
+    .timeline-event { font-weight: 600; font-size: 0.9rem; color: var(--text); margin-bottom: 0.25rem; display: block; }
+    .timeline-detail { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+    .timeline-tag {
+      display: inline-block;
+      margin-left: 0.5rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 2px;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .tag-detection { background: var(--warn-dim); color: var(--warn); }
+    .tag-impact { background: var(--error-dim); color: var(--error); }
+    .tag-mitigation { background: var(--primary-dim); color: var(--primary); }
+    .tag-resolution { background: var(--accent-dim); color: var(--accent); }
+    .tag-followup { background: rgba(167,139,250,0.12); color: var(--secondary); }
+
+    /* ── Root cause diagram ── */
+    .fishbone-figure { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem; margin: 1.25rem 0; }
+    .fishbone-figure svg { width: 100%; display: block; }
+    figcaption { font-size: 0.78rem; color: var(--muted); font-style: italic; text-align: center; margin-top: 0.75rem; }
+
+    /* ── Cause factors ── */
+    .factors-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0; }
+    .factor-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem 1.5rem; }
+    .factor-category { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--primary); display: block; margin-bottom: 0.75rem; }
+    .factor-list { list-style: none; }
+    .factor-list li { padding: 0.4rem 0 0.4rem 1.25rem; position: relative; font-size: 0.875rem; color: var(--text2); border-bottom: 1px solid var(--border); }
+    .factor-list li:last-child { border-bottom: none; }
+    .factor-list li::before { content: ''; position: absolute; left: 0; top: 0.75rem; width: 5px; height: 5px; border-radius: 50%; background: var(--muted); }
+
+    /* ── Action items table ── */
+    .ai-table-wrap { overflow-x: auto; margin: 1.25rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    caption { text-align: left; font-size: 0.75rem; font-family: var(--mono); color: var(--muted); margin-bottom: 0.5rem; }
+    th { background: var(--surface2); color: var(--text); font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.65rem 1rem; text-align: left; border-bottom: 2px solid var(--border2); }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text2); }
+    tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    .ai-prio { display: inline-block; padding: 0.15rem 0.45rem; border-radius: 3px; font-family: var(--mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+    .ai-p0 { background: var(--error-dim); color: var(--error); }
+    .ai-p1 { background: var(--warn-dim); color: var(--warn); }
+    .ai-p2 { background: var(--primary-dim); color: var(--primary); }
+    .ai-status { display: inline-block; padding: 0.15rem 0.45rem; border-radius: 3px; font-family: var(--mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .ai-open { background: var(--error-dim); color: var(--error); }
+    .ai-progress { background: var(--warn-dim); color: var(--warn); }
+    .ai-done { background: var(--accent-dim); color: var(--accent); }
+
+    /* ── Learnings box ── */
+    .learnings-box { background: var(--accent-dim); border: 1px solid rgba(45,212,160,0.2); border-radius: 6px; padding: 1.5rem 1.75rem; margin-top: 1.5rem; }
+    .learnings-title { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); display: block; margin-bottom: 0.75rem; }
+    .learnings-list { list-style: none; }
+    .learnings-list li { padding: 0.4rem 0 0.4rem 1.25rem; position: relative; font-size: 0.875rem; color: var(--text2); }
+    .learnings-list li::before { content: ''; position: absolute; left: 0; top: 0.75rem; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+
+    /* ── Footer ── */
+    .pm-footer { background: var(--surface); border-top: 1px solid var(--border); color: var(--muted); padding: 1.5rem 2rem; font-size: 0.75rem; font-family: var(--mono); }
+    .pm-footer .hdr-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+    .footer-brand { color: var(--primary); }
+    .footer-div { color: var(--border2); margin: 0 0.5rem; }
+
+    /* ── Print ── */
+    @media print {
+      @page { margin: 2cm; size: A4; }
+      body { background: #fff; color: #111; font-size: 10.5pt; }
+      .pm-header { background: #fff; border-bottom: 2px solid #333; }
+      h1 { color: #111; }
+      .pm-nav { display: none; }
+      .impact-strip { background: #fee2e2; border-bottom: 1px solid #fca5a5; }
+      .impact-value { color: #b91c1c; }
+      .impact-label { color: #7f1d1d; }
+      .pm-section { break-inside: avoid; border-bottom: 1px solid #ccc; }
+      .summary-box, .factor-card, .learnings-box, .fishbone-figure { background: #f5f5f5; border-color: #ccc; }
+      .pm-footer { background: #fff; border-top: 1px solid #ccc; color: #555; }
+      .section-eyebrow { color: #1a6bbf; }
+      h2, h3 { color: #111; }
+      p, td, .timeline-detail { color: #333; }
+      .timeline-event { color: #111; }
+      th { background: #333; }
+      tr:nth-child(even) td { background: #f9f9f9; }
+      .timeline::before { background: #999; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="pm-header">
+    <div class="hdr-inner">
+      <div class="pm-sev-row">
+        <span class="pm-sev sev1">Severity 1</span>
+        <span class="pm-status">Resolved</span>
+        <span class="pm-incident-id">{{INCIDENT_ID}}</span>
+      </div>
+      <h1>{{INCIDENT_TITLE}}</h1>
+      <p style="color: var(--muted); font-size: 0.9rem; max-width: 640px;">Prior authorization AI system became unresponsive during peak processing hours, causing 4h 23m of service degradation affecting all health plan members and 2,200 contracted providers.</p>
+      <div class="pm-meta">
+        <div class="pm-meta-item"><span class="pm-meta-label">Incident Start</span><span class="pm-meta-value">{{INCIDENT_START}}</span></div>
+        <div class="pm-meta-item"><span class="pm-meta-label">Incident End</span><span class="pm-meta-value">{{INCIDENT_END}}</span></div>
+        <div class="pm-meta-item"><span class="pm-meta-label">Duration</span><span class="pm-meta-value">4h 23m</span></div>
+        <div class="pm-meta-item"><span class="pm-meta-label">Incident Commander</span><span class="pm-meta-value">{{INCIDENT_COMMANDER}}</span></div>
+        <div class="pm-meta-item"><span class="pm-meta-label">Report Date</span><span class="pm-meta-value">{{DATE}}</span></div>
+        <div class="pm-meta-item"><span class="pm-meta-label">Version</span><span class="pm-meta-value">{{VERSION}}</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Impact Strip ── -->
+  <div class="impact-strip" role="region" aria-label="Incident impact summary">
+    <div class="impact-inner">
+      <div class="impact-stat"><span class="impact-value">4h 23m</span><span class="impact-label">Total Downtime</span></div>
+      <div class="impact-stat"><span class="impact-value">3,412</span><span class="impact-label">PA Requests Delayed</span></div>
+      <div class="impact-stat"><span class="impact-value">340K</span><span class="impact-label">Members Affected</span></div>
+      <div class="impact-stat"><span class="impact-value">$86K</span><span class="impact-label">Est. Cost Impact</span></div>
+    </div>
+  </div>
+
+  <!-- ── Nav ── -->
+  <nav class="pm-nav" aria-label="Post-mortem sections">
+    <div class="pm-nav-inner">
+      <a href="#summary">Summary</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#impact">Impact</a>
+      <a href="#root-cause">Root Cause</a>
+      <a href="#factors">Contributing Factors</a>
+      <a href="#actions">Action Items</a>
+      <a href="#learnings">Learnings</a>
+    </div>
+  </nav>
+
+  <!-- ── Body ── -->
+  <div class="doc-wrap">
+
+    <!-- Summary -->
+    <section class="pm-section" id="summary">
+      <span class="section-eyebrow">Executive Summary</span>
+      <h2>What Happened</h2>
+      <div class="summary-box">
+        <p>At 09:14 PST on {{INCIDENT_DATE}}, the AI inference API began returning HTTP 503 errors to the prior authorization processing queue. The failure originated from an unhandled out-of-memory (OOM) condition in the AI inference container cluster, triggered by an unexpected spike in concurrent requests following a batch retry of 847 queued requests from the previous night's scheduled maintenance window. The retry batch saturated the container pool at a moment when three of twelve containers were already in a degraded state due to a memory leak introduced in the v2.4.1 deployment two days prior. Service was fully restored at 13:37 PST after rolling restart of all containers and emergency autoscaling rule adjustment.</p>
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="pm-section" id="timeline">
+      <span class="section-eyebrow">Incident Timeline</span>
+      <h2>Event Chronology</h2>
+      <ul class="timeline" aria-label="Incident timeline">
+        <li class="timeline-item">
+          <div class="timeline-dot normal" aria-hidden="true"></div>
+          <span class="timeline-time">{{INCIDENT_DATE}} 07:30 PST</span>
+          <span class="timeline-event">Scheduled maintenance window closes</span>
+          <span class="timeline-detail">Overnight maintenance completed. 847 PA requests queued for batch retry on service restoration.</span>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-dot normal" aria-hidden="true"></div>
+          <span class="timeline-time">07:32 PST</span>
+          <span class="timeline-event">Batch retry begins processing 847 queued requests</span>
+          <span class="timeline-detail">Retry was configured to process all queued requests simultaneously rather than at rate-limited pace. Container cluster CPU begins climbing.</span>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-dot impact" aria-hidden="true"></div>
+          <span class="timeline-time">09:14 PST<span class="timeline-tag tag-impact">Impact Start</span></span>
+          <span class="timeline-event">AI inference API returns first HTTP 503 errors</span>
+          <span class="timeline-detail">Three containers OOM-killed by container runtime. Remaining 9 containers unable to handle load. Error rate reaches 78%.</span>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-dot detect" aria-hidden="true"></div>
+          <span class="timeline-time">09:22 PST<span class="timeline-tag tag-detection">Detection</span></span>
+          <span class="timeline-event">PagerDuty alert fires — error rate threshold exceeded</span>
+          <span class="timeline-detail">On-call engineer acknowledged alert. P1 incident declared. Incident commander paged.</span>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-dot normal" aria-hidden="true"></div>
+          <span class="timeline-time">09:35 PST</span>
+          <span class="timeline-event">Incident bridge opened — engineering and ops assembled</span>
+          <span class="timeline-detail">Root cause hypothesis: OOM from concurrent load. First mitigation attempted: rate limit the retry queue manually.</span>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-dot mitigate" aria-hidden="true"></div>
+          <span class="timeline-time">10:02 PST<span class="timeline-tag tag-mitigation">Mitigation</span></span>
+          <span class="timeline-event">Retry queue manually throttled to 10 req/sec</span>
+          <span class="timeline-detail">Error rate drops from 78% to 41%. However, containers in degraded state continue failing due to underlying memory leak. Full recovery not achieved.</span>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-dot normal" aria-hidden="true"></div>
+          <span class="timeline-time">11:30 PST</span>
+          <span class="timeline-event">Memory leak in v2.4.1 identified as co-contributor</span>
+          <span class="timeline-detail">Engineering team pinpointed the memory leak to an unbounded cache in the tokenizer module. Decision made to roll all containers to previous version v2.4.0.</span>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-dot mitigate" aria-hidden="true"></div>
+          <span class="timeline-time">12:45 PST<span class="timeline-tag tag-mitigation">Rollback</span></span>
+          <span class="timeline-event">Rolling restart and rollback to v2.4.0 initiated</span>
+          <span class="timeline-detail">Autoscaling rules adjusted to cap concurrent requests at 60% of container pool capacity. Containers restarting successfully.</span>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-dot resolve" aria-hidden="true"></div>
+          <span class="timeline-time">13:37 PST<span class="timeline-tag tag-resolution">Resolved</span></span>
+          <span class="timeline-event">Full service restoration confirmed</span>
+          <span class="timeline-detail">Error rate drops to 0%. All 3,412 delayed PA requests re-queued for processing. Monitoring elevated for 24 hours.</span>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-dot normal" aria-hidden="true"></div>
+          <span class="timeline-time">14:15 PST<span class="timeline-tag tag-followup">Follow-up</span></span>
+          <span class="timeline-event">Provider and member communications sent</span>
+          <span class="timeline-detail">Status page updated. Provider portal notification sent to 2,200 contracted providers. Regulatory team notified of potential SLA impact.</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Impact -->
+    <section class="pm-section" id="impact">
+      <span class="section-eyebrow">Impact Analysis</span>
+      <h2>Scope of Impact</h2>
+      <p>During the 4h 23m outage window, the AI-assisted PA review workflow was unavailable. Reviewers reverted to the manual evidence gathering process. The primary impacts were:</p>
+      <ul style="margin: 0.75rem 0 1rem 1.5rem; color: var(--text2); font-size: 0.9rem;">
+        <li style="margin-bottom: 0.5rem;"><strong style="color:var(--text)">3,412 PA requests</strong> delayed beyond their standard processing commitment. Of these, 214 were approaching the 72-hour regulatory deadline at time of restoration.</li>
+        <li style="margin-bottom: 0.5rem;"><strong style="color:var(--text)">2,200 contracted providers</strong> experienced delayed authorization decisions, potentially affecting scheduled procedures.</li>
+        <li style="margin-bottom: 0.5rem;"><strong style="color:var(--text)">$86,000</strong> estimated incremental operational cost from manual processing overtime, contractor augmentation, and provider relations follow-up.</li>
+        <li>No patient safety events were identified as a result of the delay. No regulatory SLA violations were ultimately triggered, as all 214 near-deadline cases were processed within the 72-hour window following restoration.</li>
+      </ul>
+    </section>
+
+    <!-- Root Cause -->
+    <section class="pm-section" id="root-cause">
+      <span class="section-eyebrow">Root Cause Analysis</span>
+      <h2>Root Cause</h2>
+      <p>The immediate cause of the outage was container OOM termination driven by two concurrent conditions: an unbounded retry batch (847 simultaneous requests) and a pre-existing memory leak in the v2.4.1 tokenizer module that had degraded three containers to a state where their effective memory headroom was 40% below baseline.</p>
+      <p><strong style="color:var(--text)">Root cause:</strong> The maintenance window retry logic lacked a rate-limiting configuration, defaulting to maximum concurrency on retry. This design assumption had never been explicitly tested under conditions where containers were already in a degraded state. The absence of a staged restart verification step in the deployment runbook for v2.4.1 meant that the memory leak was not detected before peak load hours.</p>
+    </section>
+
+    <!-- Contributing Factors -->
+    <section class="pm-section" id="factors">
+      <span class="section-eyebrow">Contributing Factors</span>
+      <h2>Contributing Factors</h2>
+      <div class="factors-grid">
+        <div class="factor-card">
+          <span class="factor-category">Process</span>
+          <ul class="factor-list">
+            <li>No rate-limit configuration on batch retry logic in maintenance mode</li>
+            <li>Deployment runbook did not include a memory leak detection step post-deploy</li>
+            <li>No formal load test was run before promoting v2.4.1 to production</li>
+          </ul>
+        </div>
+        <div class="factor-card">
+          <span class="factor-category">Technology</span>
+          <ul class="factor-list">
+            <li>Memory leak in tokenizer module cache — introduced in v2.4.1, not caught in pre-production testing</li>
+            <li>Autoscaling rules did not account for degraded container state in capacity calculations</li>
+            <li>Alerting threshold (error rate &gt;10%) delayed detection by 8 minutes</li>
+          </ul>
+        </div>
+        <div class="factor-card">
+          <span class="factor-category">People</span>
+          <ul class="factor-list">
+            <li>On-call engineer was 12 minutes away from end of shift — context handoff was in progress at alert time</li>
+            <li>Retry logic code review did not flag the missing rate-limit configuration</li>
+          </ul>
+        </div>
+        <div class="factor-card">
+          <span class="factor-category">Environment</span>
+          <ul class="factor-list">
+            <li>Outage coincided with peak provider submission hour (09:00–11:00 PST)</li>
+            <li>Batch retry volume (847 requests) was 3x the highest previously observed retry load</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Action Items -->
+    <section class="pm-section" id="actions">
+      <span class="section-eyebrow">Corrective Actions</span>
+      <h2>Action Items</h2>
+      <div class="ai-table-wrap">
+        <table>
+          <caption>Table 1. Action items with owners, deadlines, and current status</caption>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Action</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Due</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AI-001</td>
+              <td>Implement configurable rate limit on all batch retry operations (default: 10 req/sec, configurable per environment)</td>
+              <td><span class="ai-prio ai-p0">P0</span></td>
+              <td>Backend Lead</td>
+              <td>{{ACTION_DATE_1}}</td>
+              <td><span class="ai-status ai-progress">In Progress</span></td>
+            </tr>
+            <tr>
+              <td>AI-002</td>
+              <td>Add memory leak detection to deployment runbook: require 30-minute soak test at 50% prod load before marking deploy healthy</td>
+              <td><span class="ai-prio ai-p0">P0</span></td>
+              <td>Engineering Manager</td>
+              <td>{{ACTION_DATE_1}}</td>
+              <td><span class="ai-status ai-open">Open</span></td>
+            </tr>
+            <tr>
+              <td>AI-003</td>
+              <td>Fix tokenizer module unbounded cache in v2.4.2 — apply LRU cache with configurable max size</td>
+              <td><span class="ai-prio ai-p0">P0</span></td>
+              <td>AI Ops Lead</td>
+              <td>{{ACTION_DATE_1}}</td>
+              <td><span class="ai-status ai-done">Done</span></td>
+            </tr>
+            <tr>
+              <td>AI-004</td>
+              <td>Update autoscaling rules to account for container degradation signals when calculating available capacity</td>
+              <td><span class="ai-prio ai-p1">P1</span></td>
+              <td>Infrastructure Lead</td>
+              <td>{{ACTION_DATE_2}}</td>
+              <td><span class="ai-status ai-open">Open</span></td>
+            </tr>
+            <tr>
+              <td>AI-005</td>
+              <td>Lower error rate alerting threshold from 10% to 2% for AI inference API — add latency p99 alert as co-indicator</td>
+              <td><span class="ai-prio ai-p1">P1</span></td>
+              <td>SRE Lead</td>
+              <td>{{ACTION_DATE_2}}</td>
+              <td><span class="ai-status ai-progress">In Progress</span></td>
+            </tr>
+            <tr>
+              <td>AI-006</td>
+              <td>Add load test for maintenance retry scenarios to CI/CD pipeline — simulate 1,000+ queued requests with 40% degraded containers</td>
+              <td><span class="ai-prio ai-p2">P2</span></td>
+              <td>QA Lead</td>
+              <td>{{ACTION_DATE_3}}</td>
+              <td><span class="ai-status ai-open">Open</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Learnings -->
+    <section class="pm-section" id="learnings">
+      <span class="section-eyebrow">Post-Mortem Learnings</span>
+      <h2>Key Learnings</h2>
+      <div class="learnings-box">
+        <span class="learnings-title">What We Learned</span>
+        <ul class="learnings-list">
+          <li>Batch retry operations must be treated as first-class load events — not as administrative clean-up tasks — and must be subject to the same rate limiting and load testing that governs normal production traffic.</li>
+          <li>Container degradation signals must be surfaced to the autoscaling layer. A container that is degraded but not yet OOM-terminated creates invisible capacity erosion that is invisible to standard metrics until failure occurs.</li>
+          <li>Memory leak detection cannot be deferred to production observation — a mandatory post-deploy soak test window at realistic load is a prerequisite for future releases.</li>
+          <li>Alert thresholds set for normal variance (10% error rate) are not appropriate for AI inference APIs where any sustained error rate above 2% represents customer impact. Thresholds must be calibrated to the service's SLA, not its historical variance.</li>
+        </ul>
+      </div>
+    </section>
+
+  </div><!-- .doc-wrap -->
+
+  <!-- ── Footer ── -->
+  <footer class="pm-footer">
+    <div class="hdr-inner">
+      <span><span class="footer-brand">SponAItech</span> <span class="footer-div">|</span> html-generation skill v1.1</span>
+      <span>Version {{VERSION}} <span class="footer-div">|</span> {{DATE}} <span class="footer-div">|</span> {{CLASSIFICATION}}</span>
+    </div>
+  </footer>
+
+</body>
+</html>

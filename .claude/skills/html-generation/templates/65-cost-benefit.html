@@ -1,0 +1,227 @@
+<!--
+TEMPLATE: cost-benefit
+CATEGORY: ROI / Business Case
+USE WHEN: Presenting a structured cost-benefit analysis with itemized costs and benefits, net benefit total, benefit-cost ratio, and qualitative factors.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cost-Benefit Analysis &mdash; Meridian Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:  #f7f4ef;
+      --cream2: #edeae3;
+      --cream3: #e4e0d8;
+      --navy:   #0e1b2e;
+      --navy2:  #1a2e47;
+      --gold:   #b8965a;
+      --ink:    #1c1a18;
+      --muted:  #6b6560;
+      --border: #ddd8ce;
+      --go:     #2d6a4f;
+      --go-bg:  #d1fae5;
+      --hold:   #92400e;
+      --hold-bg:#fef3c7;
+      --nogo:   #b91c1c;
+      --nogo-bg:#fee2e2;
+      --font:   'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono:   'DM Mono', 'Cascadia Code', monospace;
+    }
+    body { font-family: var(--font); background: var(--cream); color: var(--ink); font-size: 15px; line-height: 1.6; }
+    header { background: var(--navy); color: #fff; padding: 1.5rem 2.5rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .header-left h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.4px; }
+    .header-left p { font-size: 0.82rem; opacity: 0.7; margin-top: 0.15rem; }
+    .header-right { text-align: right; font-size: 0.78rem; opacity: 0.65; font-family: var(--mono); }
+
+    main { max-width: 1000px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+    h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+
+    /* Summary KPIs */
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0 1.75rem; }
+    .kpi { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 0.9rem 1rem; text-align: center; }
+    .kpi .val { font-family: var(--mono); font-size: 1.4rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+    .kpi .lbl { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 0.3rem; }
+    .kpi.go { border-left: 4px solid var(--go); }
+    .kpi.go .val { color: var(--go); }
+    .kpi.cost { border-left: 4px solid var(--nogo); }
+    .kpi.cost .val { color: var(--nogo); }
+
+    /* Two-column cost/benefit layout */
+    .cb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.75rem; }
+    @media (max-width: 680px) { .cb-grid { grid-template-columns: 1fr; } }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    caption { text-align: left; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding-bottom: 0.5rem; }
+    caption.cost-cap { color: var(--nogo); }
+    caption.ben-cap { color: var(--go); }
+    thead th { padding: 0.5rem 0.75rem; font-weight: 600; font-size: 0.8rem; text-align: left; }
+    thead th.num { text-align: right; }
+    thead.cost-head th { background: var(--nogo-bg); color: var(--nogo); }
+    thead.ben-head th { background: var(--go-bg); color: var(--go); }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:nth-child(even) { background: var(--cream2); }
+    td { padding: 0.45rem 0.75rem; }
+    td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    td.cat { font-size: 0.78rem; color: var(--muted); }
+    tfoot td { font-weight: 700; border-top: 2px solid var(--border); padding: 0.55rem 0.75rem; }
+    tfoot td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    tfoot.cost-foot td { color: var(--nogo); }
+    tfoot.ben-foot td { color: var(--go); }
+
+    /* Net benefit bar */
+    .net-section { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1.75rem; }
+    .net-row { display: flex; justify-content: space-between; align-items: center; padding: 0.35rem 0; border-bottom: 1px dotted var(--cream3); font-size: 0.88rem; }
+    .net-row:last-child { border-bottom: none; padding-top: 0.6rem; border-top: 2px solid var(--navy); }
+    .net-row .nlbl { color: var(--muted); }
+    .net-row .nval { font-family: var(--mono); font-weight: 600; font-variant-numeric: tabular-nums; }
+    .net-row.total .nlbl { font-weight: 700; color: var(--ink); }
+    .net-row.total .nval { font-size: 1.1rem; color: var(--go); }
+
+    /* BCR ratio visual */
+    .ratio-bar { height: 12px; background: var(--cream3); border-radius: 6px; overflow: hidden; margin: 0.5rem 0; }
+    .ratio-fill { height: 100%; background: var(--go); border-radius: 6px; }
+
+    /* Qualitative */
+    .qual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.75rem; }
+    .qual-item { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 0.9rem 1rem; }
+    .qual-item .qt { font-weight: 600; font-size: 0.88rem; margin-bottom: 0.3rem; }
+    .qual-item .qd { font-size: 0.82rem; color: var(--muted); }
+    .qual-item .qrating { display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.1rem 0.5rem; border-radius: 3px; margin-top: 0.4rem; }
+    .qrating.high { background: var(--go-bg); color: var(--go); }
+    .qrating.med  { background: var(--hold-bg); color: var(--hold); }
+
+    .note { background: var(--cream2); border-left: 3px solid var(--gold); padding: 0.75rem 1rem; font-size: 0.82rem; color: var(--muted); border-radius: 0 4px 4px 0; }
+
+    footer { max-width: 1000px; margin: 0 auto; padding: 1rem 1.5rem 2rem; display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--border); font-family: var(--mono); }
+    @media print { body{background:#fff;font-size:13px;} main,footer{max-width:100%;} header{-webkit-print-color-adjust:exact;print-color-adjust:exact;} }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Cost-Benefit Analysis &mdash; Claims Automation Initiative</h1>
+    <p>Meridian Health &bull; Enterprise Program Office &bull; April 2026 &bull; 5-Year Horizon</p>
+  </div>
+  <div class="header-right">CONFIDENTIAL<br>Program Office</div>
+</header>
+
+<main>
+
+  <div class="kpis">
+    <div class="kpi cost"><div class="val">$6,080,000</div><div class="lbl">Total 5-Yr Costs</div></div>
+    <div class="kpi go"><div class="val">$12,140,000</div><div class="lbl">Total 5-Yr Benefits</div></div>
+    <div class="kpi go"><div class="val">$6,060,000</div><div class="lbl">Net Benefit (5-Yr)</div></div>
+    <div class="kpi go"><div class="val">2.00x</div><div class="lbl">Benefit-Cost Ratio</div></div>
+  </div>
+
+  <!-- Cost / Benefit two-column -->
+  <div class="cb-grid">
+
+    <!-- Costs -->
+    <div>
+      <table>
+        <caption class="cost-cap">&#9650; Costs (5-Year Total)</caption>
+        <thead class="cost-head">
+          <tr><th scope="col">Cost Item</th><th scope="col">Type</th><th scope="col" class="num">Amount</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Platform licensing (SaaS)</td><td class="cat">Recurring</td><td class="num">$2,100,000</td></tr>
+          <tr><td>Implementation &amp; integration</td><td class="cat">One-time</td><td class="num">$650,000</td></tr>
+          <tr><td>Infrastructure (cloud)</td><td class="cat">Recurring</td><td class="num">$250,000</td></tr>
+          <tr><td>Internal FTE (ops &amp; support)</td><td class="cat">Recurring</td><td class="num">$1,500,000</td></tr>
+          <tr><td>Vendor support &amp; maintenance</td><td class="cat">Recurring</td><td class="num">$350,000</td></tr>
+          <tr><td>Change management &amp; training</td><td class="cat">One-time</td><td class="num">$130,000</td></tr>
+          <tr><td>Security &amp; compliance</td><td class="cat">Recurring</td><td class="num">$250,000</td></tr>
+          <tr><td>Contingency (15%)</td><td class="cat">Reserve</td><td class="num">$850,000</td></tr>
+        </tbody>
+        <tfoot class="cost-foot">
+          <tr><td><strong>Total Costs</strong></td><td></td><td class="num"><strong>$6,080,000</strong></td></tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Benefits -->
+    <div>
+      <table>
+        <caption class="ben-cap">&#9660; Benefits (5-Year Total)</caption>
+        <thead class="ben-head">
+          <tr><th scope="col">Benefit Item</th><th scope="col">Type</th><th scope="col" class="num">Amount</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Claims adjudication labor savings</td><td class="cat">Hard</td><td class="num">$5,750,000</td></tr>
+          <tr><td>Fraud &amp; error avoidance</td><td class="cat">Hard</td><td class="num">$2,400,000</td></tr>
+          <tr><td>Reduced rework &amp; appeals cost</td><td class="cat">Hard</td><td class="num">$1,200,000</td></tr>
+          <tr><td>Faster claim cycle (member NPS)</td><td class="cat">Soft</td><td class="num">$490,000</td></tr>
+          <tr><td>Regulatory penalty avoidance</td><td class="cat">Hard</td><td class="num">$900,000</td></tr>
+          <tr><td>Provider portal efficiency</td><td class="cat">Soft</td><td class="num">$600,000</td></tr>
+          <tr><td>IT infrastructure retirement</td><td class="cat">Hard</td><td class="num">$800,000</td></tr>
+        </tbody>
+        <tfoot class="ben-foot">
+          <tr><td><strong>Total Benefits</strong></td><td></td><td class="num"><strong>$12,140,000</strong></td></tr>
+        </tfoot>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Net summary -->
+  <div class="section">
+    <h2>Net Benefit &amp; Benefit-Cost Ratio</h2>
+    <div class="net-section">
+      <div class="net-row"><span class="nlbl">Total 5-Year Benefits</span><span class="nval" style="color:var(--go);">$12,140,000</span></div>
+      <div class="net-row"><span class="nlbl">Total 5-Year Costs</span><span class="nval" style="color:var(--nogo);">($6,080,000)</span></div>
+      <div class="net-row total"><span class="nlbl">Net Benefit (5-Year)</span><span class="nval">$6,060,000</span></div>
+
+      <div style="margin-top:1rem;">
+        <div style="font-size:0.82rem;color:var(--muted);margin-bottom:0.35rem;">Benefit-Cost Ratio (BCR) = Benefits &divide; Costs = $12.14M &divide; $6.08M = <strong>2.00x</strong> &mdash; For every $1 invested, $2.00 in benefits returned</div>
+        <div class="ratio-bar"><div class="ratio-fill" style="width:50%;"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);"><span>Costs: $6.08M (50%)</span><span>Benefits: $12.14M (100%)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Qualitative factors -->
+  <div class="section">
+    <h2>Qualitative Factors</h2>
+    <div class="qual-grid">
+      <div class="qual-item">
+        <div class="qt">Member Experience Improvement</div>
+        <div class="qd">Automated adjudication reduces average claim resolution from 14 days to 3 days. Projected member satisfaction score improvement: +12 NPS points.</div>
+        <span class="qrating high">High Value</span>
+      </div>
+      <div class="qual-item">
+        <div class="qt">Regulatory Compliance Posture</div>
+        <div class="qd">HIPAA-compliant audit trail on all claims. Automated denial-reason capture reduces CMS audit risk. Supports Meridian&rsquo;s Star Rating improvement goals.</div>
+        <span class="qrating high">High Value</span>
+      </div>
+      <div class="qual-item">
+        <div class="qt">Staff Redeployment Opportunity</div>
+        <div class="qd">18 FTEs freed from manual adjudication. Meridian policy: no layoffs; redeployment to complex case review and provider relations. Supports workforce development.</div>
+        <span class="qrating med">Medium Value</span>
+      </div>
+      <div class="qual-item">
+        <div class="qt">Strategic Scalability</div>
+        <div class="qd">Platform supports 2&times; volume growth without proportional cost increase. Positions Meridian to absorb regional plan acquisitions without IT re-architecture.</div>
+        <span class="qrating high">High Value</span>
+      </div>
+    </div>
+    <p class="note">Soft benefits ($1.09M of $12.14M total, 9%) are conservatively estimated from industry benchmarks and internal survey data. Removing all soft benefits, BCR remains 1.82x &mdash; still favorable. Hard-benefit-only analysis available on request.</p>
+  </div>
+
+</main>
+
+<footer>
+  <span>Meridian Health &mdash; Claims Automation Initiative &bull; Enterprise Program Office</span>
+  <span>v{{VERSION}} &bull; {{DATE}} &bull; CONFIDENTIAL &mdash; {{CLASSIFICATION}}</span>
+</footer>
+
+</body>
+</html>

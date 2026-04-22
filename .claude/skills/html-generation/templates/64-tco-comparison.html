@@ -1,0 +1,190 @@
+<!--
+TEMPLATE: tco-comparison
+CATEGORY: ROI / Business Case
+USE WHEN: Comparing total cost of ownership across 2-3 technology options over a multi-year horizon with cost category breakdowns and a winner callout.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TCO Comparison &mdash; Meridian Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:  #f7f4ef;
+      --cream2: #edeae3;
+      --cream3: #e4e0d8;
+      --navy:   #0e1b2e;
+      --navy2:  #1a2e47;
+      --gold:   #b8965a;
+      --ink:    #1c1a18;
+      --muted:  #6b6560;
+      --border: #ddd8ce;
+      --go:     #2d6a4f;
+      --go-bg:  #d1fae5;
+      --hold:   #92400e;
+      --hold-bg:#fef3c7;
+      --nogo:   #b91c1c;
+      --nogo-bg:#fee2e2;
+      --font:   'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono:   'DM Mono', 'Cascadia Code', monospace;
+    }
+    body { font-family: var(--font); background: var(--cream); color: var(--ink); font-size: 15px; line-height: 1.6; }
+    header { background: var(--navy); color: #fff; padding: 1.5rem 2.5rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .header-left h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.4px; }
+    .header-left p { font-size: 0.82rem; opacity: 0.7; margin-top: 0.15rem; }
+    .header-right { text-align: right; font-size: 0.78rem; opacity: 0.65; font-family: var(--mono); }
+
+    main { max-width: 1020px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+    h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+
+    /* Option header cards */
+    .options { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 0; margin: 1.5rem 0 0; border: 1px solid var(--border); border-radius: 8px 8px 0 0; overflow: hidden; }
+    .opt-head { padding: 0.9rem 1rem; border-right: 1px solid var(--border); }
+    .opt-head:last-child { border-right: none; }
+    .opt-head.cat { background: var(--cream2); }
+    .opt-head.winner { background: var(--navy); color: #fff; }
+    .opt-head.alt { background: var(--cream3); }
+    .opt-head .oname { font-weight: 700; font-size: 0.95rem; }
+    .opt-head .odesc { font-size: 0.78rem; opacity: 0.7; margin-top: 0.15rem; }
+    .opt-head.winner .odesc { opacity: 0.6; }
+    .badge { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.1rem 0.45rem; border-radius: 3px; margin-top: 0.4rem; }
+    .badge.recommended { background: #7dd3fc; color: #0c4a6e; }
+    .badge.baseline { background: var(--cream3); color: var(--muted); border: 1px solid var(--border); }
+    .badge.alt { background: var(--hold-bg); color: var(--hold); }
+
+    /* TCO table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    caption { text-align: left; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 0.75rem 0 0.5rem; }
+    thead th { background: var(--navy2); color: #fff; padding: 0.5rem 0.75rem; font-weight: 600; font-size: 0.8rem; text-align: left; }
+    thead th.num { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:nth-child(even) { background: var(--cream2); }
+    tbody tr.group { background: var(--cream3); }
+    tbody tr.group td { font-weight: 700; color: var(--navy); padding-top: 0.7rem; }
+    td { padding: 0.45rem 0.75rem; }
+    td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    td.sub { padding-left: 1.75rem; color: var(--muted); font-size: 0.82rem; }
+    tfoot tr { border-top: 2px solid var(--navy); }
+    tfoot td { font-weight: 700; padding: 0.6rem 0.75rem; background: var(--cream); }
+    tfoot td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    tfoot td.winner-total { color: var(--go); font-size: 1rem; }
+    tfoot td.nogo-total { color: var(--nogo); }
+    tfoot td.hold-total { color: var(--hold); }
+
+    .savings-callout { margin: 1rem 0 1.75rem; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    .sc { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.1rem; text-align: center; }
+    .sc .sv { font-family: var(--mono); font-size: 1.4rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+    .sc .sl { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 0.3rem; }
+    .sc.green { border-left: 4px solid var(--go); }
+    .sc.green .sv { color: var(--go); }
+
+    .winner-banner { background: var(--go-bg); border: 2px solid var(--go); border-radius: 8px; padding: 1rem 1.5rem; display: flex; align-items: center; gap: 1rem; color: var(--go); margin-bottom: 1.75rem; }
+    .winner-banner .wt { font-weight: 700; font-size: 1rem; }
+    .winner-banner .ws { font-size: 0.84rem; opacity: 0.85; margin-top: 0.2rem; }
+
+    .note { background: var(--cream2); border-left: 3px solid var(--gold); padding: 0.75rem 1rem; font-size: 0.82rem; color: var(--muted); border-radius: 0 4px 4px 0; }
+
+    footer { max-width: 1020px; margin: 0 auto; padding: 1rem 1.5rem 2rem; display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--border); font-family: var(--mono); }
+    @media print { body{background:#fff;font-size:13px;} main,footer{max-width:100%;} header{-webkit-print-color-adjust:exact;print-color-adjust:exact;} .winner-banner{-webkit-print-color-adjust:exact;print-color-adjust:exact;} }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Total Cost of Ownership Comparison &mdash; Claims Automation Platform</h1>
+    <p>Meridian Health &bull; Technology Procurement &bull; April 2026 &bull; 5-Year Horizon</p>
+  </div>
+  <div class="header-right">CONFIDENTIAL<br>Procurement Committee</div>
+</header>
+
+<main>
+
+  <!-- Option headers -->
+  <div class="options">
+    <div class="opt-head cat"><div class="oname">Cost Category</div><div class="odesc">5-Year Total by line item</div></div>
+    <div class="opt-head winner">
+      <div class="oname">Option A: SaaS Platform</div>
+      <div class="odesc">Cloud-native AI claims automation (Vendor: ClaimAI Pro)</div>
+      <span class="badge recommended">Recommended</span>
+    </div>
+    <div class="opt-head alt">
+      <div class="oname">Option B: Custom Build</div>
+      <div class="odesc">Internal development on Azure stack</div>
+      <span class="badge alt">High Risk</span>
+    </div>
+    <div class="opt-head alt">
+      <div class="oname">Option C: Status Quo</div>
+      <div class="odesc">Maintain legacy adjudication system</div>
+      <span class="badge baseline">Baseline</span>
+    </div>
+  </div>
+
+  <table>
+    <caption>5-Year Total Cost of Ownership Breakdown (USD)</caption>
+    <thead>
+      <tr>
+        <th scope="col">Cost Category</th>
+        <th scope="col" class="num">Option A: SaaS</th>
+        <th scope="col" class="num">Option B: Custom</th>
+        <th scope="col" class="num">Option C: Status Quo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="group"><td colspan="4">Implementation &amp; Setup</td></tr>
+      <tr><td class="sub">Licensing / Platform fee (Y0)</td><td class="num">$420,000</td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
+      <tr><td class="sub">Development / Build cost</td><td class="num">$180,000</td><td class="num">$1,800,000</td><td class="num">$120,000</td></tr>
+      <tr><td class="sub">Integration &amp; migration</td><td class="num">$240,000</td><td class="num">$600,000</td><td class="num">$80,000</td></tr>
+      <tr><td class="sub">Training &amp; change management</td><td class="num">$95,000</td><td class="num">$140,000</td><td class="num">$30,000</td></tr>
+
+      <tr class="group"><td colspan="4">Annual Recurring Costs (&#215;5 years)</td></tr>
+      <tr><td class="sub">Software licensing / SaaS subscription</td><td class="num">$1,650,000</td><td class="num">$250,000</td><td class="num">$875,000</td></tr>
+      <tr><td class="sub">Infrastructure (cloud / on-prem)</td><td class="num">$150,000</td><td class="num">$800,000</td><td class="num">$1,250,000</td></tr>
+      <tr><td class="sub">FTE: operations &amp; support</td><td class="num">$375,000</td><td class="num">$1,875,000</td><td class="num">$2,250,000</td></tr>
+      <tr><td class="sub">Vendor support &amp; maintenance</td><td class="num">$210,000</td><td class="num">$150,000</td><td class="num">$625,000</td></tr>
+
+      <tr class="group"><td colspan="4">Risk &amp; Overhead</td></tr>
+      <tr><td class="sub">Security &amp; compliance</td><td class="num">$125,000</td><td class="num">$375,000</td><td class="num">$200,000</td></tr>
+      <tr><td class="sub">Downtime / error cost (est.)</td><td class="num">$50,000</td><td class="num">$200,000</td><td class="num">$950,000</td></tr>
+      <tr><td class="sub">Contingency (10%)</td><td class="num">$349,500</td><td class="num">$619,000</td><td class="num">$638,000</td></tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td><strong>5-Year Total TCO</strong></td>
+        <td class="num winner-total"><strong>$3,844,500</strong></td>
+        <td class="num nogo-total"><strong>$6,809,000</strong></td>
+        <td class="num hold-total"><strong>$7,018,000</strong></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div class="savings-callout">
+    <div class="sc green"><div class="sv">$2,964,500</div><div class="sl">Savings vs. Custom Build (Option B)</div></div>
+    <div class="sc green"><div class="sv">$3,173,500</div><div class="sl">Savings vs. Status Quo (Option C)</div></div>
+    <div class="sc"><div class="sv">43%</div><div class="sl">TCO Reduction vs. Best Alternative</div></div>
+  </div>
+
+  <div class="winner-banner">
+    <div>
+      <div class="wt">&#10003; Winner: Option A &mdash; SaaS Platform (ClaimAI Pro)</div>
+      <div class="ws">Lowest 5-year TCO at $3.84M. $2.96M cheaper than custom build. Fastest time-to-value (go-live Month 4 vs. Month 14 for custom). Reduced FTE burden and infrastructure risk. Recommend proceeding with Option A.</div>
+    </div>
+  </div>
+
+  <p class="note">Assumptions: 5-year horizon. Status Quo includes escalating infrastructure costs (+8%/yr) and compounding claims error cost. Custom Build includes $1.8M initial dev and 15 FTE-months. SaaS pricing negotiated volume rate. All figures USD, not discounted (this is a cost comparison, not an investment analysis &mdash; see 61-roi-calculator for discounted analysis).</p>
+
+</main>
+
+<footer>
+  <span>Meridian Health &mdash; Claims Automation Initiative &bull; Technology Procurement</span>
+  <span>v{{VERSION}} &bull; {{DATE}} &bull; CONFIDENTIAL &mdash; {{CLASSIFICATION}}</span>
+</footer>
+
+</body>
+</html>

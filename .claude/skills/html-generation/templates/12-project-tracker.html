@@ -1,0 +1,437 @@
+<!--
+TEMPLATE: project-tracker
+CATEGORY: Dashboard / Analytics
+USE WHEN: You need a project or module tracker with status badges, progress bars, and dates — uses the Executive Advisor OS cream-navy-gold palette.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Tracker &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f7f4ef;
+      --cream2: #edeae3;
+      --navy: #0e1b2e;
+      --navy2: #1a2e47;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --green: #2dd4a0;
+      --amber: #f0a050;
+      --red: #f06070;
+      --purple: #a78bfa;
+      --font: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .logo {
+      width: 36px; height: 36px;
+      background: var(--gold);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem; color: var(--navy);
+    }
+    header h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.3px; }
+    header .meta { font-size: 0.78rem; color: #94a3b8; font-family: var(--mono); }
+    .header-stats {
+      display: flex; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .hstat { text-align: center; }
+    .hstat-n { font-size: 1.5rem; font-weight: 700; color: #fff; line-height: 1; }
+    .hstat-l { font-size: 0.7rem; color: #94a3b8; font-family: var(--mono); margin-top: 0.15rem; }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+    }
+
+    /* progress summary row */
+    .summary-bar-row {
+      display: flex;
+      gap: 0.5rem;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+    .summary-bar-row .seg { height: 100%; }
+
+    .legend {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      font-size: 0.78rem; color: var(--muted); margin-bottom: 2rem;
+    }
+    .legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.3rem; vertical-align: middle; }
+
+    /* module rows */
+    .tracker { width: 100%; display: flex; flex-direction: column; gap: 0; margin-bottom: 2rem; }
+
+    .module-group { margin-bottom: 1.25rem; }
+
+    .module-header {
+      display: grid;
+      grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
+      gap: 0.75rem;
+      padding: 0.5rem 1rem;
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      border-radius: 8px 8px 0 0;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      align-items: center;
+    }
+
+    .tracker-row {
+      display: grid;
+      grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
+      gap: 0.75rem;
+      padding: 0.9rem 1rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-top: none;
+      align-items: center;
+      transition: background 0.15s;
+    }
+    .tracker-row:last-child { border-radius: 0 0 8px 8px; }
+    .tracker-row:hover { background: #faf9f7; }
+
+    /* status badge */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .status-badge .dot { font-size: 0.6rem; }
+    .s-complete  { background: rgba(45,212,160,0.15);  color: #0a7a5a; border: 1px solid rgba(45,212,160,0.3); }
+    .s-progress  { background: rgba(240,160,80,0.12);  color: #a05c10; border: 1px solid rgba(240,160,80,0.3); }
+    .s-blocked   { background: rgba(240,96,112,0.12);  color: #b52030; border: 1px solid rgba(240,96,112,0.3); }
+    .s-backlog   { background: rgba(167,139,250,0.12); color: #6d48e5; border: 1px solid rgba(167,139,250,0.3); }
+    .s-review    { background: rgba(59,158,255,0.12);  color: #1460b0; border: 1px solid rgba(59,158,255,0.3); }
+
+    /* row border-left by status */
+    .tracker-row.complete { border-left: 4px solid var(--green); }
+    .tracker-row.progress { border-left: 4px solid var(--amber); }
+    .tracker-row.blocked  { border-left: 4px solid var(--red);   }
+    .tracker-row.backlog  { border-left: 4px solid var(--purple); }
+    .tracker-row.review   { border-left: 4px solid #3b9eff; }
+
+    .row-name { font-size: 0.9rem; font-weight: 500; color: var(--ink); }
+    .row-name .sprint { font-size: 0.75rem; font-weight: 400; color: var(--muted); display: block; margin-top: 0.1rem; font-family: var(--mono); }
+
+    .date-cell { font-size: 0.8rem; font-family: var(--mono); color: var(--muted); }
+
+    .progress-cell { display: flex; flex-direction: column; gap: 0.25rem; }
+    .prog-bar { height: 6px; background: var(--cream2); border-radius: 3px; overflow: hidden; }
+    .prog-fill { height: 100%; border-radius: 3px; }
+    .prog-pct  { font-size: 0.72rem; font-family: var(--mono); color: var(--muted); }
+    .fill-green  { background: var(--green); }
+    .fill-amber  { background: var(--amber); }
+    .fill-red    { background: var(--red); }
+    .fill-purple { background: var(--purple); }
+    .fill-blue   { background: #3b9eff; }
+
+    .next-action {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .next-action strong { color: var(--ink); font-weight: 500; }
+
+    /* blocked note */
+    .blocked-note {
+      background: rgba(240,96,112,0.06);
+      border: 1px solid rgba(240,96,112,0.2);
+      border-left: 3px solid var(--red);
+      border-radius: 0 6px 6px 0;
+      padding: 0.65rem 1rem;
+      margin: 0;
+      font-size: 0.82rem;
+      color: #8b1828;
+    }
+    .blocked-note strong { color: var(--red); }
+
+    footer {
+      background: var(--navy);
+      color: #64748b;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-family: var(--mono);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      main { padding: 1rem; }
+      .tracker-row, .module-header { grid-template-columns: 1fr 1fr; }
+      .tracker-row .date-cell, .tracker-row .next-action { display: none; }
+      .module-header .col-date, .module-header .col-next { display: none; }
+    }
+    @media print {
+      body { background: #fff; }
+      header { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .tracker-row { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo" aria-hidden="true">NC</div>
+    <div>
+      <h1>Northwind Capital &mdash; Project Tracker</h1>
+      <div class="meta">Platform Modernization Program &bull; Q2 2026</div>
+    </div>
+  </div>
+  <div class="header-stats" role="group" aria-label="Summary counts">
+    <div class="hstat"><div class="hstat-n" style="color:var(--green)">9</div><div class="hstat-l">COMPLETE</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--amber)">5</div><div class="hstat-l">IN PROGRESS</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--red)">2</div><div class="hstat-l">BLOCKED</div></div>
+    <div class="hstat"><div class="hstat-n" style="color:var(--purple)">4</div><div class="hstat-l">BACKLOG</div></div>
+  </div>
+</header>
+
+<main>
+
+  <section aria-labelledby="overall-progress">
+    <p class="section-label" id="overall-progress">Overall Progress</p>
+    <div class="summary-bar-row" role="img" aria-label="Progress: 45% complete, 25% in progress, 10% blocked, 20% backlog">
+      <div class="seg" style="width:45%;background:var(--green)"></div>
+      <div class="seg" style="width:25%;background:var(--amber)"></div>
+      <div class="seg" style="width:10%;background:var(--red)"></div>
+      <div class="seg" style="width:20%;background:var(--purple)"></div>
+    </div>
+    <div class="legend">
+      <span><span class="legend-dot" style="background:var(--green)"></span>Complete (45%)</span>
+      <span><span class="legend-dot" style="background:var(--amber)"></span>In Progress (25%)</span>
+      <span><span class="legend-dot" style="background:var(--red)"></span>Blocked (10%)</span>
+      <span><span class="legend-dot" style="background:var(--purple)"></span>Backlog (20%)</span>
+    </div>
+  </section>
+
+  <!-- MODULE 1 -->
+  <section class="module-group" aria-labelledby="m1-label">
+    <p class="section-label" id="m1-label">Module 1 &mdash; Data Platform</p>
+    <div class="tracker" role="table" aria-label="Module 1 tasks">
+      <div class="module-header" role="row">
+        <span role="columnheader">Task / Sprint</span>
+        <span role="columnheader">Status</span>
+        <span role="columnheader" class="col-date">Target Date</span>
+        <span role="columnheader">Progress</span>
+        <span role="columnheader" class="col-next">Next Action</span>
+      </div>
+
+      <div class="tracker-row complete" role="row">
+        <div class="row-name" role="cell">
+          Data Model Design
+          <span class="sprint">Sprint 1.1 &bull; Session 3 &bull; 2026-03-10</span>
+        </div>
+        <div role="cell"><span class="status-badge s-complete"><span class="dot">&#9679;</span> Complete</span></div>
+        <div class="date-cell" role="cell">2026-03-14</div>
+        <div class="progress-cell" role="cell">
+          <div class="prog-bar"><div class="prog-fill fill-green" style="width:100%"></div></div>
+          <span class="prog-pct">100%</span>
+        </div>
+        <div class="next-action" role="cell"><strong>Done.</strong> ADR filed.</div>
+      </div>
+
+      <div class="tracker-row complete" role="row">
+        <div class="row-name" role="cell">
+          ETL Pipeline Build
+          <span class="sprint">Sprint 1.2 &bull; Session 5 &bull; 2026-03-22</span>
+        </div>
+        <div role="cell"><span class="status-badge s-complete"><span class="dot">&#9679;</span> Complete</span></div>
+        <div class="date-cell" role="cell">2026-03-28</div>
+        <div class="progress-cell" role="cell">
+          <div class="prog-bar"><div class="prog-fill fill-green" style="width:100%"></div></div>
+          <span class="prog-pct">100%</span>
+        </div>
+        <div class="next-action" role="cell"><strong>Done.</strong> 142/142 tests green.</div>
+      </div>
+
+      <div class="tracker-row progress" role="row">
+        <div class="row-name" role="cell">
+          Data Quality Layer
+          <span class="sprint">Sprint 1.3 &bull; Session 8 &bull; 2026-04-05</span>
+        </div>
+        <div role="cell"><span class="status-badge s-progress"><span class="dot">&#9679;</span> In Progress</span></div>
+        <div class="date-cell" role="cell">2026-04-18</div>
+        <div class="progress-cell" role="cell">
+          <div class="prog-bar"><div class="prog-fill fill-amber" style="width:65%"></div></div>
+          <span class="prog-pct">65%</span>
+        </div>
+        <div class="next-action" role="cell"><strong>Next:</strong> Finish dedup rules.</div>
+      </div>
+
+      <div class="tracker-row blocked" role="row">
+        <div class="row-name" role="cell">
+          Production Cutover
+          <span class="sprint">Sprint 1.4 &bull; Pending &bull; 2026-04-12</span>
+        </div>
+        <div role="cell"><span class="status-badge s-blocked"><span class="dot">&#9679;</span> Blocked</span></div>
+        <div class="date-cell" role="cell">2026-04-25</div>
+        <div class="progress-cell" role="cell">
+          <div class="prog-bar"><div class="prog-fill fill-red" style="width:15%"></div></div>
+          <span class="prog-pct">15%</span>
+        </div>
+        <div class="next-action" role="cell"><strong>Blocked:</strong> Awaiting infra ticket #4821.</div>
+      </div>
+    </div>
+    <p class="blocked-note"><strong>Blocked:</strong> Sprint 1.4 cannot proceed until Infrastructure ticket #4821 (VPC peering) is resolved. Owner: DevOps team. ETA 2026-04-21.</p>
+  </section>
+
+  <!-- MODULE 2 -->
+  <section class="module-group" aria-labelledby="m2-label">
+    <p class="section-label" id="m2-label">Module 2 &mdash; API Layer</p>
+    <div class="tracker" role="table" aria-label="Module 2 tasks">
+      <div class="module-header" role="row">
+        <span role="columnheader">Task / Sprint</span>
+        <span role="columnheader">Status</span>
+        <span role="columnheader" class="col-date">Target Date</span>
+        <span role="columnheader">Progress</span>
+        <span role="columnheader" class="col-next">Next Action</span>
+      </div>
+
+      <div class="tracker-row complete" role="row">
+        <div class="row-name" role="cell">
+          REST API Design
+          <span class="sprint">Sprint 2.1 &bull; Session 4 &bull; 2026-03-18</span>
+        </div>
+        <div role="cell"><span class="status-badge s-complete"><span class="dot">&#9679;</span> Complete</span></div>
+        <div class="date-cell" role="cell">2026-03-20</div>
+        <div class="progress-cell" role="cell">
+          <div class="prog-bar"><div class="prog-fill fill-green" style="width:100%"></div></div>
+          <span class="prog-pct">100%</span>
+        </div>
+        <div class="next-action" role="cell"><strong>Done.</strong> OpenAPI spec merged.</div>
+      </div>
+
+      <div class="tracker-row review" role="row">
+        <div class="row-name" role="cell">
+          Auth Middleware
+          <span class="sprint">Sprint 2.2 &bull; Session 9 &bull; 2026-04-14</span>
+        </div>
+        <div role="cell"><span class="status-badge s-review"><span class="dot">&#9679;</span> In Review</span></div>
+        <div class="date-cell" role="cell">2026-04-19</div>
+        <div class="progress-cell" role="cell">
+          <div class="prog-bar"><div class="prog-fill fill-blue" style="width:90%"></div></div>
+          <span class="prog-pct">90%</span>
+        </div>
+        <div class="next-action" role="cell"><strong>Next:</strong> Security review sign-off.</div>
+      </div>
+
+      <div class="tracker-row backlog" role="row">
+        <div class="row-name" role="cell">
+          Rate Limiting + Throttle
+          <span class="sprint">Sprint 2.3 &bull; Backlog</span>
+        </div>
+        <div role="cell"><span class="status-badge s-backlog"><span class="dot">&#9679;</span> Backlog</span></div>
+        <div class="date-cell" role="cell">2026-05-02</div>
+        <div class="progress-cell" role="cell">
+          <div class="prog-bar"><div class="prog-fill fill-purple" style="width:0%"></div></div>
+          <span class="prog-pct">0%</span>
+        </div>
+        <div class="next-action" role="cell"><strong>Blocked by:</strong> Sprint 2.2 completion.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODULE 3 -->
+  <section class="module-group" aria-labelledby="m3-label">
+    <p class="section-label" id="m3-label">Module 3 &mdash; Frontend Portal</p>
+    <div class="tracker" role="table" aria-label="Module 3 tasks">
+      <div class="module-header" role="row">
+        <span role="columnheader">Task / Sprint</span>
+        <span role="columnheader">Status</span>
+        <span role="columnheader" class="col-date">Target Date</span>
+        <span role="columnheader">Progress</span>
+        <span role="columnheader" class="col-next">Next Action</span>
+      </div>
+
+      <div class="tracker-row progress" role="row">
+        <div class="row-name" role="cell">
+          Design System Setup
+          <span class="sprint">Sprint 3.1 &bull; Session 7 &bull; 2026-04-02</span>
+        </div>
+        <div role="cell"><span class="status-badge s-progress"><span class="dot">&#9679;</span> In Progress</span></div>
+        <div class="date-cell" role="cell">2026-04-22</div>
+        <div class="progress-cell" role="cell">
+          <div class="prog-bar"><div class="prog-fill fill-amber" style="width:55%"></div></div>
+          <span class="prog-pct">55%</span>
+        </div>
+        <div class="next-action" role="cell"><strong>Next:</strong> Component library tokens.</div>
+      </div>
+
+      <div class="tracker-row backlog" role="row">
+        <div class="row-name" role="cell">
+          Dashboard Views
+          <span class="sprint">Sprint 3.2 &bull; Backlog</span>
+        </div>
+        <div role="cell"><span class="status-badge s-backlog"><span class="dot">&#9679;</span> Backlog</span></div>
+        <div class="date-cell" role="cell">2026-05-09</div>
+        <div class="progress-cell" role="cell">
+          <div class="prog-bar"><div class="prog-fill fill-purple" style="width:0%"></div></div>
+          <span class="prog-pct">0%</span>
+        </div>
+        <div class="next-action" role="cell"><strong>Starts after:</strong> Sprint 3.1 GO.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Northwind Capital &mdash; Project Tracker</span>
+  <span>v{{VERSION}}</span>
+  <span>Updated {{UPDATED}}</span>
+  <span>Source: Program Management Office</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Executive Advisor OS — Guide</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --navy:   #0e1b2e;
+  --navy2:  #152440;
+  --gold:   #b8965a;
+  --gold2:  #d4ab72;
+  --cream:  #f7f4ef;
+  --cream2: #ede9e2;
+  --ink:    #1c1a18;
+  --muted:  #6b6560;
+  --border: rgba(184,150,90,0.18);
+  --serif:  'Cormorant Garamond', Georgia, serif;
+  --sans:   'DM Sans', system-ui, sans-serif;
+  --mono:   'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+/* ─── HERO ──────────────────────────────────────────────────── */
+.hero {
+  background: var(--navy);
+  color: white;
+  padding: 80px 60px 72px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  border: 1px solid rgba(184,150,90,0.12);
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; right: 60px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  border: 1px solid rgba(184,150,90,0.08);
+}
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 24px;
+  color: white;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--gold2);
+}
+.hero-sub {
+  font-size: 16px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.65);
+  max-width: 520px;
+  line-height: 1.65;
+  margin-bottom: 40px;
+}
+.hero-line {
+  width: 48px;
+  height: 1px;
+  background: var(--gold);
+  margin-bottom: 40px;
+}
+.badge-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  padding: 5px 12px;
+  border: 1px solid rgba(184,150,90,0.35);
+  color: var(--gold2);
+  border-radius: 2px;
+}
+
+/* ─── LAYOUT ─────────────────────────────────────────────────── */
+.container { max-width: 900px; margin: 0 auto; padding: 0 40px; }
+section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+section:last-child { border-bottom: none; }
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  font-weight: 500;
+  color: var(--navy);
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+h3 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 24px 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+p { color: var(--muted); margin-bottom: 14px; }
+
+/* ─── JOURNEY ────────────────────────────────────────────────── */
+.journey { margin-top: 48px; }
+.jstep {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 40px;
+  position: relative;
+}
+.jstep:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 44px;
+  bottom: -40px;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+}
+.jstep-num {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--gold);
+  margin-top: 2px;
+}
+.jstep-content {}
+.jstep-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.jstep-body { font-size: 14px; color: var(--muted); line-height: 1.65; }
+.jstep-example {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--navy);
+  color: var(--gold2);
+  padding: 6px 14px;
+  border-radius: 3px;
+}
+
+/* ─── COMMANDS ───────────────────────────────────────────────── */
+.cmd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 36px; }
+@media (max-width: 640px) { .cmd-grid { grid-template-columns: 1fr; } }
+.cmd-card {
+  background: white;
+  border: 1px solid var(--cream2);
+  border-top: 3px solid var(--gold);
+  padding: 24px 24px 20px;
+}
+.cmd-name {
+  font-family: var(--mono);
+  font-size: 15px;
+  color: var(--navy);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.cmd-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+.cmd-example {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--gold);
+  background: var(--cream2);
+  padding: 5px 10px;
+  border-radius: 2px;
+}
+
+/* ─── OUTPUTS ────────────────────────────────────────────────── */
+.out-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 32px;
+  background: white;
+  border: 1px solid var(--cream2);
+}
+.out-table th {
+  background: var(--navy);
+  color: rgba(255,255,255,0.7);
+  text-align: left;
+  padding: 12px 18px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  font-weight: 400;
+}
+.out-table td {
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--cream2);
+  font-size: 13px;
+  color: var(--muted);
+  vertical-align: top;
+}
+.out-table tr:last-child td { border-bottom: none; }
+.out-table tr:hover td { background: var(--cream); }
+.out-file {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--navy);
+  font-weight: 500;
+}
+.pill {
+  display: inline-block;
+  font-size: 9px;
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: #f0ead9;
+  color: var(--gold);
+  border: 1px solid rgba(184,150,90,0.25);
+}
+.pill.always { background: #eaf3de; color: #3b6d11; border-color: rgba(59,109,17,0.2); }
+
+/* ─── QUESTION FLOW ──────────────────────────────────────────── */
+.q-flow { margin-top: 36px; }
+.q-phase {
+  margin-bottom: 28px;
+  padding-left: 20px;
+  border-left: 2px solid var(--cream2);
+}
+.q-phase.active { border-left-color: var(--gold); }
+.q-phase-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.q-phase-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+.q-phase-body  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+.q-list {
+  margin-top: 10px;
+  list-style: none;
+}
+.q-list li {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 6px 0 6px 16px;
+  position: relative;
+  border-bottom: 1px solid var(--cream2);
+}
+.q-list li:last-child { border-bottom: none; }
+.q-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+}
+
+/* ─── RULES ──────────────────────────────────────────────────── */
+.rules-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 36px; }
+@media (max-width: 700px) { .rules-grid { grid-template-columns: 1fr 1fr; } }
+.rule {
+  padding: 18px 18px 16px;
+  background: white;
+  border: 1px solid var(--cream2);
+}
+.rule-mark {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.rule-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.rule-body { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+/* ─── FOLDER TREE ─────────────────────────────────────────────── */
+.tree {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: var(--navy);
+  color: rgba(255,255,255,0.7);
+  padding: 28px 32px;
+  line-height: 2.1;
+  margin-top: 28px;
+  border-radius: 3px;
+  overflow-x: auto;
+}
+.t-dir   { color: #7dd3fc; }
+.t-brain { color: var(--gold2); font-weight: 500; }
+.t-auto  { color: rgba(255,255,255,0.35); font-size: 11px; font-style: italic; }
+.t-out   { color: #86efac; }
+.t-mem   { color: #f9a8d4; }
+
+/* ─── CALLOUT ─────────────────────────────────────────────────── */
+.callout {
+  background: white;
+  border-left: 3px solid var(--gold);
+  padding: 16px 20px;
+  margin: 24px 0;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+.callout strong { color: var(--navy); }
+
+/* ─── FOOTER ──────────────────────────────────────────────────── */
+footer {
+  background: var(--navy);
+  padding: 40px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-brand {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--gold2);
+  font-style: italic;
+}
+.footer-note {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.12em;
+}
+</style>
+</head>
+<body>
+
+
+<!-- ═══ HERO ═════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Executive Advisor OS</div>
+    <h1>Your research.<br><em>Every assumption challenged. 
+	<br>Every decision earned.</em></h1>
+    <p class="hero-sub">
+      Drop your documents. Say what you need. Get polished reports in minutes —
+      and pick up exactly where you left off, every time.
+    </p>
+    <div class="hero-line"></div>
+    <div class="badge-row">
+      <span class="badge">Claude Code</span>
+      <span class="badge">Claude.ai</span>
+      <span class="badge">VS Code</span>
+      <span class="badge">Version-Controlled</span>
+      <span class="badge">Always Remembered</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HOW IT WORKS ══════════════════════════════════════════ -->
+<div class="container">
+<section>
+  <div class="section-label">The experience</div>
+  <h2>From scattered notes<br>to a boardroom brief</h2>
+  <p>The assistant asks the right questions, reads your documents, does the research, and delivers clean versioned reports. Come back two weeks later and it picks up exactly where you left.</p>
+
+  <div class="journey">
+
+    <div class="jstep">
+      <div class="jstep-num">01</div>
+      <div class="jstep-content">
+        <div class="jstep-title">Start with one sentence</div>
+        <div class="jstep-body">Type <code>/new-research</code> and describe what you're working on. One sentence is enough. The assistant creates a named folder for this topic and gets to work.</div>
+        <span class="jstep-example">/new-research</span>
+      </div>
+    </div>
+
+    <div class="jstep">
+      <div class="jstep-num">02</div>
+      <div class="jstep-content">
+        <div class="jstep-title">Answer a few focused questions</div>
+        <div class="jstep-body">You'll be asked about your end goal, your audience, and whether you have documents to share. Clarification depth scales to the stakes: Simple topics need 1 round of 4 questions; board-level M&A decisions may run 5+ rounds. No cap — the system keeps going until the research picture is genuinely clear. If you drop documents in, the questions adapt to what's actually in them — no repetition, no fluff.</div>
+      </div>
+    </div>
+
+    <div class="jstep">
+      <div class="jstep-num">03</div>
+      <div class="jstep-content">
+        <div class="jstep-title">Outputs delivered, versioned, ready</div>
+        <div class="jstep-body">Your executive summary, detailed analysis, deck outline, and HTML briefing appear in your research folder — numbered by version. Nothing is ever overwritten. Your dashboard updates automatically.</div>
+      </div>
+    </div>
+
+    <div class="jstep">
+      <div class="jstep-num">04</div>
+      <div class="jstep-content">
+        <div class="jstep-title">Come back and continue — with full context</div>
+        <div class="jstep-body">Two weeks later: type <code>/continue</code>. The assistant loads everything from your last session and summarizes in 3 sentences. No re-explaining. Asks what changed and picks up from there.</div>
+        <span class="jstep-example">/continue cms-2026-prior-auth</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ COMMANDS ══════════════════════════════════════════════ -->
+<section>
+  <div class="section-label">Commands</div>
+  <h2>Four commands.<br>That's all you need.</h2>
+  <p>Works the same in Claude Code, Claude.ai, and VS Code. Type the command, the assistant handles the rest.</p>
+
+  <div class="cmd-grid">
+    <div class="cmd-card">
+      <div class="cmd-name">/new-research</div>
+      <div class="cmd-desc">Start a new research topic. The assistant names the folder, asks focused questions, reads your documents, and produces your reports.</div>
+      <div class="cmd-example">→ "CMS 2026 prior auth rule changes"</div>
+    </div>
+    <div class="cmd-card">
+      <div class="cmd-name">/continue [name]</div>
+      <div class="cmd-desc">Resume exactly where you left off. Full context loaded from memory. Asks what's changed, then goes deeper or updates outputs.</div>
+      <div class="cmd-example">→ /continue cms-2026-prior-auth</div>
+    </div>
+    <div class="cmd-card">
+      <div class="cmd-name">/recalibrate [file]</div>
+      <div class="cmd-desc">Forgot to include a document? Drop it in the folder, run this command. No questions. Everything regenerates with the new file merged in.</div>
+      <div class="cmd-example">→ /recalibrate final-rule-2026.pdf</div>
+    </div>
+    <div class="cmd-card">
+      <div class="cmd-name">/status</div>
+      <div class="cmd-desc">See all your research topics, current versions, and what files have been produced. Opens the visual dashboard in your browser.</div>
+      <div class="cmd-example">→ /status</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ OUTPUTS ═══════════════════════════════════════════════ -->
+<section>
+  <div class="section-label">What you get</div>
+  <h2>Every format<br>you actually need</h2>
+  <p>Tell the assistant what you want. Ask for one or all. The executive summary is always produced — it adds nothing to ask for and everything to have.</p>
+
+  <table class="out-table">
+    <thead>
+      <tr>
+        <th>Output</th>
+        <th>What it is</th>
+        <th>When</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="out-file">executive_summary_v1.pptx</span></td>
+        <td>400–550 words. Core message, 3–5 findings, clear recommendation. Audience-calibrated language.</td>
+        <td><span class="pill always">Always</span></td>
+      </tr>
+      <tr>
+        <td><span class="out-file">detailed_analysis_v1.md</span></td>
+        <td>Full depth. Context, key findings with evidence, objection handling, strategic recommendations.</td>
+        <td><span class="pill">If asked</span></td>
+      </tr>
+      <tr>
+        <td><span class="out-file">deck_summary_v1.pptx</span></td>
+        <td>3 slides max. Title + key points + CTA. With presenter notes. When you need something fast and sharp.</td>
+        <td><span class="pill">If asked</span></td>
+      </tr>
+      <tr>
+        <td><span class="out-file">deck_detailed_v1.pptx</span></td>
+        <td>10–12 slides. Full narrative with presenter notes. For a full board or investor presentation.</td>
+        <td><span class="pill">If asked</span></td>
+      </tr>
+      <tr>
+        <td><span class="out-file">briefing_v1.html</span></td>
+        <td>Standalone document. Opens in any browser. Safe to email or share without sharing your files.</td>
+        <td><span class="pill">If asked</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <strong>On versions:</strong> Every time you run, continue, or recalibrate — the version increments. You get <code>_v1</code>, then <code>_v2</code>, then <code>_v3</code>. Nothing is ever overwritten. You always have the full history.
+  </div>
+</section>
+
+<!-- ═══ QUESTION LOGIC ════════════════════════════════════════ -->
+<section>
+  <div class="section-label">How the questions work</div>
+  <h2>Depth calibrated<br>to the stakes.</h2>
+  <p>The assistant asks exactly as many questions as the decision warrants — no more, no less. If you drop documents in, it reads them first, then asks only what the documents didn't already answer. Structured multiple-choice questions, not free-form prompts. Your time is worth more picking from concrete options than composing prose.</p>
+
+  <div class="q-flow">
+    <div class="q-phase active">
+      <div class="q-phase-label">Always asked — the three core questions</div>
+      <div class="q-phase-title">Topic. Goal. Documents.</div>
+      <div class="q-phase-body">These three are always asked in free-form, in this order. Everything downstream builds on them.</div>
+      <ul class="q-list">
+        <li>What is the end goal? What decision or action will this research serve?</li>
+        <li>Who is the primary audience — board, specific executive, investors, external partner?</li>
+        <li>Do you have documents to review? (If yes, drop them in and the assistant reads them before asking anything else.)</li>
+      </ul>
+    </div>
+
+    <div class="q-phase">
+      <div class="q-phase-label">Complexity classification</div>
+      <div class="q-phase-title">One of four tiers — picked automatically</div>
+      <div class="q-phase-body">After the three core answers, the assistant classifies your topic into one of four complexity tiers. Each tier runs a different number of structured clarification rounds.</div>
+      <ul class="q-list">
+        <li><strong>Simple</strong> — single topic, internal audience, short memo → <strong>1 round</strong> of clarification (~2–4 questions)</li>
+        <li><strong>Standard</strong> — multi-angle, one audience, one deadline → <strong>2 rounds</strong> (~5–8 total)</li>
+        <li><strong>Complex</strong> — board-level, multi-stakeholder, regulatory or financial exposure → <strong>3–5 rounds</strong> (~9–16 total)</li>
+        <li><strong>Strategic-deep</strong> — M&A, market entry, major policy shifts, multi-year bets → <strong>5+ rounds, no ceiling</strong> until the picture is genuinely clear</li>
+      </ul>
+    </div>
+
+    <div class="q-phase">
+      <div class="q-phase-label">Structured rounds</div>
+      <div class="q-phase-title">Multiple-choice, four per round</div>
+      <div class="q-phase-body">Each clarification round is a structured multiple-choice interview — up to four questions per round, each with three to five concrete options plus "Other — I'll type it." No open-ended prompts. The assistant asks permission once before the first round, then keeps going as the tier warrants.</div>
+    </div>
+
+    <div class="q-phase">
+      <div class="q-phase-label">No hard cap</div>
+      <div class="q-phase-title">You decide when to stop.</div>
+      <div class="q-phase-body">The old 8-question maximum is retired. Strategic-deep topics have no ceiling on clarification depth — the assistant keeps asking until the research picture is genuinely clear. But you can say "that's enough" at any point and it stops immediately, writing what it has so far. For Strategic-deep topics, the assistant also auto-invokes the 4-phase first-principles pipeline before producing outputs.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOLDER STRUCTURE ══════════════════════════════════════ -->
+<section>
+  <div class="section-label">Where everything lives</div>
+  <h2>Clean. Organized.<br>Never cluttered.</h2>
+  <p>Every research topic gets its own folder under <code>research/</code>. Memory files are hidden in <code>.memory/</code>. Outputs are clean and versioned in <code>output/</code>. The dashboard at the top ties it all together.</p>
+
+  <div class="tree">
+    <span class="t-dir">executive-advisor-os/</span><br>
+    &nbsp;&nbsp;├── <span class="t-brain">CLAUDE.md</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-auto">← the brain</span><br>
+    &nbsp;&nbsp;├── SETUP.md &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-auto">← start here</span><br>
+    &nbsp;&nbsp;├── CHEATSHEET.md<br>
+    &nbsp;&nbsp;├── HELP.html &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-auto">← this file</span><br>
+    &nbsp;&nbsp;└── <span class="t-dir">research/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="t-out">dashboard.html</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-auto">← open in browser</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="t-dir">cms-2026-prior-auth/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-auto">← auto-named</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="t-dir">.memory/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ &nbsp;&nbsp;├── <span class="t-mem">handover.md</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-auto">← full context for /continue</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ &nbsp;&nbsp;└── <span class="t-mem">session-log.md</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="t-dir">output/</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="t-out">executive_summary_v1.pptx</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="t-out">detailed_analysis_v1.md</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="t-out">deck_detailed_v1.pptx</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="t-out">briefing_v1.html</span>
+  </div>
+</section>
+
+<!-- ═══ RULES ══════════════════════════════════════════════════ -->
+<section>
+  <div class="section-label">How it's built</div>
+  <h2>Rules the assistant<br>never breaks</h2>
+
+  <div class="rules-grid">
+    <div class="rule">
+      <div class="rule-mark">RULE 01</div>
+      <div class="rule-title">Memory always saved</div>
+      <div class="rule-body">After every session, memory files are updated. You can always /continue from exactly where you left — even months later.</div>
+    </div>
+    <div class="rule">
+      <div class="rule-mark">RULE 02</div>
+      <div class="rule-title">Versions never overwrite</div>
+      <div class="rule-body">Every run creates v2, v3, and so on. The v1 from three weeks ago is always there. Nothing is lost.</div>
+    </div>
+    <div class="rule">
+      <div class="rule-mark">RULE 03</div>
+      <div class="rule-title">Dashboard always current</div>
+      <div class="rule-body">dashboard.html is regenerated after every completed session. One file, always up to date, shows everything.</div>
+    </div>
+    <div class="rule">
+      <div class="rule-mark">RULE 04</div>
+      <div class="rule-title">Deck sizes enforced</div>
+      <div class="rule-body">Summary deck is maximum 3 slides. Detailed deck is 10–12 slides. These bounds are never violated regardless of content volume.</div>
+    </div>
+    <div class="rule">
+      <div class="rule-mark">RULE 05</div>
+      <div class="rule-title">Questions stay in scope</div>
+      <div class="rule-body">Every question is about your research. No suggestions to build apps, redesign systems, or do anything outside the research goal.</div>
+    </div>
+    <div class="rule">
+      <div class="rule-mark">RULE 06</div>
+      <div class="rule-title">End goal always clarified</div>
+      <div class="rule-body">Before any analysis begins, the assistant knows what decision this research serves. Reports without a clear goal are never produced.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ QUICK REFERENCE ═══════════════════════════════════════ -->
+<section>
+  <div class="section-label">Quick reference</div>
+  <h2>Everything<br>on one page</h2>
+  <p>Print or bookmark <code>CHEATSHEET.md</code> for the compact version. The full version is below.</p>
+
+  <div class="callout">
+    <strong>Starting fresh:</strong><br>
+    <code>/new-research</code> → describe your topic → answer structured clarification rounds (depth calibrated to stakes) → outputs delivered
+  </div>
+
+  <div class="callout">
+    <strong>Returning to existing research:</strong><br>
+    <code>/continue [folder-name]</code> → assistant summarizes last session → ask what changed → new outputs at v2, v3...
+  </div>
+
+  <div class="callout">
+    <strong>Adding a missed document:</strong><br>
+    Drop the file in your research folder → <code>/recalibrate [filename]</code> → done
+  </div>
+
+  <div class="callout">
+    <strong>Seeing everything you've researched:</strong><br>
+    <code>/status</code> or open <code>research/dashboard.html</code> in your browser
+  </div>
+</section>
+</div>
+
+<!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-brand">Executive Advisor OS</div>
+  <div class="footer-note">Built for executives · Powered by Claude Opus · sponAItech</div>
+</footer>
+
+</body>
+</html>

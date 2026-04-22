@@ -1,0 +1,402 @@
+<!--
+TEMPLATE: audit-report
+CATEGORY: Reports / Documents
+USE WHEN: Presenting a formal financial or compliance audit report with auditor opinion, findings list, severity ratings, and signature block.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Report — {{ENTITY_NAME}} — {{AUDIT_PERIOD}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream2: #efebe3;
+      --navy: #0e1b2e;
+      --navy2: #162540;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --callout-bg: #f0ece4;
+      --green: #2d6a4f;
+      --green-bg: #d1fae5;
+      --amber: #92400e;
+      --amber-bg: #fef3e2;
+      --red: #b91c1c;
+      --red-bg: #fee2e2;
+      --serif: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+      --sans: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', 'Fira Code', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.72;
+    }
+
+    /* ── Header ── */
+    .audit-header {
+      background: var(--navy);
+      padding: 3rem 2rem 2.5rem;
+      border-bottom: 4px solid var(--gold);
+    }
+    .hdr-inner { max-width: 820px; margin: 0 auto; }
+    .audit-label { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold2); display: block; margin-bottom: 0.75rem; }
+    h1 { font-family: var(--serif); font-size: 2rem; font-weight: 400; color: #fff; line-height: 1.2; margin-bottom: 0.75rem; max-width: 660px; }
+    .audit-subtitle { font-size: 0.95rem; color: #8899b0; max-width: 540px; margin-bottom: 2rem; }
+    .audit-meta { display: flex; flex-wrap: wrap; gap: 2rem; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 1.25rem; }
+    .audit-meta-label { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold2); display: block; margin-bottom: 0.2rem; }
+    .audit-meta-value { font-size: 0.875rem; color: #c0cede; }
+
+    /* ── Opinion banner ── */
+    .opinion-banner {
+      border-bottom: 1px solid var(--border);
+      padding: 1.75rem 2rem;
+    }
+    .opinion-inner { max-width: 820px; margin: 0 auto; display: flex; align-items: flex-start; gap: 1.5rem; flex-wrap: wrap; }
+    .opinion-badge {
+      flex-shrink: 0;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      margin-top: 0.25rem;
+    }
+    .opinion-badge.unqualified { background: var(--green-bg); color: var(--green); border: 1px solid #a7f3d0; }
+    .opinion-badge.qualified { background: var(--amber-bg); color: var(--amber); border: 1px solid #fcd34d; }
+    .opinion-badge.adverse { background: var(--red-bg); color: var(--red); border: 1px solid #fca5a5; }
+    .opinion-text {}
+    .opinion-title { font-family: var(--serif); font-size: 1.4rem; color: var(--navy); margin-bottom: 0.4rem; }
+    .opinion-body { font-size: 0.9rem; color: var(--muted); max-width: 600px; line-height: 1.65; }
+
+    /* ── Summary statistics ── */
+    .summary-strip { background: var(--cream2); border-bottom: 1px solid var(--border); }
+    .summary-inner { max-width: 820px; margin: 0 auto; padding: 1.25rem 2rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+    .summary-stat { text-align: center; padding: 0.5rem; border-right: 1px solid var(--border); }
+    .summary-stat:last-child { border-right: none; }
+    .summary-stat-value { display: block; font-family: var(--serif); font-size: 2rem; color: var(--navy); line-height: 1.1; }
+    .summary-stat-value.red { color: var(--red); }
+    .summary-stat-value.amber { color: var(--amber); }
+    .summary-stat-value.green { color: var(--green); }
+    .summary-stat-label { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+
+    /* ── Document layout ── */
+    .doc-wrap { max-width: 820px; margin: 0 auto; padding: 0 2rem 4rem; }
+
+    /* ── Sections ── */
+    .audit-section { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+    .audit-section:last-child { border-bottom: none; }
+    .section-eyebrow { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); display: block; margin-bottom: 0.5rem; }
+    h2 { font-family: var(--serif); font-size: 1.65rem; font-weight: 400; color: var(--navy); line-height: 1.25; margin-bottom: 1.25rem; }
+    h3 { font-family: var(--sans); font-size: 0.975rem; font-weight: 600; color: var(--navy); margin-top: 1.75rem; margin-bottom: 0.5rem; }
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Finding cards ── */
+    .findings-list { list-style: none; margin: 1.5rem 0; }
+    .finding-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .finding-card:last-child { margin-bottom: 0; }
+    .finding-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 1.25rem;
+      background: var(--cream2);
+      border-bottom: 1px solid var(--border);
+    }
+    .finding-sev {
+      flex-shrink: 0;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .sev-critical { background: var(--red-bg); color: var(--red); border: 1px solid #fca5a5; }
+    .sev-high { background: var(--amber-bg); color: var(--amber); border: 1px solid #fcd34d; }
+    .sev-medium { background: #ede9fe; color: #5b21b6; border: 1px solid #c4b5fd; }
+    .sev-low { background: var(--green-bg); color: var(--green); border: 1px solid #a7f3d0; }
+    .finding-id { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+    .finding-title { font-weight: 600; font-size: 0.925rem; color: var(--navy); flex: 1; }
+    .finding-body { padding: 1rem 1.25rem; }
+    .finding-body p { font-size: 0.875rem; margin-bottom: 0.75rem; }
+    .finding-body p:last-child { margin-bottom: 0; }
+    .finding-label { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); display: block; margin-bottom: 0.3rem; margin-top: 0.75rem; }
+    .finding-recommendation { font-size: 0.875rem; background: var(--callout-bg); padding: 0.75rem 1rem; border-radius: 4px; border-left: 3px solid var(--gold); }
+    .finding-status { display: inline-block; margin-top: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 3px; font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .status-open { background: var(--red-bg); color: var(--red); }
+    .status-remediated { background: var(--green-bg); color: var(--green); }
+    .status-in-progress { background: var(--amber-bg); color: var(--amber); }
+
+    /* ── Management response table ── */
+    .mgmt-table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    caption { text-align: left; font-size: 0.78rem; font-family: var(--mono); color: var(--muted); margin-bottom: 0.5rem; }
+    th { background: var(--navy); color: #fff; font-weight: 500; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.65rem 1rem; text-align: left; }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--callout-bg); }
+
+    /* ── Signature block ── */
+    .sig-block { background: var(--cream2); border: 1px solid var(--border); border-radius: 6px; padding: 2rem; margin-top: 2rem; }
+    .sig-block-title { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); display: block; margin-bottom: 1.5rem; }
+    .sig-disclaimer { font-size: 0.8rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.5rem; font-style: italic; border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; }
+    .sig-row { display: flex; flex-wrap: wrap; gap: 3rem; }
+    .sig-item {}
+    .sig-line { width: 220px; height: 1px; background: var(--ink); margin-bottom: 0.3rem; }
+    .sig-name { font-weight: 600; font-size: 0.875rem; }
+    .sig-cred { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+    .sig-date { font-size: 0.82rem; color: var(--muted); margin-top: 0.25rem; }
+
+    /* ── Footer ── */
+    .audit-footer { background: var(--navy); color: #6b7e94; padding: 1.5rem 2rem; font-size: 0.78rem; font-family: var(--mono); }
+    .audit-footer .hdr-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+    .footer-brand { color: var(--gold2); font-weight: 500; }
+    .footer-div { color: rgba(255,255,255,0.2); margin: 0 0.5rem; }
+
+    /* ── Print ── */
+    @media print {
+      @page { margin: 2cm; size: A4; }
+      body { background: #fff; font-size: 11pt; }
+      .audit-header { background: #fff; padding: 0; border-bottom-color: var(--gold); }
+      h1 { color: var(--navy); font-size: 18pt; }
+      .audit-label, .audit-meta-label { color: var(--gold); }
+      .audit-meta-value, .audit-subtitle { color: var(--muted); }
+      .summary-strip { background: #f0ece4; }
+      .audit-section { break-inside: avoid; }
+      h2, h3 { break-after: avoid; }
+      .finding-card { break-inside: avoid; }
+      .audit-footer { background: #fff; color: var(--muted); border-top: 1px solid var(--border); padding: 0.5cm 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="audit-header">
+    <div class="hdr-inner">
+      <span class="audit-label">Independent Audit Report &bull; {{AUDIT_FIRM}}</span>
+      <h1>Independent Compliance Audit: {{ENTITY_NAME}}</h1>
+      <p class="audit-subtitle">Annual compliance audit covering financial controls, operational procedures, and regulatory adherence for the period ending {{AUDIT_PERIOD}}. Audit conducted under applicable standards.</p>
+      <div class="audit-meta">
+        <div><span class="audit-meta-label">Audited Entity</span><span class="audit-meta-value">{{ENTITY_NAME}}</span></div>
+        <div><span class="audit-meta-label">Audit Period</span><span class="audit-meta-value">{{AUDIT_PERIOD}}</span></div>
+        <div><span class="audit-meta-label">Report Date</span><span class="audit-meta-value">{{DATE}}</span></div>
+        <div><span class="audit-meta-label">Version</span><span class="audit-meta-value">{{VERSION}}</span></div>
+        <div><span class="audit-meta-label">Engagement ID</span><span class="audit-meta-value">{{ENGAGEMENT_ID}}</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Opinion Banner ── -->
+  <div class="opinion-banner" role="region" aria-label="Auditor opinion">
+    <div class="opinion-inner">
+      <span class="opinion-badge qualified">Qualified Opinion</span>
+      <div class="opinion-text">
+        <div class="opinion-title">Qualified Opinion — Subject to Material Weakness in Access Control</div>
+        <p class="opinion-body">In our opinion, except for the effect of the matter described in the Basis for Qualified Opinion section, the financial statements present fairly, in all material respects, the financial position of {{ENTITY_NAME}} and the results of operations for the period ending {{AUDIT_PERIOD}}, in accordance with generally accepted accounting principles (GAAP). A material weakness in logical access controls was identified and is described in Finding AR-2024-003 below.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Summary Stats ── -->
+  <div class="summary-strip" role="region" aria-label="Audit summary statistics">
+    <div class="summary-inner">
+      <div class="summary-stat">
+        <span class="summary-stat-value red">2</span>
+        <span class="summary-stat-label">Critical Findings</span>
+      </div>
+      <div class="summary-stat">
+        <span class="summary-stat-value amber">4</span>
+        <span class="summary-stat-label">High Findings</span>
+      </div>
+      <div class="summary-stat">
+        <span class="summary-stat-value" style="color:var(--navy)">6</span>
+        <span class="summary-stat-label">Medium Findings</span>
+      </div>
+      <div class="summary-stat">
+        <span class="summary-stat-value green">3</span>
+        <span class="summary-stat-label">Prior-Year Remediated</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Body ── -->
+  <div class="doc-wrap">
+
+    <!-- Basis for Qualified Opinion -->
+    <section class="audit-section" id="basis">
+      <span class="section-eyebrow">Basis for Opinion</span>
+      <h2>Basis for Qualified Opinion</h2>
+      <p>The audit was conducted in accordance with Generally Accepted Auditing Standards (GAAS) and applicable standards issued by the Public Company Accounting Oversight Board (PCAOB) where applicable. We planned and performed the audit to obtain reasonable assurance about whether the financial statements are free from material misstatement, whether due to fraud or error.</p>
+      <p>Our audit included performing procedures to assess the risks of material misstatement of the financial statements, whether due to fraud or error, and performing procedures that respond to those risks. Such procedures included examining, on a test basis, evidence supporting the amounts and disclosures in the financial statements. Our audit also included evaluating the accounting principles used and significant estimates made by management, as well as evaluating the overall presentation of the financial statements.</p>
+
+      <h3>Material Weakness — Logical Access Controls</h3>
+      <p>During the audit period, we identified a material weakness in the design and operating effectiveness of the entity's logical access controls over privileged user accounts in the production database environment. Specifically, we found that fifteen terminated employee accounts retained active database access for periods ranging from 14 to 87 days post-termination. No evidence of unauthorized data access was found; however, the control failure creates a material risk of unauthorized access that is not commensurate with the entity's risk tolerance or applicable regulatory requirements. This finding is detailed in AR-2024-003 below.</p>
+    </section>
+
+    <!-- Audit Findings -->
+    <section class="audit-section" id="findings">
+      <span class="section-eyebrow">Audit Findings</span>
+      <h2>Findings and Recommendations</h2>
+      <p>The following findings were identified during the audit. Each finding is classified by severity and includes a recommendation and management's response deadline. Findings are numbered sequentially for tracking purposes.</p>
+
+      <ul class="findings-list" aria-label="Audit findings">
+
+        <!-- Finding 1: Critical -->
+        <li>
+          <article class="finding-card">
+            <div class="finding-header">
+              <span class="finding-sev sev-critical">Critical</span>
+              <span class="finding-id">AR-2024-001</span>
+              <span class="finding-title">Segregation of Duties Failure in Accounts Payable Processing</span>
+              <span class="finding-status status-open">Open</span>
+            </div>
+            <div class="finding-body">
+              <p><strong>Condition:</strong> The accounts payable manager has the ability to both create vendor records and approve payments to those vendors without a compensating secondary approval requirement. During testing, we identified 14 transactions totaling $218,400 where the same individual created the vendor record and approved the subsequent payment within the audit period.</p>
+              <span class="finding-label">Risk</span>
+              <p>This control deficiency creates a material risk of unauthorized payments to fictitious or unauthorized vendors. The concentration of capabilities in a single individual constitutes a segregation of duties failure under COSO internal control standards.</p>
+              <span class="finding-label">Recommendation</span>
+              <p class="finding-recommendation">Implement a two-person approval requirement for all new vendor creation and for all payments to vendors created within the preceding 90 days. Configure the payment management system to enforce this workflow constraint. Complete by {{REMEDIATION_DATE_1}}.</p>
+            </div>
+          </article>
+        </li>
+
+        <!-- Finding 2: Critical -->
+        <li>
+          <article class="finding-card">
+            <div class="finding-header">
+              <span class="finding-sev sev-critical">Critical</span>
+              <span class="finding-id">AR-2024-002</span>
+              <span class="finding-title">Missing Encryption at Rest for PII in Secondary Data Warehouse</span>
+              <span class="finding-status status-in-progress">In Progress</span>
+            </div>
+            <div class="finding-body">
+              <p><strong>Condition:</strong> The secondary analytics data warehouse (Snowflake instance: {{INSTANCE_ID}}) does not have encryption at rest enabled. This instance contains member personally identifiable information (PII) including names, dates of birth, and member identification numbers for approximately 340,000 individuals. Management was unaware that the instance had been provisioned without the encryption flag set during a 2022 infrastructure migration.</p>
+              <span class="finding-label">Risk</span>
+              <p>Unencrypted PII storage creates material exposure under HIPAA, state privacy laws (including CCPA), and the entity's own data security policy. Discovery by regulators could result in civil penalties.</p>
+              <span class="finding-label">Recommendation</span>
+              <p class="finding-recommendation">Enable Snowflake Tri-Secret Secure encryption on the secondary warehouse immediately. Conduct a data lineage review to confirm no other unencrypted instances contain PII. Complete immediate remediation within 15 business days.</p>
+            </div>
+          </article>
+        </li>
+
+        <!-- Finding 3: High -->
+        <li>
+          <article class="finding-card">
+            <div class="finding-header">
+              <span class="finding-sev sev-high">High</span>
+              <span class="finding-id">AR-2024-003</span>
+              <span class="finding-title">Terminated Employee Accounts Retained Active Database Access</span>
+              <span class="finding-status status-in-progress">In Progress</span>
+            </div>
+            <div class="finding-body">
+              <p><strong>Condition:</strong> Access control review identified 15 database user accounts belonging to employees who had been terminated during the audit period. Account deactivation was delayed by 14 to 87 days post-termination due to a gap in the offboarding workflow between HR and IT operations. This finding constitutes the material weakness described in the Basis for Opinion section.</p>
+              <span class="finding-label">Recommendation</span>
+              <p class="finding-recommendation">Implement automated account deactivation triggered by HR system termination event, with a maximum 24-hour delay. Conduct quarterly access recertification reviews. Implement real-time alerting for any access by accounts in terminated status.</p>
+            </div>
+          </article>
+        </li>
+
+        <!-- Finding 4: Medium -->
+        <li>
+          <article class="finding-card">
+            <div class="finding-header">
+              <span class="finding-sev sev-medium">Medium</span>
+              <span class="finding-id">AR-2024-004</span>
+              <span class="finding-title">Incomplete Vendor Risk Assessments for Three Critical Vendors</span>
+              <span class="finding-status status-open">Open</span>
+            </div>
+            <div class="finding-body">
+              <p><strong>Condition:</strong> Annual vendor risk assessments are required by policy for all vendors classified as critical or high-risk. Of 18 vendors in these classifications, 3 (16.7%) had not received required annual risk assessments as of the audit date. The assessments were 90, 142, and 203 days overdue respectively.</p>
+              <span class="finding-label">Recommendation</span>
+              <p class="finding-recommendation">Complete overdue vendor risk assessments within 30 days. Implement automated tracking in the vendor management system with escalation alerts at 30, 60, and 90 days past due date.</p>
+            </div>
+          </article>
+        </li>
+
+      </ul>
+    </section>
+
+    <!-- Management Response Summary -->
+    <section class="audit-section" id="management-response">
+      <span class="section-eyebrow">Management Response</span>
+      <h2>Management Response and Remediation Commitments</h2>
+      <div class="mgmt-table-wrap">
+        <table>
+          <caption>Table 1. Management remediation commitments by finding</caption>
+          <thead>
+            <tr>
+              <th scope="col">Finding ID</th>
+              <th scope="col">Severity</th>
+              <th scope="col">Responsible Owner</th>
+              <th scope="col">Committed Date</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>AR-2024-001</td><td>Critical</td><td>VP Finance</td><td>{{REMEDIATION_DATE_1}}</td><td>Open</td></tr>
+            <tr><td>AR-2024-002</td><td>Critical</td><td>VP Engineering</td><td>{{REMEDIATION_DATE_2}}</td><td>In Progress</td></tr>
+            <tr><td>AR-2024-003</td><td>High</td><td>Director IT Ops</td><td>{{REMEDIATION_DATE_3}}</td><td>In Progress</td></tr>
+            <tr><td>AR-2024-004</td><td>Medium</td><td>Vendor Mgmt Lead</td><td>{{REMEDIATION_DATE_4}}</td><td>Open</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Signature Block -->
+    <section class="audit-section" id="signatures">
+      <span class="section-eyebrow">Auditor Signature</span>
+      <h2>Report Authorization</h2>
+      <div class="sig-block">
+        <span class="sig-block-title">Independent Auditor Attestation</span>
+        <p class="sig-disclaimer">This report is intended solely for the information and use of management, the Board of Directors, and others within the audited organization. This report is not intended to be and should not be used by anyone other than these specified parties. Distribution of this report to parties other than those named above requires prior written consent from {{AUDIT_FIRM}}.</p>
+        <div class="sig-row">
+          <div class="sig-item">
+            <div class="sig-line"></div>
+            <div class="sig-name">{{LEAD_AUDITOR_NAME}}</div>
+            <div class="sig-cred">{{CREDENTIALS}}</div>
+            <div class="sig-date">{{AUDIT_FIRM}}</div>
+          </div>
+          <div class="sig-item">
+            <div class="sig-line"></div>
+            <div class="sig-name">{{PARTNER_NAME}}</div>
+            <div class="sig-cred">Engagement Partner</div>
+            <div class="sig-date">{{DATE}}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- .doc-wrap -->
+
+  <!-- ── Footer ── -->
+  <footer class="audit-footer">
+    <div class="hdr-inner">
+      <span><span class="footer-brand">SponAItech</span> <span class="footer-div">|</span> html-generation skill v1.1</span>
+      <span>Version {{VERSION}} <span class="footer-div">|</span> {{DATE}} <span class="footer-div">|</span> {{CLASSIFICATION}}</span>
+    </div>
+  </footer>
+
+</body>
+</html>

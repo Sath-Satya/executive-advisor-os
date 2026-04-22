@@ -1,0 +1,466 @@
+<!--
+TEMPLATE: Invoice
+CATEGORY: Admin / Operations
+USE WHEN: Billing a client for consulting services, hourly work, or deliverable-based engagements.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invoice — SponAI Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --white: #ffffff;
+      --red: #c0392b;
+      --green: #1a7a4a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #e8e4dc;
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem;
+    }
+    .page {
+      background: var(--white);
+      width: 794px;
+      min-height: 1123px;
+      padding: 56px 60px 60px;
+      box-shadow: 0 4px 32px rgba(14,27,46,0.12);
+      position: relative;
+    }
+    /* Header */
+    .inv-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 28px;
+      border-bottom: 2px solid var(--navy);
+      margin-bottom: 36px;
+    }
+    .brand-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.5px;
+    }
+    .brand-tagline {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 3px;
+      letter-spacing: 0.4px;
+    }
+    .inv-meta h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--navy);
+      text-align: right;
+      letter-spacing: -1px;
+    }
+    .inv-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--gold);
+      text-align: right;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+    .status-badge {
+      display: inline-block;
+      background: var(--red);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-top: 6px;
+      float: right;
+    }
+    /* Party blocks */
+    .parties {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 32px;
+    }
+    .party-block {
+      flex: 1;
+    }
+    .party-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .party-block strong {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .party-block p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    /* Key dates row */
+    .key-dates {
+      display: flex;
+      gap: 0;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+    .key-date-cell {
+      flex: 1;
+      padding: 14px 20px;
+      border-right: 1px solid var(--border);
+    }
+    .key-date-cell:last-child { border-right: none; }
+    .key-date-cell .kd-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .key-date-cell .kd-value {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--navy);
+    }
+    /* Line items table */
+    .section-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 0.85rem;
+    }
+    caption {
+      text-align: left;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+      caption-side: top;
+    }
+    thead th {
+      background: var(--navy);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    thead th:not(:first-child) { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--cream); }
+    tbody td {
+      padding: 11px 14px;
+      color: var(--ink);
+      vertical-align: top;
+    }
+    tbody td:not(:first-child) {
+      text-align: right;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.83rem;
+    }
+    .td-desc { max-width: 280px; }
+    .td-desc small {
+      display: block;
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+    /* Totals */
+    .totals-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 36px;
+    }
+    .totals-table {
+      width: 300px;
+    }
+    .totals-table tr td {
+      padding: 6px 0 6px 14px;
+      font-size: 0.85rem;
+    }
+    .totals-table tr td:last-child {
+      text-align: right;
+      font-family: 'DM Mono', monospace;
+    }
+    .totals-table .label-col { color: var(--muted); }
+    .total-row td {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--navy);
+      border-top: 2px solid var(--navy);
+      padding-top: 10px;
+    }
+    /* Payment terms */
+    .terms-section {
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      display: flex;
+      gap: 40px;
+    }
+    .terms-block { flex: 1; }
+    .terms-block .t-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .terms-block p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    /* Footer bar */
+    .inv-footer {
+      margin-top: 40px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .inv-footer p {
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+    }
+    /* Print */
+    @page { size: A4; margin: 2cm; }
+    @media print {
+      body { background: none; padding: 0; display: block; }
+      .page { box-shadow: none; width: 100%; min-height: auto; padding: 0; }
+      .status-badge { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      thead { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" role="main">
+    <header class="inv-header">
+      <div>
+        <div class="brand-name">SponAI Consulting</div>
+        <div class="brand-tagline">AI-Powered Enterprise Solutions</div>
+      </div>
+      <div class="inv-meta">
+        <h1>Invoice</h1>
+        <div class="inv-number">INV-2026-0042</div>
+        <span class="status-badge">Unpaid</span>
+      </div>
+    </header>
+
+    <section class="parties" aria-label="Billing parties">
+      <div class="party-block">
+        <div class="party-label">Bill From</div>
+        <strong>SponAI Consulting LLC</strong>
+        <p>
+          1420 Harbor Blvd, Suite 300<br />
+          San Diego, CA 92101<br />
+          EIN: 88-1234567<br />
+          billing@sponai.tech
+        </p>
+      </div>
+      <div class="party-block">
+        <div class="party-label">Bill To</div>
+        <strong>Meridian Health Systems</strong>
+        <p>
+          Attn: Accounts Payable<br />
+          500 Medical Center Drive<br />
+          Phoenix, AZ 85004<br />
+          ap@meridianhealth.org
+        </p>
+      </div>
+    </section>
+
+    <section class="key-dates" aria-label="Invoice dates and terms">
+      <div class="key-date-cell">
+        <div class="kd-label">Invoice Date</div>
+        <div class="kd-value">2026-04-20</div>
+      </div>
+      <div class="key-date-cell">
+        <div class="kd-label">Due Date</div>
+        <div class="kd-value">2026-05-20</div>
+      </div>
+      <div class="key-date-cell">
+        <div class="kd-label">Terms</div>
+        <div class="kd-value">Net 30</div>
+      </div>
+      <div class="key-date-cell">
+        <div class="kd-label">Currency</div>
+        <div class="kd-value">USD</div>
+      </div>
+      <div class="key-date-cell">
+        <div class="kd-label">Project</div>
+        <div class="kd-value">MRDH-2026-Q2</div>
+      </div>
+    </section>
+
+    <section aria-label="Line items">
+      <div class="section-label">Services Rendered</div>
+      <table>
+        <caption>Consulting services for April 2026 — Salesforce AI Integration Phase 2</caption>
+        <thead>
+          <tr>
+            <th scope="col">Description</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Unit</th>
+            <th scope="col">Rate</th>
+            <th scope="col">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-desc">
+              Salesforce Apex Development
+              <small>Custom claims-processing triggers, batch jobs, and API callouts</small>
+            </td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">32</td>
+            <td style="text-align:right; color:var(--muted);">hrs</td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">$225.00</td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">$7,200.00</td>
+          </tr>
+          <tr>
+            <td class="td-desc">
+              AI Integration &amp; Prompt Engineering
+              <small>Claude API setup, prompt templates, guardrail architecture</small>
+            </td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">18</td>
+            <td style="text-align:right; color:var(--muted);">hrs</td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">$250.00</td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">$4,500.00</td>
+          </tr>
+          <tr>
+            <td class="td-desc">
+              Architecture Review &amp; Documentation
+              <small>System design doc, ADRs, data flow diagrams</small>
+            </td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">8</td>
+            <td style="text-align:right; color:var(--muted);">hrs</td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">$275.00</td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">$2,200.00</td>
+          </tr>
+          <tr>
+            <td class="td-desc">
+              Project Management &amp; Client Coordination
+              <small>Weekly syncs, status reports, stakeholder briefings</small>
+            </td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">6</td>
+            <td style="text-align:right; color:var(--muted);">hrs</td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">$175.00</td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">$1,050.00</td>
+          </tr>
+          <tr>
+            <td class="td-desc">
+              Azure Infrastructure (Reimbursable)
+              <small>Container Apps, Azure OpenAI, Storage — April 2026 invoice attached</small>
+            </td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">1</td>
+            <td style="text-align:right; color:var(--muted);">flat</td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">$387.50</td>
+            <td style="text-align:right; font-family:'DM Mono',monospace;">$387.50</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="totals-wrap">
+      <table class="totals-table" aria-label="Invoice totals">
+        <tbody>
+          <tr>
+            <td class="label-col">Subtotal</td>
+            <td>$15,337.50</td>
+          </tr>
+          <tr>
+            <td class="label-col">Tax (CA 0% — B2B Services)</td>
+            <td>$0.00</td>
+          </tr>
+          <tr>
+            <td class="label-col">Discount (Retainer Credit)</td>
+            <td style="color:var(--green);">&#8722;$500.00</td>
+          </tr>
+          <tr class="total-row">
+            <td>Total Due</td>
+            <td>$14,837.50</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section class="terms-section" aria-label="Payment terms and banking details">
+      <div class="terms-block">
+        <div class="t-label">Payment Terms</div>
+        <p>
+          Payment due within 30 days of invoice date. Late payments accrue
+          1.5% monthly interest after the due date. Preferred payment: ACH
+          bank transfer. Wire and check accepted.
+        </p>
+      </div>
+      <div class="terms-block">
+        <div class="t-label">ACH / Wire Details</div>
+        <p>
+          Bank: First Republic Business<br />
+          Routing: 321081669<br />
+          Account: 4400-8821-003<br />
+          Memo: INV-2026-0042
+        </p>
+      </div>
+      <div class="terms-block">
+        <div class="t-label">Questions</div>
+        <p>
+          Contact Sathish Thiagarajan<br />
+          billing@sponai.tech<br />
+          +1 (619) 555-0142<br />
+          Mon–Fri, 9 am–5 pm PST
+        </p>
+      </div>
+    </section>
+
+    <footer class="inv-footer">
+      <p>Thank you for your business — SponAI Consulting LLC &copy; 2026</p>
+      <p>v{{VERSION}} &middot; {{DATE}} &middot; INV-2026-0042</p>
+    </footer>
+  </main>
+</body>
+</html>

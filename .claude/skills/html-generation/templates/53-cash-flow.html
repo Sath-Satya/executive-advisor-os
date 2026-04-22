@@ -1,0 +1,287 @@
+<!--
+TEMPLATE: cash-flow
+CATEGORY: Finance
+USE WHEN: Presenting a cash flow statement (operating/investing/financing) with beginning-to-ending cash reconciliation and an inline SVG sparkline of monthly cash position.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cash Flow Statement &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --cream2: #ede9e0;
+      --section-bg: #e8e4dc;
+      --fav: #2d6a4f;
+      --unfav: #b91c1c;
+      --sparkline: #b8965a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .page { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+
+    /* Header */
+    .doc-header {
+      border-top: 4px solid var(--navy);
+      padding-top: 1.75rem;
+      margin-bottom: 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+    }
+    .eyebrow {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem;
+    }
+    h1 { font-size: 1.55rem; font-weight: 700; color: var(--navy); letter-spacing: -0.4px; }
+    .doc-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+    .meta-right {
+      text-align: right; font-size: 0.78rem; color: var(--muted);
+      line-height: 1.9; flex-shrink: 0;
+    }
+    .meta-right strong { color: var(--ink); }
+
+    /* Sparkline section */
+    .sparkline-block {
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+    .sparkline-block h2 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--navy);
+      margin-bottom: 0.75rem;
+    }
+    .sparkline-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 1.25rem;
+    }
+    .sparkline-wrap svg {
+      flex: 1;
+      min-width: 0;
+    }
+    .sparkline-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      margin-top: 0.3rem;
+    }
+    .spark-meta {
+      flex-shrink: 0;
+      font-size: 0.78rem;
+      line-height: 1.8;
+    }
+    .spark-meta .label { color: var(--muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .spark-meta .value { font-family: 'DM Mono', monospace; font-weight: 600; color: var(--ink); }
+    .spark-meta .pos { color: var(--fav); }
+    .spark-meta .neg { color: var(--unfav); }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; margin-bottom: 1.5rem; }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.82rem; font-variant-numeric: tabular-nums;
+    }
+    caption { font-size: 0.7rem; color: var(--muted); text-align: left; padding-bottom: 0.5rem; font-style: italic; }
+    thead tr { background: var(--navy); color: #fff; }
+    thead th {
+      padding: 0.55rem 0.75rem;
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; min-width: 200px; }
+    thead th:not(:first-child) { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: var(--cream2); }
+    tbody td { padding: 0.48rem 0.75rem; }
+    tbody td:not(:first-child) { text-align: right; font-family: 'DM Mono', monospace; font-size: 0.8rem; }
+    tr.indented td:first-child { padding-left: 1.6rem; color: var(--muted); }
+    tr.section-header td {
+      background: var(--navy); color: #fff;
+      font-weight: 600; font-size: 0.72rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.45rem 0.75rem; border: none;
+    }
+    tr.subtotal td { background: var(--section-bg); font-weight: 600; border-bottom: 2px solid var(--border); }
+    tr.total-row td { background: var(--navy); color: #fff; font-weight: 700; border-top: 2px solid var(--gold); }
+    tr.cash-row td { background: var(--cream2); font-weight: 700; font-size: 0.85rem; border-top: 2px solid var(--gold); }
+    tr.spacer { height: 0.3rem; } tr.spacer td { padding: 0; border: none; }
+    .pos { color: var(--fav); } .neg { color: var(--unfav); }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 2rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      font-size: 0.7rem; color: var(--muted);
+      flex-wrap: wrap; gap: 0.5rem;
+    }
+
+    @media print {
+      @page { size: A4; margin: 2cm; }
+      body { font-size: 11pt; background: #fff; }
+      .page { padding: 0; max-width: 100%; }
+      thead tr, tr.section-header td, tr.total-row td { background: #1c1a18 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      tr.subtotal td, tr.cash-row td { background: #e8e4dc !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="doc-header">
+    <div>
+      <p class="eyebrow">Northwind Capital &mdash; Confidential</p>
+      <h1>Cash Flow Statement</h1>
+      <p class="doc-sub">For the Year Ended December 31, {{PERIOD}} &nbsp;|&nbsp; USD in thousands (000s)</p>
+    </div>
+    <div class="meta-right">
+      <strong>Indirect Method</strong><br>
+      Prepared: {{PREPARED_BY}}<br>
+      v{{VERSION}}
+    </div>
+  </header>
+
+  <!-- Sparkline block -->
+  <div class="sparkline-block">
+    <h2>Monthly Cash Position &mdash; FY{{PERIOD}} (USD thousands)</h2>
+    <div class="sparkline-wrap">
+      <div style="flex:1; min-width:0;">
+        <!--
+          Monthly ending cash (USD 000s):
+          Jan 7,100 | Feb 7,380 | Mar 6,940 | Apr 7,520 | May 7,810 | Jun 7,650
+          Jul 8,020 | Aug 8,340 | Sep 7,980 | Oct 8,600 | Nov 8,900 | Dec 8,420
+          Range: 6,940 – 8,900 → mapped to viewBox height 60 (0=top, 60=bottom)
+          formula: y = 60 - ((val - 6940) / (8900 - 6940)) * 54 + 3
+        -->
+        <svg viewBox="0 0 264 70" aria-label="Monthly cash position sparkline" role="img" style="width:100%; height:70px; display:block;">
+          <title>Northwind Capital monthly ending cash balance FY2024</title>
+          <!-- Grid lines -->
+          <line x1="0" y1="3" x2="264" y2="3" stroke="#ddd8ce" stroke-width="0.5"/>
+          <line x1="0" y1="33" x2="264" y2="33" stroke="#ddd8ce" stroke-width="0.5"/>
+          <line x1="0" y1="63" x2="264" y2="63" stroke="#ddd8ce" stroke-width="0.5"/>
+          <!-- Fill area -->
+          <polygon
+            points="0,63 0,35.8 22,26.1 44,41.4 66,23.5 88,14.8 110,21.9 132,10.5 154,4.9 176,18.4 198,3 220,3 242,8.6 264,63"
+            fill="#b8965a" fill-opacity="0.12"/>
+          <!-- Line -->
+          <polyline
+            points="0,35.8 22,26.1 44,41.4 66,23.5 88,14.8 110,21.9 132,10.5 154,4.9 176,18.4 198,3 220,3 242,8.6 264,18.7"
+            fill="none" stroke="#b8965a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+          <!-- Dots for min/max -->
+          <circle cx="44" cy="41.4" r="3" fill="#b91c1c" aria-label="Low: March $6.94M"/>
+          <circle cx="220" cy="3" r="3" fill="#2d6a4f" aria-label="High: November $8.9M"/>
+          <!-- Labels -->
+          <text x="44" y="56" text-anchor="middle" font-size="7" fill="#b91c1c" font-family="DM Mono,monospace">$6.94M</text>
+          <text x="220" y="16" text-anchor="middle" font-size="7" fill="#2d6a4f" font-family="DM Mono,monospace">$8.90M</text>
+        </svg>
+        <div class="sparkline-labels">
+          <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+          <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+        </div>
+      </div>
+      <div class="spark-meta">
+        <div class="label">Opening Cash</div>
+        <div class="value">$6,810</div>
+        <div class="label" style="margin-top:0.5rem;">Ending Cash</div>
+        <div class="value">$8,420</div>
+        <div class="label" style="margin-top:0.5rem;">Net Change</div>
+        <div class="value pos">+$1,610</div>
+        <div class="label" style="margin-top:0.5rem;">Low</div>
+        <div class="value neg">$6,940 (Mar)</div>
+        <div class="label" style="margin-top:0.5rem;">High</div>
+        <div class="value pos">$8,900 (Nov)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cash Flow Table -->
+  <div class="table-wrap">
+    <table aria-label="Cash Flow Statement — Northwind Capital FY2024">
+      <caption>Indirect method. All amounts in USD thousands. Parentheses denote cash outflows.</caption>
+      <thead>
+        <tr>
+          <th scope="col">Line Item</th>
+          <th scope="col">FY 2024</th>
+          <th scope="col">FY 2023</th>
+          <th scope="col">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="section-header"><td colspan="4">Operating Activities</td></tr>
+        <tr class="indented"><td>Net Income</td><td>$7,918</td><td>$6,865</td><td class="pos">+$1,053</td></tr>
+        <tr class="indented"><td>Add: Depreciation &amp; Amortization</td><td>$1,270</td><td>$1,150</td><td class="pos">+$120</td></tr>
+        <tr class="indented"><td>Add: Stock-Based Compensation</td><td>$620</td><td>$540</td><td class="pos">+$80</td></tr>
+        <tr class="indented"><td>Less: Increase in Accounts Receivable</td><td>($720)</td><td>($610)</td><td class="neg">&minus;$110</td></tr>
+        <tr class="indented"><td>Less: Increase in Prepaid Expenses</td><td>($130)</td><td>($80)</td><td class="neg">&minus;$50</td></tr>
+        <tr class="indented"><td>Add: Increase in Accounts Payable</td><td>$270</td><td>$190</td><td class="pos">+$80</td></tr>
+        <tr class="indented"><td>Add: Increase in Deferred Revenue</td><td>$1,150</td><td>$980</td><td class="pos">+$170</td></tr>
+        <tr class="indented"><td>Add: Increase in Accrued Liabilities</td><td>$520</td><td>$380</td><td class="pos">+$140</td></tr>
+        <tr class="subtotal"><td>Net Cash from Operating Activities</td><td><strong>$10,898</strong></td><td>$9,415</td><td class="pos">+$1,483</td></tr>
+
+        <tr class="spacer"><td colspan="4"></td></tr>
+
+        <tr class="section-header"><td colspan="4">Investing Activities</td></tr>
+        <tr class="indented"><td>Capital Expenditures (PP&amp;E)</td><td>($900)</td><td>($1,100)</td><td class="pos">+$200</td></tr>
+        <tr class="indented"><td>Capitalized Software Development</td><td>($1,420)</td><td>($1,200)</td><td class="neg">&minus;$220</td></tr>
+        <tr class="indented"><td>Purchase of Short-Term Investments</td><td>($2,600)</td><td>($1,800)</td><td class="neg">&minus;$800</td></tr>
+        <tr class="indented"><td>Proceeds from Maturities</td><td>$1,900</td><td>$1,400</td><td class="pos">+$500</td></tr>
+        <tr class="indented"><td>Purchase of Long-Term Investments</td><td>($100)</td><td>($150)</td><td class="pos">+$50</td></tr>
+        <tr class="subtotal"><td>Net Cash from Investing Activities</td><td><strong>($3,120)</strong></td><td>($2,850)</td><td class="neg">&minus;$270</td></tr>
+
+        <tr class="spacer"><td colspan="4"></td></tr>
+
+        <tr class="section-header"><td colspan="4">Financing Activities</td></tr>
+        <tr class="indented"><td>Repayment of Long-Term Debt</td><td>($1,200)</td><td>($1,200)</td><td>&mdash;</td></tr>
+        <tr class="indented"><td>Dividends Paid</td><td>($4,500)</td><td>($3,800)</td><td class="neg">&minus;$700</td></tr>
+        <tr class="indented"><td>Employee Stock Plan Proceeds</td><td>$232</td><td>$195</td><td class="pos">+$37</td></tr>
+        <tr class="indented"><td>Tax Withholding on Equity Awards</td>  <td>($700)</td><td>($580)</td><td class="neg">&minus;$120</td></tr>
+        <tr class="subtotal"><td>Net Cash from Financing Activities</td><td><strong>($6,168)</strong></td><td>($5,385)</td><td class="neg">&minus;$783</td></tr>
+
+        <tr class="spacer"><td colspan="4"></td></tr>
+
+        <tr class="total-row"><td>Net Change in Cash</td><td>$1,610</td><td>$1,180</td><td class="pos">+$430</td></tr>
+        <tr class="cash-row"><td>Beginning Cash &amp; Equivalents</td><td>$6,810</td><td>$5,630</td><td class="pos">+$1,180</td></tr>
+        <tr class="cash-row"><td>Ending Cash &amp; Equivalents</td><td><strong>$8,420</strong></td><td>$6,810</td><td class="pos">+$1,610</td></tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="doc-footer">
+    <span>Northwind Capital &mdash; Internal &amp; Confidential</span>
+    <span>Period: {{PERIOD}}</span>
+    <span>Prepared by: {{PREPARED_BY}}</span>
+    <span>v{{VERSION}}</span>
+  </footer>
+
+</div>
+</body>
+</html>

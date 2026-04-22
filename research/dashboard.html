@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Executive Advisor OS — Research Dashboard</title>
+
+<!-- TRACKED_SLUGS: cms-0057-payer-implementation -->
+<!-- REMOVED_SLUGS:  -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --cream: #f7f4ef; --cream2: #ede9e2;
+  --navy: #0e1b2e; --navy2: #152440;
+  --gold: #b8965a; --gold2: #d4ab72;
+  --ink: #1c1a18; --muted: #6b6560;
+  --border: rgba(184,150,90,0.22);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --mono: 'DM Mono', ui-monospace, monospace;
+  --st-active: #f0a050; --st-complete: #2dd4a0; --st-review: #f06070; --st-removed: #8899ac;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--cream); color: var(--ink); font-size: 14px; line-height: 1.55; }
+a { color: var(--navy); text-decoration: none; }
+button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+/* Topbar */
+.topbar { background: var(--navy); color: var(--cream); padding: 14px 28px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--gold); }
+.brand { font-family: var(--serif); font-size: 20px; font-weight: 600; letter-spacing: -0.2px; color: var(--cream); }
+.brand span { color: var(--gold2); font-style: italic; font-weight: 500; }
+.top-spacer { flex: 1; }
+.updated { font-family: var(--mono); font-size: 10.5px; color: rgba(255,255,255,0.55); letter-spacing: 0.06em; }
+.tb-btn { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--gold2); border: 1px solid rgba(184,150,90,0.45); padding: 6px 12px; border-radius: 3px; transition: background 0.15s; }
+.tb-btn:hover { background: rgba(184,150,90,0.12); }
+.tb-btn.on { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+
+/* Layout */
+.layout { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 52px); }
+.sidebar { background: var(--cream2); border-right: 1px solid var(--border); padding: 24px 20px; position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto; }
+.sb-label { font-family: var(--mono); font-size: 10px; color: var(--gold); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.sb-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.sb-list a { display: flex; align-items: center; gap: 8px; padding: 7px 10px; font-size: 13px; color: var(--ink); border-radius: 3px; }
+.sb-list a:hover { background: rgba(184,150,90,0.1); }
+.sb-list .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: var(--muted); }
+.sb-list .dot.active { background: var(--st-active); }
+.sb-list .dot.complete { background: var(--st-complete); }
+.sb-list .dot.review { background: var(--st-review); }
+.sb-list .dot.removed { background: var(--st-removed); }
+.sb-footer { margin-top: 24px; padding: 14px; background: var(--navy); color: var(--gold2); font-family: var(--mono); font-size: 11px; border-radius: 3px; text-align: center; }
+
+/* Main */
+.main { padding: 32px 40px 80px; max-width: 1080px; }
+.hero { font-family: var(--serif); font-size: 26px; font-weight: 500; color: var(--navy); margin-bottom: 4px; letter-spacing: -0.3px; }
+.hero-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 36px; }
+.stat { background: white; border: 1px solid var(--border); padding: 16px 18px; border-radius: 3px; }
+.stat-num { font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--navy); line-height: 1; }
+.stat-label { font-size: 10px; color: var(--muted); margin-top: 6px; font-family: var(--mono); letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* Section heading */
+.section-head { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+/* Card */
+.grid { display: grid; gap: 14px; }
+.card { background: white; border: 1px solid var(--border); border-left: 4px solid var(--gold); padding: 18px 22px; border-radius: 3px; scroll-margin-top: 70px; }
+.card.removed { border-left-color: var(--st-removed); opacity: 0.78; }
+.card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 8px; }
+.card-title { font-family: var(--serif); font-size: 19px; font-weight: 600; color: var(--ink); letter-spacing: -0.2px; }
+.card-meta { font-family: var(--mono); font-size: 10.5px; color: var(--muted); margin-top: 2px; letter-spacing: 0.04em; }
+.card-v { font-family: var(--mono); font-size: 11px; color: var(--gold); padding: 3px 9px; border: 1px solid var(--border); border-radius: 2px; white-space: nowrap; }
+.card-goal { font-size: 13.5px; color: var(--muted); margin: 6px 0 12px; font-style: italic; }
+.row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.badge { font-family: var(--mono); font-size: 9.5px; padding: 3px 9px; border-radius: 2px; letter-spacing: 0.1em; text-transform: uppercase; }
+.badge.active { background: rgba(240,160,80,0.12); color: var(--st-active); border: 1px solid rgba(240,160,80,0.3); }
+.badge.complete { background: rgba(45,212,160,0.12); color: #1a8c6d; border: 1px solid rgba(45,212,160,0.3); }
+.badge.review { background: rgba(240,96,112,0.12); color: var(--st-review); border: 1px solid rgba(240,96,112,0.3); }
+.badge.removed { background: rgba(136,153,172,0.15); color: var(--st-removed); border: 1px solid rgba(136,153,172,0.3); }
+
+/* File tree */
+.tree-toggle { margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--navy); padding: 4px 0; }
+.tree-toggle::before { content: '▸ '; color: var(--gold); font-family: sans-serif; transition: transform 0.15s; display: inline-block; }
+.tree-toggle.open::before { content: '▾ '; }
+.tree { display: none; margin-top: 8px; padding: 10px 14px; background: var(--cream); border: 1px solid var(--border); border-radius: 2px; font-family: var(--mono); font-size: 11.5px; }
+.tree.open { display: block; }
+.tree-folder { color: var(--navy); font-weight: 500; margin-top: 4px; }
+.tree-folder:first-child { margin-top: 0; }
+.tree-file { display: block; padding: 3px 0 3px 18px; color: var(--navy); border-radius: 2px; }
+.tree-file:hover { background: var(--cream2); color: var(--gold); }
+.tree-file .ext { color: var(--muted); font-size: 10px; margin-left: 6px; }
+.tree-file.missing { color: var(--muted); text-decoration: line-through; pointer-events: none; }
+
+/* Dismiss button */
+.dismiss-btn { margin-top: 10px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--st-review); border: 1px solid rgba(240,96,112,0.3); padding: 4px 10px; border-radius: 2px; }
+.dismiss-btn:hover { background: rgba(240,96,112,0.08); }
+
+/* Empty state */
+.empty { padding: 60px 30px; text-align: center; background: white; border: 1px dashed var(--border); border-radius: 3px; }
+.empty-title { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+.empty-body { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+.empty-cmd { display: inline-block; font-family: var(--mono); font-size: 13px; background: var(--navy); color: var(--gold2); padding: 10px 22px; border-radius: 3px; letter-spacing: 0.04em; }
+
+/* Print */
+@media print {
+  .topbar, .sidebar, .tb-btn, .dismiss-btn { display: none; }
+  .layout { grid-template-columns: 1fr; }
+  .main { padding: 20px; max-width: 100%; }
+  .card { break-inside: avoid; }
+  .tree { display: block !important; }
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">Executive Advisor <span>OS</span></div>
+  <div class="top-spacer"></div>
+  <div class="updated" id="updated-ts">Last updated: —</div>
+  <button class="tb-btn" id="refresh-btn" title="Reload this page">↻ Refresh</button>
+  <button class="tb-btn" id="autorefresh-btn" title="Toggle 30-second auto-refresh">◷ Auto-refresh: Off</button>
+</div>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sb-label">Research Topics</div>
+    <ul class="sb-list" id="sb-list">
+      <li><a href="#cms-0057-payer-implementation"><span class="dot complete"></span>CMS-0057 Payer Implementation</a></li>
+    </ul>
+    <div class="sb-footer">
+      Start a new topic with<br>
+      <strong style="color: var(--cream);">/new-research</strong>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="hero">Research Dashboard</div>
+    <div class="hero-sub">Every topic, every version, every output — one page, always current.</div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-num" id="c-total">1</div><div class="stat-label">Topics</div></div>
+      <div class="stat"><div class="stat-num" id="c-active">0</div><div class="stat-label">Active</div></div>
+      <div class="stat"><div class="stat-num" id="c-complete">1</div><div class="stat-label">Completed</div></div>
+      <div class="stat"><div class="stat-num" id="c-removed">0</div><div class="stat-label">Removed</div></div>
+    </div>
+
+    <div class="section-head">All Research</div>
+
+    <div class="grid" id="research-grid">
+
+      <div class="card" id="cms-0057-payer-implementation">
+        <div class="card-head">
+          <div>
+            <div class="card-title">CMS-0057 Payer Implementation</div>
+            <div class="card-meta">research/cms-0057-payer-implementation/ · Updated 2026-04-21</div>
+          </div>
+          <span class="card-v">v1</span>
+        </div>
+        <div class="card-goal">Build a CMS-0057 compliance roadmap and benchmark peer payer implementations — Strategic-deep tier. All v1 deliverables on disk: exec summary (MD), detailed analysis (MD), HTML briefing, summary deck (PPTX + MD), detailed deck (PPTX + MD), first-principles trace (MD). Output verification: PASS.</div>
+        <div class="row">
+          <span class="badge complete">v1 Complete</span>
+          <span>Audience: Payer leadership team</span>
+        </div>
+        <button class="tree-toggle">Files (22)</button>
+        <div class="tree">
+          <div class="tree-folder">output/ — primary deliverables</div>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/executive_summary_v1.md" target="_blank">executive_summary_v1.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/detailed_analysis_v1.md" target="_blank">detailed_analysis_v1.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/briefing_v1.html" target="_blank">briefing_v1.html<span class="ext">HTML</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/deck_summary_v1.pptx" target="_blank">deck_summary_v1.pptx<span class="ext">PPTX</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/deck_detailed_v1.pptx" target="_blank">deck_detailed_v1.pptx<span class="ext">PPTX</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/first-principles-analysis_v1.md" target="_blank">first-principles-analysis_v1.md<span class="ext">MD</span></a>
+          <div class="tree-folder">output/ — deck sources</div>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/deck_summary_v1.md" target="_blank">deck_summary_v1.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/deck_detailed_v1.md" target="_blank">deck_detailed_v1.md<span class="ext">MD</span></a>
+          <div class="tree-folder">output/ — build plans</div>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/first-principles-analysis.plan.md" target="_blank">first-principles-analysis.plan.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/detailed_analysis.plan.md" target="_blank">detailed_analysis.plan.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/briefing.plan.md" target="_blank">briefing.plan.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/deck_detailed.plan.md" target="_blank">deck_detailed.plan.md<span class="ext">MD</span></a>
+          <div class="tree-folder">output/slides/ — per-slide MDs</div>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/slides/01-title.md" target="_blank">01-title.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/slides/02-context.md" target="_blank">02-context.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/slides/03-industry-lead-band.md" target="_blank">03-industry-lead-band.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/slides/04-peer-humana.md" target="_blank">04-peer-humana.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/slides/05-peer-highmark.md" target="_blank">05-peer-highmark.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/slides/06-peer-elevance-centene.md" target="_blank">06-peer-elevance-centene.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/slides/07-three-alternatives.md" target="_blank">07-three-alternatives.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/slides/08-recommendation.md" target="_blank">08-recommendation.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/slides/09-roadmap.md" target="_blank">09-roadmap.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/slides/10-risks.md" target="_blank">10-risks.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/slides/11-decision-rationale.md" target="_blank">11-decision-rationale.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/output/slides/12-decision-ask.md" target="_blank">12-decision-ask.md<span class="ext">MD</span></a>
+          <div class="tree-folder">.memory/</div>
+          <a class="tree-file" href="cms-0057-payer-implementation/.memory/handover.md" target="_blank">handover.md<span class="ext">MD</span></a>
+          <a class="tree-file" href="cms-0057-payer-implementation/.memory/session-log.md" target="_blank">session-log.md<span class="ext">MD</span></a>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script>
+(function () {
+  // Last-updated timestamp
+  const ts = new Date();
+  const fmt = ts.toLocaleString('en-US', { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+  document.getElementById('updated-ts').textContent = 'Last updated: ' + fmt;
+
+  // Refresh button
+  document.getElementById('refresh-btn').addEventListener('click', () => location.reload());
+
+  // Auto-refresh toggle (30s interval, persisted in localStorage)
+  const AR_KEY = 'eaos-autorefresh';
+  const arBtn = document.getElementById('autorefresh-btn');
+  let arTimer = null;
+  function setAR(on) {
+    localStorage.setItem(AR_KEY, on ? '1' : '0');
+    arBtn.classList.toggle('on', on);
+    arBtn.textContent = '◷ Auto-refresh: ' + (on ? 'On (30s)' : 'Off');
+    if (arTimer) clearInterval(arTimer);
+    if (on) arTimer = setInterval(() => location.reload(), 30000);
+  }
+  setAR(localStorage.getItem(AR_KEY) === '1');
+  arBtn.addEventListener('click', () => setAR(localStorage.getItem(AR_KEY) !== '1'));
+
+  // File-tree expand/collapse (per card)
+  document.querySelectorAll('.tree-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('open');
+      const tree = btn.nextElementSibling;
+      if (tree && tree.classList.contains('tree')) tree.classList.toggle('open');
+    });
+  });
+
+  // Dismiss (REMOVED cards only) — copies the dismiss command to clipboard and prompts the user
+  document.querySelectorAll('.dismiss-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const slug = btn.dataset.slug;
+      const cmd = '/dismiss ' + slug;
+      navigator.clipboard?.writeText(cmd);
+      alert('Copied to clipboard:\n\n  ' + cmd + '\n\nPaste this into Claude Code to remove ' + slug + ' from the dashboard.');
+    });
+  });
+})();
+</script>
+
+<!--
+═══════════════════════════════════════════════════════════════════════
+DASHBOARD REGENERATION CONTRACT — NON-NEGOTIABLE
+═══════════════════════════════════════════════════════════════════════
+
+TRACKED_SLUGS and REMOVED_SLUGS (near the top of <head>) are persistent state.
+The assistant MUST update them on every regeneration to detect deleted folders.
+
+WHEN TO REGENERATE (not just end of session):
+  • After each of the 7 /new-research workflow steps completes (topic captured,
+    core questions answered, documents read, complexity classified, clarification
+    rounds done, outputs asked, outputs generated)
+  • After /continue when handover is loaded AND again after outputs bump
+  • After /recalibrate regenerates outputs
+  • After /dismiss <slug> removes a slug from REMOVED_SLUGS
+  • On every /status call
+
+ENUMERATION PROCEDURE:
+  1. Parse TRACKED_SLUGS from the prior dashboard.html (comma-separated)
+  2. Parse REMOVED_SLUGS from the prior dashboard.html (comma-separated)
+  3. List every directory under research/ (skip: dashboard.html, dashboard.plan.md, .gitkeep, hidden dirs)
+  4. For each directory found:
+       • Read .memory/handover.md → extract name, goal, audience, last-updated, version
+       • Scan output/ → list every file with full relative path
+       • Determine status: Active (modified <14 days) | Completed (handover has ## Completed) | Needs Review (Open Questions non-empty)
+  5. Update TRACKED_SLUGS = current live slugs
+  6. Compute removed = (prior TRACKED_SLUGS) minus (current filesystem slugs), union with prior REMOVED_SLUGS
+  7. Update REMOVED_SLUGS = removed list
+  8. Sort live cards by last-updated DESC; removed cards appear after live cards
+
+CARD TEMPLATES:
+
+Live card:
+<div class="card" id="[slug]">
+  <div class="card-head">
+    <div>
+      <div class="card-title">[Research name]</div>
+      <div class="card-meta">research/[slug]/ · Updated [YYYY-MM-DD]</div>
+    </div>
+    <span class="card-v">v[N]</span>
+  </div>
+  <div class="card-goal">[End goal one-line]</div>
+  <div class="row">
+    <span class="badge [active|complete|review]">[Active|Completed|Needs Review]</span>
+    <span>Audience: [audience]</span>
+  </div>
+  <button class="tree-toggle">Files ([count])</button>
+  <div class="tree">
+    <div class="tree-folder">output/</div>
+    <a class="tree-file" href="[slug]/output/executive_summary_v[N].md" target="_blank">executive_summary_v[N].md<span class="ext">MD</span></a>
+    <a class="tree-file" href="[slug]/output/briefing_v[N].html" target="_blank">briefing_v[N].html<span class="ext">HTML</span></a>
+    [... one tree-file anchor per existing file ...]
+    <div class="tree-folder">.memory/</div>
+    <a class="tree-file" href="[slug]/.memory/handover.md" target="_blank">handover.md<span class="ext">MD</span></a>
+    <a class="tree-file" href="[slug]/.memory/session-log.md" target="_blank">session-log.md<span class="ext">MD</span></a>
+  </div>
+</div>
+
+Removed card (folder deleted from disk):
+<div class="card removed" id="[slug]">
+  <div class="card-head">
+    <div>
+      <div class="card-title">[Research name]</div>
+      <div class="card-meta">research/[slug]/ · Folder no longer on disk</div>
+    </div>
+    <span class="card-v">v[N]</span>
+  </div>
+  <div class="card-goal">[last known goal]</div>
+  <div class="row"><span class="badge removed">Removed</span></div>
+  <button class="dismiss-btn" data-slug="[slug]">Dismiss from dashboard</button>
+</div>
+
+SIDEBAR:
+  One <li><a href="#[slug]"><span class="dot [active|complete|review|removed]"></span>[Research name]</a></li> per tracked topic.
+
+STATS:
+  c-total = live card count
+  c-active = Active count
+  c-complete = Completed count
+  c-removed = Removed card count
+
+EMPTY STATE:
+  Leave the #empty-state div in place ONLY when TRACKED_SLUGS is empty AND no live folders exist.
+
+VERIFICATION AFTER EVERY REGENERATION:
+  ✓ Every tree-file anchor href resolves to an existing file
+  ✓ v[N] in card header matches max version across the folder's output/
+  ✓ Stat counters sum correctly
+  ✓ TRACKED_SLUGS and REMOVED_SLUGS comments reflect current state
+  ✓ Page opens offline; no external JS or CSS except Google Fonts
+  ✓ Sidebar anchor links resolve to card IDs
+
+DO NOT delete this comment block. Future sessions rely on it.
+═══════════════════════════════════════════════════════════════════════
+-->
+
+</body>
+</html>

@@ -1,0 +1,733 @@
+<!--
+TEMPLATE: board-deck
+CATEGORY: Executive / Board
+USE WHEN: Presenting a board deck as a scrollable HTML document with distinct full-section slides — ideal when a traditional slide tool is not available or when the deck needs to be emailed as a self-contained file.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Board Deck — {{TITLE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #162030;
+      --primary: #3b9eff;
+      --secondary: #a78bfa;
+      --accent: #2dd4a0;
+      --warn: #f0a050;
+      --error: #f06070;
+      --text: #d0d8e4;
+      --muted: #8899ac;
+      --subtle: #3a4a5a;
+      --border: rgba(255,255,255,0.07);
+      --border-strong: rgba(255,255,255,0.13);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* ── Nav dots ── */
+    .nav-dots {
+      position: fixed;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      z-index: 100;
+    }
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--subtle);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      border: none;
+      padding: 0;
+    }
+    .nav-dot:hover,
+    .nav-dot:focus { background: var(--primary); transform: scale(1.4); outline: none; }
+    .nav-dot[aria-current="true"] { background: var(--primary); transform: scale(1.3); }
+
+    /* ── Slide base ── */
+    .slide {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 5rem;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .slide-number {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--subtle);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── Slide 1: Title ── */
+    .slide-title {
+      background: var(--bg);
+      align-items: flex-start;
+    }
+    .slide-title::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+    .title-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+    .slide-title h1 {
+      font-size: 3.8rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      max-width: 700px;
+      margin-bottom: 1.5rem;
+    }
+    .slide-title .title-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.6;
+      margin-bottom: 3rem;
+    }
+    .title-meta {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .title-meta-item .tm-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--subtle);
+      margin-bottom: 0.2rem;
+    }
+    .title-meta-item .tm-value {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* ── Slide 2: Agenda ── */
+    .slide-agenda { background: var(--surface); }
+    .agenda-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      max-width: 780px;
+    }
+    .agenda-item {
+      background: var(--bg);
+      padding: 1.4rem 1.6rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .agenda-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--primary);
+      min-width: 1.8rem;
+      padding-top: 0.15rem;
+    }
+    .agenda-text strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+    .agenda-text span { font-size: 0.82rem; color: var(--muted); }
+
+    /* ── Slide 3: Metrics ── */
+    .slide-metrics { background: var(--bg); }
+    .metrics-big-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      max-width: 760px;
+      margin-top: 2rem;
+    }
+    .big-metric {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--primary);
+      padding: 2rem 1.8rem;
+    }
+    .big-metric.green { border-top-color: var(--accent); }
+    .big-metric.purple { border-top-color: var(--secondary); }
+    .big-metric.amber { border-top-color: var(--warn); }
+    .big-metric .bm-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--subtle);
+      margin-bottom: 0.8rem;
+    }
+    .big-metric .bm-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .big-metric .bm-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .big-metric .bm-vs {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      margin-top: 0.5rem;
+    }
+    .up   { color: var(--accent); }
+    .down { color: var(--error); }
+    .flat { color: var(--warn); }
+
+    /* ── Slide 4: Strategic focus ── */
+    .slide-strategic { background: var(--surface); }
+    .focus-pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+      max-width: 900px;
+    }
+    .focus-pillar {
+      padding: 2rem 1.5rem;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      position: relative;
+    }
+    .pillar-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .icon-blue   { background: rgba(59,158,255,0.15);  color: var(--primary); }
+    .icon-green  { background: rgba(45,212,160,0.12);  color: var(--accent); }
+    .icon-purple { background: rgba(167,139,250,0.12); color: var(--secondary); }
+    .focus-pillar h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.7rem;
+      line-height: 1.3;
+    }
+    .focus-pillar p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Slide 5: Key decisions ── */
+    .slide-decisions { background: var(--bg); }
+    .decision-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 2rem;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .decision-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--warn);
+      padding: 1.4rem 1.8rem;
+    }
+    .decision-item.approved { border-left-color: var(--accent); }
+    .decision-item.deferred { border-left-color: var(--subtle); }
+    .decision-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+    .decision-title {
+      font-size: 0.97rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .decision-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.55rem;
+      border-radius: 3px;
+    }
+    .badge-required  { background: rgba(240,160,80,0.15); color: var(--warn); border: 1px solid rgba(240,160,80,0.25); }
+    .badge-approved  { background: rgba(45,212,160,0.1);  color: var(--accent); border: 1px solid rgba(45,212,160,0.2); }
+    .badge-deferred  { background: rgba(58,74,90,0.3);   color: var(--muted); border: 1px solid var(--border-strong); }
+    .decision-body {
+      font-size: 0.87rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .decision-ask {
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-family: 'DM Mono', monospace;
+      margin-top: 0.5rem;
+    }
+
+    /* ── Slide 6: Next steps ── */
+    .slide-next { background: var(--surface); }
+    .next-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+      max-width: 780px;
+    }
+    .next-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 1.3rem 1.5rem;
+      display: flex;
+      gap: 1rem;
+    }
+    .next-due {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--secondary);
+      min-width: 55px;
+      padding-top: 0.1rem;
+    }
+    .next-content strong {
+      display: block;
+      font-size: 0.92rem;
+      color: var(--text);
+      margin-bottom: 0.2rem;
+    }
+    .next-content span { font-size: 0.82rem; color: var(--muted); }
+
+    /* ── Slide 7: Close ── */
+    .slide-close {
+      background: var(--bg);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .slide-close::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--secondary), var(--primary), var(--accent));
+    }
+    .close-brand {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--subtle);
+      margin-bottom: 1.5rem;
+    }
+    .close-h {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+    .close-sub {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 420px;
+      margin: 0 auto 3rem;
+      line-height: 1.6;
+    }
+    .close-contact {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ── Slide section labels ── */
+    .slide-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    .slide h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+    .slide .slide-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    /* ── Footer strip on all slides ── */
+    .slide-footer {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--subtle);
+    }
+
+    /* ── Keyboard hint ── */
+    .kb-hint {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--subtle);
+      letter-spacing: 0.08em;
+      pointer-events: none;
+      z-index: 90;
+    }
+
+    /* ── Print ── */
+    @media print {
+      .nav-dots, .kb-hint { display: none; }
+      .slide { min-height: auto; padding: 2.5cm 3cm; page-break-after: always; border-bottom: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .slide-number { position: static; margin-top: 1.5rem; }
+      @page { size: A4 landscape; margin: 0; }
+    }
+
+    /* ── Scroll snap (optional smooth experience) ── */
+    @media (min-height: 600px) {
+      html { scroll-snap-type: y mandatory; }
+      .slide { scroll-snap-align: start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation dots -->
+  <nav class="nav-dots" aria-label="Slide navigation">
+    <button class="nav-dot" onclick="scrollToSlide(1)" aria-label="Slide 1: Title" aria-current="true"></button>
+    <button class="nav-dot" onclick="scrollToSlide(2)" aria-label="Slide 2: Agenda"></button>
+    <button class="nav-dot" onclick="scrollToSlide(3)" aria-label="Slide 3: Performance"></button>
+    <button class="nav-dot" onclick="scrollToSlide(4)" aria-label="Slide 4: Strategy"></button>
+    <button class="nav-dot" onclick="scrollToSlide(5)" aria-label="Slide 5: Decisions"></button>
+    <button class="nav-dot" onclick="scrollToSlide(6)" aria-label="Slide 6: Next Steps"></button>
+    <button class="nav-dot" onclick="scrollToSlide(7)" aria-label="Slide 7: Close"></button>
+  </nav>
+
+  <div class="kb-hint">Scroll or use arrow keys to navigate</div>
+
+  <main>
+
+    <!-- Slide 1: Title -->
+    <section class="slide slide-title" id="slide-1">
+      <p class="title-eyebrow">Board of Directors Meeting &mdash; Q2 2027</p>
+      <h1>Meridian Health<br>Board Review</h1>
+      <p class="title-sub">Quarterly performance, digital transformation progress, and four decisions requiring board action.</p>
+      <div class="title-meta">
+        <div class="title-meta-item"><p class="tm-label">Date</p><p class="tm-value">{{DATE}}</p></div>
+        <div class="title-meta-item"><p class="tm-label">Presented by</p><p class="tm-value">Elena Vasquez, CEO</p></div>
+        <div class="title-meta-item"><p class="tm-label">Version</p><p class="tm-value">{{VERSION}}</p></div>
+        <div class="title-meta-item"><p class="tm-label">Classification</p><p class="tm-value">Board Confidential</p></div>
+      </div>
+      <p class="slide-footer">Meridian Health &mdash; Board Confidential</p>
+      <span class="slide-number">01 / 07</span>
+    </section>
+
+    <!-- Slide 2: Agenda -->
+    <section class="slide slide-agenda" id="slide-2">
+      <p class="slide-label">Meeting Agenda</p>
+      <h2>Today's Board Session</h2>
+      <p class="slide-sub">Five items for discussion. Four require board votes.</p>
+      <ul class="agenda-list">
+        <li class="agenda-item">
+          <span class="agenda-num">01</span>
+          <div class="agenda-text"><strong>Q2 Business Performance</strong><span>Revenue, NPS, operational KPIs</span></div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-num">02</span>
+          <div class="agenda-text"><strong>Digital Platform Update</strong><span>Portal metrics, 55+ adoption programme</span></div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-num">03</span>
+          <div class="agenda-text"><strong>Strategic Focus Areas</strong><span>Phoenix market entry, Series C timing</span></div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-num">04</span>
+          <div class="agenda-text"><strong>Decisions Required</strong><span>Four votes &mdash; see slide 5</span></div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-num">05</span>
+          <div class="agenda-text"><strong>Next Steps &amp; Close</strong><span>Action items by owner and date</span></div>
+        </li>
+        <li class="agenda-item">
+          <span class="agenda-num">AO</span>
+          <div class="agenda-text"><strong>Any Other Business</strong><span>Board member-raised items</span></div>
+        </li>
+      </ul>
+      <p class="slide-footer">Meridian Health &mdash; Board Confidential</p>
+      <span class="slide-number">02 / 07</span>
+    </section>
+
+    <!-- Slide 3: Performance -->
+    <section class="slide slide-metrics" id="slide-3">
+      <p class="slide-label">Q2 Performance</p>
+      <h2>Key Metrics &mdash; Q2 FY 2027</h2>
+      <p class="slide-sub">Revenue and NPS ahead of plan. Digital adoption and claim denial rate behind.</p>
+      <div class="metrics-big-grid">
+        <div class="big-metric">
+          <p class="bm-label">Q2 Revenue</p>
+          <p class="bm-number">$74.2M</p>
+          <p class="bm-desc">vs target $72.0M</p>
+          <p class="bm-vs up">+3.1% vs plan</p>
+        </div>
+        <div class="big-metric green">
+          <p class="bm-label">Patient NPS</p>
+          <p class="bm-number">48</p>
+          <p class="bm-desc">vs target 45</p>
+          <p class="bm-vs up">+11pt vs prior year</p>
+        </div>
+        <div class="big-metric amber">
+          <p class="bm-label">Digital Appt Share</p>
+          <p class="bm-number">31%</p>
+          <p class="bm-desc">vs target 38%</p>
+          <p class="bm-vs flat">&minus;7pp vs plan</p>
+        </div>
+        <div class="big-metric purple">
+          <p class="bm-label">Claim Denial Rate</p>
+          <p class="bm-number">12.4%</p>
+          <p class="bm-desc">vs target 9.0%</p>
+          <p class="bm-vs down">+3.4pp behind plan</p>
+        </div>
+      </div>
+      <p class="slide-footer">Meridian Health &mdash; Board Confidential</p>
+      <span class="slide-number">03 / 07</span>
+    </section>
+
+    <!-- Slide 4: Strategic focus -->
+    <section class="slide slide-strategic" id="slide-4">
+      <p class="slide-label">Strategic Focus</p>
+      <h2>Three Priorities for H2 2027</h2>
+      <p class="slide-sub">Execution focus narrows to these three areas for the balance of the year.</p>
+      <div class="focus-pillars">
+        <div class="focus-pillar">
+          <div class="pillar-icon icon-blue">01</div>
+          <h3>Digital Adoption<br>55+ Sprint</h3>
+          <p>12-week UX accessibility programme targeting 25% digital appointment share in 55+ cohort by Q4. Accessibility-first redesign with user research starting 1 August.</p>
+        </div>
+        <div class="focus-pillar">
+          <div class="pillar-icon icon-green">02</div>
+          <h3>Revenue Cycle<br>Automation</h3>
+          <p>Phase 1 automation targeting 9.0% denial rate by 30 September. Vendor remediation plan approved. Independent validation team engaged for go-live sign-off.</p>
+        </div>
+        <div class="focus-pillar">
+          <div class="pillar-icon icon-purple">03</div>
+          <h3>Phoenix Market<br>Entry Decision</h3>
+          <p>Board decision required by 15 August: proceed with permanent site (delayed 8 weeks) or activate leased-space contingency plan. Both options fully costed.</p>
+        </div>
+      </div>
+      <p class="slide-footer">Meridian Health &mdash; Board Confidential</p>
+      <span class="slide-number">04 / 07</span>
+    </section>
+
+    <!-- Slide 5: Decisions -->
+    <section class="slide slide-decisions" id="slide-5">
+      <p class="slide-label">Board Action Required</p>
+      <h2>Decisions for Today's Session</h2>
+      <p class="slide-sub">Four items require formal board vote.</p>
+      <ul class="decision-list">
+        <li class="decision-item">
+          <div class="decision-meta">
+            <span class="decision-title">Phoenix Market Entry Contingency Plan — Authorise leased-space option</span>
+            <span class="decision-badge badge-required">Vote Required</span>
+          </div>
+          <p class="decision-body">Authorise CFO to execute 18-month lease on 8,200 sq ft Phoenix site as contingency for permitting delay. Estimated cost $1.4M vs $0.9M permanent site over 18 months. Difference: $500K.</p>
+          <p class="decision-ask">Ask: Authorise or defer to permanent site + accept 8-week delay?</p>
+        </li>
+        <li class="decision-item approved">
+          <div class="decision-meta">
+            <span class="decision-title">Series C Timeline — Begin investor relationship-building in Q3 2027</span>
+            <span class="decision-badge badge-approved">Pre-Approved</span>
+          </div>
+          <p class="decision-body">Board approved in principle in April 2027. Confirming Q3 start. CEO will brief board monthly on conversation pipeline. Formal raise begins Q4 2027.</p>
+          <p class="decision-ask">Ask: Confirm CEO authority to conduct non-binding investor conversations through Q3.</p>
+        </li>
+        <li class="decision-item">
+          <div class="decision-meta">
+            <span class="decision-title">Revenue Cycle Vendor — Authorise penalty clause activation</span>
+            <span class="decision-badge badge-required">Vote Required</span>
+          </div>
+          <p class="decision-body">Vendor missed Q2 delivery date. Contract allows $250K penalty activation. Legal recommends proceeding to signal credibility. COO recommends deferring to preserve working relationship.</p>
+          <p class="decision-ask">Ask: Activate penalty clause or accept remediation timeline without penalty?</p>
+        </li>
+        <li class="decision-item deferred">
+          <div class="decision-meta">
+            <span class="decision-title">2028 Capital Budget — Approve $22-26M total spend</span>
+            <span class="decision-badge badge-deferred">Q3 Board Meeting</span>
+          </div>
+          <p class="decision-body">Full 2028 capital plan deferred to September board meeting pending Phoenix decision and Q3 results. Preliminary range: $22-26M including Series C proceeds.</p>
+          <p class="decision-ask">No action required today.</p>
+        </li>
+      </ul>
+      <p class="slide-footer">Meridian Health &mdash; Board Confidential</p>
+      <span class="slide-number">05 / 07</span>
+    </section>
+
+    <!-- Slide 6: Next steps -->
+    <section class="slide slide-next" id="slide-6">
+      <p class="slide-label">Next Steps</p>
+      <h2>Actions &amp; Owners</h2>
+      <p class="slide-sub">All items owner-assigned with hard due dates.</p>
+      <div class="next-grid">
+        <div class="next-item">
+          <span class="next-due">15 Aug</span>
+          <div class="next-content">
+            <strong>Phoenix decision communicated to site contacts</strong>
+            <span>CEO to notify both permanent and leased-space vendors of board decision within 48 hours of today's vote.</span>
+          </div>
+        </div>
+        <div class="next-item">
+          <span class="next-due">1 Aug</span>
+          <div class="next-content">
+            <strong>55+ UX accessibility sprint kickoff</strong>
+            <span>CTO to contract UX research firm and begin patient interviews. 90-day sprint timeline confirmed.</span>
+          </div>
+        </div>
+        <div class="next-item">
+          <span class="next-due">30 Sep</span>
+          <div class="next-content">
+            <strong>Revenue cycle automation Phase 1 go-live</strong>
+            <span>COO and CFO to confirm vendor go-live readiness with independent validation. Board to receive status by 15 September.</span>
+          </div>
+        </div>
+        <div class="next-item">
+          <span class="next-due">Sep Board</span>
+          <div class="next-content">
+            <strong>2028 capital budget presented for approval</strong>
+            <span>CFO to present full capital plan at September board meeting. Draft distributed 10 days prior.</span>
+          </div>
+        </div>
+        <div class="next-item">
+          <span class="next-due">Ongoing</span>
+          <div class="next-content">
+            <strong>Series C investor conversations</strong>
+            <span>CEO to brief board monthly via email on active conversations, targets, and any term sheet discussions.</span>
+          </div>
+        </div>
+        <div class="next-item">
+          <span class="next-due">Sep Board</span>
+          <div class="next-content">
+            <strong>Q3 performance review and Series C narrative</strong>
+            <span>Full QBR plus first draft of Series C investor narrative presented at September board meeting.</span>
+          </div>
+        </div>
+      </div>
+      <p class="slide-footer">Meridian Health &mdash; Board Confidential</p>
+      <span class="slide-number">06 / 07</span>
+    </section>
+
+    <!-- Slide 7: Close -->
+    <section class="slide slide-close" id="slide-7">
+      <p class="close-brand">Meridian Health &mdash; Board of Directors</p>
+      <h2 class="close-h">Thank You</h2>
+      <p class="close-sub">Questions, discussion, and any other business.</p>
+      <div class="close-contact">
+        Elena Vasquez, CEO<br>
+        elena.vasquez@meridianhealth.example<br>
+        Board materials: board.meridianhealth.example<br>
+        {{DATE}} &nbsp;|&nbsp; {{VERSION}}
+      </div>
+      <span class="slide-number">07 / 07</span>
+    </section>
+
+  </main>
+
+  <script>
+    function scrollToSlide(n) {
+      const el = document.getElementById('slide-' + n);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Update nav dots on scroll
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.nav-dot');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const idx = Array.from(slides).indexOf(entry.target);
+          dots.forEach((d, i) => d.setAttribute('aria-current', i === idx ? 'true' : 'false'));
+        }
+      });
+    }, { threshold: 0.5 });
+    slides.forEach(s => observer.observe(s));
+
+    // Arrow key navigation
+    document.addEventListener('keydown', e => {
+      const active = Array.from(slides).findIndex(s => {
+        const r = s.getBoundingClientRect();
+        return r.top >= -50 && r.top < window.innerHeight / 2;
+      });
+      if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+        e.preventDefault();
+        if (active < slides.length - 1) slides[active + 1].scrollIntoView({ behavior: 'smooth' });
+      }
+      if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        if (active > 0) slides[active - 1].scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  </script>
+
+</body>
+</html>

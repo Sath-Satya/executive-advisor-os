@@ -1,0 +1,303 @@
+<!--
+TEMPLATE: ceo-memo
+CATEGORY: Executive / Board
+USE WHEN: A CEO needs to communicate a significant company-wide decision, change, or strategic direction to all employees in a warm, direct letter format.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEO Memo — {{TITLE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream-dark: #ede9e0;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --warm-red: #b03a2e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 17px; }
+    body {
+      font-family: 'DM Sans', 'Georgia', serif;
+      background: var(--cream-dark);
+      color: var(--ink);
+      line-height: 1.75;
+      min-height: 100vh;
+      padding: 3rem 1rem;
+    }
+
+    /* ── Letterhead ── */
+    .letter-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--cream);
+      box-shadow: 0 2px 40px rgba(14,27,46,0.1);
+    }
+    .letterhead {
+      background: var(--navy);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .letterhead .company-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .letterhead .company-sub {
+      font-size: 0.72rem;
+      color: var(--gold2);
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.08em;
+      margin-top: 0.2rem;
+    }
+    .letterhead .letterhead-meta {
+      text-align: right;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+    }
+
+    /* ── Memo body ── */
+    .letter-body {
+      padding: 3rem 3rem 2.5rem;
+    }
+
+    /* ── TO / FROM block ── */
+    .memo-header-block {
+      border-bottom: 2px solid var(--gold);
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+    }
+    .memo-field {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+    }
+    .memo-field .field-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 0.1rem;
+    }
+    .memo-field .field-value {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* ── Large subject line ── */
+    .memo-subject {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-top: 1.5rem;
+    }
+
+    /* ── Body paragraphs ── */
+    .letter-body p {
+      font-size: 1rem;
+      color: var(--ink);
+      line-height: 1.8;
+      margin-bottom: 1.4rem;
+    }
+    .letter-body p strong {
+      color: var(--navy);
+    }
+    .letter-body p em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    /* ── Pullquote ── */
+    .pullquote {
+      border-left: 3px solid var(--gold);
+      padding: 0.8rem 1.5rem;
+      margin: 2rem 0;
+      background: var(--cream-dark);
+    }
+    .pullquote p {
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--navy);
+      margin: 0;
+    }
+
+    /* ── Commitments list ── */
+    .commitments {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 1.5rem;
+    }
+    .commitments li {
+      display: flex;
+      gap: 0.9rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+    .commitments li:last-child { border-bottom: none; }
+    .commitment-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      margin-top: 0.55rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Signature block ── */
+    .signature-block {
+      margin-top: 2.5rem;
+      padding-top: 1.8rem;
+      border-top: 1px solid var(--border);
+    }
+    .signature-block .closing {
+      font-size: 1rem;
+      color: var(--ink);
+      margin-bottom: 2rem;
+    }
+    .signature-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: -0.01em;
+    }
+    .signature-title {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--navy);
+      padding: 1rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    footer .footer-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: rgba(255,255,255,0.35);
+    }
+    footer .footer-text strong {
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .letter-wrap { box-shadow: none; max-width: 100%; }
+      .letterhead { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      footer { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      @page { margin: 2cm 2.5cm; size: A4 portrait; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <article class="letter-wrap">
+
+      <header class="letterhead">
+        <div>
+          <p class="company-name">Meridian Health</p>
+          <p class="company-sub">All-Hands Memorandum</p>
+        </div>
+        <div class="letterhead-meta">
+          Strictly Internal<br>
+          {{DATE}}
+        </div>
+      </header>
+
+      <div class="letter-body">
+
+        <div class="memo-header-block">
+          <div class="memo-field">
+            <span class="field-label">To</span>
+            <span class="field-value">All Meridian Health Employees</span>
+          </div>
+          <div class="memo-field">
+            <span class="field-label">From</span>
+            <span class="field-value">Elena Vasquez, Chief Executive Officer</span>
+          </div>
+          <div class="memo-field">
+            <span class="field-label">Date</span>
+            <span class="field-value">{{DATE}}</span>
+          </div>
+          <div class="memo-field">
+            <span class="field-label">Re</span>
+            <span class="field-value">Our Path Forward: Platform Investment and What It Means for You</span>
+          </div>
+
+          <h1 class="memo-subject">Building the Platform Our Patients Deserve</h1>
+        </div>
+
+        <p>Three years ago, I made a promise to this organisation: we would only invest in technology that made a direct and measurable difference in the lives of our patients. Today, I am writing to tell you that we are making the most significant technology investment in Meridian's 22-year history — and I want to explain why, and what it means for every one of you.</p>
+
+        <p>The healthcare landscape has changed faster than any of us anticipated. <strong>Our patients expect the same digital experience from us that they get from their bank, their airline, and their pharmacy.</strong> They want to schedule appointments at midnight from their phone. They want their care team to know their history before they walk in the door. They want proactive reminders, not missed follow-ups. We have not been giving them that — and we know it.</p>
+
+        <div class="pullquote">
+          <p>"We are not behind because our people lack ambition. We are behind because we under-invested in the tools that allow that ambition to reach patients."</p>
+        </div>
+
+        <p>The Board has approved a phased investment of $8.4 million to rebuild our patient-facing platform over the next 18 months. This is not a technology project. This is a patient experience project. The technology is just the means.</p>
+
+        <p>Here is what I am committing to you personally as we undertake this work:</p>
+
+        <ul class="commitments">
+          <li><span class="commitment-dot"></span><span>No involuntary role changes will result from this programme. We are building capacity, not cutting headcount.</span></li>
+          <li><span class="commitment-dot"></span><span>Every team affected by the new platform will receive structured training before go-live — not after.</span></li>
+          <li><span class="commitment-dot"></span><span>We will communicate progress monthly to all staff, including what is going well and what is not.</span></li>
+          <li><span class="commitment-dot"></span><span>Frontline clinical staff will have direct input into the patient experience design. You see what patients need. We will listen.</span></li>
+        </ul>
+
+        <p>I know that large technology programmes carry a reputation for over-promising and under-delivering. I have seen that happen elsewhere. We will run this programme differently: in phases, with clear success criteria at each phase, and with the courage to pause and correct if the evidence tells us to.</p>
+
+        <p>I am proud of what this organisation has built over two decades of patient care. <em>This investment is a statement of confidence in our future, not a judgement on our past.</em> We are doing this because we believe Meridian can be the healthcare provider of choice in every market we serve — and because our patients deserve nothing less.</p>
+
+        <p>A town hall session for all staff will be held on 5 September at 10:00&nbsp;AM PST. You will be able to ask questions live, and all sessions will be recorded. Details will follow via the usual internal channels.</p>
+
+        <p>Thank you for the work you do every day.</p>
+
+        <div class="signature-block">
+          <p class="closing">With gratitude,</p>
+          <p class="signature-name">Elena Vasquez</p>
+          <p class="signature-title">Chief Executive Officer, Meridian Health</p>
+        </div>
+
+      </div>
+
+      <footer>
+        <span class="footer-text"><strong>Meridian Health</strong> &mdash; All-Hands Memorandum &mdash; Internal Use Only</span>
+        <span class="footer-text">{{DATE}} &nbsp;|&nbsp; {{VERSION}}</span>
+      </footer>
+
+    </article>
+  </main>
+</body>
+</html>

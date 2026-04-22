@@ -1,0 +1,496 @@
+<!--
+TEMPLATE: risk-assessment
+CATEGORY: Reports / Documents
+USE WHEN: Presenting a risk assessment with likelihood x impact matrix heatmap, risk register table, and mitigation action plan.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Risk Assessment — {{PROJECT_NAME}} — {{DATE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream2: #efebe3;
+      --navy: #0e1b2e;
+      --navy2: #162540;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --callout-bg: #f0ece4;
+      --risk-critical: #7f1d1d;
+      --risk-critical-bg: #fecaca;
+      --risk-high: #b91c1c;
+      --risk-high-bg: #fee2e2;
+      --risk-medium: #92400e;
+      --risk-medium-bg: #fef3e2;
+      --risk-low: #2d6a4f;
+      --risk-low-bg: #d1fae5;
+      --heatmap-1: #d1fae5;  /* L1 */
+      --heatmap-2: #fef3e2;  /* L2 */
+      --heatmap-3: #fed7aa;  /* L3 */
+      --heatmap-4: #fca5a5;  /* L4 */
+      --heatmap-5: #f87171;  /* L5 = critical */
+      --sans: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', 'Fira Code', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* ── Header ── */
+    .ra-header { background: var(--navy); padding: 2.5rem 2rem; border-bottom: 3px solid var(--gold); }
+    .hdr-inner { max-width: 960px; margin: 0 auto; }
+    .ra-label { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold2); display: block; margin-bottom: 0.6rem; }
+    h1 { font-family: var(--sans); font-size: 1.8rem; font-weight: 600; color: #fff; line-height: 1.2; margin-bottom: 0.6rem; }
+    .ra-subtitle { font-size: 0.9rem; color: #8899b0; max-width: 580px; margin-bottom: 1.75rem; }
+    .ra-meta { display: flex; flex-wrap: wrap; gap: 2rem; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 1.25rem; }
+    .ra-meta-label { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold2); display: block; margin-bottom: 0.2rem; }
+    .ra-meta-value { font-size: 0.875rem; color: #c0cede; }
+
+    /* ── Summary strip ── */
+    .summary-strip { background: var(--cream2); border-bottom: 1px solid var(--border); }
+    .summary-inner { max-width: 960px; margin: 0 auto; padding: 1.25rem 2rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+    .sum-stat { text-align: center; padding: 0.5rem; border-right: 1px solid var(--border); }
+    .sum-stat:last-child { border-right: none; }
+    .sum-value { display: block; font-size: 2rem; font-weight: 700; line-height: 1.1; }
+    .sum-value.critical { color: var(--risk-critical); }
+    .sum-value.high { color: var(--risk-high); }
+    .sum-value.medium { color: var(--risk-medium); }
+    .sum-value.low { color: var(--risk-low); }
+    .sum-label { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+
+    /* ── Layout ── */
+    .doc-wrap { max-width: 960px; margin: 0 auto; padding: 0 2rem 4rem; }
+
+    /* ── Sections ── */
+    .ra-section { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+    .ra-section:last-child { border-bottom: none; }
+    .section-eyebrow { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); display: block; margin-bottom: 0.5rem; }
+    h2 { font-family: var(--sans); font-size: 1.35rem; font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 1.25rem; }
+    h3 { font-family: var(--sans); font-size: 0.975rem; font-weight: 600; color: var(--navy); margin-top: 1.75rem; margin-bottom: 0.5rem; }
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Heatmap ── */
+    .heatmap-container {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      margin: 1.5rem 0;
+      flex-wrap: wrap;
+    }
+    .heatmap-figure {
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+      flex-shrink: 0;
+    }
+    .heatmap-title {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 1rem;
+    }
+    /* The grid: 5 rows (impact 5→1) x 5 cols (likelihood 1→5) */
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: 2rem repeat(5, 2.2rem);
+      grid-template-rows: repeat(5, 2.2rem) 2rem;
+      gap: 3px;
+    }
+    .hm-axis-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hm-row-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 4px;
+    }
+    .hm-cell {
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 0.55rem;
+      font-weight: 700;
+      color: rgba(0,0,0,0.5);
+      cursor: default;
+      position: relative;
+    }
+    .hm-1 { background: var(--heatmap-1); }
+    .hm-2 { background: var(--heatmap-2); }
+    .hm-3 { background: var(--heatmap-3); }
+    .hm-4 { background: var(--heatmap-4); }
+    .hm-5 { background: var(--heatmap-5); color: rgba(255,255,255,0.8); }
+    .hm-dot {
+      position: absolute;
+      width: 12px; height: 12px;
+      background: var(--navy);
+      border: 2px solid #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.45rem;
+      color: #fff;
+      font-weight: 800;
+    }
+    .heatmap-legend { margin-top: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .legend-item { display: flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; color: var(--muted); }
+    .legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+    .heatmap-key { flex: 1; min-width: 200px; }
+    .heatmap-key-row { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.3rem 0; border-bottom: 1px dotted var(--border); font-size: 0.82rem; }
+    .heatmap-key-row:last-child { border-bottom: none; }
+    .heatmap-key-label { width: 1.5rem; height: 1.5rem; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.6rem; font-weight: 700; flex-shrink: 0; }
+
+    /* ── Risk register table ── */
+    .risk-table-wrap { overflow-x: auto; margin: 1.25rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    caption { text-align: left; font-size: 0.78rem; font-family: var(--mono); color: var(--muted); margin-bottom: 0.5rem; }
+    th { background: var(--navy); color: #fff; font-weight: 500; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.65rem 0.9rem; text-align: left; }
+    td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--callout-bg); }
+    .risk-badge { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 3px; font-family: var(--mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+    .risk-critical { background: var(--risk-critical-bg); color: var(--risk-critical); }
+    .risk-high { background: var(--risk-high-bg); color: var(--risk-high); }
+    .risk-medium { background: var(--risk-medium-bg); color: var(--risk-medium); }
+    .risk-low { background: var(--risk-low-bg); color: var(--risk-low); }
+    .score-cell { font-family: var(--mono); font-weight: 700; font-size: 0.9rem; text-align: center; }
+
+    /* ── Mitigation cards ── */
+    .mitigation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.25rem 0; }
+    .mit-card { background: var(--cream2); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem 1.5rem; border-left: 4px solid; }
+    .mit-card.critical { border-left-color: var(--risk-critical); }
+    .mit-card.high { border-left-color: var(--risk-high); }
+    .mit-card.medium { border-left-color: var(--risk-medium); }
+    .mit-card.low { border-left-color: var(--risk-low); }
+    .mit-risk-id { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); display: block; margin-bottom: 0.25rem; }
+    .mit-risk-name { font-weight: 600; font-size: 0.9rem; color: var(--navy); margin-bottom: 0.6rem; display: block; }
+    .mit-action { font-size: 0.85rem; color: var(--ink); margin-bottom: 0.6rem; }
+    .mit-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .mit-meta-item { font-size: 0.75rem; color: var(--muted); }
+    .mit-meta-item strong { color: var(--navy); }
+
+    /* ── Footer ── */
+    .ra-footer { background: var(--navy); color: #6b7e94; padding: 1.5rem 2rem; font-size: 0.78rem; font-family: var(--mono); }
+    .ra-footer .hdr-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+    .footer-brand { color: var(--gold2); font-weight: 500; }
+    .footer-div { color: rgba(255,255,255,0.2); margin: 0 0.5rem; }
+
+    /* ── Print ── */
+    @media print {
+      @page { margin: 2cm; size: A4 landscape; }
+      body { background: #fff; font-size: 10pt; }
+      .ra-header { background: #fff; padding: 0; border-bottom-color: var(--gold); }
+      h1 { color: var(--navy); font-size: 16pt; }
+      .ra-label, .ra-meta-label { color: var(--gold); }
+      .ra-meta-value, .ra-subtitle { color: var(--muted); }
+      .summary-strip { background: #f0ece4; }
+      .mitigation-grid { grid-template-columns: 1fr 1fr; }
+      .ra-section { break-inside: avoid; }
+      .ra-footer { background: #fff; color: var(--muted); border-top: 1px solid var(--border); padding: 0.5cm 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="ra-header">
+    <div class="hdr-inner">
+      <span class="ra-label">Meridian Health — AI Program Office &bull; Risk Register</span>
+      <h1>Risk Assessment: AI-Augmented Utilization Management Platform</h1>
+      <p class="ra-subtitle">Comprehensive risk identification, likelihood-impact assessment, and mitigation planning for the AI-augmented prior authorization system. Assessment date: {{DATE}}. Next scheduled review: {{NEXT_REVIEW}}.</p>
+      <div class="ra-meta">
+        <div><span class="ra-meta-label">Risk Owner</span><span class="ra-meta-value">{{RISK_OWNER}}</span></div>
+        <div><span class="ra-meta-label">Assessment Date</span><span class="ra-meta-value">{{DATE}}</span></div>
+        <div><span class="ra-meta-label">Version</span><span class="ra-meta-value">{{VERSION}}</span></div>
+        <div><span class="ra-meta-label">Classification</span><span class="ra-meta-value">{{CLASSIFICATION}}</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Summary Strip ── -->
+  <div class="summary-strip" role="region" aria-label="Risk summary by severity">
+    <div class="summary-inner">
+      <div class="sum-stat"><span class="sum-value critical">2</span><span class="sum-label">Critical</span></div>
+      <div class="sum-stat"><span class="sum-value high">4</span><span class="sum-label">High</span></div>
+      <div class="sum-stat"><span class="sum-value medium">7</span><span class="sum-label">Medium</span></div>
+      <div class="sum-stat"><span class="sum-value low">5</span><span class="sum-label">Low</span></div>
+    </div>
+  </div>
+
+  <!-- ── Body ── */
+  <div class="doc-wrap">
+
+    <!-- Heatmap Section -->
+    <section class="ra-section" id="heatmap">
+      <span class="section-eyebrow">Risk Matrix</span>
+      <h2>Likelihood vs. Impact Heatmap</h2>
+      <p>Each risk is plotted on a 5x5 matrix. Likelihood (1=Rare to 5=Almost Certain) on the horizontal axis; Impact (1=Negligible to 5=Catastrophic) on the vertical axis. Risk score = Likelihood x Impact. Labeled dots correspond to risks in the register below.</p>
+
+      <div class="heatmap-container">
+        <div class="heatmap-figure" aria-label="5 by 5 risk heatmap">
+          <span class="heatmap-title">Likelihood x Impact Matrix</span>
+          <!-- Grid: rows are Impact 5→1 (top to bottom), cols are Likelihood 1→5 -->
+          <div class="heatmap-grid">
+            <!-- Impact axis label (rotated via inline svg trick would require JS; use row labels) -->
+            <div></div><!-- top-left corner -->
+            <!-- Col headers (likelihood) -->
+            <div class="hm-axis-label">L1</div>
+            <div class="hm-axis-label">L2</div>
+            <div class="hm-axis-label">L3</div>
+            <div class="hm-axis-label">L4</div>
+            <div class="hm-axis-label">L5</div>
+
+            <!-- Row 1: Impact 5 (Catastrophic) -->
+            <div class="hm-row-label">I5</div>
+            <div class="hm-cell hm-3">15</div>
+            <div class="hm-cell hm-4">20</div>
+            <div class="hm-cell hm-5">25</div>
+            <div class="hm-cell hm-5">25<div class="hm-dot" title="R-001">1</div></div>
+            <div class="hm-cell hm-5">25</div>
+
+            <!-- Row 2: Impact 4 (Major) -->
+            <div class="hm-row-label">I4</div>
+            <div class="hm-cell hm-2">4</div>
+            <div class="hm-cell hm-3">8</div>
+            <div class="hm-cell hm-4">12<div class="hm-dot" title="R-003">3</div></div>
+            <div class="hm-cell hm-4">16</div>
+            <div class="hm-cell hm-5">20<div class="hm-dot" title="R-002">2</div></div>
+
+            <!-- Row 3: Impact 3 (Moderate) -->
+            <div class="hm-row-label">I3</div>
+            <div class="hm-cell hm-1">3</div>
+            <div class="hm-cell hm-2">6<div class="hm-dot" title="R-005">5</div></div>
+            <div class="hm-cell hm-3">9</div>
+            <div class="hm-cell hm-3">12<div class="hm-dot" title="R-004">4</div></div>
+            <div class="hm-cell hm-4">15</div>
+
+            <!-- Row 4: Impact 2 (Minor) -->
+            <div class="hm-row-label">I2</div>
+            <div class="hm-cell hm-1">2</div>
+            <div class="hm-cell hm-1">4<div class="hm-dot" title="R-007">7</div></div>
+            <div class="hm-cell hm-2">6<div class="hm-dot" title="R-006">6</div></div>
+            <div class="hm-cell hm-2">8</div>
+            <div class="hm-cell hm-3">10</div>
+
+            <!-- Row 5: Impact 1 (Negligible) -->
+            <div class="hm-row-label">I1</div>
+            <div class="hm-cell hm-1">1</div>
+            <div class="hm-cell hm-1">2</div>
+            <div class="hm-cell hm-1">3</div>
+            <div class="hm-cell hm-2">4</div>
+            <div class="hm-cell hm-2">5</div>
+
+            <!-- Bottom row: likelihood labels -->
+            <div></div>
+            <div class="hm-axis-label" style="font-size:0.5rem;color:var(--muted)">Rare</div>
+            <div class="hm-axis-label" style="font-size:0.5rem;color:var(--muted)">Unlikely</div>
+            <div class="hm-axis-label" style="font-size:0.5rem;color:var(--muted)">Possible</div>
+            <div class="hm-axis-label" style="font-size:0.5rem;color:var(--muted)">Likely</div>
+            <div class="hm-axis-label" style="font-size:0.5rem;color:var(--muted)">Almost</div>
+          </div>
+          <div class="heatmap-legend">
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--heatmap-1)"></span>Low (1–5)</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--heatmap-2)"></span>Medium (6–9)</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--heatmap-3)"></span>High (10–14)</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--heatmap-4)"></span>Very High (15–19)</div>
+            <div class="legend-item"><span class="legend-swatch" style="background:var(--heatmap-5)"></span>Critical (20+)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Risk Register -->
+    <section class="ra-section" id="register">
+      <span class="section-eyebrow">Risk Register</span>
+      <h2>Risk Inventory</h2>
+
+      <div class="risk-table-wrap">
+        <table>
+          <caption>Table 1. Risk register — all identified risks with scores and ownership</caption>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Risk Description</th>
+              <th scope="col">Category</th>
+              <th scope="col">L</th>
+              <th scope="col">I</th>
+              <th scope="col">Score</th>
+              <th scope="col">Rating</th>
+              <th scope="col">Owner</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>R-001</strong></td>
+              <td>AI model produces systematically biased determinations against a protected class, triggering OCR investigation and CMS sanctions</td>
+              <td>Regulatory</td>
+              <td class="score-cell">4</td>
+              <td class="score-cell">5</td>
+              <td class="score-cell">20</td>
+              <td><span class="risk-badge risk-critical">Critical</span></td>
+              <td>CTO / CMO</td>
+              <td>Mitigating</td>
+            </tr>
+            <tr>
+              <td><strong>R-002</strong></td>
+              <td>Data breach of ePHI stored in AI training dataset exposes 340,000 member records</td>
+              <td>Security</td>
+              <td class="score-cell">5</td>
+              <td class="score-cell">4</td>
+              <td class="score-cell">20</td>
+              <td><span class="risk-badge risk-critical">Critical</span></td>
+              <td>CISO</td>
+              <td>Mitigating</td>
+            </tr>
+            <tr>
+              <td><strong>R-003</strong></td>
+              <td>AI model drift following formulary update causes systematic prior auth decision errors for 60+ days before detection</td>
+              <td>Operational</td>
+              <td class="score-cell">3</td>
+              <td class="score-cell">4</td>
+              <td class="score-cell">12</td>
+              <td><span class="risk-badge risk-high">High</span></td>
+              <td>AI Ops Lead</td>
+              <td>Open</td>
+            </tr>
+            <tr>
+              <td><strong>R-004</strong></td>
+              <td>Vendor API downtime during peak authorization period causes processing backlog exceeding regulatory time limits</td>
+              <td>Operational</td>
+              <td class="score-cell">4</td>
+              <td class="score-cell">3</td>
+              <td class="score-cell">12</td>
+              <td><span class="risk-badge risk-high">High</span></td>
+              <td>VP Operations</td>
+              <td>Mitigating</td>
+            </tr>
+            <tr>
+              <td><strong>R-005</strong></td>
+              <td>Clinician adoption failure: reviewers override AI recommendations at &gt;80%, negating efficiency gains</td>
+              <td>Change Mgmt</td>
+              <td class="score-cell">2</td>
+              <td class="score-cell">3</td>
+              <td class="score-cell">6</td>
+              <td><span class="risk-badge risk-medium">Medium</span></td>
+              <td>CMO</td>
+              <td>Monitoring</td>
+            </tr>
+            <tr>
+              <td><strong>R-006</strong></td>
+              <td>Sub-processor BAA gap creates HIPAA liability exposure during OCR audit</td>
+              <td>Compliance</td>
+              <td class="score-cell">3</td>
+              <td class="score-cell">2</td>
+              <td class="score-cell">6</td>
+              <td><span class="risk-badge risk-medium">Medium</span></td>
+              <td>Legal</td>
+              <td>Remediating</td>
+            </tr>
+            <tr>
+              <td><strong>R-007</strong></td>
+              <td>Key engineer departure during critical phase causes 45-day feature delay</td>
+              <td>Resource</td>
+              <td class="score-cell">2</td>
+              <td class="score-cell">2</td>
+              <td class="score-cell">4</td>
+              <td><span class="risk-badge risk-low">Low</span></td>
+              <td>Engineering Mgr</td>
+              <td>Monitoring</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Mitigation Actions -->
+    <section class="ra-section" id="mitigation">
+      <span class="section-eyebrow">Mitigation Plan</span>
+      <h2>Mitigation Actions by Risk</h2>
+
+      <div class="mitigation-grid">
+        <div class="mit-card critical">
+          <span class="mit-risk-id">R-001 — Critical</span>
+          <span class="mit-risk-name">AI Model Bias / Discrimination</span>
+          <p class="mit-action">Implement quarterly bias audits using stratified sampling by race/ethnicity, gender, and geography. Add real-time demographic parity monitoring to the AI observability stack. Engage external equity review firm for annual audit.</p>
+          <div class="mit-meta">
+            <span class="mit-meta-item"><strong>Due:</strong> {{MITIGATION_DATE}}</span>
+            <span class="mit-meta-item"><strong>Owner:</strong> CTO / CMO</span>
+            <span class="mit-meta-item"><strong>Target Score:</strong> 12 (High)</span>
+          </div>
+        </div>
+        <div class="mit-card critical">
+          <span class="mit-risk-id">R-002 — Critical</span>
+          <span class="mit-risk-name">ePHI Data Breach</span>
+          <p class="mit-action">Enable encryption at rest on all ePHI data stores. Implement data loss prevention (DLP) controls at API egress points. Conduct quarterly penetration testing of AI inference endpoints. Validate BAA coverage for all sub-processors.</p>
+          <div class="mit-meta">
+            <span class="mit-meta-item"><strong>Due:</strong> {{MITIGATION_DATE}}</span>
+            <span class="mit-meta-item"><strong>Owner:</strong> CISO</span>
+            <span class="mit-meta-item"><strong>Target Score:</strong> 10 (High)</span>
+          </div>
+        </div>
+        <div class="mit-card high">
+          <span class="mit-risk-id">R-003 — High</span>
+          <span class="mit-risk-name">AI Model Drift</span>
+          <p class="mit-action">Implement automated model performance monitoring with decision distribution alerts. Define and enforce a model revalidation trigger tied to formulary updates, guideline changes, and quarterly drift metrics. Establish a fast-path revalidation SLA of 10 business days.</p>
+          <div class="mit-meta">
+            <span class="mit-meta-item"><strong>Due:</strong> {{MITIGATION_DATE}}</span>
+            <span class="mit-meta-item"><strong>Owner:</strong> AI Ops Lead</span>
+            <span class="mit-meta-item"><strong>Target Score:</strong> 6 (Medium)</span>
+          </div>
+        </div>
+        <div class="mit-card high">
+          <span class="mit-risk-id">R-004 — High</span>
+          <span class="mit-risk-name">Vendor API Downtime</span>
+          <p class="mit-action">Implement fallback to manual review queue on vendor API timeout (&gt;30s). Negotiate 99.9% uptime SLA with penalty provisions. Deploy a queue-based retry architecture to absorb transient failures without losing requests.</p>
+          <div class="mit-meta">
+            <span class="mit-meta-item"><strong>Due:</strong> {{MITIGATION_DATE}}</span>
+            <span class="mit-meta-item"><strong>Owner:</strong> VP Operations</span>
+            <span class="mit-meta-item"><strong>Target Score:</strong> 8 (Medium)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- .doc-wrap -->
+
+  <!-- ── Footer ── -->
+  <footer class="ra-footer">
+    <div class="hdr-inner">
+      <span><span class="footer-brand">SponAItech</span> <span class="footer-div">|</span> html-generation skill v1.1</span>
+      <span>Version {{VERSION}} <span class="footer-div">|</span> {{DATE}} <span class="footer-div">|</span> {{CLASSIFICATION}}</span>
+    </div>
+  </footer>
+
+</body>
+</html>

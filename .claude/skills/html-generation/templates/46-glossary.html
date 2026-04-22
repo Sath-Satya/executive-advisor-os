@@ -1,0 +1,420 @@
+<!--
+TEMPLATE: glossary
+CATEGORY: Marketing / Admin
+USE WHEN: Publishing a terminology reference, project glossary, or domain lexicon — searchable A-Z layout.
+PALETTE: Minimal white/black with navy accents, monospace for terms
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glossary — SponAI Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f9fafc;
+      --navy: #0e1b2e;
+      --navy-mid: #1a3a5c;
+      --blue: #3b9eff;
+      --ink: #1c2b3a;
+      --muted: #5a6a7a;
+      --subtle: #94a3b8;
+      --border: #e2e8f0;
+      --border-strong: #c8d4e0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.6; }
+
+    /* Layout */
+    .page { max-width: 860px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+    /* Header */
+    .page-header { margin-bottom: 2.5rem; }
+    .eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 0.5rem; }
+    .page-header h1 { font-size: 2rem; font-weight: 700; color: var(--navy); letter-spacing: -0.4px; margin-bottom: 0.75rem; }
+    .page-header p { font-size: 0.95rem; color: var(--muted); max-width: 540px; line-height: 1.7; }
+
+    /* Search bar */
+    .search-bar { margin-bottom: 2rem; position: relative; }
+    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+    .search-input {
+      width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.9rem; font-family: inherit; color: var(--ink);
+      background: var(--surface); transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,158,255,0.15); }
+    .search-input::placeholder { color: var(--subtle); }
+
+    /* A-Z nav */
+    .az-nav {
+      display: flex; flex-wrap: wrap; gap: 4px;
+      margin-bottom: 2.5rem; padding: 0.875rem 1rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .az-nav a {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 5px;
+      font-size: 0.8rem; font-weight: 600; color: var(--muted);
+      text-decoration: none; transition: background 0.15s, color 0.15s;
+    }
+    .az-nav a:hover { background: var(--blue); color: #fff; }
+    .az-nav a.has-entries { color: var(--navy); }
+    .az-nav a.empty { color: var(--border); cursor: default; pointer-events: none; }
+
+    /* Stats row */
+    .stats-row { display: flex; gap: 2rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .stat-item { font-size: 0.82rem; color: var(--muted); }
+    .stat-item strong { color: var(--navy); font-size: 1rem; }
+
+    /* Letter group */
+    .letter-group { margin-bottom: 2.5rem; }
+    .letter-anchor { display: block; height: 80px; margin-top: -80px; visibility: hidden; }
+    .letter-header {
+      font-size: 1.5rem; font-weight: 700; color: var(--navy);
+      font-family: 'DM Mono', monospace; letter-spacing: -0.5px;
+      padding: 0.5rem 0; border-bottom: 2px solid var(--navy);
+      margin-bottom: 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .letter-count { font-size: 0.72rem; font-weight: 400; color: var(--subtle); font-family: 'DM Sans', sans-serif; letter-spacing: 0; }
+
+    /* Definition list */
+    dl.term-list { display: flex; flex-direction: column; gap: 0; }
+    .term-entry {
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1.25rem;
+      align-items: baseline;
+    }
+    @media (max-width: 580px) { .term-entry { grid-template-columns: 1fr; gap: 0.25rem; } }
+    .term-entry:last-child { border-bottom: 0; }
+    dt {
+      font-size: 0.875rem; font-weight: 600;
+      font-family: 'DM Mono', monospace;
+      color: var(--navy);
+    }
+    dt .tag-pill {
+      display: inline-block; margin-left: 6px;
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase; padding: 1px 6px; border-radius: 4px;
+      vertical-align: middle;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .tag-sf { background: #dbeeff; color: #2180e0; }
+    .tag-ai { background: #ede8ff; color: #5b3fa8; }
+    .tag-infra { background: #d0f7ee; color: #0e7a5f; }
+    .tag-core { background: #f7f9fc; color: #5a6a7a; border: 1px solid #dde5ef; }
+    dd {
+      font-size: 0.875rem; color: var(--muted); line-height: 1.65;
+    }
+    dd strong { color: var(--ink); font-weight: 600; }
+    dd a { color: var(--blue); text-decoration: none; }
+    dd a:hover { text-decoration: underline; }
+
+    /* Back to top */
+    .back-top {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.8rem; color: var(--blue); text-decoration: none;
+      margin-bottom: 1rem; transition: opacity 0.2s;
+    }
+    .back-top:hover { opacity: 0.75; }
+
+    /* Footer */
+    .page-footer { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .page-footer .brand { font-size: 0.875rem; font-weight: 600; color: var(--navy); }
+    .page-footer .meta { font-size: 0.75rem; color: var(--subtle); font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="page-header" id="top">
+    <p class="eyebrow">Reference</p>
+    <h1>SponAI Consulting &mdash; Glossary</h1>
+    <p>Standard terminology used across SponAI Consulting engagements, deliverables, and internal documentation.</p>
+  </header>
+
+  <!-- Search -->
+  <div class="search-bar" role="search">
+    <span class="search-icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="#94a3b8" stroke-width="1.4"/><path d="M11 11l2.5 2.5" stroke="#94a3b8" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </span>
+    <input type="search" class="search-input" id="glossary-search" placeholder="Search terms..." aria-label="Search glossary terms">
+  </div>
+
+  <!-- A-Z Nav -->
+  <nav class="az-nav" aria-label="Alphabetical navigation">
+    <a href="#letter-A" class="has-entries">A</a>
+    <a href="#letter-B" class="has-entries">B</a>
+    <a href="#letter-C" class="has-entries">C</a>
+    <a href="#letter-D" class="has-entries">D</a>
+    <a href="#letter-E" class="has-entries">E</a>
+    <a href="#letter-F" class="has-entries">F</a>
+    <a href="#letter-G" class="has-entries">G</a>
+    <a href="#" class="empty">H</a>
+    <a href="#letter-I" class="has-entries">I</a>
+    <a href="#" class="empty">J</a>
+    <a href="#" class="empty">K</a>
+    <a href="#letter-L" class="has-entries">L</a>
+    <a href="#letter-M" class="has-entries">M</a>
+    <a href="#" class="empty">N</a>
+    <a href="#letter-O" class="has-entries">O</a>
+    <a href="#letter-P" class="has-entries">P</a>
+    <a href="#" class="empty">Q</a>
+    <a href="#letter-R" class="has-entries">R</a>
+    <a href="#letter-S" class="has-entries">S</a>
+    <a href="#letter-T" class="has-entries">T</a>
+    <a href="#" class="empty">U</a>
+    <a href="#letter-V" class="has-entries">V</a>
+    <a href="#letter-W" class="has-entries">W</a>
+    <a href="#" class="empty">X</a>
+    <a href="#" class="empty">Y</a>
+    <a href="#" class="empty">Z</a>
+  </nav>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-item"><strong>38</strong> terms defined</div>
+    <div class="stat-item"><strong>4</strong> categories: Core, Salesforce, AI, Infra</div>
+    <div class="stat-item">Last updated <strong>April 2026</strong></div>
+  </div>
+
+  <!-- ── A ── -->
+  <section class="letter-group" aria-labelledby="heading-A">
+    <span class="letter-anchor" id="letter-A"></span>
+    <div class="letter-header" id="heading-A">A <span class="letter-count">3 terms</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>ADR<span class="tag-pill tag-core">Core</span></dt>
+        <dd><strong>Architecture Decision Record.</strong> A short document capturing a significant architectural decision, its context, the options considered, the chosen option, and the rationale. Stored in <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">memory/projects/{domain}/{project}/decisions.md</code>.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>Agentforce<span class="tag-pill tag-sf">SF</span></dt>
+        <dd>Salesforce's native AI agent platform. Enables configuration of autonomous agents that can reason, plan, and execute actions within a Salesforce org using Einstein AI and grounding data from Data Cloud.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>Agentic OS<span class="tag-pill tag-ai">AI</span></dt>
+        <dd>SponAI's internal meta-OS framework managing five domain-specific operating systems (Salesforce, .NET, Python, iOS, TradingSystems). Each domain OS is a self-contained git repo with synced skills, agents, commands, and memory.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ── B ── -->
+  <section class="letter-group" aria-labelledby="heading-B">
+    <span class="letter-anchor" id="letter-B"></span>
+    <div class="letter-header" id="heading-B">B <span class="letter-count">2 terms</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>Blazor<span class="tag-pill tag-core">Core</span></dt>
+        <dd>Microsoft's framework for building interactive web UIs using C# instead of JavaScript, running on WebAssembly (Blazor WASM) or server-side (Blazor Server). SponAI's default frontend for .NET projects.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>Blocker<span class="tag-pill tag-core">Core</span></dt>
+        <dd>A dependency or impediment that prevents a gate from advancing. Documented in <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">memory/projects/{domain}/{project}/blockers.md</code>. Requires explicit resolution before the pipeline can continue.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ── C ── -->
+  <section class="letter-group" aria-labelledby="heading-C">
+    <span class="letter-anchor" id="letter-C"></span>
+    <div class="letter-header" id="heading-C">C <span class="letter-count">4 terms</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>CQRS<span class="tag-pill tag-core">Core</span></dt>
+        <dd><strong>Command Query Responsibility Segregation.</strong> An architectural pattern separating read models (queries) from write models (commands). Used in SponAI's .NET projects with MediatR for clean handler dispatch.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>Claude Code<span class="tag-pill tag-ai">AI</span></dt>
+        <dd>Anthropic's CLI-based coding agent. SponAI uses Claude Code as the primary implementation engine across all five domain OSes, with skills, agents, hooks, and commands defined per domain.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>Container App<span class="tag-pill tag-infra">Infra</span></dt>
+        <dd>Azure Container Apps — SponAI's default deployment target for Python and .NET microservices. Serverless, scale-to-zero, with built-in KEDA scaling and managed certificates.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>Conventional Commits<span class="tag-pill tag-core">Core</span></dt>
+        <dd>A commit message convention used across all SponAI repos. Format: <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">type(scope): description</code>. Types: <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">feat</code>, <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">fix</code>, <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">docs</code>, <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">refactor</code>, <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">test</code>.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ── D ── -->
+  <section class="letter-group" aria-labelledby="heading-D">
+    <span class="letter-anchor" id="letter-D"></span>
+    <div class="letter-header" id="heading-D">D <span class="letter-count">2 terms</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>Data Cloud<span class="tag-pill tag-sf">SF</span></dt>
+        <dd>Salesforce's unified data platform for ingesting, harmonizing, and activating customer data. Used as the grounding source for Agentforce agents in SponAI's healthcare client deployments.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>DEV-ID<span class="tag-pill tag-core">Core</span></dt>
+        <dd>A unique developer identifier used by the session-identity skill to scope per-developer memory files (session handovers, coaching notes) within a shared repo.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ── E ── -->
+  <section class="letter-group" aria-labelledby="heading-E">
+    <span class="letter-anchor" id="letter-E"></span>
+    <div class="letter-header" id="heading-E">E <span class="letter-count">2 terms</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>EasyLanguage<span class="tag-pill tag-core">Core</span></dt>
+        <dd>TradeStation's proprietary scripting language for writing trading strategies, indicators, and functions. Requires explicit <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">begin/end</code> blocks on all if statements.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>EF Core<span class="tag-pill tag-core">Core</span></dt>
+        <dd><strong>Entity Framework Core.</strong> Microsoft's ORM for .NET. SponAI uses EF Core with SQLite for POC and PostgreSQL for production, code-first migrations, and repository pattern layering.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ── F ── -->
+  <section class="letter-group" aria-labelledby="heading-F">
+    <span class="letter-anchor" id="letter-F"></span>
+    <div class="letter-header" id="heading-F">F <span class="letter-count">2 terms</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>FLS<span class="tag-pill tag-sf">SF</span></dt>
+        <dd><strong>Field-Level Security.</strong> Salesforce permission system controlling read/write access to individual fields. Every Apex data access must check FLS (via <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">WITH SECURITY_ENFORCED</code> or <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">Security.stripInaccessible</code>) to prevent privilege escalation.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>FastAPI<span class="tag-pill tag-core">Core</span></dt>
+        <dd>SponAI's default Python web framework for building REST APIs. Auto-generates OpenAPI docs, enforces Pydantic schemas, and supports async/await natively. Paired with Azure Container Apps for deployment.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ── G ── -->
+  <section class="letter-group" aria-labelledby="heading-G">
+    <span class="letter-anchor" id="letter-G"></span>
+    <div class="letter-header" id="heading-G">G <span class="letter-count">2 terms</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>Gate<span class="tag-pill tag-core">Core</span></dt>
+        <dd>One stage in SponAI's 7-gate delivery pipeline: <strong>G1 Plan, G2 Design, G3 Build, G4 Test, G5 Review, G6 Deploy, G7 Verify</strong>. Each gate has defined entry criteria, exit checks, and a responsible agent.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>Governor Limit<span class="tag-pill tag-sf">SF</span></dt>
+        <dd>Salesforce multi-tenant runtime constraints (e.g., 150 DML operations per transaction, 100 SOQL queries). All Apex code must be bulkified to avoid hitting governor limits in production.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ── I, L, M, O, P, R, S, T, V, W abbreviated for length -->
+  <section class="letter-group" aria-labelledby="heading-I">
+    <span class="letter-anchor" id="letter-I"></span>
+    <div class="letter-header" id="heading-I">I <span class="letter-count">1 term</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>ICP<span class="tag-pill tag-core">Core</span></dt>
+        <dd><strong>Ideal Customer Profile.</strong> SponAI's primary ICP: mid-market companies (100&ndash;5,000 employees), healthcare orgs, and Salesforce-heavy organizations needing custom development, AI integration, or cloud migration.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="letter-group" aria-labelledby="heading-L">
+    <span class="letter-anchor" id="letter-L"></span>
+    <div class="letter-header" id="heading-L">L <span class="letter-count">2 terms</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>LWC<span class="tag-pill tag-sf">SF</span></dt>
+        <dd><strong>Lightning Web Component.</strong> Salesforce's modern component model based on native Web Components and ES6+. SponAI uses LWC for all new Salesforce UI development (Aura is legacy).</dd>
+      </div>
+      <div class="term-entry">
+        <dt>_learnings.md<span class="tag-pill tag-ai">AI</span></dt>
+        <dd>The per-skill feedback log file. Entries are written during session wrap-up when a skill produces a surprising or notable result. When 3+ entries accumulate for a pattern, <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">/evolve-skills</code> is triggered to propose a SKILL.md update.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="letter-group" aria-labelledby="heading-M">
+    <span class="letter-anchor" id="letter-M"></span>
+    <div class="letter-header" id="heading-M">M <span class="letter-count">2 terms</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>MVVM<span class="tag-pill tag-core">Core</span></dt>
+        <dd><strong>Model-View-ViewModel.</strong> SponAI's default iOS architecture pattern. ViewModel owns state and business logic; View is purely declarative SwiftUI; Model is the domain layer. Combine or async/await for data binding.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>Meta-OS<span class="tag-pill tag-ai">AI</span></dt>
+        <dd>The root orchestration layer at <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">c:/AllAboutAI/OSofOS/</code>. Holds master copies of all Shared-tier skills, agents, commands, and rules. Domain OSes are synced from the Meta-OS via <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">/sync-shared</code>.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="letter-group" aria-labelledby="heading-P">
+    <span class="letter-anchor" id="letter-P"></span>
+    <div class="letter-header" id="heading-P">P <span class="letter-count">2 terms</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>POC<span class="tag-pill tag-core">Core</span></dt>
+        <dd><strong>Proof of Concept.</strong> A time-boxed, scope-limited build demonstrating a specific capability. SponAI POCs are production-ready (Dockerized, CI/CD, tested) — not throwaway prototypes.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>Pipeline Orchestrator<span class="tag-pill tag-ai">AI</span></dt>
+        <dd>The SponAI skill that classifies work items, routes them through the 7-gate pipeline, loads appropriate memory layers per gate, and manages gate handovers.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="letter-group" aria-labelledby="heading-S">
+    <span class="letter-anchor" id="letter-S"></span>
+    <div class="letter-header" id="heading-S">S <span class="letter-count">3 terms</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>Semantic Kernel<span class="tag-pill tag-core">Core</span></dt>
+        <dd>Microsoft's SDK for integrating AI models into .NET applications. SponAI uses Semantic Kernel for orchestrating LLM calls, plugin execution, and memory management in .NET-based AI apps.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>SOQL<span class="tag-pill tag-sf">SF</span></dt>
+        <dd><strong>Salesforce Object Query Language.</strong> SQL-like query syntax for querying Salesforce records. Must never be placed inside loops (governor limit violation). Use collections and bulk patterns instead.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>sync-shared<span class="tag-pill tag-ai">AI</span></dt>
+        <dd>The Meta-OS command and shell script that pushes Shared-tier assets from master to all 5 domain repos using SHA256 drift detection. Master is always the source of truth. Run <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">--dry-run</code> before <code style="font-family:'DM Mono',monospace;font-size:0.8rem;">--apply</code>.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="letter-group" aria-labelledby="heading-T">
+    <span class="letter-anchor" id="letter-T"></span>
+    <div class="letter-header" id="heading-T">T <span class="letter-count">2 terms</span></div>
+    <dl class="term-list">
+      <div class="term-entry">
+        <dt>TDD<span class="tag-pill tag-core">Core</span></dt>
+        <dd><strong>Test-Driven Development.</strong> RED (write failing test) &rarr; GREEN (minimal code to pass) &rarr; REFACTOR (clean up). SponAI's default build methodology for all non-config work. Minimum 80% coverage for production.</dd>
+      </div>
+      <div class="term-entry">
+        <dt>TestFlight<span class="tag-pill tag-core">Core</span></dt>
+        <dd>Apple's beta testing platform. SponAI iOS projects deploy to TestFlight before App Store submission, allowing client stakeholders to test on real devices without an App Store review cycle.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <a href="#top" class="back-top" aria-label="Back to top">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 11V3M4 6l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to top
+  </a>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <span class="brand">SponAI Consulting &mdash; sponaitech.com</span>
+    <span class="meta">v{{VERSION}} &bull; {{DATE}} &bull; glossary</span>
+  </footer>
+
+</div>
+</body>
+</html>

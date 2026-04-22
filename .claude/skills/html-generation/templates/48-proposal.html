@@ -1,0 +1,591 @@
+<!--
+TEMPLATE: Consulting Proposal
+CATEGORY: Admin / Operations
+USE WHEN: Presenting a scoped consulting engagement to a prospective or existing client, with scope, timeline, investment, and signature blocks.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proposal — SponAI Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --white: #ffffff;
+      --green: #1a7a4a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #e8e4dc;
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .page {
+      background: var(--white);
+      width: 794px;
+      margin: 0 auto;
+      box-shadow: 0 4px 32px rgba(14,27,46,0.12);
+    }
+    /* Cover section */
+    .cover {
+      background: var(--navy);
+      padding: 56px 60px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      border: 40px solid rgba(184,150,90,0.12);
+    }
+    .cover-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold2);
+      margin-bottom: 18px;
+    }
+    .cover h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+      margin-bottom: 10px;
+      max-width: 480px;
+    }
+    .cover-sub {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 36px;
+    }
+    .cover-meta {
+      display: flex;
+      gap: 40px;
+    }
+    .cover-meta-item .cm-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--gold2);
+      margin-bottom: 3px;
+    }
+    .cover-meta-item .cm-val {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.85);
+      font-family: 'DM Mono', monospace;
+    }
+    /* Body */
+    .body-wrap { padding: 48px 60px; }
+    /* Section headers */
+    .sec-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      margin-top: 40px;
+    }
+    .sec-header:first-child { margin-top: 0; }
+    .sec-num {
+      width: 28px; height: 28px;
+      background: var(--navy);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .sec-header h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.3px;
+    }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 4px 0 16px; }
+    /* Executive summary */
+    .exec-summary p {
+      font-size: 0.88rem;
+      line-height: 1.75;
+      color: var(--ink);
+    }
+    .exec-summary p + p { margin-top: 10px; }
+    /* Scope tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.83rem;
+      margin-bottom: 12px;
+    }
+    caption {
+      text-align: left;
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+      caption-side: top;
+    }
+    thead th {
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody td { padding: 9px 12px; vertical-align: top; line-height: 1.5; }
+    tbody td:first-child { font-weight: 500; color: var(--navy); }
+    .in-scope td:first-child { border-left: 3px solid var(--green); }
+    .out-scope td:first-child { border-left: 3px solid var(--gold); }
+    /* Deliverables */
+    .deliverable-item {
+      display: flex;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .deliverable-item:last-child { border-bottom: none; }
+    .d-num {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      color: var(--navy);
+      font-size: 0.7rem;
+      font-weight: 700;
+      width: 26px; height: 26px;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-family: 'DM Mono', monospace;
+    }
+    .d-content strong { font-size: 0.88rem; color: var(--navy); display: block; margin-bottom: 2px; }
+    .d-content p { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+    /* Gantt SVG */
+    .gantt-wrap {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 20px 20px 16px;
+      overflow-x: auto;
+    }
+    .gantt-wrap svg { display: block; width: 100%; height: auto; }
+    /* Investment table */
+    .inv-table thead th:last-child { text-align: right; }
+    .inv-table tbody td:last-child {
+      text-align: right;
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+    }
+    .inv-total-row td {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--navy);
+      background: var(--cream);
+      padding: 10px 12px;
+    }
+    .inv-total-row td:last-child {
+      text-align: right;
+      font-family: 'DM Mono', monospace;
+    }
+    /* Terms */
+    .terms-list { list-style: none; padding: 0; }
+    .terms-list li {
+      font-size: 0.82rem;
+      color: var(--ink);
+      padding: 7px 0 7px 16px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      line-height: 1.55;
+    }
+    .terms-list li::before {
+      content: '\2014';
+      position: absolute; left: 0;
+      color: var(--gold);
+    }
+    /* Signature blocks */
+    .sig-section {
+      display: flex;
+      gap: 40px;
+      margin-top: 10px;
+    }
+    .sig-block { flex: 1; }
+    .sig-block .sig-party {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--gold);
+      margin-bottom: 32px;
+    }
+    .sig-line {
+      border-bottom: 1px solid var(--navy);
+      margin-bottom: 6px;
+    }
+    .sig-meta { font-size: 0.75rem; color: var(--muted); line-height: 1.6; }
+    /* Footer */
+    .prop-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 36px;
+      padding-top: 14px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .prop-footer p { font-size: 0.68rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+    /* Print */
+    @page { size: A4; margin: 2cm; }
+    @media print {
+      body { background: none; padding: 0; }
+      .page { box-shadow: none; width: 100%; }
+      .cover { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      thead { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .sec-num { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .gantt-wrap svg { max-width: 600px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" role="main">
+    <!-- Cover -->
+    <header class="cover">
+      <div class="cover-label">Consulting Proposal &mdash; Confidential</div>
+      <h1>AI-Powered Claims Automation &amp; Salesforce Modernization</h1>
+      <p class="cover-sub">Prepared exclusively for Meridian Health Systems</p>
+      <div class="cover-meta">
+        <div class="cover-meta-item">
+          <div class="cm-label">Proposal #</div>
+          <div class="cm-val">PROP-2026-0009</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="cm-label">Prepared by</div>
+          <div class="cm-val">SponAI Consulting LLC</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="cm-label">Date</div>
+          <div class="cm-val">2026-04-20</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="cm-label">Valid Until</div>
+          <div class="cm-val">2026-05-20</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="body-wrap">
+
+      <!-- 1. Executive Summary -->
+      <div class="sec-header">
+        <div class="sec-num" aria-hidden="true">1</div>
+        <h2>Executive Summary</h2>
+      </div>
+      <hr class="divider" />
+      <section class="exec-summary" aria-label="Executive summary">
+        <p>
+          Meridian Health Systems processes over 42,000 prior-authorization claims monthly, of which
+          an estimated 34% require manual clinical-staff review due to ambiguous payer rules and
+          incomplete documentation. This backlog creates a 6–11 day average turnaround, contributing
+          to member dissatisfaction scores below the regional average.
+        </p>
+        <p>
+          SponAI Consulting proposes a three-phase engagement to deploy an AI-assisted claims triage
+          layer integrated directly into Meridian's existing Salesforce Health Cloud environment.
+          Phase 1 establishes the data foundation and model abstraction layer. Phase 2 delivers
+          intelligent routing and auto-approval for clearly compliant claims. Phase 3 introduces
+          a HITL feedback loop and observability dashboard for continuous improvement.
+        </p>
+        <p>
+          Expected outcomes: 40–55% reduction in manual review queue, 3–5 day improvement in
+          average turnaround, and a measurable lift in first-call resolution for member inquiries.
+        </p>
+      </section>
+
+      <!-- 2. Scope -->
+      <div class="sec-header">
+        <div class="sec-num" aria-hidden="true">2</div>
+        <h2>Scope of Work</h2>
+      </div>
+      <hr class="divider" />
+      <section aria-label="Scope in and out">
+        <table class="in-scope">
+          <caption>In Scope</caption>
+          <thead>
+            <tr>
+              <th scope="col">Area</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Salesforce Integration</td><td>Apex triggers, batch jobs, custom metadata, and LWC components within Meridian's Health Cloud org</td></tr>
+            <tr><td>AI Model Layer</td><td>Claude API integration with prompt versioning, guardrails, and model abstraction facade</td></tr>
+            <tr><td>Claims Triage Engine</td><td>Rule-based + AI scoring for auto-approve, route-to-nurse, and escalate-to-MD decision paths</td></tr>
+            <tr><td>Observability Stack</td><td>Azure Application Insights + custom SF dashboards for accuracy, throughput, and cost tracking</td></tr>
+            <tr><td>Documentation &amp; Training</td><td>Architecture docs, ADRs, runbooks, and two live training sessions for clinical ops staff</td></tr>
+          </tbody>
+        </table>
+        <table class="out-scope" style="margin-top:14px;">
+          <caption>Out of Scope</caption>
+          <thead>
+            <tr>
+              <th scope="col">Area</th>
+              <th scope="col">Reason / Boundary</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Payer Portal Integration</td><td>Requires separate engagement with payer IT teams; not scoped in Phase 1–3</td></tr>
+            <tr><td>EHR / EMR Changes</td><td>Meridian's Epic instance is managed separately; data is read-only via existing API</td></tr>
+            <tr><td>Regulatory Certification</td><td>HITRUST and SOC 2 audits are client responsibility; SponAI provides evidence artifacts only</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 3. Deliverables -->
+      <div class="sec-header">
+        <div class="sec-num" aria-hidden="true">3</div>
+        <h2>Deliverables</h2>
+      </div>
+      <hr class="divider" />
+      <section aria-label="Deliverables list">
+        <div class="deliverable-item">
+          <div class="d-num">D1</div>
+          <div class="d-content">
+            <strong>Architecture Design Document &amp; ADR Set</strong>
+            <p>System design with data flow, component diagram, security model, and 6 signed Architecture Decision Records</p>
+          </div>
+        </div>
+        <div class="deliverable-item">
+          <div class="d-num">D2</div>
+          <div class="d-content">
+            <strong>Salesforce Managed Package — Claims AI v1.0</strong>
+            <p>Apex classes, triggers, custom objects, LWC dashboard component, and CI/CD pipeline via SFDX + GitHub Actions</p>
+          </div>
+        </div>
+        <div class="deliverable-item">
+          <div class="d-num">D3</div>
+          <div class="d-content">
+            <strong>AI Triage Engine — Containerized Microservice</strong>
+            <p>FastAPI service on Azure Container Apps with Claude API integration, prompt registry, and confidence-based escalation logic</p>
+          </div>
+        </div>
+        <div class="deliverable-item">
+          <div class="d-num">D4</div>
+          <div class="d-content">
+            <strong>Observability &amp; Reporting Dashboard</strong>
+            <p>Real-time SF dashboard + Azure Monitor workbook covering decision accuracy, queue depth, cost per claim, and SLA compliance</p>
+          </div>
+        </div>
+        <div class="deliverable-item">
+          <div class="d-num">D5</div>
+          <div class="d-content">
+            <strong>Runbooks, Training Materials &amp; Handover</strong>
+            <p>Operational runbooks, two 90-minute training sessions for clinical ops, and full source code transfer with 30-day hypercare support</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Timeline (Gantt) -->
+      <div class="sec-header">
+        <div class="sec-num" aria-hidden="true">4</div>
+        <h2>Project Timeline</h2>
+      </div>
+      <hr class="divider" />
+      <section aria-label="Project Gantt chart">
+        <div class="gantt-wrap">
+          <svg viewBox="0 0 660 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gantt chart showing 5 project milestones across 12 weeks">
+            <title>Project Timeline Gantt Chart</title>
+            <!-- Week labels -->
+            <g font-family="DM Mono, monospace" font-size="9" fill="#6b6560">
+              <text x="110" y="16" text-anchor="middle">Wk 1-2</text>
+              <text x="200" y="16" text-anchor="middle">Wk 3-4</text>
+              <text x="290" y="16" text-anchor="middle">Wk 5-6</text>
+              <text x="380" y="16" text-anchor="middle">Wk 7-8</text>
+              <text x="470" y="16" text-anchor="middle">Wk 9-10</text>
+              <text x="560" y="16" text-anchor="middle">Wk 11-12</text>
+            </g>
+            <!-- Grid lines -->
+            <g stroke="#ddd8ce" stroke-width="1">
+              <line x1="65" y1="22" x2="65" y2="195"/>
+              <line x1="155" y1="22" x2="155" y2="195"/>
+              <line x1="245" y1="22" x2="245" y2="195"/>
+              <line x1="335" y1="22" x2="335" y2="195"/>
+              <line x1="425" y1="22" x2="425" y2="195"/>
+              <line x1="515" y1="22" x2="515" y2="195"/>
+              <line x1="605" y1="22" x2="605" y2="195"/>
+            </g>
+            <!-- Phase labels -->
+            <g font-family="DM Sans, sans-serif" font-size="11" font-weight="600" fill="#0e1b2e">
+              <text x="4" y="50">Ph 1</text>
+              <text x="4" y="90">Ph 2</text>
+              <text x="4" y="130">Ph 3</text>
+              <text x="4" y="168">Review</text>
+              <text x="4" y="190">Handover</text>
+            </g>
+            <!-- Phase bars -->
+            <!-- Ph 1: Wk 1-4 -->
+            <rect x="65" y="37" width="180" height="22" rx="4" fill="#0e1b2e"/>
+            <text x="75" y="52" font-family="DM Sans, sans-serif" font-size="9" fill="#fff">Data Foundation &amp; AI Layer Setup</text>
+            <!-- Ph 2: Wk 3-8 -->
+            <rect x="155" y="77" width="270" height="22" rx="4" fill="#b8965a"/>
+            <text x="165" y="92" font-family="DM Sans, sans-serif" font-size="9" fill="#fff">Triage Engine &amp; SF Integration Build</text>
+            <!-- Ph 3: Wk 7-10 -->
+            <rect x="335" y="117" width="180" height="22" rx="4" fill="#1a7a4a"/>
+            <text x="345" y="132" font-family="DM Sans, sans-serif" font-size="9" fill="#fff">HITL Loop &amp; Observability</text>
+            <!-- Review: Wk 11 -->
+            <rect x="515" y="155" width="45" height="22" rx="4" fill="#6b6560"/>
+            <text x="525" y="170" font-family="DM Sans, sans-serif" font-size="9" fill="#fff">UAT</text>
+            <!-- Handover: Wk 12 -->
+            <rect x="560" y="177" width="45" height="18" rx="4" fill="#3b9eff"/>
+            <text x="565" y="190" font-family="DM Sans, sans-serif" font-size="9" fill="#fff">GO-LIVE</text>
+            <!-- Milestones -->
+            <g fill="#d4ab72">
+              <polygon points="155,30 160,22 165,30" />
+              <polygon points="335,70 340,62 345,70" />
+              <polygon points="515,110 520,102 525,110" />
+              <polygon points="605,150 610,142 615,150" />
+            </g>
+            <!-- Legend -->
+            <g font-family="DM Sans, sans-serif" font-size="9" fill="#6b6560">
+              <rect x="65" y="198" width="10" height="8" rx="2" fill="#0e1b2e"/>
+              <text x="79" y="206">Phase 1</text>
+              <rect x="130" y="198" width="10" height="8" rx="2" fill="#b8965a"/>
+              <text x="144" y="206">Phase 2</text>
+              <rect x="195" y="198" width="10" height="8" rx="2" fill="#1a7a4a"/>
+              <text x="209" y="206">Phase 3</text>
+              <polygon points="268,202 271,198 274,202" fill="#d4ab72"/>
+              <text x="278" y="206">Milestone</text>
+            </g>
+          </svg>
+        </div>
+      </section>
+
+      <!-- 5. Investment -->
+      <div class="sec-header">
+        <div class="sec-num" aria-hidden="true">5</div>
+        <h2>Investment</h2>
+      </div>
+      <hr class="divider" />
+      <section aria-label="Investment table">
+        <table class="inv-table">
+          <caption>All amounts in USD. Fixed-price unless noted.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Phase</th>
+              <th scope="col">Description</th>
+              <th scope="col">Duration</th>
+              <th scope="col">Investment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Phase 1</td>
+              <td>Data Foundation, Architecture, AI Model Layer</td>
+              <td style="font-family:'DM Mono',monospace;">4 weeks</td>
+              <td>$22,500</td>
+            </tr>
+            <tr>
+              <td>Phase 2</td>
+              <td>Triage Engine Build, Salesforce Integration, CI/CD</td>
+              <td style="font-family:'DM Mono',monospace;">6 weeks</td>
+              <td>$38,000</td>
+            </tr>
+            <tr>
+              <td>Phase 3</td>
+              <td>HITL Feedback Loop, Observability Dashboard, UAT</td>
+              <td style="font-family:'DM Mono',monospace;">4 weeks</td>
+              <td>$24,000</td>
+            </tr>
+            <tr>
+              <td>Hypercare</td>
+              <td>30-day post-go-live support (bug fixes, tuning, training)</td>
+              <td style="font-family:'DM Mono',monospace;">30 days</td>
+              <td>$6,500</td>
+            </tr>
+            <tr>
+              <td>Expenses</td>
+              <td>Azure infrastructure (estimated, billed at cost)</td>
+              <td style="font-family:'DM Mono',monospace;">12 weeks</td>
+              <td>$1,800</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="inv-total-row">
+              <td colspan="3">Total Fixed Price</td>
+              <td>$92,800</td>
+            </tr>
+          </tfoot>
+        </table>
+        <p style="font-size:0.75rem;color:var(--muted);margin-top:8px;">Payment schedule: 30% on signing, 30% at Phase 2 kickoff, 30% at Phase 3 kickoff, 10% on go-live acceptance.</p>
+      </section>
+
+      <!-- 6. Terms -->
+      <div class="sec-header">
+        <div class="sec-num" aria-hidden="true">6</div>
+        <h2>Terms &amp; Conditions</h2>
+      </div>
+      <hr class="divider" />
+      <section aria-label="Terms and conditions">
+        <ul class="terms-list">
+          <li>This proposal is valid for 30 days from the date above. Pricing is subject to change after expiry.</li>
+          <li>Work begins within 5 business days of signed agreement and receipt of first payment.</li>
+          <li>Client agrees to provide Salesforce sandbox access, system credentials, and a named technical liaison within 3 business days of signing.</li>
+          <li>All source code, documentation, and deliverables transfer to client upon final payment. SponAI retains the right to reference the engagement in anonymized case studies.</li>
+          <li>Either party may terminate with 14 days written notice. Client owes fees for all work completed to date of termination.</li>
+          <li>SponAI maintains $2M professional liability (E&amp;O) and $1M general liability insurance. Certificate available on request.</li>
+        </ul>
+      </section>
+
+      <!-- 7. Signatures -->
+      <div class="sec-header">
+        <div class="sec-num" aria-hidden="true">7</div>
+        <h2>Agreement &amp; Signatures</h2>
+      </div>
+      <hr class="divider" />
+      <section class="sig-section" aria-label="Signature blocks">
+        <div class="sig-block">
+          <div class="sig-party">SponAI Consulting LLC</div>
+          <div class="sig-line"></div>
+          <div class="sig-meta">
+            Sathish Thiagarajan<br />
+            Principal Consultant<br />
+            Date: ____________________
+          </div>
+        </div>
+        <div class="sig-block">
+          <div class="sig-party">Meridian Health Systems</div>
+          <div class="sig-line"></div>
+          <div class="sig-meta">
+            Name: ____________________<br />
+            Title: ____________________<br />
+            Date: ____________________
+          </div>
+        </div>
+      </section>
+
+      <footer class="prop-footer">
+        <p>SponAI Consulting LLC &mdash; Confidential &mdash; PROP-2026-0009</p>
+        <p>v{{VERSION}} &middot; {{DATE}}</p>
+      </footer>
+
+    </div>
+  </main>
+</body>
+</html>

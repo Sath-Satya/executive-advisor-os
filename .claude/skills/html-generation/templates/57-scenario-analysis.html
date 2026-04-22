@@ -1,0 +1,327 @@
+<!--
+TEMPLATE: scenario-analysis
+CATEGORY: Finance
+USE WHEN: Presenting a what-if scenario comparison with Base/Upside/Downside columns, driver inputs table, outcome metrics, and a sensitivity heatmap — for board planning or investor review.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scenario Analysis &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #172030;
+      --border: #1e2d40;
+      --border2: #253548;
+      --primary: #3b9eff;
+      --accent: #2dd4a0;
+      --warning: #f0a050;
+      --error: #f06070;
+      --text: #d0d8e4;
+      --muted: #8899ac;
+      --subtle: #556677;
+      --base-col: #3b9eff;
+      --up-col: #2dd4a0;
+      --dn-col: #f06070;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .page { max-width: 1000px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+    /* Header */
+    .doc-header {
+      border-top: 3px solid var(--primary);
+      padding-top: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 2rem;
+    }
+    .eyebrow { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--primary); margin-bottom: 0.35rem; }
+    h1 { font-size: 1.5rem; font-weight: 700; color: #fff; letter-spacing: -0.4px; }
+    .doc-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .meta-right { text-align: right; font-size: 0.78rem; color: var(--muted); line-height: 1.9; flex-shrink: 0; }
+    .meta-right strong { color: var(--text); }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--primary);
+      margin: 1.75rem 0 0.75rem;
+    }
+    .section-label:first-of-type { margin-top: 0; }
+
+    /* Scenario header cards */
+    .scenario-header {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;
+    }
+    .scen-card {
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      border: 1px solid;
+    }
+    .scen-card-base { border-color: var(--base-col); background: rgba(59,158,255,0.06); }
+    .scen-card-up   { border-color: var(--up-col);   background: rgba(45,212,160,0.06); }
+    .scen-card-dn   { border-color: var(--dn-col);   background: rgba(240,96,112,0.06); }
+    .scen-name { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.35rem; }
+    .scen-name-base { color: var(--base-col); }
+    .scen-name-up   { color: var(--up-col); }
+    .scen-name-dn   { color: var(--dn-col); }
+    .scen-revenue { font-size: 1.5rem; font-weight: 700; font-family: 'DM Mono', monospace; color: #fff; font-variant-numeric: tabular-nums; }
+    .scen-delta { font-size: 0.75rem; margin-top: 0.15rem; }
+    .scen-delta.up { color: var(--accent); }
+    .scen-delta.dn { color: var(--error); }
+    .scen-delta.neu { color: var(--muted); }
+    .scen-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.6; }
+
+    /* Drivers table */
+    .table-wrap { overflow-x: auto; margin-bottom: 1rem; }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.81rem; font-variant-numeric: tabular-nums;
+    }
+    caption { font-size: 0.68rem; color: var(--muted); text-align: left; padding-bottom: 0.4rem; font-style: italic; }
+    thead tr { background: var(--surface2); }
+    thead th {
+      padding: 0.55rem 0.85rem;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      border-bottom: 1px solid var(--border); white-space: nowrap;
+    }
+    thead th.h-base { color: var(--base-col); }
+    thead th.h-up   { color: var(--up-col); }
+    thead th.h-dn   { color: var(--dn-col); }
+    thead th:first-child { text-align: left; color: var(--muted); min-width: 180px; }
+    thead th:not(:first-child) { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: var(--surface2); }
+    tbody td { padding: 0.5rem 0.85rem; }
+    tbody td:not(:first-child) { text-align: right; font-family: 'DM Mono', monospace; }
+    tbody td:first-child { color: var(--muted); }
+    tr.metric-row td:first-child { font-weight: 600; color: var(--text); }
+    tr.total-row td {
+      background: var(--surface2); font-weight: 700;
+      border-top: 1px solid var(--border2);
+    }
+    tr.total-row td:nth-child(2) { color: var(--base-col); }
+    tr.total-row td:nth-child(3) { color: var(--up-col); }
+    tr.total-row td:nth-child(4) { color: var(--dn-col); }
+
+    /* Heatmap section */
+    .heatmap-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 0.5rem; }
+    .heatmap-wrap { overflow-x: auto; }
+    .heatmap-grid {
+      display: inline-grid;
+      grid-template-columns: 140px repeat(5, 80px);
+      gap: 2px;
+      font-size: 0.72rem;
+      font-family: 'DM Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+    .hm-header { padding: 0.4rem 0.5rem; font-size: 0.63rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); text-align: center; }
+    .hm-header:first-child { text-align: left; color: var(--primary); }
+    .hm-cell {
+      padding: 0.45rem 0.5rem;
+      text-align: center;
+      border-radius: 3px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .hm-cell.row-label { text-align: left; background: var(--surface); color: var(--muted); font-weight: 500; font-family: 'DM Sans', sans-serif; }
+    /* Heatmap color scale: green→amber→red */
+    .hm-5  { background: #14532d; }
+    .hm-4  { background: #166534; }
+    .hm-3  { background: #15803d; }
+    .hm-2  { background: #16a34a; }
+    .hm-1  { background: #22c55e; color: #052e16; }
+    .hm0   { background: #374151; color: #9ca3af; }
+    .hm-n1 { background: #b45309; }
+    .hm-n2 { background: #d97706; color: #1c1917; }
+    .hm-n3 { background: #ef4444; }
+    .hm-n4 { background: #dc2626; }
+    .hm-n5 { background: #991b1b; }
+    .hm-active { outline: 2px solid var(--primary); outline-offset: -2px; }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 2.5rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      font-size: 0.68rem; color: var(--muted); flex-wrap: wrap; gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header class="doc-header">
+    <div>
+      <p class="eyebrow">Northwind Capital &mdash; Strategic Finance</p>
+      <h1>Scenario Analysis &mdash; FY2025</h1>
+      <p class="doc-sub">What-if comparison: Base / Upside / Downside &nbsp;|&nbsp; USD in thousands</p>
+    </div>
+    <div class="meta-right">
+      <strong>Board Review Draft</strong><br>
+      Prepared: {{PREPARED_BY}}<br>
+      v{{VERSION}} &nbsp;|&nbsp; {{PERIOD}}
+    </div>
+  </header>
+
+  <!-- Scenario Cards -->
+  <p class="section-label">Scenario Outcomes &mdash; Revenue</p>
+  <div class="scenario-header">
+    <div class="scen-card scen-card-base">
+      <div class="scen-name scen-name-base">&#9679; Base Case</div>
+      <div class="scen-revenue">$45.9M</div>
+      <div class="scen-delta neu">+14.8% vs FY2024 actuals</div>
+      <div class="scen-sub">MoM growth 2.2% &bull; Churn 0.8% &bull; 12 net new hires &bull; GM 81%</div>
+    </div>
+    <div class="scen-card scen-card-up">
+      <div class="scen-name scen-name-up">&#9651; Upside</div>
+      <div class="scen-revenue">$51.4M</div>
+      <div class="scen-delta up">+28.7% vs FY2024 actuals</div>
+      <div class="scen-sub">MoM growth 3.5% &bull; Churn 0.5% &bull; 20 net new hires &bull; GM 82.5%</div>
+    </div>
+    <div class="scen-card scen-card-dn">
+      <div class="scen-name scen-name-dn">&#9661; Downside</div>
+      <div class="scen-revenue">$38.6M</div>
+      <div class="scen-delta dn">&minus;3.5% vs FY2024 actuals</div>
+      <div class="scen-sub">MoM growth 1.2% &bull; Churn 1.8% &bull; Hiring freeze &bull; GM 79%</div>
+    </div>
+  </div>
+
+  <!-- Driver Inputs -->
+  <p class="section-label">Driver Inputs</p>
+  <div class="table-wrap">
+    <table aria-label="Scenario driver inputs — Northwind Capital FY2025">
+      <caption>All growth rates are monthly unless noted. Churn = net revenue churn per month.</caption>
+      <thead>
+        <tr>
+          <th scope="col">Driver</th>
+          <th scope="col" class="h-base">Base</th>
+          <th scope="col" class="h-up">Upside</th>
+          <th scope="col" class="h-dn">Downside</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Subscription MoM growth</td><td>2.2%</td><td>3.5%</td><td>1.2%</td></tr>
+        <tr><td>Net Revenue Churn (MoM)</td><td>0.8%</td><td>0.5%</td><td>1.8%</td></tr>
+        <tr><td>New Logo Adds / Quarter</td><td>18</td><td>28</td><td>9</td></tr>
+        <tr><td>Avg ACV</td><td>$38,400</td><td>$42,000</td><td>$34,000</td></tr>
+        <tr><td>Services attach rate</td><td>18%</td><td>22%</td><td>13%</td></tr>
+        <tr><td>Gross Margin</td><td>81.0%</td><td>82.5%</td><td>79.0%</td></tr>
+        <tr><td>S&amp;M as % Revenue</td><td>24.0%</td><td>26.0%</td><td>21.0%</td></tr>
+        <tr><td>R&amp;D as % Revenue</td><td>18.6%</td><td>20.0%</td><td>16.0%</td></tr>
+        <tr><td>Net Headcount Adds (FY)</td><td>+12</td><td>+20</td><td>0</td></tr>
+        <tr><td>Annual Capex</td><td>$1.44M</td><td>$2.10M</td><td>$0.90M</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Outcome Metrics -->
+  <p class="section-label">Outcome Metrics</p>
+  <div class="table-wrap">
+    <table aria-label="Scenario outcome metrics — Northwind Capital FY2025">
+      <caption>All amounts USD thousands unless noted as %.</caption>
+      <thead>
+        <tr>
+          <th scope="col">Metric</th>
+          <th scope="col" class="h-base">Base</th>
+          <th scope="col" class="h-up">Upside</th>
+          <th scope="col" class="h-dn">Downside</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="metric-row"><td>Total Revenue</td><td>$45,860</td><td>$51,420</td><td>$38,640</td></tr>
+        <tr><td>Gross Profit</td><td>$37,147</td><td>$42,422</td><td>$30,526</td></tr>
+        <tr><td>Gross Margin</td><td>81.0%</td><td>82.5%</td><td>79.0%</td></tr>
+        <tr class="metric-row"><td>EBITDA</td><td>$13,488</td><td>$14,906</td><td>$9,276</td></tr>
+        <tr><td>EBITDA Margin</td><td>29.4%</td><td>29.0%</td><td>24.0%</td></tr>
+        <tr class="metric-row"><td>Net Income</td><td>$9,012</td><td>$10,280</td><td>$5,840</td></tr>
+        <tr><td>Net Margin</td><td>19.7%</td><td>20.0%</td><td>15.1%</td></tr>
+        <tr class="metric-row"><td>Operating Cash Flow</td><td>$11,994</td><td>$13,500</td><td>$8,200</td></tr>
+        <tr><td>Free Cash Flow</td><td>$10,554</td><td>$11,400</td><td>$7,300</td></tr>
+        <tr class="metric-row"><td>Ending Cash (Dec)</td><td>$11,594</td><td>$13,820</td><td>$8,940</td></tr>
+        <tr><td>Cash Runway (months)</td><td>27 mo</td><td>35+ mo</td><td>14 mo</td></tr>
+        <tr class="total-row"><td>ARR Exit Rate (Dec)</td><td>$51.4M</td><td>$60.2M</td><td>$38.8M</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Sensitivity Heatmap -->
+  <p class="section-label">Sensitivity Heatmap &mdash; EBITDA vs Growth Rate &times; Churn</p>
+  <p class="heatmap-label" aria-label="Heatmap description">Rows = MoM subscription growth rate. Columns = net revenue churn rate. Values = estimated FY EBITDA ($M). Base case highlighted.</p>
+  <div class="heatmap-wrap">
+    <svg width="1" height="1" aria-hidden="true" style="position:absolute;"></svg>
+    <div class="heatmap-grid" role="table" aria-label="EBITDA sensitivity heatmap">
+      <!-- Header row -->
+      <div class="hm-header" role="columnheader">Growth \ Churn</div>
+      <div class="hm-header" role="columnheader">0.4%</div>
+      <div class="hm-header" role="columnheader">0.8%</div>
+      <div class="hm-header" role="columnheader">1.2%</div>
+      <div class="hm-header" role="columnheader">1.6%</div>
+      <div class="hm-header" role="columnheader">2.0%</div>
+
+      <!-- Row 1: 3.5% growth -->
+      <div class="hm-cell row-label" role="rowheader">3.5% growth</div>
+      <div class="hm-cell hm-5" role="cell" aria-label="Growth 3.5% Churn 0.4%: $17.2M">$17.2M</div>
+      <div class="hm-cell hm-5" role="cell" aria-label="Growth 3.5% Churn 0.8%: $15.8M">$15.8M</div>
+      <div class="hm-cell hm-4" role="cell" aria-label="Growth 3.5% Churn 1.2%: $14.3M">$14.3M</div>
+      <div class="hm-cell hm-3" role="cell" aria-label="Growth 3.5% Churn 1.6%: $12.9M">$12.9M</div>
+      <div class="hm-cell hm-2" role="cell" aria-label="Growth 3.5% Churn 2.0%: $11.4M">$11.4M</div>
+
+      <!-- Row 2: 2.8% -->
+      <div class="hm-cell row-label" role="rowheader">2.8% growth</div>
+      <div class="hm-cell hm-4" role="cell">$15.6M</div>
+      <div class="hm-cell hm-4" role="cell">$14.4M</div>
+      <div class="hm-cell hm-3" role="cell">$13.1M</div>
+      <div class="hm-cell hm-2" role="cell">$11.7M</div>
+      <div class="hm-cell hm-1" role="cell">$10.3M</div>
+
+      <!-- Row 3: 2.2% (BASE) -->
+      <div class="hm-cell row-label" role="rowheader">2.2% growth &#9679;</div>
+      <div class="hm-cell hm-3" role="cell">$14.8M</div>
+      <div class="hm-cell hm-2 hm-active" role="cell" aria-label="BASE CASE: $13.5M">$13.5M</div>
+      <div class="hm-cell hm-1" role="cell">$12.1M</div>
+      <div class="hm-cell hm0" role="cell">$10.7M</div>
+      <div class="hm-cell hm-n1" role="cell">$9.2M</div>
+
+      <!-- Row 4: 1.6% -->
+      <div class="hm-cell row-label" role="rowheader">1.6% growth</div>
+      <div class="hm-cell hm-1" role="cell">$12.4M</div>
+      <div class="hm-cell hm0" role="cell">$11.0M</div>
+      <div class="hm-cell hm-n1" role="cell">$9.6M</div>
+      <div class="hm-cell hm-n2" role="cell">$8.2M</div>
+      <div class="hm-cell hm-n3" role="cell">$6.7M</div>
+
+      <!-- Row 5: 1.0% -->
+      <div class="hm-cell row-label" role="rowheader">1.0% growth</div>
+      <div class="hm-cell hm-n1" role="cell">$10.2M</div>
+      <div class="hm-cell hm-n2" role="cell">$8.8M</div>
+      <div class="hm-cell hm-n3" role="cell">$7.4M</div>
+      <div class="hm-cell hm-n4" role="cell">$5.9M</div>
+      <div class="hm-cell hm-n5" role="cell">$4.4M</div>
+    </div>
+  </div>
+
+  <footer class="doc-footer">
+    <span>Northwind Capital &mdash; Strategic Finance &bull; Confidential</span>
+    <span>Period: {{PERIOD}}</span>
+    <span>Prepared by: {{PREPARED_BY}}</span>
+    <span>v{{VERSION}}</span>
+  </footer>
+
+</div>
+</body>
+</html>

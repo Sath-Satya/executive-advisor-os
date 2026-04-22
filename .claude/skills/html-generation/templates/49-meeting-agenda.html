@@ -1,0 +1,568 @@
+<!--
+TEMPLATE: Meeting Agenda
+CATEGORY: Admin / Operations
+USE WHEN: Distributing a structured agenda before a formal meeting, capturing time slots, owners, outcomes, and post-meeting action items.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meeting Agenda — SponAI Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --white: #ffffff;
+      --green: #1a7a4a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #e8e4dc;
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .page {
+      background: var(--white);
+      width: 794px;
+      margin: 0 auto;
+      padding: 52px 60px 60px;
+      box-shadow: 0 4px 32px rgba(14,27,46,0.12);
+    }
+    /* Page header */
+    .doc-header {
+      border-bottom: 3px solid var(--navy);
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+    .doc-type {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+    .doc-header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+    }
+    /* Meta row */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+    .meta-cell {
+      padding: 12px 16px;
+      border-right: 1px solid var(--border);
+    }
+    .meta-cell:last-child { border-right: none; }
+    .meta-cell .mc-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .meta-cell .mc-val {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--navy);
+      font-family: 'DM Mono', monospace;
+    }
+    /* Attendees */
+    .section-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .attendees-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .attendee-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 12px 5px 6px;
+    }
+    .att-avatar {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .att-avatar.gold { background: var(--gold); }
+    .att-avatar.green { background: var(--green); }
+    .att-avatar.slate { background: #4a5568; }
+    .att-info strong { font-size: 0.8rem; color: var(--navy); font-weight: 600; display: block; line-height: 1; }
+    .att-info small { font-size: 0.68rem; color: var(--muted); }
+    /* Divider */
+    .section-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0 20px; }
+    /* Agenda table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-bottom: 28px;
+    }
+    caption {
+      text-align: left;
+      caption-side: top;
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    thead th {
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.66rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 9px 12px;
+      text-align: left;
+    }
+    thead th.center { text-align: center; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:last-child { border-bottom: 2px solid var(--navy); }
+    tbody td { padding: 10px 12px; vertical-align: top; line-height: 1.5; }
+    .td-time {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--navy);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .td-topic strong { color: var(--navy); font-weight: 600; display: block; }
+    .td-topic p { color: var(--muted); font-size: 0.76rem; margin-top: 2px; }
+    .td-owner {
+      font-size: 0.78rem;
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .td-outcome {
+      font-size: 0.76rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .td-dur {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+    }
+    .break-row td { background: var(--cream); color: var(--muted); font-style: italic; font-size: 0.78rem; }
+    /* Notes sections */
+    .notes-section { margin-bottom: 22px; }
+    .notes-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .notes-item-num {
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-family: 'DM Mono', monospace;
+    }
+    .notes-header h3 {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .notes-lines {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .note-line {
+      border-bottom: 1px solid var(--border);
+      padding: 8px 14px;
+      min-height: 34px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .note-line:last-child { border-bottom: none; }
+    .note-bullet {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    /* Action items table */
+    .action-table thead th { background: var(--gold); color: #fff; }
+    .action-table tbody td:first-child { font-weight: 600; color: var(--navy); }
+    .action-table .pri-high {
+      display: inline-block;
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    .action-table .pri-med {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    .action-table .pri-low {
+      display: inline-block;
+      background: var(--cream);
+      color: var(--muted);
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    .due-date { font-family: 'DM Mono', monospace; font-size: 0.78rem; }
+    /* Footer */
+    .doc-footer {
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .doc-footer p { font-size: 0.67rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+    /* Print */
+    @page { size: A4; margin: 2cm; }
+    @media print {
+      body { background: none; padding: 0; display: block; }
+      .page { box-shadow: none; width: 100%; padding: 0; }
+      thead { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .action-table thead { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+      .notes-item-num { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" role="main">
+    <header class="doc-header">
+      <div class="doc-type">Meeting Agenda</div>
+      <h1>Claims AI Integration — Phase 2 Kickoff<br />
+        <span style="font-size:1rem;font-weight:400;color:var(--muted);">SponAI Consulting &times; Meridian Health Systems</span>
+      </h1>
+    </header>
+
+    <!-- Meeting meta -->
+    <section aria-label="Meeting details">
+      <div class="meta-grid">
+        <div class="meta-cell">
+          <div class="mc-label">Date</div>
+          <div class="mc-val">2026-04-22</div>
+        </div>
+        <div class="meta-cell">
+          <div class="mc-label">Time</div>
+          <div class="mc-val">10:00&ndash;11:30 PST</div>
+        </div>
+        <div class="meta-cell">
+          <div class="mc-label">Location</div>
+          <div class="mc-val">Teams / Rm 4B</div>
+        </div>
+        <div class="meta-cell">
+          <div class="mc-label">Facilitator</div>
+          <div class="mc-val">S. Thiagarajan</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Attendees -->
+    <section aria-label="Attendee list">
+      <div class="section-label">Attendees</div>
+      <div class="attendees-grid">
+        <div class="attendee-chip">
+          <div class="att-avatar gold" aria-hidden="true">ST</div>
+          <div class="att-info">
+            <strong>Sathish Thiagarajan</strong>
+            <small>Lead Consultant (SponAI)</small>
+          </div>
+        </div>
+        <div class="attendee-chip">
+          <div class="att-avatar" aria-hidden="true">RP</div>
+          <div class="att-info">
+            <strong>Rachel Patel</strong>
+            <small>VP Engineering (Meridian)</small>
+          </div>
+        </div>
+        <div class="attendee-chip">
+          <div class="att-avatar green" aria-hidden="true">DK</div>
+          <div class="att-info">
+            <strong>Daniel Kim</strong>
+            <small>SF Architect (Meridian)</small>
+          </div>
+        </div>
+        <div class="attendee-chip">
+          <div class="att-avatar slate" aria-hidden="true">AV</div>
+          <div class="att-info">
+            <strong>Anita Vargas</strong>
+            <small>Clinical Ops Lead (Meridian)</small>
+          </div>
+        </div>
+        <div class="attendee-chip">
+          <div class="att-avatar" style="background:#7c3aed;" aria-hidden="true">MO</div>
+          <div class="att-info">
+            <strong>Marcus Owens</strong>
+            <small>Security &amp; Compliance (Meridian)</small>
+          </div>
+        </div>
+        <div class="attendee-chip">
+          <div class="att-avatar" style="background:#0891b2;" aria-hidden="true">LN</div>
+          <div class="att-info">
+            <strong>Li Na Chen</strong>
+            <small>QA Lead (SponAI)</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- Agenda table -->
+    <section aria-label="Agenda items">
+      <div class="section-label">Agenda</div>
+      <table>
+        <caption>Total duration: 90 minutes</caption>
+        <thead>
+          <tr>
+            <th scope="col">Time</th>
+            <th scope="col">Topic</th>
+            <th scope="col">Owner</th>
+            <th scope="col" class="center">Dur.</th>
+            <th scope="col">Expected Outcome</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-time">10:00</td>
+            <td class="td-topic">
+              <strong>Welcome &amp; Introductions</strong>
+              <p>Housekeeping, agenda walkthrough, roles recap</p>
+            </td>
+            <td class="td-owner">S. Thiagarajan</td>
+            <td class="td-dur">5 min</td>
+            <td class="td-outcome">Alignment on agenda and ground rules</td>
+          </tr>
+          <tr>
+            <td class="td-time">10:05</td>
+            <td class="td-topic">
+              <strong>Phase 1 Retrospective &amp; Handoff</strong>
+              <p>Review completed deliverables D1 &amp; D2, open items from Phase 1, acceptance sign-off</p>
+            </td>
+            <td class="td-owner">S. Thiagarajan</td>
+            <td class="td-dur">15 min</td>
+            <td class="td-outcome">Formal Phase 1 acceptance by Meridian VP Engineering</td>
+          </tr>
+          <tr>
+            <td class="td-time">10:20</td>
+            <td class="td-topic">
+              <strong>Phase 2 Scope &amp; Architecture Deep-Dive</strong>
+              <p>Triage engine design, SF integration approach, confidence scoring model, escalation paths</p>
+            </td>
+            <td class="td-owner">S. Thiagarajan / D. Kim</td>
+            <td class="td-dur">25 min</td>
+            <td class="td-outcome">Architecture decisions confirmed; any blockers surfaced</td>
+          </tr>
+          <tr class="break-row">
+            <td class="td-time">10:45</td>
+            <td colspan="4">&#8212; Short break (5 min) &#8212;</td>
+          </tr>
+          <tr>
+            <td class="td-time">10:50</td>
+            <td class="td-topic">
+              <strong>Security &amp; Compliance Requirements</strong>
+              <p>HIPAA data flows, encryption in transit/rest, audit logging obligations for AI decisions</p>
+            </td>
+            <td class="td-owner">M. Owens</td>
+            <td class="td-dur">15 min</td>
+            <td class="td-outcome">Documented compliance requirements added to D3 acceptance criteria</td>
+          </tr>
+          <tr>
+            <td class="td-time">11:05</td>
+            <td class="td-topic">
+              <strong>UAT &amp; Clinical Ops Readiness</strong>
+              <p>Test case walkthrough with clinical staff, training schedule, change management plan</p>
+            </td>
+            <td class="td-owner">A. Vargas / L. N. Chen</td>
+            <td class="td-dur">15 min</td>
+            <td class="td-outcome">UAT plan agreed; training dates blocked on calendars</td>
+          </tr>
+          <tr>
+            <td class="td-time">11:20</td>
+            <td class="td-topic">
+              <strong>Action Items, Decisions &amp; Next Steps</strong>
+              <p>Assign owners, confirm next check-in cadence (bi-weekly Fridays)</p>
+            </td>
+            <td class="td-owner">S. Thiagarajan</td>
+            <td class="td-dur">10 min</td>
+            <td class="td-outcome">All action items logged with owners and due dates</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Notes per item -->
+    <section aria-label="Discussion notes by agenda item">
+      <div class="section-label">Discussion Notes</div>
+
+      <div class="notes-section">
+        <div class="notes-header">
+          <div class="notes-item-num" aria-hidden="true">2</div>
+          <h3>Phase 1 Retrospective &amp; Handoff</h3>
+        </div>
+        <div class="notes-lines" role="region" aria-label="Notes for item 2">
+          <div class="note-line"><div class="note-bullet" aria-hidden="true"></div><span>D1 (Architecture Doc) accepted without changes. ADR-003 needs a minor clarification on data residency — ST to update by 2026-04-23.</span></div>
+          <div class="note-line"><div class="note-bullet" aria-hidden="true"></div><span>D2 (Managed Package) deployed to QA sandbox. 2 minor UI issues flagged by DK — added to Phase 2 backlog.</span></div>
+          <div class="note-line"><div class="note-bullet" aria-hidden="true"></div><span style="color:var(--border);">[additional notes]</span></div>
+        </div>
+      </div>
+
+      <div class="notes-section">
+        <div class="notes-header">
+          <div class="notes-item-num" aria-hidden="true">3</div>
+          <h3>Phase 2 Architecture Deep-Dive</h3>
+        </div>
+        <div class="notes-lines" role="region" aria-label="Notes for item 3">
+          <div class="note-line"><div class="note-bullet" aria-hidden="true"></div><span>Confidence threshold for auto-approve set at 0.92 (adjustable via custom metadata). AV confirmed clinical acceptability.</span></div>
+          <div class="note-line"><div class="note-bullet" aria-hidden="true"></div><span>DK raised governor limit concern with async callout pattern — ST to research Platform Events vs. Queueable Apex trade-off.</span></div>
+          <div class="note-line"><div class="note-bullet" aria-hidden="true"></div><span style="color:var(--border);">[additional notes]</span></div>
+        </div>
+      </div>
+
+      <div class="notes-section">
+        <div class="notes-header">
+          <div class="notes-item-num" aria-hidden="true">4</div>
+          <h3>Security &amp; Compliance</h3>
+        </div>
+        <div class="notes-lines" role="region" aria-label="Notes for item 4">
+          <div class="note-line"><div class="note-bullet" aria-hidden="true"></div><span>PHI must not be sent to Claude API. Meridian to supply de-identification service — MO to confirm endpoint by 2026-04-25.</span></div>
+          <div class="note-line"><div class="note-bullet" aria-hidden="true"></div><span>AI decision audit log must retain for 7 years per HIPAA. Storage approach: Azure Blob + Meridian's existing SIEM.</span></div>
+          <div class="note-line"><div class="note-bullet" aria-hidden="true"></div><span style="color:var(--border);">[additional notes]</span></div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- Action Items -->
+    <section aria-label="Action items table">
+      <div class="section-label">Action Items</div>
+      <table class="action-table">
+        <caption>Owners responsible for updates at next check-in (2026-05-01)</caption>
+        <thead>
+          <tr>
+            <th scope="col">Who</th>
+            <th scope="col">What</th>
+            <th scope="col">By When</th>
+            <th scope="col">Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>S. Thiagarajan</td>
+            <td>Update ADR-003 with data residency clarification and re-share with RP for sign-off</td>
+            <td class="due-date">2026-04-23</td>
+            <td><span class="pri-high">High</span></td>
+          </tr>
+          <tr>
+            <td>S. Thiagarajan</td>
+            <td>Research Platform Events vs. Queueable Apex for async callouts; share recommendation doc</td>
+            <td class="due-date">2026-04-25</td>
+            <td><span class="pri-high">High</span></td>
+          </tr>
+          <tr>
+            <td>M. Owens</td>
+            <td>Confirm de-identification API endpoint and share documentation with SponAI team</td>
+            <td class="due-date">2026-04-25</td>
+            <td><span class="pri-high">High</span></td>
+          </tr>
+          <tr>
+            <td>A. Vargas</td>
+            <td>Block UAT dates on clinical ops calendar (targeting Wk 9–10) and send invite</td>
+            <td class="due-date">2026-04-28</td>
+            <td><span class="pri-med">Medium</span></td>
+          </tr>
+          <tr>
+            <td>D. Kim</td>
+            <td>Grant SponAI team access to Phase 2 sandbox org and confirm CI/CD pipeline credentials</td>
+            <td class="due-date">2026-04-22</td>
+            <td><span class="pri-high">High</span></td>
+          </tr>
+          <tr>
+            <td>L. N. Chen</td>
+            <td>Draft UAT test case template and share for Meridian review prior to next check-in</td>
+            <td class="due-date">2026-04-29</td>
+            <td><span class="pri-med">Medium</span></td>
+          </tr>
+          <tr>
+            <td>All</td>
+            <td>Review Phase 2 architecture deck (shared after this meeting) and submit feedback async</td>
+            <td class="due-date">2026-04-26</td>
+            <td><span class="pri-low">Low</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="doc-footer">
+      <p>Next check-in: 2026-05-01 10:00 PST &mdash; SponAI Consulting &times; Meridian Health</p>
+      <p>v{{VERSION}} &middot; {{DATE}} &middot; AGD-2026-0009</p>
+    </footer>
+  </main>
+</body>
+</html>

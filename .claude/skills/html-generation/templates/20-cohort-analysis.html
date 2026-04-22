@@ -1,0 +1,532 @@
+<!--
+TEMPLATE: cohort-analysis
+CATEGORY: Dashboard / Analytics
+USE WHEN: You need a cohort retention heatmap with CSS grid color-scaled cells — user retention analysis, subscription churn, or engagement decay visualization.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cohort Analysis &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #18222e;
+      --border: #1e2d40;
+      --primary: #3b9eff;
+      --secondary: #a78bfa;
+      --accent: #2dd4a0;
+      --warning: #f0a050;
+      --error: #f06070;
+      --text: #d0d8e4;
+      --muted: #556677;
+      --font: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', monospace;
+
+      /* heatmap color scale: dark = low retention, bright = high */
+      --h0:  #0a1118; /* 0% — empty/future */
+      --h10: #0d1820;
+      --h20: #102038;
+      --h30: #133050;
+      --h40: #164068;
+      --h50: #1a5280;
+      --h60: #1d6498;
+      --h70: #2078b0;
+      --h80: #2390c8;
+      --h90: #26a8e0;
+      --h100: #2dd4a0;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.75rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    header h1 { font-size: 1rem; font-weight: 600; color: #fff; letter-spacing: -0.2px; }
+    header .meta { font-size: 0.78rem; color: var(--muted); font-family: var(--mono); }
+    .metric-select {
+      display: flex; gap: 0.4rem;
+    }
+    .ms-btn {
+      padding: 0.25rem 0.65rem; border-radius: 5px;
+      font-size: 0.72rem; font-weight: 600; font-family: var(--mono);
+      border: 1px solid var(--border); color: var(--muted); cursor: default;
+    }
+    .ms-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    main { max-width: 1300px; margin: 0 auto; padding: 1.25rem 1.75rem 2rem; }
+
+    .section-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem;
+    }
+
+    /* summary stats */
+    .summary-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.75rem; margin-bottom: 1.75rem;
+    }
+    .sum-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.8rem 1rem; text-align: center;
+    }
+    .sum-val { font-size: 1.4rem; font-weight: 700; font-family: var(--mono); line-height: 1; }
+    .sum-lbl { font-size: 0.68rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* heatmap */
+    .heatmap-container {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      overflow-x: auto; margin-bottom: 1.75rem;
+    }
+    .heatmap-header {
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .hm-title { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .hm-meta  { font-size: 0.72rem; font-family: var(--mono); color: var(--muted); }
+
+    .heatmap-body { padding: 1rem 1.25rem; }
+
+    .hm-grid-wrap { overflow-x: auto; }
+
+    .hm-grid {
+      display: grid;
+      /* columns: cohort label + W0 + W1 ... W11 */
+      grid-template-columns: 130px repeat(13, 56px);
+      gap: 3px;
+      min-width: 700px;
+    }
+
+    /* column headers */
+    .hm-col-hdr {
+      font-size: 0.62rem; font-family: var(--mono); color: var(--muted);
+      text-align: center; padding: 0.3rem 0.1rem;
+      font-weight: 600; text-transform: uppercase;
+    }
+    .hm-col-hdr.first { text-align: left; padding-left: 0.25rem; }
+
+    /* cohort row */
+    .hm-row-label {
+      font-size: 0.72rem; font-family: var(--mono); color: var(--text);
+      padding: 0.25rem 0.25rem; display: flex; flex-direction: column;
+      justify-content: center;
+    }
+    .hm-row-label .cohort-name { font-weight: 600; }
+    .hm-row-label .cohort-size { color: var(--muted); font-size: 0.65rem; }
+
+    /* heatmap cells */
+    .hm-cell {
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.66rem; font-family: var(--mono);
+      font-weight: 600; min-height: 30px;
+      color: rgba(255,255,255,0.85);
+      position: relative;
+    }
+    .hm-cell.future {
+      background: rgba(30,45,64,0.3);
+      color: var(--muted);
+    }
+    .hm-cell[title] { cursor: default; }
+
+    /* week 0 always 100% */
+    .hm-cell.w0 { background: var(--h100) !important; color: #0a1118; font-weight: 700; }
+
+    /* retention buckets */
+    .r90  { background: var(--h90); }
+    .r80  { background: var(--h80); }
+    .r70  { background: var(--h70); color: rgba(255,255,255,0.9); }
+    .r60  { background: var(--h60); }
+    .r50  { background: var(--h50); }
+    .r45  { background: var(--h40); }
+    .r35  { background: var(--h30); }
+    .r25  { background: var(--h20); }
+    .r15  { background: var(--h10); }
+
+    /* color legend */
+    .legend-row {
+      display: flex; align-items: center; gap: 0.4rem; margin-top: 0.75rem;
+    }
+    .legend-label { font-size: 0.68rem; color: var(--muted); font-family: var(--mono); }
+    .legend-scale {
+      display: flex; flex: 1; max-width: 300px; height: 10px; border-radius: 5px;
+      overflow: hidden;
+    }
+    .legend-scale span { flex: 1; }
+
+    /* trend charts section */
+    .trend-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem; margin-bottom: 1.75rem;
+    }
+    .trend-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+      padding: 1rem 1.1rem;
+    }
+    .trend-card h3 { font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 0.85rem; }
+
+    /* avg retention by week bar chart */
+    .avg-bar-list { display: flex; flex-direction: column; gap: 0.45rem; }
+    .avg-bar-row { display: flex; align-items: center; gap: 0.6rem; }
+    .avg-week { font-size: 0.68rem; font-family: var(--mono); color: var(--muted); width: 22px; flex-shrink: 0; }
+    .avg-track { flex: 1; height: 14px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+    .avg-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+    .avg-pct { font-size: 0.68rem; font-family: var(--mono); color: var(--muted); width: 36px; text-align: right; }
+
+    /* cohort size trend */
+    .cohort-size-chart {
+      display: flex; align-items: flex-end; gap: 4px; height: 80px;
+    }
+    .cs-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+    .cs-bar { width: 100%; border-radius: 3px 3px 0 0; min-height: 4px; }
+    .cs-label { font-size: 0.6rem; font-family: var(--mono); color: var(--muted); }
+
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      color: var(--muted); padding: 0.85rem 1.75rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.72rem; font-family: var(--mono); gap: 1rem; flex-wrap: wrap;
+    }
+
+    @media (max-width: 700px) {
+      main { padding: 1rem; }
+      .trend-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Northwind Capital &mdash; Cohort Retention Analysis</h1>
+    <div class="meta">Weekly cohorts &bull; Jan 2026 &ndash; Apr 2026 &bull; Subscription platform users</div>
+  </div>
+  <div class="metric-select" role="group" aria-label="Metric selection">
+    <div class="ms-btn active">Retention</div>
+    <div class="ms-btn">Revenue</div>
+    <div class="ms-btn">Engagement</div>
+  </div>
+</header>
+
+<main>
+
+  <p class="section-label">Summary Metrics</p>
+  <div class="summary-row" role="region" aria-label="Cohort summary statistics">
+    <div class="sum-card"><div class="sum-val" style="color:var(--accent)">14,820</div><div class="sum-lbl">Users analyzed</div></div>
+    <div class="sum-card"><div class="sum-val" style="color:var(--primary)">52%</div><div class="sum-lbl">Avg W4 retention</div></div>
+    <div class="sum-card"><div class="sum-val" style="color:var(--warning)">38%</div><div class="sum-lbl">Avg W8 retention</div></div>
+    <div class="sum-card"><div class="sum-val" style="color:var(--secondary)">29%</div><div class="sum-lbl">Avg W12 retention</div></div>
+    <div class="sum-card"><div class="sum-val" style="color:var(--accent)">&#9650; 6pp</div><div class="sum-lbl">W4 trend (3-mo)</div></div>
+    <div class="sum-card"><div class="sum-val" style="color:var(--accent)">Apr best</div><div class="sum-lbl">Strongest cohort</div></div>
+  </div>
+
+  <p class="section-label">Retention Heatmap &mdash; Weekly Cohorts</p>
+  <div class="heatmap-container">
+    <div class="heatmap-header">
+      <span class="hm-title">User Retention by Cohort Week</span>
+      <span class="hm-meta">100% = all users from signup week still active</span>
+    </div>
+    <div class="heatmap-body">
+      <div class="hm-grid-wrap">
+        <div class="hm-grid" role="table" aria-label="Cohort retention heatmap">
+
+          <!-- HEADER ROW -->
+          <div class="hm-col-hdr first" role="columnheader">Cohort</div>
+          <div class="hm-col-hdr" role="columnheader">W0</div>
+          <div class="hm-col-hdr" role="columnheader">W1</div>
+          <div class="hm-col-hdr" role="columnheader">W2</div>
+          <div class="hm-col-hdr" role="columnheader">W3</div>
+          <div class="hm-col-hdr" role="columnheader">W4</div>
+          <div class="hm-col-hdr" role="columnheader">W5</div>
+          <div class="hm-col-hdr" role="columnheader">W6</div>
+          <div class="hm-col-hdr" role="columnheader">W7</div>
+          <div class="hm-col-hdr" role="columnheader">W8</div>
+          <div class="hm-col-hdr" role="columnheader">W9</div>
+          <div class="hm-col-hdr" role="columnheader">W10</div>
+          <div class="hm-col-hdr" role="columnheader">W11</div>
+          <div class="hm-col-hdr" role="columnheader">W12</div>
+
+          <!-- JAN W1 -->
+          <div class="hm-row-label" role="cell"><span class="cohort-name">Jan W1</span><span class="cohort-size">n=1,240</span></div>
+          <div class="hm-cell w0" role="cell" title="Week 0: 100%">100%</div>
+          <div class="hm-cell r80" role="cell" title="Week 1: 81%">81%</div>
+          <div class="hm-cell r70" role="cell" title="Week 2: 72%">72%</div>
+          <div class="hm-cell r60" role="cell" title="Week 3: 64%">64%</div>
+          <div class="hm-cell r50" role="cell" title="Week 4: 55%">55%</div>
+          <div class="hm-cell r45" role="cell" title="Week 5: 48%">48%</div>
+          <div class="hm-cell r45" role="cell" title="Week 6: 43%">43%</div>
+          <div class="hm-cell r35" role="cell" title="Week 7: 40%">40%</div>
+          <div class="hm-cell r35" role="cell" title="Week 8: 37%">37%</div>
+          <div class="hm-cell r25" role="cell" title="Week 9: 34%">34%</div>
+          <div class="hm-cell r25" role="cell" title="Week 10: 31%">31%</div>
+          <div class="hm-cell r25" role="cell" title="Week 11: 29%">29%</div>
+          <div class="hm-cell r25" role="cell" title="Week 12: 28%">28%</div>
+
+          <!-- JAN W2 -->
+          <div class="hm-row-label" role="cell"><span class="cohort-name">Jan W2</span><span class="cohort-size">n=1,180</span></div>
+          <div class="hm-cell w0" role="cell" title="Week 0: 100%">100%</div>
+          <div class="hm-cell r80" role="cell" title="Week 1: 80%">80%</div>
+          <div class="hm-cell r70" role="cell" title="Week 2: 71%">71%</div>
+          <div class="hm-cell r60" role="cell" title="Week 3: 63%">63%</div>
+          <div class="hm-cell r50" role="cell" title="Week 4: 54%">54%</div>
+          <div class="hm-cell r45" role="cell" title="Week 5: 47%">47%</div>
+          <div class="hm-cell r45" role="cell" title="Week 6: 42%">42%</div>
+          <div class="hm-cell r35" role="cell" title="Week 7: 38%">38%</div>
+          <div class="hm-cell r35" role="cell" title="Week 8: 35%">35%</div>
+          <div class="hm-cell r25" role="cell" title="Week 9: 32%">32%</div>
+          <div class="hm-cell r25" role="cell" title="Week 10: 30%">30%</div>
+          <div class="hm-cell r25" role="cell" title="Week 11: 28%">28%</div>
+          <div class="hm-cell future" role="cell">--</div>
+
+          <!-- FEB W1 -->
+          <div class="hm-row-label" role="cell"><span class="cohort-name">Feb W1</span><span class="cohort-size">n=1,310</span></div>
+          <div class="hm-cell w0" role="cell" title="Week 0: 100%">100%</div>
+          <div class="hm-cell r80" role="cell" title="Week 1: 82%">82%</div>
+          <div class="hm-cell r70" role="cell" title="Week 2: 74%">74%</div>
+          <div class="hm-cell r60" role="cell" title="Week 3: 66%">66%</div>
+          <div class="hm-cell r60" role="cell" title="Week 4: 57%">57%</div>
+          <div class="hm-cell r50" role="cell" title="Week 5: 50%">50%</div>
+          <div class="hm-cell r45" role="cell" title="Week 6: 45%">45%</div>
+          <div class="hm-cell r45" role="cell" title="Week 7: 42%">42%</div>
+          <div class="hm-cell r35" role="cell" title="Week 8: 38%">38%</div>
+          <div class="hm-cell r35" role="cell" title="Week 9: 35%">35%</div>
+          <div class="hm-cell r25" role="cell" title="Week 10: 32%">32%</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+
+          <!-- FEB W2 -->
+          <div class="hm-row-label" role="cell"><span class="cohort-name">Feb W2</span><span class="cohort-size">n=1,090</span></div>
+          <div class="hm-cell w0" role="cell" title="Week 0: 100%">100%</div>
+          <div class="hm-cell r80" role="cell" title="Week 1: 83%">83%</div>
+          <div class="hm-cell r70" role="cell" title="Week 2: 75%">75%</div>
+          <div class="hm-cell r70" role="cell" title="Week 3: 68%">68%</div>
+          <div class="hm-cell r60" role="cell" title="Week 4: 58%">58%</div>
+          <div class="hm-cell r50" role="cell" title="Week 5: 51%">51%</div>
+          <div class="hm-cell r45" role="cell" title="Week 6: 46%">46%</div>
+          <div class="hm-cell r45" role="cell" title="Week 7: 42%">42%</div>
+          <div class="hm-cell r35" role="cell" title="Week 8: 39%">39%</div>
+          <div class="hm-cell r35" role="cell" title="Week 9: 36%">36%</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+
+          <!-- MAR W1 -->
+          <div class="hm-row-label" role="cell"><span class="cohort-name">Mar W1</span><span class="cohort-size">n=1,480</span></div>
+          <div class="hm-cell w0" role="cell" title="Week 0: 100%">100%</div>
+          <div class="hm-cell r80" role="cell" title="Week 1: 84%">84%</div>
+          <div class="hm-cell r80" role="cell" title="Week 2: 76%">76%</div>
+          <div class="hm-cell r70" role="cell" title="Week 3: 69%">69%</div>
+          <div class="hm-cell r60" role="cell" title="Week 4: 60%">60%</div>
+          <div class="hm-cell r50" role="cell" title="Week 5: 52%">52%</div>
+          <div class="hm-cell r50" role="cell" title="Week 6: 47%">47%</div>
+          <div class="hm-cell r45" role="cell" title="Week 7: 44%">44%</div>
+          <div class="hm-cell r35" role="cell" title="Week 8: 40%">40%</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+
+          <!-- MAR W2 -->
+          <div class="hm-row-label" role="cell"><span class="cohort-name">Mar W2</span><span class="cohort-size">n=1,620</span></div>
+          <div class="hm-cell w0" role="cell" title="Week 0: 100%">100%</div>
+          <div class="hm-cell r80" role="cell" title="Week 1: 85%">85%</div>
+          <div class="hm-cell r80" role="cell" title="Week 2: 77%">77%</div>
+          <div class="hm-cell r70" role="cell" title="Week 3: 70%">70%</div>
+          <div class="hm-cell r60" role="cell" title="Week 4: 62%">62%</div>
+          <div class="hm-cell r50" role="cell" title="Week 5: 53%">53%</div>
+          <div class="hm-cell r50" role="cell" title="Week 6: 48%">48%</div>
+          <div class="hm-cell r45" role="cell" title="Week 7: 44%">44%</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+
+          <!-- APR W1 -->
+          <div class="hm-row-label" role="cell"><span class="cohort-name">Apr W1</span><span class="cohort-size">n=1,840</span></div>
+          <div class="hm-cell w0" role="cell" title="Week 0: 100%">100%</div>
+          <div class="hm-cell r80" role="cell" title="Week 1: 86%">86%</div>
+          <div class="hm-cell r80" role="cell" title="Week 2: 79%">79%</div>
+          <div class="hm-cell r70" role="cell" title="Week 3: 72%">72%</div>
+          <div class="hm-cell r60" role="cell" title="Week 4: 63%">63%</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+
+          <!-- APR W2 -->
+          <div class="hm-row-label" role="cell"><span class="cohort-name">Apr W2</span><span class="cohort-size">n=2,080</span></div>
+          <div class="hm-cell w0" role="cell" title="Week 0: 100%">100%</div>
+          <div class="hm-cell r80" role="cell" title="Week 1: 87%">87%</div>
+          <div class="hm-cell r80" role="cell" title="Week 2: 80%">80%</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+          <div class="hm-cell future" role="cell">--</div>
+
+        </div>
+      </div>
+
+      <div class="legend-row" role="img" aria-label="Color scale: dark = low retention, bright teal = high retention">
+        <span class="legend-label">0%</span>
+        <div class="legend-scale">
+          <span style="background:var(--h10)"></span>
+          <span style="background:var(--h20)"></span>
+          <span style="background:var(--h30)"></span>
+          <span style="background:var(--h40)"></span>
+          <span style="background:var(--h50)"></span>
+          <span style="background:var(--h60)"></span>
+          <span style="background:var(--h70)"></span>
+          <span style="background:var(--h80)"></span>
+          <span style="background:var(--h90)"></span>
+          <span style="background:var(--h100)"></span>
+        </div>
+        <span class="legend-label">100%</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="section-label">Trend Analysis</p>
+  <div class="trend-grid">
+
+    <div class="trend-card">
+      <h3>Average Retention by Week (All Cohorts)</h3>
+      <div class="avg-bar-list" role="region" aria-label="Average retention by week">
+        <div class="avg-bar-row">
+          <span class="avg-week">W0</span>
+          <div class="avg-track"><div class="avg-fill" style="width:100%;background:var(--accent)"></div></div>
+          <span class="avg-pct">100%</span>
+        </div>
+        <div class="avg-bar-row">
+          <span class="avg-week">W1</span>
+          <div class="avg-track"><div class="avg-fill" style="width:83%;background:var(--h80)"></div></div>
+          <span class="avg-pct">83%</span>
+        </div>
+        <div class="avg-bar-row">
+          <span class="avg-week">W2</span>
+          <div class="avg-track"><div class="avg-fill" style="width:75%;background:var(--h70)"></div></div>
+          <span class="avg-pct">75%</span>
+        </div>
+        <div class="avg-bar-row">
+          <span class="avg-week">W3</span>
+          <div class="avg-track"><div class="avg-fill" style="width:67%;background:var(--h60)"></div></div>
+          <span class="avg-pct">67%</span>
+        </div>
+        <div class="avg-bar-row">
+          <span class="avg-week">W4</span>
+          <div class="avg-track"><div class="avg-fill" style="width:58%;background:var(--h50)"></div></div>
+          <span class="avg-pct">58%</span>
+        </div>
+        <div class="avg-bar-row">
+          <span class="avg-week">W5</span>
+          <div class="avg-track"><div class="avg-fill" style="width:51%;background:var(--h50)"></div></div>
+          <span class="avg-pct">51%</span>
+        </div>
+        <div class="avg-bar-row">
+          <span class="avg-week">W6</span>
+          <div class="avg-track"><div class="avg-fill" style="width:46%;background:var(--h40)"></div></div>
+          <span class="avg-pct">46%</span>
+        </div>
+        <div class="avg-bar-row">
+          <span class="avg-week">W7</span>
+          <div class="avg-track"><div class="avg-fill" style="width:42%;background:var(--h40)"></div></div>
+          <span class="avg-pct">42%</span>
+        </div>
+        <div class="avg-bar-row">
+          <span class="avg-week">W8</span>
+          <div class="avg-track"><div class="avg-fill" style="width:38%;background:var(--h30)"></div></div>
+          <span class="avg-pct">38%</span>
+        </div>
+        <div class="avg-bar-row">
+          <span class="avg-week">W12</span>
+          <div class="avg-track"><div class="avg-fill" style="width:28%;background:var(--h20)"></div></div>
+          <span class="avg-pct">28%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="trend-card">
+      <h3>Cohort Size by Month (New Users)</h3>
+      <div class="cohort-size-chart" role="img" aria-label="Monthly cohort size trend bar chart">
+        <div class="cs-col">
+          <div class="cs-bar" style="height:52%;background:var(--h50)"></div>
+          <div class="cs-label">Jan</div>
+        </div>
+        <div class="cs-col">
+          <div class="cs-bar" style="height:48%;background:var(--h50)"></div>
+          <div class="cs-label">Jan2</div>
+        </div>
+        <div class="cs-col">
+          <div class="cs-bar" style="height:55%;background:var(--h60)"></div>
+          <div class="cs-label">Feb</div>
+        </div>
+        <div class="cs-col">
+          <div class="cs-bar" style="height:46%;background:var(--h50)"></div>
+          <div class="cs-label">Feb2</div>
+        </div>
+        <div class="cs-col">
+          <div class="cs-bar" style="height:62%;background:var(--h70)"></div>
+          <div class="cs-label">Mar</div>
+        </div>
+        <div class="cs-col">
+          <div class="cs-bar" style="height:68%;background:var(--h70)"></div>
+          <div class="cs-label">Mar2</div>
+        </div>
+        <div class="cs-col">
+          <div class="cs-bar" style="height:77%;background:var(--h80)"></div>
+          <div class="cs-label">Apr</div>
+        </div>
+        <div class="cs-col">
+          <div class="cs-bar" style="height:87%;background:var(--accent)"></div>
+          <div class="cs-label">Apr2</div>
+        </div>
+      </div>
+      <div style="margin-top:0.75rem;font-size:0.78rem;color:var(--muted)">
+        New user acquisition is accelerating &mdash; Apr cohorts are 40% larger than Jan. W4 retention also improved by 6pp over the same period, suggesting both volume and quality gains.
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  <span>Northwind Capital &mdash; Cohort Retention Analysis</span>
+  <span>v{{VERSION}}</span>
+  <span>Updated {{UPDATED}}</span>
+  <span>Source: Product Analytics Warehouse</span>
+</footer>
+
+</body>
+</html>

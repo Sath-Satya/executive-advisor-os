@@ -1,0 +1,677 @@
+<!--
+TEMPLATE: market-analysis
+CATEGORY: Reports / Documents
+USE WHEN: Presenting an industry or market analysis with size callouts, segment breakdown, competitive landscape, and forecast.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{MARKET_NAME}} Market Analysis — {{DATE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream2: #efebe3;
+      --navy: #0e1b2e;
+      --navy2: #162540;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --callout-bg: #f0ece4;
+      --green: #2d6a4f;
+      --amber: #92400e;
+      --seg1: #1a4a6e;
+      --seg2: #2d6a4f;
+      --seg3: #6b3e9e;
+      --seg4: #8b4513;
+      --serif: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+      --sans: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', 'Fira Code', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* ── Header ── */
+    .ma-header {
+      background: var(--navy);
+      padding: 3rem 2rem 2.5rem;
+    }
+    .header-inner { max-width: 960px; margin: 0 auto; }
+    .ma-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold2);
+      display: block;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+      max-width: 700px;
+    }
+    .ma-subtitle {
+      font-size: 1rem;
+      color: #9aacc0;
+      max-width: 580px;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .ma-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding-top: 1.25rem;
+    }
+    .ma-meta-item {}
+    .ma-meta-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold2);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .ma-meta-value { font-size: 0.875rem; color: #c0cede; }
+
+    /* ── Market size callout strip ── */
+    .market-strip {
+      background: var(--gold);
+    }
+    .market-strip-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0;
+    }
+    .market-stat {
+      padding: 0.5rem 1rem;
+      border-right: 1px solid rgba(0,0,0,0.12);
+      text-align: center;
+    }
+    .market-stat:last-child { border-right: none; }
+    .market-stat-value {
+      display: block;
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      color: var(--navy);
+      line-height: 1.1;
+    }
+    .market-stat-label {
+      font-size: 0.75rem;
+      color: rgba(14,27,46,0.7);
+      font-family: var(--mono);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Layout ── */
+    .doc-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+
+    /* ── Section structure ── */
+    .ma-section {
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .ma-section:last-child { border-bottom: none; }
+    .section-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.25;
+      margin-bottom: 1.25rem;
+    }
+    h3 {
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-top: 2rem;
+      margin-bottom: 0.6rem;
+    }
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Segment breakdown ── */
+    .segments-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .segment-card {
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      border-top: 4px solid;
+    }
+    .segment-card:nth-child(1) { border-top-color: var(--seg1); }
+    .segment-card:nth-child(2) { border-top-color: var(--seg2); }
+    .segment-card:nth-child(3) { border-top-color: var(--seg3); }
+    .segment-card:nth-child(4) { border-top-color: var(--seg4); }
+    .segment-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--navy);
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+    .segment-size {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      color: var(--navy);
+      display: block;
+      line-height: 1.1;
+      margin-bottom: 0.25rem;
+    }
+    .segment-share {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .segment-cagr {
+      font-size: 0.8rem;
+      color: var(--green);
+      font-weight: 600;
+    }
+    .segment-desc { font-size: 0.82rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.5; }
+
+    /* ── Forecast chart (SVG bar chart) ── */
+    .forecast-figure {
+      margin: 1.5rem 0;
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      overflow: hidden;
+    }
+    .forecast-figure svg { width: 100%; display: block; }
+    figcaption {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-style: italic;
+      text-align: center;
+      margin-top: 0.75rem;
+    }
+
+    /* ── Competitive landscape grid ── */
+    .comp-grid {
+      margin: 1.5rem 0;
+      overflow-x: auto;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    caption {
+      text-align: left;
+      font-size: 0.78rem;
+      font-family: var(--mono);
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    th {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 500;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.65rem 1rem;
+      text-align: left;
+    }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:nth-child(even) td { background: var(--callout-bg); }
+    .strong-cell { font-weight: 600; }
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .badge-leader { background: #d1fae5; color: #065f46; }
+    .badge-challenger { background: #dbeafe; color: #1e3a5f; }
+    .badge-niche { background: var(--callout-bg); color: var(--muted); }
+    .badge-new { background: #ede9fe; color: #4c1d95; }
+
+    /* ── Drivers / risks ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 1.5rem 0;
+    }
+    .factor-list { list-style: none; }
+    .factor-list li {
+      padding: 0.5rem 0 0.5rem 1.4rem;
+      position: relative;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .factor-list li:last-child { border-bottom: none; }
+    .factor-list.drivers li::before {
+      content: '+';
+      position: absolute; left: 0; top: 0.45rem;
+      color: var(--green);
+      font-family: var(--mono);
+      font-weight: 700;
+    }
+    .factor-list.risks li::before {
+      content: '-';
+      position: absolute; left: 0; top: 0.45rem;
+      color: #b91c1c;
+      font-family: var(--mono);
+      font-weight: 700;
+    }
+    .factor-title { font-weight: 600; display: block; margin-bottom: 0.15rem; font-size: 0.875rem; }
+
+    /* ── Callout ── */
+    .callout {
+      padding: 1.1rem 1.35rem;
+      border-radius: 4px;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+    }
+    .callout-key { background: #eef6f1; border-left: 3px solid var(--green); color: #1a3d2b; }
+    .callout-title {
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    /* ── Footer ── */
+    .ma-footer {
+      background: var(--navy);
+      color: #6b7e94;
+      padding: 1.5rem 2rem;
+      font-size: 0.78rem;
+      font-family: var(--mono);
+    }
+    .ma-footer .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .footer-brand { color: var(--gold2); font-weight: 500; }
+    .footer-div { color: rgba(255,255,255,0.2); margin: 0 0.5rem; }
+
+    /* ── Print ── */
+    @media print {
+      @page { margin: 2cm; size: A4 landscape; }
+      body { background: #fff; font-size: 10pt; }
+      .ma-header { background: #fff; padding: 0; }
+      h1 { color: var(--navy); font-size: 18pt; }
+      .ma-subtitle { color: var(--muted); }
+      .market-strip { background: #f0ece4; }
+      .market-stat-value { color: var(--navy); }
+      .market-stat-label { color: var(--muted); }
+      .market-stat { border-right-color: var(--border); }
+      .ma-section { break-inside: avoid; }
+      .two-col { grid-template-columns: 1fr 1fr; }
+      .ma-footer { background: #fff; color: var(--muted); border-top: 1px solid var(--border); padding: 0.5cm 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="ma-header">
+    <div class="header-inner">
+      <span class="ma-label">Meridian Health — Market Intelligence &bull; Confidential</span>
+      <h1>AI-Augmented Clinical Decision Support: US Healthcare Market Analysis 2024–2029</h1>
+      <p class="ma-subtitle">A sector-level examination of market size, growth drivers, competitive positioning, and five-year forecast for AI-based clinical decision support systems in the US acute care and managed care segments.</p>
+      <div class="ma-meta">
+        <div class="ma-meta-item">
+          <span class="ma-meta-label">Prepared By</span>
+          <span class="ma-meta-value">{{AUTHOR}}</span>
+        </div>
+        <div class="ma-meta-item">
+          <span class="ma-meta-label">As Of</span>
+          <span class="ma-meta-value">{{DATE}}</span>
+        </div>
+        <div class="ma-meta-item">
+          <span class="ma-meta-label">Version</span>
+          <span class="ma-meta-value">{{VERSION}}</span>
+        </div>
+        <div class="ma-meta-item">
+          <span class="ma-meta-label">Classification</span>
+          <span class="ma-meta-value">{{CLASSIFICATION}}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Market Size Strip ── -->
+  <div class="market-strip" role="region" aria-label="Market size summary">
+    <div class="market-strip-inner">
+      <div class="market-stat">
+        <span class="market-stat-value">$4.8B</span>
+        <span class="market-stat-label">2024 Market Size (US)</span>
+      </div>
+      <div class="market-stat">
+        <span class="market-stat-value">$14.2B</span>
+        <span class="market-stat-label">2029 Forecast</span>
+      </div>
+      <div class="market-stat">
+        <span class="market-stat-value">24.3%</span>
+        <span class="market-stat-label">CAGR 2024–2029</span>
+      </div>
+      <div class="market-stat">
+        <span class="market-stat-value">4,200+</span>
+        <span class="market-stat-label">Active Deployments</span>
+      </div>
+      <div class="market-stat">
+        <span class="market-stat-value">62%</span>
+        <span class="market-stat-label">Health System Adoption</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Body ── -->
+  <div class="doc-wrap">
+
+    <!-- Executive Overview -->
+    <section class="ma-section" id="overview">
+      <span class="section-eyebrow">Market Overview</span>
+      <h2>A Market at Inflection</h2>
+      <p>The US market for AI-augmented clinical decision support (AI-CDS) systems has entered a sustained growth phase driven by three convergent forces: the increasing availability of structured clinical data at scale, the maturation of large language model technology for medical text processing, and a regulatory environment that has moved from skepticism to conditional endorsement following the FDA's framework for AI/ML-based Software as a Medical Device (SaMD).</p>
+      <p>At $4.8B in 2024, the AI-CDS market remains a fraction of the broader health IT market ($48.2B), but its 24.3% projected CAGR is more than three times the parent market's growth rate. Momentum is concentrated in the acute care and managed care segments, where return on investment from physician augmentation and utilization management automation can be quantified within 12 months of deployment.</p>
+
+      <div class="callout callout-key">
+        <span class="callout-title">Analyst View</span>
+        The market is approaching an adoption inflection point. Organizations that delayed deployment to 2023–2024 are now facing competitive pressure from early adopters that have measurably lower clinical labor costs and higher quality metrics. We expect a significant acceleration in mid-market health system deployments through 2026.
+      </div>
+    </section>
+
+    <!-- Segment Breakdown -->
+    <section class="ma-section" id="segments">
+      <span class="section-eyebrow">Market Segmentation</span>
+      <h2>Segment Breakdown by Application Category</h2>
+      <p>The AI-CDS market comprises four primary application segments, each with distinct buyer profiles, procurement cycles, and growth dynamics.</p>
+
+      <div class="segments-grid" aria-label="Market segments">
+        <div class="segment-card">
+          <span class="segment-name">Utilization Management AI</span>
+          <span class="segment-size">$1.62B</span>
+          <span class="segment-share">33.7% market share</span>
+          <span class="segment-cagr">CAGR: 27.1%</span>
+          <p class="segment-desc">Prior authorization automation, clinical necessity review, and discharge planning support for managed care organizations and health system case management teams.</p>
+        </div>
+        <div class="segment-card">
+          <span class="segment-name">Diagnostic Decision Support</span>
+          <span class="segment-size">$1.34B</span>
+          <span class="segment-share">27.9% market share</span>
+          <span class="segment-cagr">CAGR: 22.8%</span>
+          <p class="segment-desc">AI-assisted differential diagnosis, imaging interpretation support, and lab result contextualization for acute care physicians and hospitalists.</p>
+        </div>
+        <div class="segment-card">
+          <span class="segment-name">Medication Safety AI</span>
+          <span class="segment-size">$1.01B</span>
+          <span class="segment-share">21.0% market share</span>
+          <span class="segment-cagr">CAGR: 19.4%</span>
+          <p class="segment-desc">Drug-drug interaction prediction, contraindication flagging, and dosing recommendation systems integrated into pharmacy and EHR workflows.</p>
+        </div>
+        <div class="segment-card">
+          <span class="segment-name">Population Health AI</span>
+          <span class="segment-size">$0.83B</span>
+          <span class="segment-share">17.3% market share</span>
+          <span class="segment-cagr">CAGR: 28.6%</span>
+          <p class="segment-desc">Risk stratification, care gap identification, and proactive outreach prioritization for value-based care programs and ACOs. Highest growth rate driven by VBC contract proliferation.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Forecast -->
+    <section class="ma-section" id="forecast">
+      <span class="section-eyebrow">Market Forecast</span>
+      <h2>Five-Year Revenue Forecast by Segment (2024–2029)</h2>
+
+      <figure class="forecast-figure" aria-label="Revenue forecast bar chart 2024 to 2029">
+        <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Stacked bar chart showing market growth from $4.8B in 2024 to $14.2B in 2029">
+          <defs>
+            <pattern id="hatch" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="4" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+            </pattern>
+          </defs>
+          <!-- Grid lines -->
+          <line x1="60" y1="20" x2="60" y2="200" stroke="#ddd8ce" stroke-width="1"/>
+          <line x1="60" y1="200" x2="660" y2="200" stroke="#ddd8ce" stroke-width="1"/>
+          <line x1="60" y1="155" x2="660" y2="155" stroke="#ddd8ce" stroke-width="0.5" stroke-dasharray="3,3"/>
+          <line x1="60" y1="110" x2="660" y2="110" stroke="#ddd8ce" stroke-width="0.5" stroke-dasharray="3,3"/>
+          <line x1="60" y1="65" x2="660" y2="65" stroke="#ddd8ce" stroke-width="0.5" stroke-dasharray="3,3"/>
+          <!-- Y axis labels -->
+          <text x="50" y="204" text-anchor="end" font-family="DM Mono, monospace" font-size="9" fill="#6b6560">$0</text>
+          <text x="50" y="159" text-anchor="end" font-family="DM Mono, monospace" font-size="9" fill="#6b6560">$5B</text>
+          <text x="50" y="114" text-anchor="end" font-family="DM Mono, monospace" font-size="9" fill="#6b6560">$10B</text>
+          <text x="50" y="69" text-anchor="end" font-family="DM Mono, monospace" font-size="9" fill="#6b6560">$15B</text>
+          <!-- Bars 2024: 4.8B = 86px total, 2025: 6.0B = 107px, 2026: 7.4B = 132px, 2027: 9.1B = 162px, 2028: 11.4B = 204px, 2029: 14.2B = 253px height -->
+          <!-- 2024 -->
+          <rect x="80" y="114" width="70" height="86" fill="#1a4a6e"/>
+          <rect x="80" y="143" width="70" height="57" fill="#2d6a4f"/>
+          <rect x="80" y="162" width="70" height="38" fill="#6b3e9e"/>
+          <rect x="80" y="185" width="70" height="15" fill="#8b4513"/>
+          <text x="115" y="218" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#6b6560">2024</text>
+          <text x="115" y="108" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="10" font-weight="600" fill="#1c1a18">$4.8B</text>
+          <!-- 2025 -->
+          <rect x="180" y="107" width="70" height="93" fill="#1a4a6e"/>
+          <rect x="180" y="138" width="70" height="62" fill="#2d6a4f"/>
+          <rect x="180" y="158" width="70" height="42" fill="#6b3e9e"/>
+          <rect x="180" y="181" width="70" height="19" fill="#8b4513"/>
+          <text x="215" y="218" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#6b6560">2025</text>
+          <text x="215" y="101" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="10" font-weight="600" fill="#1c1a18">$6.0B</text>
+          <!-- 2026 -->
+          <rect x="280" y="96" width="70" height="104" fill="#1a4a6e"/>
+          <rect x="280" y="130" width="70" height="70" fill="#2d6a4f"/>
+          <rect x="280" y="152" width="70" height="48" fill="#6b3e9e"/>
+          <rect x="280" y="178" width="70" height="22" fill="#8b4513"/>
+          <text x="315" y="218" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#6b6560">2026</text>
+          <text x="315" y="90" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="10" font-weight="600" fill="#1c1a18">$7.4B</text>
+          <!-- 2027 -->
+          <rect x="380" y="84" width="70" height="116" fill="#1a4a6e"/>
+          <rect x="380" y="122" width="70" height="78" fill="#2d6a4f"/>
+          <rect x="380" y="146" width="70" height="54" fill="#6b3e9e"/>
+          <rect x="380" y="174" width="70" height="26" fill="#8b4513"/>
+          <text x="415" y="218" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#6b6560">2027</text>
+          <text x="415" y="78" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="10" font-weight="600" fill="#1c1a18">$9.1B</text>
+          <!-- 2028 -->
+          <rect x="480" y="72" width="70" height="128" fill="#1a4a6e"/>
+          <rect x="480" y="115" width="70" height="85" fill="#2d6a4f"/>
+          <rect x="480" y="141" width="70" height="59" fill="#6b3e9e"/>
+          <rect x="480" y="171" width="70" height="29" fill="#8b4513"/>
+          <text x="515" y="218" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#6b6560">2028</text>
+          <text x="515" y="66" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="10" font-weight="600" fill="#1c1a18">$11.4B</text>
+          <!-- 2029 -->
+          <rect x="580" y="55" width="70" height="145" fill="#1a4a6e"/>
+          <rect x="580" y="104" width="70" height="96" fill="#2d6a4f"/>
+          <rect x="580" y="133" width="70" height="67" fill="#6b3e9e"/>
+          <rect x="580" y="167" width="70" height="33" fill="#8b4513"/>
+          <text x="615" y="218" text-anchor="middle" font-family="DM Mono, monospace" font-size="9" fill="#6b6560">2029</text>
+          <text x="615" y="49" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="10" font-weight="600" fill="#1c1a18">$14.2B</text>
+          <!-- Legend -->
+          <rect x="80" y="228" width="10" height="10" fill="#1a4a6e"/>
+          <text x="95" y="237" font-family="DM Sans, sans-serif" font-size="9" fill="#6b6560">Utilization Mgmt</text>
+          <rect x="200" y="228" width="10" height="10" fill="#2d6a4f"/>
+          <text x="215" y="237" font-family="DM Sans, sans-serif" font-size="9" fill="#6b6560">Diagnostic</text>
+          <rect x="295" y="228" width="10" height="10" fill="#6b3e9e"/>
+          <text x="310" y="237" font-family="DM Sans, sans-serif" font-size="9" fill="#6b6560">Medication Safety</text>
+          <rect x="415" y="228" width="10" height="10" fill="#8b4513"/>
+          <text x="430" y="237" font-family="DM Sans, sans-serif" font-size="9" fill="#6b6560">Population Health</text>
+        </svg>
+        <figcaption>Figure 1. AI-CDS market revenue by segment, 2024–2029 ($ billions). CAGR: 24.3%. Source: Meridian Health Market Intelligence, {{DATE}}.</figcaption>
+      </figure>
+    </section>
+
+    <!-- Competitive Landscape -->
+    <section class="ma-section" id="competitive">
+      <span class="section-eyebrow">Competitive Landscape</span>
+      <h2>Vendor Positioning Analysis</h2>
+      <p>The AI-CDS market features a diverse competitive landscape, from EHR-native modules offered by Epic and Oracle Health to point-solution specialists and emerging AI-native entrants. The table below summarizes key players across each segment.</p>
+
+      <div class="comp-grid">
+        <table>
+          <caption>Table 1. Competitive landscape by vendor, segment, and market position</caption>
+          <thead>
+            <tr>
+              <th scope="col">Vendor</th>
+              <th scope="col">Primary Segment</th>
+              <th scope="col">Position</th>
+              <th scope="col">Differentiator</th>
+              <th scope="col">Key Risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="strong-cell">Epic Systems</td>
+              <td>Diagnostic / Medication</td>
+              <td><span class="badge badge-leader">Leader</span></td>
+              <td>EHR-native integration, 300M patient records</td>
+              <td>AI functionality lags point solutions</td>
+            </tr>
+            <tr>
+              <td class="strong-cell">Nuance / Microsoft</td>
+              <td>Diagnostic / Utilization</td>
+              <td><span class="badge badge-leader">Leader</span></td>
+              <td>Dragon AI, Azure integration, GPT-4 in DAX</td>
+              <td>Complex enterprise sales cycle</td>
+            </tr>
+            <tr>
+              <td class="strong-cell">Veradigm</td>
+              <td>Population Health</td>
+              <td><span class="badge badge-challenger">Challenger</span></td>
+              <td>Claims data depth, managed care specialization</td>
+              <td>Platform debt from legacy MedAssets merge</td>
+            </tr>
+            <tr>
+              <td class="strong-cell">Aidoc</td>
+              <td>Diagnostic</td>
+              <td><span class="badge badge-challenger">Challenger</span></td>
+              <td>FDA-cleared AI for 17 radiology indications</td>
+              <td>Narrow scope, radiology-only</td>
+            </tr>
+            <tr>
+              <td class="strong-cell">Cohere Health</td>
+              <td>Utilization Mgmt</td>
+              <td><span class="badge badge-new">Emerging</span></td>
+              <td>Prior auth automation, payer integrations</td>
+              <td>Series B, limited enterprise references</td>
+            </tr>
+            <tr>
+              <td class="strong-cell">Internal Build</td>
+              <td>Custom / Multi-segment</td>
+              <td><span class="badge badge-niche">Niche</span></td>
+              <td>Organization-specific workflows, IP ownership</td>
+              <td>High build/maintain cost, talent dependency</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Drivers and Risks -->
+    <section class="ma-section" id="drivers">
+      <span class="section-eyebrow">Market Dynamics</span>
+      <h2>Growth Drivers and Market Risks</h2>
+
+      <div class="two-col">
+        <div>
+          <h3>Growth Drivers</h3>
+          <ul class="factor-list drivers">
+            <li>
+              <span class="factor-title">Clinical labor cost pressure</span>
+              RN and physician labor costs are growing at 7–9% annually, making AI-augmentation ROI-positive within 12–18 months for organizations above 200-bed capacity.
+            </li>
+            <li>
+              <span class="factor-title">Value-based contract proliferation</span>
+              ACO REACH expansion and MSSP reforms tie reimbursement to quality outcomes — driving demand for AI tools that improve care gap closure and risk stratification.
+            </li>
+            <li>
+              <span class="factor-title">FDA SaMD framework clarity</span>
+              The 2023 action plan for AI/ML SaMD provided regulatory clarity that accelerated enterprise procurement cycles previously frozen by compliance uncertainty.
+            </li>
+            <li>
+              <span class="factor-title">EHR data liquidity (TEFCA/FHIR)</span>
+              TEFCA and 21st Century Cures Act interoperability requirements are unlocking previously siloed clinical data, increasing AI model training and inference quality.
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>Market Risks</h3>
+          <ul class="factor-list risks">
+            <li>
+              <span class="factor-title">Algorithm bias and liability</span>
+              Documented racial bias in legacy risk stratification algorithms creates regulatory and legal exposure for organizations deploying AI in clinical pathways.
+            </li>
+            <li>
+              <span class="factor-title">Clinician adoption resistance</span>
+              Alert fatigue from poorly calibrated AI recommendations has generated backlash in several high-profile deployments, slowing adoption in physician-heavy organizations.
+            </li>
+            <li>
+              <span class="factor-title">Regulatory evolution (EU AI Act)</span>
+              Cross-border organizations face growing divergence between US and EU AI regulatory requirements, increasing compliance complexity for multi-market deployments.
+            </li>
+            <li>
+              <span class="factor-title">Model drift and revalidation cost</span>
+              Clinical AI models require revalidation after population shifts, formulary changes, or guideline updates. Ongoing revalidation cost is frequently underestimated in initial procurement.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- .doc-wrap -->
+
+  <!-- ── Footer ── -->
+  <footer class="ma-footer">
+    <div class="header-inner">
+      <span><span class="footer-brand">SponAItech</span> <span class="footer-div">|</span> html-generation skill v1.1</span>
+      <span>Version {{VERSION}} <span class="footer-div">|</span> {{DATE}} <span class="footer-div">|</span> {{CLASSIFICATION}}</span>
+    </div>
+  </footer>
+
+</body>
+</html>

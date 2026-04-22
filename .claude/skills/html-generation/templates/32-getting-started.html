@@ -1,0 +1,682 @@
+<!--
+TEMPLATE: getting-started
+CATEGORY: Docs / Product Communications
+USE WHEN: Walking a new user through first-time product setup with numbered steps, code snippets, and contextual tips.
+PALETTE: Light clean
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started — Meridian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f6f8fb;
+      --navy: #0e1b2e;
+      --navy-mid: #1e3356;
+      --blue: #3b9eff;
+      --blue-light: #eaf4ff;
+      --green: #2dd4a0;
+      --green-light: #e8faf5;
+      --amber: #f0a050;
+      --amber-light: #fef5e9;
+      --text: #1c2a3a;
+      --muted: #5a7184;
+      --border: #dce5f0;
+      --code-bg: #f0f4fa;
+      --code-text: #0e1b2e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 15px; scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* Top nav */
+    .top-bar {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .top-bar .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      color: var(--navy);
+      font-size: 0.95rem;
+    }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-left: 1rem;
+    }
+    .breadcrumb a { color: var(--blue); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb-sep { color: var(--border); }
+
+    /* Layout */
+    .layout {
+      display: flex;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      gap: 3rem;
+    }
+
+    /* Sidebar TOC */
+    .toc {
+      width: 220px;
+      min-width: 220px;
+      padding: 2.5rem 0 2rem;
+    }
+    .toc-inner {
+      position: sticky;
+      top: 60px;
+    }
+    .toc-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+    .toc a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.3rem 0.5rem;
+      border-left: 2px solid var(--border);
+      text-decoration: none;
+      font-size: 0.85rem;
+      color: var(--muted);
+      transition: border-color 0.15s, color 0.15s;
+      margin-bottom: 2px;
+    }
+    .toc a:hover, .toc a:focus-visible { color: var(--blue); border-left-color: var(--blue); outline: none; }
+    .toc a.active { color: var(--blue); border-left-color: var(--blue); font-weight: 500; }
+    .step-num-mini {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      font-weight: 500;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .toc a.active .step-num-mini {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      min-width: 0;
+      padding: 2.5rem 0 5rem;
+    }
+
+    /* Page heading */
+    .page-intro {
+      margin-bottom: 2.5rem;
+    }
+    .page-intro .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: var(--blue-light);
+      border-radius: 4px;
+      padding: 3px 8px;
+      margin-bottom: 0.75rem;
+    }
+    .page-intro h1 {
+      font-size: 2.1rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--navy);
+      margin-bottom: 0.6rem;
+    }
+    .page-intro p { color: var(--muted); font-size: 1rem; max-width: 560px; }
+
+    /* Progress indicator */
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 2.5rem;
+    }
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .progress-step.done { color: var(--green); }
+    .progress-step .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+    .progress-step.done .dot { background: var(--green); }
+    .progress-line { flex: 1; height: 1px; background: var(--border); min-width: 24px; max-width: 48px; }
+
+    /* Step cards */
+    .step-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.4rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .step-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-header-text h2 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.2rem;
+    }
+    .step-header-text p { font-size: 0.875rem; color: var(--muted); }
+    .step-body { padding: 1.4rem 1.5rem; }
+    .step-body p { font-size: 0.9rem; color: var(--text); margin-bottom: 0.75rem; }
+
+    /* Code block */
+    .code-wrap { margin: 0.75rem 0; }
+    .code-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--navy);
+      border-radius: 8px 8px 0 0;
+      padding: 0.45rem 0.85rem;
+    }
+    .code-lang {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(208,216,228,0.5);
+    }
+    .copy-btn {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: rgba(208,216,228,0.6);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .copy-btn:hover { color: #d0d8e4; }
+    pre {
+      background: #0d1521;
+      border: none;
+      border-radius: 0 0 8px 8px;
+      padding: 1rem 1.1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      overflow-x: auto;
+      color: #c8d8e8;
+      margin: 0;
+    }
+    .kw { color: #a78bfa; }
+    .str { color: #2dd4a0; }
+    .cm { color: #556677; font-style: italic; }
+    .fn { color: #3b9eff; }
+
+    /* Callouts */
+    .callout {
+      display: flex;
+      gap: 0.75rem;
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      margin: 1rem 0;
+      font-size: 0.875rem;
+    }
+    .callout svg { flex-shrink: 0; margin-top: 1px; }
+    .callout-tip  { background: var(--blue-light);  border: 1px solid rgba(59,158,255,0.25); }
+    .callout-note { background: var(--green-light); border: 1px solid rgba(45,212,160,0.25); }
+    .callout-warn { background: var(--amber-light); border: 1px solid rgba(240,160,80,0.3); }
+    .callout-tip strong  { color: #2264cc; }
+    .callout-note strong { color: #1a9970; }
+    .callout-warn strong { color: #b86a10; }
+
+    /* Checklist */
+    .checklist { list-style: none; margin: 0.5rem 0; }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.875rem;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .checklist li svg { flex-shrink: 0; margin-top: 3px; }
+
+    /* Install tabs */
+    .tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 0; }
+    .tab-btn {
+      padding: 0.45rem 1rem;
+      font-size: 0.82rem;
+      font-family: 'DM Mono', monospace;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      color: var(--muted);
+      margin-bottom: -1px;
+    }
+    .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+    /* CTA banner */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      border-radius: 12px;
+      padding: 2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 2.5rem;
+    }
+    .cta-banner h3 { font-size: 1.15rem; font-weight: 600; color: #fff; margin-bottom: 0.3rem; }
+    .cta-banner p { font-size: 0.875rem; color: rgba(208,216,228,0.7); }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.875rem;
+      padding: 0.65rem 1.4rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .cta-btn:hover { background: #2a8aef; transform: translateY(-1px); }
+    .cta-btn:focus-visible { outline: 2px solid #3b9eff; outline-offset: 3px; }
+
+    /* Footer */
+    .doc-footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 0 0;
+      margin-top: 3rem;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .doc-footer a { color: var(--muted); text-decoration: none; }
+    .doc-footer a:hover { color: var(--blue); }
+
+    @media(max-width:780px) {
+      .toc { display: none; }
+      .layout { padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <header class="top-bar">
+    <a href="#" class="logo" aria-label="Meridian home">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <rect width="22" height="22" rx="5" fill="#0e1b2e"/>
+        <path d="M6 11h10M11 6l5 5-5 5" stroke="#3b9eff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Meridian
+    </a>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="#">Docs</a>
+      <span class="breadcrumb-sep" aria-hidden="true">/</span>
+      <span>Getting Started</span>
+    </nav>
+  </header>
+
+  <div class="layout">
+
+    <!-- Table of Contents -->
+    <aside class="toc" aria-label="On this page">
+      <div class="toc-inner">
+        <div class="toc-label">On this page</div>
+        <a href="#step-1" class="toc-link active">
+          <span class="step-num-mini">1</span> Install the SDK
+        </a>
+        <a href="#step-2" class="toc-link">
+          <span class="step-num-mini">2</span> Configure credentials
+        </a>
+        <a href="#step-3" class="toc-link">
+          <span class="step-num-mini">3</span> Connect a dataset
+        </a>
+        <a href="#step-4" class="toc-link">
+          <span class="step-num-mini">4</span> Run your first query
+        </a>
+        <a href="#step-5" class="toc-link">
+          <span class="step-num-mini">5</span> Schedule a pipeline
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content" id="main-content">
+
+      <div class="page-intro">
+        <div class="tag">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <circle cx="5" cy="5" r="4.5" fill="#3b9eff" fill-opacity="0.3" stroke="#3b9eff" stroke-width="1"/>
+          </svg>
+          Quick Start &mdash; 10 min
+        </div>
+        <h1>Get started with Meridian</h1>
+        <p>Connect your first data source and run a live query in under 10 minutes. No infrastructure setup required.</p>
+      </div>
+
+      <!-- Step 1 -->
+      <section class="step-card" id="step-1">
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <div class="step-header-text">
+            <h2>Install the Meridian SDK</h2>
+            <p>Available for Python 3.9+ and Node.js 18+</p>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="tab-bar" role="tablist" aria-label="Install command by platform">
+            <button class="tab-btn active" role="tab" aria-selected="true">pip</button>
+            <button class="tab-btn" role="tab" aria-selected="false">npm</button>
+            <button class="tab-btn" role="tab" aria-selected="false">yarn</button>
+          </div>
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <span class="code-lang">bash</span>
+              <button class="copy-btn" aria-label="Copy command">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M3 8H2a1 1 0 01-1-1V2a1 1 0 011-1h5a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <pre><code>pip install meridian-sdk</code></pre>
+          </div>
+          <div class="callout callout-tip">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="7" stroke="#3b9eff" stroke-width="1.4"/>
+              <path d="M8 7v4M8 5h.01" stroke="#3b9eff" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            <div><strong>Tip:</strong> We recommend using a virtual environment (<code style="font-family:'DM Mono',monospace;font-size:0.85em">python -m venv .venv</code>) to keep dependencies isolated.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2 -->
+      <section class="step-card" id="step-2">
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <div class="step-header-text">
+            <h2>Configure your credentials</h2>
+            <p>Authenticate using your workspace API key</p>
+          </div>
+        </div>
+        <div class="step-body">
+          <p>Create a <code style="font-family:'DM Mono',monospace;font-size:0.85em;background:var(--code-bg);padding:1px 5px;border-radius:3px">.env</code> file in your project root. Never commit this file to version control.</p>
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <span class="code-lang">.env</span>
+              <button class="copy-btn" aria-label="Copy .env template">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M3 8H2a1 1 0 01-1-1V2a1 1 0 011-1h5a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <pre><code>MERIDIAN_API_KEY=mk_live_xxxxxxxxxxxxxxxxxxxx
+MERIDIAN_WORKSPACE_ID=ws_your_workspace_id
+MERIDIAN_REGION=us-east-1</code></pre>
+          </div>
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <span class="code-lang">Python</span>
+              <button class="copy-btn" aria-label="Copy Python snippet">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M3 8H2a1 1 0 01-1-1V2a1 1 0 011-1h5a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <pre><code><span class="kw">import</span> meridian
+<span class="kw">from</span> dotenv <span class="kw">import</span> load_dotenv
+
+load_dotenv()
+
+<span class="cm"># Client auto-reads MERIDIAN_API_KEY and MERIDIAN_WORKSPACE_ID</span>
+client = meridian.<span class="fn">Client</span>()
+print(client.<span class="fn">ping</span>())  <span class="cm"># {"status": "ok", "latency_ms": 42}</span></code></pre>
+          </div>
+          <div class="callout callout-warn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 2L14.5 13H1.5L8 2z" stroke="#f0a050" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M8 6v3M8 11h.01" stroke="#f0a050" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            <div><strong>Security note:</strong> Add <code style="font-family:'DM Mono',monospace;font-size:0.85em">.env</code> to your <code style="font-family:'DM Mono',monospace;font-size:0.85em">.gitignore</code>. API keys exposed in git history require rotation.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 3 -->
+      <section class="step-card" id="step-3">
+        <div class="step-header">
+          <div class="step-number">3</div>
+          <div class="step-header-text">
+            <h2>Connect a dataset</h2>
+            <p>Point Meridian at your first data source</p>
+          </div>
+        </div>
+        <div class="step-body">
+          <p>Meridian supports 40+ connectors. This example uses a CSV file to get started immediately.</p>
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <span class="code-lang">Python</span>
+              <button class="copy-btn" aria-label="Copy code">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M3 8H2a1 1 0 01-1-1V2a1 1 0 011-1h5a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <pre><code>dataset = client.datasets.<span class="fn">create</span>(
+    name=<span class="str">"Sales Q4 2025"</span>,
+    source={
+        <span class="str">"type"</span>: <span class="str">"csv"</span>,
+        <span class="str">"url"</span>: <span class="str">"s3://your-bucket/sales-q4.csv"</span>,
+    }
+)
+
+print(dataset.id)      <span class="cm"># ds_01hx4g</span>
+print(dataset.status)  <span class="cm"># "indexing"</span></code></pre>
+          </div>
+          <div class="callout callout-note">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="7" stroke="#2dd4a0" stroke-width="1.4"/>
+              <path d="M5 8l2 2 4-4" stroke="#2dd4a0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div><strong>Indexing time:</strong> Small files (&lt; 100 MB) are indexed in under 30 seconds. Check <code style="font-family:'DM Mono',monospace;font-size:0.85em">dataset.status</code> until it reads <code style="font-family:'DM Mono',monospace;font-size:0.85em">"active"</code>.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 4 -->
+      <section class="step-card" id="step-4">
+        <div class="step-header">
+          <div class="step-number">4</div>
+          <div class="step-header-text">
+            <h2>Run your first query</h2>
+            <p>Query with natural language or SQL</p>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <span class="code-lang">Python</span>
+              <button class="copy-btn" aria-label="Copy query code">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M3 8H2a1 1 0 01-1-1V2a1 1 0 011-1h5a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <pre><code>result = client.query.<span class="fn">run</span>(
+    dataset_id=dataset.id,
+    q=<span class="str">"Top 5 products by revenue last quarter"</span>
+)
+
+<span class="kw">for</span> row <span class="kw">in</span> result.rows:
+    print(row)</code></pre>
+          </div>
+          <ul class="checklist" aria-label="What you get back">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="8" cy="8" r="7" fill="#e8faf5" stroke="#2dd4a0" stroke-width="1.2"/>
+                <path d="M5 8l2 2 4-4" stroke="#2dd4a0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Structured rows you can iterate or export to a DataFrame
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="8" cy="8" r="7" fill="#e8faf5" stroke="#2dd4a0" stroke-width="1.2"/>
+                <path d="M5 8l2 2 4-4" stroke="#2dd4a0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Auto-generated SQL visible via <code style="font-family:'DM Mono',monospace;font-size:0.85em">result.sql</code>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <circle cx="8" cy="8" r="7" fill="#e8faf5" stroke="#2dd4a0" stroke-width="1.2"/>
+                <path d="M5 8l2 2 4-4" stroke="#2dd4a0" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Confidence score and reasoning chain via <code style="font-family:'DM Mono',monospace;font-size:0.85em">result.explanation</code>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Step 5 -->
+      <section class="step-card" id="step-5">
+        <div class="step-header">
+          <div class="step-number">5</div>
+          <div class="step-header-text">
+            <h2>Schedule a pipeline</h2>
+            <p>Automate refreshes with a cron expression</p>
+          </div>
+        </div>
+        <div class="step-body">
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <span class="code-lang">Python</span>
+              <button class="copy-btn" aria-label="Copy pipeline code">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M3 8H2a1 1 0 01-1-1V2a1 1 0 011-1h5a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.2"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <pre><code>pipeline = client.pipelines.<span class="fn">create</span>(
+    name=<span class="str">"Daily Sales Refresh"</span>,
+    dataset_id=dataset.id,
+    schedule=<span class="str">"0 6 * * *"</span>,   <span class="cm"># every day at 06:00 UTC</span>
+    on_failure=<span class="str">"notify_slack"</span>
+)
+
+print(<span class="str">f"Pipeline {pipeline.id} scheduled"</span>)</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <div class="cta-banner" role="complementary" aria-label="Next steps">
+        <div>
+          <h3>You are up and running</h3>
+          <p>Explore connectors, build dashboards, or invite your team.</p>
+        </div>
+        <a href="#" class="cta-btn">
+          Explore the docs
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <footer class="doc-footer">
+        <span>Meridian Docs &mdash; v{{VERSION}} &mdash; {{DATE}}</span>
+        <span>Owner: Developer Experience</span>
+        <a href="#" aria-label="Edit this page on GitHub">Edit this page</a>
+      </footer>
+    </main>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!--
+TEMPLATE: email-newsletter
+CATEGORY: Marketing / Admin
+USE WHEN: Sending a transactional or marketing email newsletter — renders in Gmail, Outlook, Apple Mail.
+PALETTE: White background, electric blue #3b9eff accents, navy #0e1b2e headers
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="format-detection" content="telephone=no">
+  <title>{{EMAIL_SUBJECT}} — SponAI Consulting</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <![endif]-->
+  <style type="text/css">
+    /* Reset */
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; }
+    img { border: 0; outline: none; text-decoration: none; }
+    body { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+    /* Responsive */
+    @media only screen and (max-width: 600px) {
+      .email-container { width: 100% !important; }
+      .stack-column, .stack-column-center { display: block !important; width: 100% !important; max-width: 100% !important; }
+      .fluid { max-width: 100% !important; height: auto !important; }
+      .hide-mobile { display: none !important; }
+      .center-on-mobile { text-align: center !important; }
+      td.pad-mobile { padding: 20px 16px !important; }
+    }
+  </style>
+</head>
+<body style="margin:0; padding:0; background-color:#f0f4f8; font-family:Arial,Helvetica,sans-serif;">
+
+  <!-- Preheader text (hidden, shown in email client preview) -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; color:#f0f4f8; line-height:1px;">
+    {{PREHEADER_TEXT}} &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+  </div>
+
+  <!-- Email wrapper -->
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#f0f4f8;">
+    <tr>
+      <td align="center" style="padding:24px 12px 12px 12px;">
+
+        <!-- Email container -->
+        <table border="0" cellpadding="0" cellspacing="0" width="600" class="email-container" style="max-width:600px; background-color:#ffffff; border-radius:6px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+
+          <!-- Header / Logo Bar -->
+          <tr>
+            <td style="background-color:#0e1b2e; padding:24px 32px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td>
+                    <span style="font-family:Arial,Helvetica,sans-serif; font-size:20px; font-weight:700; color:#ffffff; letter-spacing:-0.3px;">SponAI</span><span style="font-family:Arial,Helvetica,sans-serif; font-size:20px; font-weight:400; color:#3b9eff;"> Consulting</span>
+                  </td>
+                  <td align="right">
+                    <span style="font-family:Arial,Helvetica,sans-serif; font-size:11px; color:#8899ac; letter-spacing:0.5px; text-transform:uppercase;">Monthly Digest</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Hero Banner -->
+          <tr>
+            <td style="background-color:#0e1b2e; padding:0;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="background: linear-gradient(135deg, #0e1b2e 0%, #1a3a5c 100%); padding:40px 32px 36px 32px;">
+                    <p style="font-family:Arial,Helvetica,sans-serif; font-size:12px; font-weight:700; color:#3b9eff; letter-spacing:1.5px; text-transform:uppercase; margin:0 0 12px 0;">April 2026 &bull; Issue #14</p>
+                    <h1 style="font-family:Arial,Helvetica,sans-serif; font-size:28px; font-weight:700; color:#ffffff; line-height:1.25; margin:0 0 16px 0; letter-spacing:-0.4px;">AI-Powered Development:<br>What Changed This Quarter</h1>
+                    <p style="font-family:Arial,Helvetica,sans-serif; font-size:15px; color:#a0b8d0; line-height:1.6; margin:0 0 24px 0;">A look at how AI-assisted development is compressing timelines and what that means for your next project investment.</p>
+                    <table border="0" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="background-color:#3b9eff; border-radius:4px;">
+                          <a href="#" style="font-family:Arial,Helvetica,sans-serif; font-size:14px; font-weight:700; color:#ffffff; text-decoration:none; padding:12px 24px; display:inline-block; letter-spacing:0.3px;">Read the Full Report</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Intro Text -->
+          <tr>
+            <td style="padding:32px 32px 8px 32px;" class="pad-mobile">
+              <p style="font-family:Arial,Helvetica,sans-serif; font-size:15px; color:#1c2b3a; line-height:1.7; margin:0 0 16px 0;">Hi {{FIRST_NAME}},</p>
+              <p style="font-family:Arial,Helvetica,sans-serif; font-size:15px; color:#3a4a5a; line-height:1.7; margin:0 0 16px 0;">This month we shipped three client projects in under two weeks each — a pace that would have taken 6-8 weeks before our AI-assisted workflow. Here's what we've learned, what's coming, and how it applies to your organization.</p>
+            </td>
+          </tr>
+
+          <!-- Divider -->
+          <tr>
+            <td style="padding:8px 32px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="border-top:1px solid #e2e8f0;">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- 3-Column Feature Row -->
+          <tr>
+            <td style="padding:24px 32px 8px 32px;" class="pad-mobile">
+              <p style="font-family:Arial,Helvetica,sans-serif; font-size:11px; font-weight:700; color:#3b9eff; letter-spacing:1.5px; text-transform:uppercase; margin:0 0 20px 0;">Featured This Month</p>
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <!-- Feature 1 -->
+                  <td width="31%" valign="top" class="stack-column" style="padding-right:10px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                      <tr>
+                        <td style="background-color:#f7faff; border-top:3px solid #3b9eff; border-radius:4px; padding:16px 14px;">
+                          <p style="font-family:Arial,Helvetica,sans-serif; font-size:13px; font-weight:700; color:#0e1b2e; margin:0 0 8px 0;">Salesforce POC</p>
+                          <p style="font-family:Arial,Helvetica,sans-serif; font-size:12px; color:#5a6a7a; line-height:1.5; margin:0 0 12px 0;">Custom Claims AI dashboard built and demoed in 9 days.</p>
+                          <a href="#" style="font-family:Arial,Helvetica,sans-serif; font-size:12px; font-weight:700; color:#3b9eff; text-decoration:none;">Read more &rsaquo;</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <!-- Feature 2 -->
+                  <td width="31%" valign="top" class="stack-column" style="padding:0 5px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                      <tr>
+                        <td style="background-color:#f7faff; border-top:3px solid #a78bfa; border-radius:4px; padding:16px 14px;">
+                          <p style="font-family:Arial,Helvetica,sans-serif; font-size:13px; font-weight:700; color:#0e1b2e; margin:0 0 8px 0;">Azure Migration</p>
+                          <p style="font-family:Arial,Helvetica,sans-serif; font-size:12px; color:#5a6a7a; line-height:1.5; margin:0 0 12px 0;">Zero-downtime lift-and-shift for a 200-seat healthcare org.</p>
+                          <a href="#" style="font-family:Arial,Helvetica,sans-serif; font-size:12px; font-weight:700; color:#a78bfa; text-decoration:none;">Read more &rsaquo;</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <!-- Feature 3 -->
+                  <td width="31%" valign="top" class="stack-column" style="padding-left:10px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                      <tr>
+                        <td style="background-color:#f7faff; border-top:3px solid #2dd4a0; border-radius:4px; padding:16px 14px;">
+                          <p style="font-family:Arial,Helvetica,sans-serif; font-size:13px; font-weight:700; color:#0e1b2e; margin:0 0 8px 0;">iOS App Launch</p>
+                          <p style="font-family:Arial,Helvetica,sans-serif; font-size:12px; color:#5a6a7a; line-height:1.5; margin:0 0 12px 0;">Member portal iOS app shipped to TestFlight in 12 days.</p>
+                          <a href="#" style="font-family:Arial,Helvetica,sans-serif; font-size:12px; font-weight:700; color:#2dd4a0; text-decoration:none;">Read more &rsaquo;</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Main Article Section -->
+          <tr>
+            <td style="padding:28px 32px 8px 32px;" class="pad-mobile">
+              <h2 style="font-family:Arial,Helvetica,sans-serif; font-size:20px; font-weight:700; color:#0e1b2e; line-height:1.3; margin:0 0 14px 0; letter-spacing:-0.3px;">The Three Shifts We're Seeing in Enterprise AI Adoption</h2>
+              <p style="font-family:Arial,Helvetica,sans-serif; font-size:14px; color:#3a4a5a; line-height:1.7; margin:0 0 14px 0;">Mid-market organizations are moving from "AI pilots" to "AI as default infrastructure." Here are the three patterns emerging across our client base this quarter — and what they signal for budget planning in H2.</p>
+
+              <!-- Stat callout -->
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:16px 0 20px 0;">
+                <tr>
+                  <td style="background-color:#f0f7ff; border-left:4px solid #3b9eff; border-radius:0 4px 4px 0; padding:16px 20px;">
+                    <p style="font-family:Arial,Helvetica,sans-serif; font-size:22px; font-weight:700; color:#0e1b2e; margin:0 0 4px 0;">68% faster</p>
+                    <p style="font-family:Arial,Helvetica,sans-serif; font-size:13px; color:#5a6a7a; margin:0;">Average time-to-POC reduction across Q1 2026 engagements vs. traditional approach.</p>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="font-family:Arial,Helvetica,sans-serif; font-size:14px; color:#3a4a5a; line-height:1.7; margin:0 0 14px 0;"><strong style="color:#0e1b2e;">Shift 1: Spec-to-demo in days, not months.</strong> AI-assisted planning reduces requirement ambiguity before the first line of code is written. Clients are arriving at demos with real production-quality UIs, not wireframes.</p>
+              <p style="font-family:Arial,Helvetica,sans-serif; font-size:14px; color:#3a4a5a; line-height:1.7; margin:0 0 14px 0;"><strong style="color:#0e1b2e;">Shift 2: Security-first is now table stakes.</strong> Three of our last five clients opened the first call asking about HIPAA compliance posture and secrets management — not feature lists. This is new.</p>
+              <p style="font-family:Arial,Helvetica,sans-serif; font-size:14px; color:#3a4a5a; line-height:1.7; margin:0;">
+                <a href="#" style="font-family:Arial,Helvetica,sans-serif; font-size:14px; font-weight:700; color:#3b9eff; text-decoration:none;">Continue reading the full article &rsaquo;</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Divider -->
+          <tr>
+            <td style="padding:24px 32px 0 32px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td style="border-top:1px solid #e2e8f0;">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- CTA Block -->
+          <tr>
+            <td style="padding:24px 32px 32px 32px; text-align:center;" class="pad-mobile">
+              <p style="font-family:Arial,Helvetica,sans-serif; font-size:14px; color:#3a4a5a; margin:0 0 20px 0;">Ready to see what AI-assisted development looks like for your stack?</p>
+              <table border="0" cellpadding="0" cellspacing="0" align="center">
+                <tr>
+                  <td style="background-color:#0e1b2e; border-radius:4px; margin:0 auto;">
+                    <a href="#" style="font-family:Arial,Helvetica,sans-serif; font-size:14px; font-weight:700; color:#ffffff; text-decoration:none; padding:13px 28px; display:inline-block; letter-spacing:0.3px;">Schedule a Discovery Call</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#f7f9fb; border-top:1px solid #e2e8f0; padding:20px 32px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                  <td>
+                    <p style="font-family:Arial,Helvetica,sans-serif; font-size:11px; color:#8899ac; line-height:1.6; margin:0 0 6px 0;">SponAI Consulting &bull; sponaitech.com &bull; contact@sponaitech.com</p>
+                    <p style="font-family:Arial,Helvetica,sans-serif; font-size:11px; color:#8899ac; line-height:1.6; margin:0;">You're receiving this because you subscribed at sponaitech.com. <a href="#" style="color:#8899ac; text-decoration:underline;">Unsubscribe</a> &bull; <a href="#" style="color:#8899ac; text-decoration:underline;">View in browser</a></p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </table>
+        <!-- /Email container -->
+
+        <!-- Email footer below container -->
+        <table border="0" cellpadding="0" cellspacing="0" width="600" class="email-container" style="max-width:600px;">
+          <tr>
+            <td style="padding:16px 0 24px 0; text-align:center;">
+              <p style="font-family:Arial,Helvetica,sans-serif; font-size:11px; color:#94a3b8; margin:0;">&copy; 2026 SponAItech LLC. All rights reserved.</p>
+            </td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

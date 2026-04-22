@@ -1,0 +1,266 @@
+<!--
+TEMPLATE: investment-memo
+CATEGORY: ROI / Business Case
+USE WHEN: Writing an IC-style investment memo with company summary, investment thesis, risks, financial highlights, sources and uses of funds, and a formal recommendation — for internal investment committee or board review.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investment Memo &mdash; Meridian Health Claims Automation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:  #f7f4ef;
+      --cream2: #edeae3;
+      --cream3: #e4e0d8;
+      --navy:   #0e1b2e;
+      --navy2:  #1a2e47;
+      --gold:   #b8965a;
+      --gold2:  #d4ab72;
+      --gold-bg:#f5e9d3;
+      --ink:    #1c1a18;
+      --muted:  #6b6560;
+      --border: #ddd8ce;
+      --go:     #2d6a4f;
+      --go-bg:  #d1fae5;
+      --hold:   #92400e;
+      --hold-bg:#fef3c7;
+      --nogo:   #b91c1c;
+      --nogo-bg:#fee2e2;
+      --font:   'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --serif:  'DM Serif Display', Georgia, serif;
+      --mono:   'DM Mono', 'Cascadia Code', monospace;
+    }
+    body { font-family: var(--font); background: var(--cream); color: var(--ink); font-size: 15px; line-height: 1.72; max-width: 800px; margin: 0 auto; }
+
+    /* Letterhead */
+    .letterhead { padding: 2.5rem 3rem 1.5rem; border-bottom: 3px solid var(--navy); }
+    .lh-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+    .lh-org { font-family: var(--serif); font-size: 1.5rem; color: var(--navy); letter-spacing: -0.3px; }
+    .lh-org-sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; letter-spacing: 0.03em; }
+    .lh-stamp { text-align: right; }
+    .lh-stamp .stamp-label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+    .lh-stamp .stamp-val { font-family: var(--mono); font-size: 0.82rem; color: var(--ink); }
+    .memo-title-block { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 1.5rem; font-size: 0.88rem; }
+    .mb-label { font-weight: 700; color: var(--navy); white-space: nowrap; }
+    .mb-val { color: var(--ink); }
+    .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+
+    main { padding: 2rem 3rem 3rem; }
+
+    /* Section */
+    .section { margin-bottom: 2rem; }
+    .sec-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.2rem; }
+    h2 { font-family: var(--serif); font-size: 1.25rem; font-weight: 400; color: var(--navy); border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; margin-bottom: 0.85rem; }
+    h3 { font-size: 0.88rem; font-weight: 700; color: var(--navy); margin: 1rem 0 0.4rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    p { margin-bottom: 0.75rem; }
+    ul { margin: 0.4rem 0 0.75rem 1.25rem; }
+    ul li { margin-bottom: 0.3rem; }
+
+    /* Highlights strip */
+    .highlights { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 1.5rem; }
+    .hl-item { padding: 0.9rem 1rem; border-right: 1px solid var(--border); text-align: center; }
+    .hl-item:last-child { border-right: none; }
+    .hl-val { font-family: var(--mono); font-size: 1.3rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; color: var(--navy); }
+    .hl-lbl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 0.35rem; }
+
+    /* Thesis / key points */
+    .thesis-item { display: flex; gap: 0.75rem; margin-bottom: 0.65rem; align-items: flex-start; }
+    .thesis-num { background: var(--navy); color: #fff; border-radius: 50%; width: 20px; height: 20px; font-size: 0.72rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.2rem; }
+    .thesis-body { font-size: 0.9rem; }
+    .thesis-body strong { color: var(--navy); }
+
+    /* Risk table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    caption { text-align: left; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-bottom: 0.45rem; }
+    thead th { background: var(--navy); color: #fff; padding: 0.45rem 0.75rem; font-weight: 600; font-size: 0.78rem; text-align: left; }
+    thead th.num { text-align: right; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:nth-child(even) { background: var(--cream2); }
+    td { padding: 0.45rem 0.75rem; }
+    td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    tfoot td { font-weight: 700; border-top: 2px solid var(--navy); padding: 0.5rem 0.75rem; }
+    tfoot td.num { text-align: right; font-family: var(--mono); }
+
+    .risk-badge { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.1rem 0.4rem; border-radius: 3px; }
+    .rb-h { background: var(--nogo-bg); color: var(--nogo); }
+    .rb-m { background: var(--hold-bg); color: var(--hold); }
+    .rb-l { background: var(--go-bg); color: var(--go); }
+
+    /* Sources / uses */
+    .su-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1rem; }
+    .su-col h3 { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; margin-bottom: 0.65rem; }
+    .su-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.3rem 0; border-bottom: 1px dotted var(--cream3); font-size: 0.88rem; }
+    .su-row:last-child { border-bottom: none; padding-top: 0.5rem; border-top: 2px solid var(--navy); font-weight: 700; }
+    .su-row .sl { color: var(--muted); }
+    .su-row .sv { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+    /* Recommendation */
+    .rec-box { background: var(--navy); color: #fff; border-radius: 8px; padding: 1.5rem 1.75rem; margin-bottom: 1.5rem; }
+    .rec-box .rl { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 0.5rem; }
+    .rec-box .rt { font-family: var(--serif); font-size: 1.2rem; color: #fff; margin-bottom: 0.65rem; }
+    .rec-box p { color: rgba(255,255,255,0.75); font-size: 0.88rem; margin-bottom: 0.5rem; }
+    .rec-box p:last-child { margin-bottom: 0; }
+
+    .note { background: var(--gold-bg); border-left: 3px solid var(--gold); padding: 0.75rem 1rem; font-size: 0.82rem; color: var(--muted); border-radius: 0 4px 4px 0; }
+
+    /* Signature */
+    .sig-block { margin-top: 2rem; }
+    .sig-line { width: 180px; border-bottom: 1px solid var(--ink); height: 36px; }
+    .sig-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+
+    footer { padding: 1rem 3rem 2rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); border-top: 1px solid var(--border); font-family: var(--mono); }
+    @media print { body{background:#fff;} main,footer{max-width:100%;} .letterhead,.rec-box{-webkit-print-color-adjust:exact;print-color-adjust:exact;} }
+  </style>
+</head>
+<body>
+
+<div class="letterhead">
+  <div class="lh-top">
+    <div>
+      <div class="lh-org">Meridian Health</div>
+      <div class="lh-org-sub">Investment Committee &bull; Technology Capital Allocation</div>
+    </div>
+    <div class="lh-stamp">
+      <div class="stamp-label">Document Class</div>
+      <div class="stamp-val">CONFIDENTIAL &mdash; IC ONLY</div>
+      <div class="stamp-label" style="margin-top:0.4rem;">Memo Date</div>
+      <div class="stamp-val">April 18, 2026</div>
+    </div>
+  </div>
+
+  <div class="memo-title-block">
+    <span class="mb-label">To:</span><span class="mb-val">Investment Committee (CEO, CFO, CTO, Board Technology Chair)</span>
+    <span class="mb-label">From:</span><span class="mb-val">Dr. R. Krishnamurthy, Chief Technology Officer &bull; A. Santos, VP Finance</span>
+    <span class="mb-label">Re:</span><span class="mb-val"><strong>Investment Authorization Request &mdash; Claims Automation Initiative ($4,200,000)</strong></span>
+    <span class="mb-label">Recommendation:</span><span class="mb-val" style="color:var(--go);font-weight:700;">APPROVE</span>
+  </div>
+</div>
+
+<main>
+
+  <!-- Financial Highlights -->
+  <div class="section">
+    <div class="sec-label">Financial Highlights</div>
+    <h2>Summary Financials</h2>
+    <div class="highlights">
+      <div class="hl-item"><div class="hl-val">$4.2M</div><div class="hl-lbl">Capital Ask</div></div>
+      <div class="hl-item"><div class="hl-val">38.4%</div><div class="hl-lbl">IRR</div></div>
+      <div class="hl-item"><div class="hl-val">$3.66M</div><div class="hl-lbl">NPV (9% rate)</div></div>
+      <div class="hl-item"><div class="hl-val">2.3 yr</div><div class="hl-lbl">Payback</div></div>
+    </div>
+    <table>
+      <caption>5-Year Financial Summary</caption>
+      <thead>
+        <tr><th scope="col">Item</th><th scope="col" class="num">Year 0</th><th scope="col" class="num">Year 1</th><th scope="col" class="num">Year 2</th><th scope="col" class="num">Year 3&ndash;5 (ea.)</th><th scope="col" class="num">5-Year Total</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Investment (capital)</td><td class="num">($4,200,000)</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">($4,200,000)</td></tr>
+        <tr><td>Annual benefit</td><td class="num">&mdash;</td><td class="num">$1,590,000</td><td class="num">$2,650,000</td><td class="num">$2,650,000</td><td class="num">$12,140,000</td></tr>
+        <tr><td>Ongoing operating cost</td><td class="num">&mdash;</td><td class="num">($380,000)</td><td class="num">($380,000)</td><td class="num">($380,000)</td><td class="num">($1,900,000)</td></tr>
+        <tr><td>Net cash flow</td><td class="num">($4,200,000)</td><td class="num">$1,210,000</td><td class="num">$2,270,000</td><td class="num">$2,270,000</td><td class="num">$6,040,000</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td>Cumulative (undiscounted)</td><td class="num">($4,200,000)</td><td class="num">($2,990,000)</td><td class="num">($720,000)</td><td class="num">&mdash;</td><td class="num"><strong>$6,040,000</strong></td></tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- Investment Thesis -->
+  <div class="section">
+    <div class="sec-label">Investment Thesis</div>
+    <h2>Why We Invest</h2>
+    <p>Meridian Health processes 4.2 million medical claims annually. Manual adjudication on 38% of claims consumes $8.6M per year in examiner labor, generates a 14-day resolution cycle (2.8&times; industry best practice), and exposes the organization to $2.1M in annual fraud and overpayment risk. This investment thesis rests on three pillars:</p>
+
+    <div class="thesis-item">
+      <div class="thesis-num">1</div>
+      <div class="thesis-body"><strong>Structural cost reduction, not headcount reduction.</strong> AI-assisted adjudication reduces the per-claim cost from $5.40 to $0.62 on the 85% auto-adjudicated population. The 18 redeployed FTEs shift to complex case review and provider relations &mdash; higher-value activities with direct member satisfaction impact.</div>
+    </div>
+    <div class="thesis-item">
+      <div class="thesis-num">2</div>
+      <div class="thesis-body"><strong>Regulatory risk mitigation.</strong> CMS flagged Meridian in Q3 2025 for a 12.4% denial appeal rate (industry benchmark: 7.1%). Automated adjudication with built-in reason-code capture reduces appeals at source. Estimated Star Rating benefit: +0.5 points, worth $3&ndash;5M in quality bonus payments annually.</div>
+    </div>
+    <div class="thesis-item">
+      <div class="thesis-num">3</div>
+      <div class="thesis-body"><strong>Platform foundation for Phase 2 predictive analytics.</strong> The SaaS platform selected (ClaimAI Pro) includes an ML pipeline extensible to predictive denial prevention and utilization management. Phase 2 feasibility study authorized for Q3 2026; preliminary estimate: $800K&ndash;$1.2M additional annual benefit.</div>
+    </div>
+  </div>
+
+  <!-- Risks -->
+  <div class="section">
+    <div class="sec-label">Risk Factors</div>
+    <h2>Key Risks</h2>
+    <table>
+      <caption>Material risks and mitigations evaluated by IC</caption>
+      <thead>
+        <tr><th scope="col">Risk Factor</th><th scope="col">Rating</th><th scope="col">IC Mitigation</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Benefit realization shortfall (&lt;75%)</td><td><span class="risk-badge rb-m">Medium</span></td><td>Quarterly value realization reviews; trigger point for remediation at 80%</td></tr>
+        <tr><td>HIPAA / PHI breach via vendor</td><td><span class="risk-badge rb-h">High</span></td><td>BAA required; SOC 2 Type II cert; annual third-party pen-test; right-to-audit clause</td></tr>
+        <tr><td>Change management failure</td><td><span class="risk-badge rb-h">High</span></td><td>Dedicated change manager funded; 18-FTE training program; executive sponsor: CTO</td></tr>
+        <tr><td>Vendor SaaS price escalation (Yr 3+)</td><td><span class="risk-badge rb-l">Low</span></td><td>5-year fixed-price contract negotiated; data portability and exit provisions secured</td></tr>
+        <tr><td>Integration overrun (EHR complexity)</td><td><span class="risk-badge rb-m">Medium</span></td><td>Vendor-supplied HL7/FHIR adapter; 4-week integration sprint in SOW; fixed-fee contract</td></tr>
+        <tr><td>Model bias / incorrect denials</td><td><span class="risk-badge rb-m">Medium</span></td><td>Human-in-loop review for edge cases &gt;$10K; bias audit at 60-day post-launch</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Sources and Uses -->
+  <div class="section">
+    <div class="sec-label">Capital Structure</div>
+    <h2>Sources and Uses of Funds</h2>
+    <div class="su-grid">
+      <div class="su-col">
+        <h3>Sources</h3>
+        <div class="su-row"><span class="sl">Technology Capital Budget (FY2026)</span><span class="sv">$2,500,000</span></div>
+        <div class="su-row"><span class="sl">Operating Efficiency Reserve Fund</span><span class="sv">$1,200,000</span></div>
+        <div class="su-row"><span class="sl">Legacy System Retirement Savings (Y0)</span><span class="sv">$500,000</span></div>
+        <div class="su-row"><span class="sl">Total Sources</span><span class="sv">$4,200,000</span></div>
+      </div>
+      <div class="su-col">
+        <h3>Uses</h3>
+        <div class="su-row"><span class="sl">SaaS platform (Year 0 setup + Y1 license)</span><span class="sv">$1,870,000</span></div>
+        <div class="su-row"><span class="sl">Integration &amp; implementation services</span><span class="sv">$840,000</span></div>
+        <div class="su-row"><span class="sl">Change management &amp; training</span><span class="sv">$225,000</span></div>
+        <div class="su-row"><span class="sl">Security &amp; compliance (Year 1)</span><span class="sv">$125,000</span></div>
+        <div class="su-row"><span class="sl">Contingency (15% of base)</span><span class="sv">$590,000</span></div>
+        <div class="su-row"><span class="sl">PMO &amp; oversight</span><span class="sv">$550,000</span></div>
+        <div class="su-row"><span class="sl">Total Uses</span><span class="sv">$4,200,000</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommendation -->
+  <div class="rec-box">
+    <div class="rl">IC Recommendation</div>
+    <div class="rt">Approve: $4,200,000 Capital Authorization</div>
+    <p>The Investment Committee finds that the Claims Automation Initiative presents a compelling financial and strategic case. With an IRR of 38.4% substantially exceeding the 9% WACC, a 5-year NPV of $3.66M, a 2.3-year payback, and a minimum-viable realization threshold of 63% (well below base case), the investment exhibits strong downside protection alongside meaningful upside.</p>
+    <p>The primary risks (HIPAA exposure, change management) are manageable and standard for enterprise SaaS deployments at this scale. Mitigations are costed and included in the budget.</p>
+    <p>The committee recommends approval subject to: (1) executed vendor contract with BAA and SOC 2 certification prior to data transfer, and (2) monthly steering committee reporting for the first 12 months post go-live.</p>
+  </div>
+
+  <div class="note">Companion documents: 61-roi-calculator, 62-payback-analysis, 63-npv-irr-summary, 64-tco-comparison, 65-cost-benefit, 67-business-case. Available from Enterprise Program Office on request.</div>
+
+  <div class="sig-block">
+    <div class="sig-line"></div>
+    <div class="sig-label">Dr. R. Krishnamurthy, CTO &bull; Date: ____________</div>
+    <div class="sig-line" style="margin-top:1.25rem;"></div>
+    <div class="sig-label">A. Santos, VP Finance &bull; Date: ____________</div>
+  </div>
+
+</main>
+
+<footer>
+  <span>Meridian Health &bull; Investment Committee Memo &bull; Claims Automation</span>
+  <span>v{{VERSION}} &bull; {{DATE}} &bull; IC CONFIDENTIAL &mdash; {{CLASSIFICATION}}</span>
+</footer>
+
+</body>
+</html>

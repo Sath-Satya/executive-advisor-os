@@ -1,0 +1,463 @@
+<!--
+TEMPLATE: trading-dashboard
+CATEGORY: Dashboard / Analytics
+USE WHEN: You need a trading system dashboard for the TradingSystems domain — market/position overview, P&L grid, strategy status, dark palette.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading Dashboard &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #18222e;
+      --surface3: #1e2d40;
+      --border: #1e2d40;
+      --border2: #243348;
+      --primary: #3b9eff;
+      --secondary: #a78bfa;
+      --accent: #2dd4a0;
+      --warning: #f0a050;
+      --error: #f06070;
+      --text: #d0d8e4;
+      --muted: #556677;
+      --subtle: #3a4a58;
+      --font: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', monospace;
+      --gain: #2dd4a0;
+      --loss: #f06070;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .brand-row { display: flex; align-items: center; gap: 0.75rem; }
+    .logo-box {
+      width: 32px; height: 32px; border-radius: 5px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.8rem; color: #fff;
+    }
+    header h1 { font-size: 1rem; font-weight: 600; color: #fff; letter-spacing: -0.2px; }
+    .market-time { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
+    .market-status {
+      display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; font-weight: 600;
+    }
+    .mkt-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gain); box-shadow: 0 0 6px rgba(45,212,160,0.6); }
+    .mkt-label { color: var(--gain); }
+
+    main { max-width: 1400px; margin: 0 auto; padding: 1.25rem 1.75rem 2rem; }
+
+    .section-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.65rem;
+    }
+
+    /* market quote bar */
+    .quote-bar {
+      display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+    .quote-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 7px; padding: 0.65rem 1rem;
+      display: flex; align-items: center; gap: 0.85rem;
+      flex: 1; min-width: 140px;
+    }
+    .qt-symbol { font-family: var(--mono); font-weight: 700; font-size: 0.8rem; color: var(--primary); }
+    .qt-price  { font-family: var(--mono); font-size: 1.1rem; font-weight: 700; color: #fff; }
+    .qt-chg    { font-family: var(--mono); font-size: 0.78rem; font-weight: 600; }
+    .up   { color: var(--gain); }
+    .down { color: var(--loss); }
+    .qt-bar { height: 28px; flex: 1; display: flex; align-items: flex-end; gap: 1px; }
+    .qt-bar span { display: inline-block; width: 3px; border-radius: 1px; min-height: 2px; }
+
+    /* main grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .panel-header {
+      padding: 0.75rem 1.1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--surface2);
+    }
+    .panel-title { font-size: 0.8rem; font-weight: 600; color: var(--text); }
+    .panel-body { padding: 1rem 1.1rem; }
+
+    /* P&L summary */
+    .pnl-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0.75rem; margin-bottom: 1rem;
+    }
+    .pnl-item { text-align: center; padding: 0.75rem; background: var(--surface2); border-radius: 7px; border: 1px solid var(--border); }
+    .pnl-item .val { font-size: 1.4rem; font-weight: 700; font-family: var(--mono); line-height: 1; }
+    .pnl-item .lbl { font-size: 0.7rem; color: var(--muted); margin-top: 0.25rem; }
+    .pnl-item.today-pos { border-top: 2px solid var(--gain); }
+    .pnl-item.week-pos  { border-top: 2px solid var(--primary); }
+    .pnl-item.drawdown  { border-top: 2px solid var(--loss); }
+    .pnl-item.winrate   { border-top: 2px solid var(--secondary); }
+
+    /* positions table */
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em; color: var(--muted); text-align: left;
+      padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--border);
+    }
+    th:not(:first-child) { text-align: right; }
+    td {
+      font-size: 0.82rem; padding: 0.55rem 0.5rem;
+      border-top: 1px solid rgba(30,45,64,0.7);
+      vertical-align: middle;
+    }
+    td:not(:first-child) { text-align: right; font-family: var(--mono); }
+    tr:hover td { background: rgba(59,158,255,0.04); }
+
+    .sym-cell { font-family: var(--mono); font-weight: 700; color: var(--primary); }
+    .side-long  { color: var(--gain); font-weight: 600; font-size: 0.72rem; }
+    .side-short { color: var(--loss); font-weight: 600; font-size: 0.72rem; }
+
+    /* strategy status */
+    .strategy-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .strategy-row {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 0.75rem 1rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .str-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .str-sub  { font-size: 0.72rem; color: var(--muted); }
+    .str-val  { font-family: var(--mono); font-size: 0.85rem; text-align: right; }
+    .str-status {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-size: 0.72rem; font-weight: 600;
+      padding: 0.15rem 0.5rem; border-radius: 4px;
+    }
+    .s-live    { background: rgba(45,212,160,0.15); color: var(--gain); }
+    .s-paused  { background: rgba(240,160,80,0.15); color: var(--warning); }
+    .s-backtest { background: rgba(167,139,250,0.15); color: var(--secondary); }
+    .s-stopped { background: rgba(240,96,112,0.15); color: var(--loss); }
+
+    /* mini equity curve */
+    .equity-panel { margin-bottom: 1.5rem; }
+    .equity-chart {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1rem 1.25rem;
+    }
+    .eq-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem; }
+    .eq-val { font-size: 1.6rem; font-weight: 700; font-family: var(--mono); color: #fff; }
+    .eq-chg { font-size: 0.85rem; font-family: var(--mono); color: var(--gain); }
+    .eq-svg { width: 100%; overflow: visible; }
+    .eq-line { fill: none; stroke: var(--gain); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .eq-area { fill: url(#eq-grad); stroke: none; }
+
+    /* risk meters */
+    .risk-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.75rem; margin-bottom: 1.5rem;
+    }
+    .risk-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.85rem 1rem;
+    }
+    .risk-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.4rem; }
+    .risk-bar-wrap {
+      height: 6px; background: var(--surface3); border-radius: 3px; overflow: hidden; margin-bottom: 0.25rem;
+    }
+    .risk-fill { height: 100%; border-radius: 3px; }
+    .rf-safe    { background: var(--gain); }
+    .rf-warn    { background: var(--warning); }
+    .rf-danger  { background: var(--loss); }
+    .risk-pct   { font-family: var(--mono); font-size: 0.8rem; }
+
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      color: var(--muted); padding: 0.85rem 1.75rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.72rem; font-family: var(--mono); gap: 1rem; flex-wrap: wrap;
+    }
+
+    @media (max-width: 800px) {
+      main { padding: 1rem; }
+      .main-grid { grid-template-columns: 1fr; }
+      .strategy-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand-row">
+    <div class="logo-box" aria-hidden="true">NC</div>
+    <div>
+      <h1>Northwind Capital &mdash; Trading Dashboard</h1>
+      <div class="market-time">2026-04-20 &bull; 14:32:08 ET &bull; TradeStation Live</div>
+    </div>
+  </div>
+  <div class="market-status" role="status" aria-live="polite">
+    <span class="mkt-dot" aria-hidden="true"></span>
+    <span class="mkt-label">Market Open</span>
+    <span style="color:var(--muted);margin-left:0.5rem">Closes 16:00 ET</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- MARKET QUOTES -->
+  <p class="section-label">Market Quotes</p>
+  <div class="quote-bar" role="region" aria-label="Market quotes">
+    <div class="quote-card">
+      <div><div class="qt-symbol">ES</div><div class="qt-price">5,284.50</div><div class="qt-chg up">&#9650; +18.25 (+0.35%)</div></div>
+      <div class="qt-bar" aria-hidden="true">
+        <span style="height:45%;background:rgba(45,212,160,0.5)"></span><span style="height:50%;background:rgba(45,212,160,0.5)"></span><span style="height:40%;background:rgba(45,212,160,0.5)"></span><span style="height:60%;background:rgba(45,212,160,0.5)"></span><span style="height:55%;background:rgba(45,212,160,0.5)"></span><span style="height:70%;background:rgba(45,212,160,0.5)"></span><span style="height:75%;background:var(--gain)"></span>
+      </div>
+    </div>
+    <div class="quote-card">
+      <div><div class="qt-symbol">NQ</div><div class="qt-price">18,462.00</div><div class="qt-chg up">&#9650; +94.50 (+0.51%)</div></div>
+      <div class="qt-bar" aria-hidden="true">
+        <span style="height:40%;background:rgba(45,212,160,0.5)"></span><span style="height:35%;background:rgba(45,212,160,0.5)"></span><span style="height:55%;background:rgba(45,212,160,0.5)"></span><span style="height:50%;background:rgba(45,212,160,0.5)"></span><span style="height:65%;background:rgba(45,212,160,0.5)"></span><span style="height:60%;background:rgba(45,212,160,0.5)"></span><span style="height:80%;background:var(--gain)"></span>
+      </div>
+    </div>
+    <div class="quote-card">
+      <div><div class="qt-symbol">GC</div><div class="qt-price">2,388.40</div><div class="qt-chg down">&#9660; -12.10 (-0.50%)</div></div>
+      <div class="qt-bar" aria-hidden="true">
+        <span style="height:70%;background:rgba(240,96,112,0.5)"></span><span style="height:65%;background:rgba(240,96,112,0.5)"></span><span style="height:60%;background:rgba(240,96,112,0.5)"></span><span style="height:55%;background:rgba(240,96,112,0.5)"></span><span style="height:50%;background:rgba(240,96,112,0.5)"></span><span style="height:45%;background:rgba(240,96,112,0.5)"></span><span style="height:35%;background:var(--loss)"></span>
+      </div>
+    </div>
+    <div class="quote-card">
+      <div><div class="qt-symbol">CL</div><div class="qt-price">82.34</div><div class="qt-chg up">&#9650; +0.62 (+0.76%)</div></div>
+      <div class="qt-bar" aria-hidden="true">
+        <span style="height:30%;background:rgba(45,212,160,0.5)"></span><span style="height:45%;background:rgba(45,212,160,0.5)"></span><span style="height:40%;background:rgba(45,212,160,0.5)"></span><span style="height:55%;background:rgba(45,212,160,0.5)"></span><span style="height:50%;background:rgba(45,212,160,0.5)"></span><span style="height:65%;background:rgba(45,212,160,0.5)"></span><span style="height:72%;background:var(--gain)"></span>
+      </div>
+    </div>
+    <div class="quote-card">
+      <div><div class="qt-symbol">SI</div><div class="qt-price">28.145</div><div class="qt-chg down">&#9660; -0.320 (-1.12%)</div></div>
+      <div class="qt-bar" aria-hidden="true">
+        <span style="height:60%;background:rgba(240,96,112,0.5)"></span><span style="height:55%;background:rgba(240,96,112,0.5)"></span><span style="height:58%;background:rgba(240,96,112,0.5)"></span><span style="height:50%;background:rgba(240,96,112,0.5)"></span><span style="height:45%;background:rgba(240,96,112,0.5)"></span><span style="height:40%;background:rgba(240,96,112,0.5)"></span><span style="height:30%;background:var(--loss)"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EQUITY CURVE -->
+  <div class="equity-panel">
+    <div class="equity-chart">
+      <div class="eq-header">
+        <div>
+          <div style="font-size:0.72rem;color:var(--muted);margin-bottom:0.2rem">Account Equity &mdash; Today</div>
+          <div class="eq-val">$148,420</div>
+        </div>
+        <div class="eq-chg">&#9650; +$1,840 (+1.25%) today</div>
+      </div>
+      <svg class="eq-svg" viewBox="0 0 800 80" preserveAspectRatio="none" height="80" aria-hidden="true">
+        <defs>
+          <linearGradient id="eq-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2dd4a0" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#2dd4a0" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <polygon class="eq-area" points="0,80 0,62 50,58 100,55 150,52 200,48 250,50 300,44 350,40 400,42 450,36 500,30 550,28 600,22 650,20 700,18 750,14 800,12 800,80"/>
+        <polyline class="eq-line" points="0,62 50,58 100,55 150,52 200,48 250,50 300,44 350,40 400,42 450,36 500,30 550,28 600,22 650,20 700,18 750,14 800,12"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+
+    <!-- P&L PANEL -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">P&amp;L Summary</span>
+        <span style="font-size:0.72rem;color:var(--muted);font-family:var(--mono)">Live</span>
+      </div>
+      <div class="panel-body">
+        <div class="pnl-grid">
+          <div class="pnl-item today-pos">
+            <div class="val up">+$1,840</div>
+            <div class="lbl">Today P&amp;L</div>
+          </div>
+          <div class="pnl-item week-pos">
+            <div class="val up">+$4,210</div>
+            <div class="lbl">Week P&amp;L</div>
+          </div>
+          <div class="pnl-item drawdown">
+            <div class="val" style="color:var(--warning)">-$1,120</div>
+            <div class="lbl">Max Drawdown</div>
+          </div>
+          <div class="pnl-item winrate">
+            <div class="val" style="color:var(--secondary)">64%</div>
+            <div class="lbl">Win Rate (30d)</div>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Side</th>
+              <th>Qty</th>
+              <th>Entry</th>
+              <th>Open P&amp;L</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="sym-cell">ES</td>
+              <td><span class="side-long">LONG</span></td>
+              <td>2</td>
+              <td>5,271.25</td>
+              <td class="up">+$1,325</td>
+            </tr>
+            <tr>
+              <td class="sym-cell">NQ</td>
+              <td><span class="side-long">LONG</span></td>
+              <td>1</td>
+              <td>18,380.00</td>
+              <td class="up">+$820</td>
+            </tr>
+            <tr>
+              <td class="sym-cell">GC</td>
+              <td><span class="side-short">SHORT</span></td>
+              <td>1</td>
+              <td>2,395.10</td>
+              <td class="up">+$330</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STRATEGIES PANEL -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Strategy Status</span>
+        <span style="font-size:0.72rem;color:var(--muted);font-family:var(--mono)">5 active</span>
+      </div>
+      <div class="panel-body">
+        <div class="strategy-list">
+
+          <div class="strategy-row">
+            <div><div class="str-name">ES Momentum v3.2</div><div class="str-sub">ES 5-min &bull; TradeStation</div></div>
+            <div class="str-val up">+$1,240</div>
+            <div class="str-val">14 / 9 / 5</div>
+            <div class="str-val" style="color:var(--secondary)">72%</div>
+            <span class="str-status s-live">&#9679; Live</span>
+          </div>
+
+          <div class="strategy-row">
+            <div><div class="str-name">NQ Open Range Break</div><div class="str-sub">NQ 15-min &bull; TradeStation</div></div>
+            <div class="str-val up">+$680</div>
+            <div class="str-val">8 / 5 / 3</div>
+            <div class="str-val" style="color:var(--secondary)">63%</div>
+            <span class="str-status s-live">&#9679; Live</span>
+          </div>
+
+          <div class="strategy-row">
+            <div><div class="str-name">GC Mean Revert v1.4</div><div class="str-sub">GC 30-min &bull; TradeStation</div></div>
+            <div class="str-val down">-$280</div>
+            <div class="str-val">6 / 3 / 3</div>
+            <div class="str-val" style="color:var(--warning)">50%</div>
+            <span class="str-status s-paused">&#9646;&#9646; Paused</span>
+          </div>
+
+          <div class="strategy-row">
+            <div><div class="str-name">CL Trend Follow v2.0</div><div class="str-sub">CL 1-hr &bull; Topstep PA</div></div>
+            <div class="str-val up">+$920</div>
+            <div class="str-val">10 / 7 / 3</div>
+            <div class="str-val" style="color:var(--accent)">70%</div>
+            <span class="str-status s-live">&#9679; Live</span>
+          </div>
+
+          <div class="strategy-row">
+            <div><div class="str-name">ES VWAP Revert v1.1</div><div class="str-sub">ES 3-min &bull; In development</div></div>
+            <div class="str-val" style="color:var(--muted)">--</div>
+            <div class="str-val" style="color:var(--muted)">--</div>
+            <div class="str-val" style="color:var(--muted)">--</div>
+            <span class="str-status s-backtest">&#9998; Backtest</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RISK METERS -->
+  <p class="section-label">Risk Limits</p>
+  <div class="risk-grid" role="region" aria-label="Risk limits">
+    <div class="risk-card">
+      <div class="risk-label">Daily Loss Limit &mdash; $2,000</div>
+      <div class="risk-bar-wrap"><div class="risk-fill rf-safe" style="width:8%"></div></div>
+      <div class="risk-pct up">Used: $160 (8%)</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-label">Max Drawdown &mdash; $4,500</div>
+      <div class="risk-bar-wrap"><div class="risk-fill rf-warn" style="width:25%"></div></div>
+      <div class="risk-pct" style="color:var(--warning)">Used: $1,120 (25%)</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-label">Position Size &mdash; 5 contracts</div>
+      <div class="risk-bar-wrap"><div class="risk-fill rf-safe" style="width:60%"></div></div>
+      <div class="risk-pct up">Active: 3 (60%)</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-label">Topstep PA Daily Limit</div>
+      <div class="risk-bar-wrap"><div class="risk-fill rf-safe" style="width:12%"></div></div>
+      <div class="risk-pct up">Used: $360 of $3,000</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-label">Monthly Drawdown Limit</div>
+      <div class="risk-bar-wrap"><div class="risk-fill rf-safe" style="width:18%"></div></div>
+      <div class="risk-pct up">Used: $1,800 of $10,000</div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>Northwind Capital &mdash; Trading Dashboard</span>
+  <span>v{{VERSION}}</span>
+  <span>Updated {{UPDATED}}</span>
+  <span>Source: TradeStation / Topstep API</span>
+</footer>
+
+</body>
+</html>

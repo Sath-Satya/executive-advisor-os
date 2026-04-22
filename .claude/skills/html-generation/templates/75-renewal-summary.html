@@ -1,0 +1,432 @@
+<!--
+TEMPLATE: Renewal Summary
+CATEGORY: Sales
+USE WHEN: Assessing and documenting a customer renewal situation, including contract details, health score, renewal probability, risk factors, and recommended approach for the rep and CS team.
+PALETTE: Light clean
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Renewal Summary &mdash; Meridian Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --navy: #1a2a42;
+      --blue: #3b9eff;
+      --ink: #1c2533;
+      --muted: #677489;
+      --border: #e0e6ef;
+      --green: #2dd4a0;
+      --amber: #f0a050;
+      --red: #f06070;
+      --purple: #a78bfa;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .page {
+      background: var(--surface);
+      width: 860px;
+      margin: 0 auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 24px rgba(26,42,66,0.08);
+      overflow: hidden;
+    }
+    .header {
+      padding: 32px 48px 28px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .header-tag {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+    .header-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.3px;
+    }
+    .header-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .renewal-badge {
+      text-align: right;
+    }
+    .prob-ring {
+      display: inline-block;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: conic-gradient(var(--green) 0% 91%, #e0e6ef 91% 100%);
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .prob-inner {
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+    }
+    .prob-val {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .prob-label {
+      font-size: 0.5rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .renewal-date-label {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 8px;
+    }
+    .renewal-date {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--navy);
+      text-align: center;
+    }
+    .body { padding: 32px 48px; }
+    .section { margin-bottom: 30px; }
+    .section-title {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+    /* Contract grid */
+    .contract-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .c-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 14px;
+    }
+    .c-label {
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .c-val {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    /* Health score */
+    .health-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .health-row:last-child { border-bottom: none; }
+    .h-name { font-size: 0.78rem; color: var(--ink); min-width: 180px; }
+    .h-bar-bg {
+      flex: 1;
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .h-bar { height: 100%; border-radius: 4px; }
+    .h-val { font-size: 0.72rem; font-weight: 600; min-width: 50px; text-align: right; }
+    /* Risks */
+    .risk-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .risk-card:last-child { margin-bottom: 0; }
+    .risk-header {
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .risk-header-high { background: rgba(240,96,112,0.06); border-bottom: 1px solid rgba(240,96,112,0.2); }
+    .risk-header-med { background: rgba(240,160,80,0.06); border-bottom: 1px solid rgba(240,160,80,0.2); }
+    .risk-header-low { background: rgba(45,212,160,0.06); border-bottom: 1px solid rgba(45,212,160,0.2); }
+    .risk-title { font-size: 0.8rem; font-weight: 600; color: var(--navy); }
+    .risk-badge {
+      font-size: 0.58rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .rb-high { background: rgba(240,96,112,0.15); color: #c03040; }
+    .rb-med { background: rgba(240,160,80,0.15); color: #a06020; }
+    .rb-low { background: rgba(45,212,160,0.15); color: #1a8a68; }
+    .risk-body { padding: 10px 16px; }
+    .risk-body p { font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; line-height: 1.45; }
+    .risk-mitigation {
+      font-size: 0.72rem;
+      color: var(--ink);
+      background: var(--bg);
+      border-radius: 6px;
+      padding: 8px 12px;
+      border-left: 3px solid var(--blue);
+    }
+    .risk-mitigation strong { color: var(--navy); }
+    /* Approach table */
+    .approach-table { width: 100%; border-collapse: collapse; }
+    .approach-table th {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .approach-table td {
+      padding: 10px 12px;
+      font-size: 0.78rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .approach-table tr:last-child td { border-bottom: none; }
+    .approach-table tr.recommended td { background: rgba(59,158,255,0.04); }
+    .approach-label {
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .recommended-tag {
+      font-size: 0.55rem;
+      font-weight: 700;
+      background: rgba(59,158,255,0.15);
+      color: #1a6abf;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 12px 48px;
+      display: flex;
+      justify-content: space-between;
+    }
+    footer span { font-size: 0.62rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <div class="header-tag">Renewal Summary &bull; Account Risk Assessment</div>
+      <div class="header-title">Meridian Health</div>
+      <div class="header-sub">AI Workflow Automation Core &bull; 3-Year Contract Vehicle</div>
+    </div>
+    <div class="renewal-badge">
+      <div class="prob-ring">
+        <div class="prob-inner">
+          <div class="prob-val">91%</div>
+          <div class="prob-label">Prob.</div>
+        </div>
+      </div>
+      <div class="renewal-date-label">Renewal Date</div>
+      <div class="renewal-date">January 15, 2027</div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- Contract Details -->
+    <div class="section">
+      <div class="section-title">Contract Details</div>
+      <div class="contract-grid">
+        <div class="c-card">
+          <div class="c-label">Contract Type</div>
+          <div class="c-val">Annual / ELA</div>
+        </div>
+        <div class="c-card">
+          <div class="c-label">Current ACV</div>
+          <div class="c-val">$325,000</div>
+        </div>
+        <div class="c-card">
+          <div class="c-label">Contract Start</div>
+          <div class="c-val">Jan 15, 2024</div>
+        </div>
+        <div class="c-card">
+          <div class="c-label">Contract End</div>
+          <div class="c-val">Jan 15, 2027</div>
+        </div>
+        <div class="c-card">
+          <div class="c-label">Payment Terms</div>
+          <div class="c-val">Net-30 Annual</div>
+        </div>
+        <div class="c-card">
+          <div class="c-label">Renewal Window Opens</div>
+          <div class="c-val">Oct 15, 2026</div>
+        </div>
+        <div class="c-card">
+          <div class="c-label">Notice Period</div>
+          <div class="c-val">90 days</div>
+        </div>
+        <div class="c-card">
+          <div class="c-label">Uplift Entitlement</div>
+          <div class="c-val">CPI + 3%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Health Score -->
+    <div class="section">
+      <div class="section-title">Health Score Breakdown</div>
+      <div class="health-row">
+        <div class="h-name">Product Adoption</div>
+        <div class="h-bar-bg"><div class="h-bar" style="width:87%;background:var(--green);"></div></div>
+        <div class="h-val" style="color:#1a8a68;">87 / 100</div>
+      </div>
+      <div class="health-row">
+        <div class="h-name">Feature Utilization</div>
+        <div class="h-bar-bg"><div class="h-bar" style="width:81%;background:var(--green);"></div></div>
+        <div class="h-val" style="color:#1a8a68;">81 / 100</div>
+      </div>
+      <div class="health-row">
+        <div class="h-name">Executive Engagement</div>
+        <div class="h-bar-bg"><div class="h-bar" style="width:92%;background:var(--green);"></div></div>
+        <div class="h-val" style="color:#1a8a68;">92 / 100</div>
+      </div>
+      <div class="health-row">
+        <div class="h-name">Support Satisfaction (CSAT)</div>
+        <div class="h-bar-bg"><div class="h-bar" style="width:74%;background:var(--amber);"></div></div>
+        <div class="h-val" style="color:#a06020;">74 / 100</div>
+      </div>
+      <div class="health-row">
+        <div class="h-name">NPS Score</div>
+        <div class="h-bar-bg"><div class="h-bar" style="width:80%;background:var(--green);"></div></div>
+        <div class="h-val" style="color:#1a8a68;">+52 NPS</div>
+      </div>
+      <div class="health-row">
+        <div class="h-name">Payment History</div>
+        <div class="h-bar-bg"><div class="h-bar" style="width:100%;background:var(--green);"></div></div>
+        <div class="h-val" style="color:#1a8a68;">100 / 100</div>
+      </div>
+    </div>
+
+    <!-- Renewal Risks -->
+    <div class="section">
+      <div class="section-title">Renewal Risks</div>
+
+      <div class="risk-card">
+        <div class="risk-header risk-header-med">
+          <div class="risk-title">CDO data governance concerns may delay expansion, creating price sensitivity at renewal</div>
+          <span class="risk-badge rb-med">Medium</span>
+        </div>
+        <div class="risk-body">
+          <p>Sasha Moreno has not fully endorsed the platform. If Claims AI POC underperforms, CDO could push back on renewal terms or advocate for competitor evaluation.</p>
+          <div class="risk-mitigation"><strong>Mitigation:</strong> POC success criteria defined jointly. CMO is active sponsor and can override CDO objection if ROI is demonstrated.</div>
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-header risk-header-med">
+          <div class="risk-title">CSAT below target (74 vs 85 floor) due to open P2 ticket</div>
+          <span class="risk-badge rb-med">Medium</span>
+        </div>
+        <div class="risk-body">
+          <p>Open ticket MH-2041 (P2) has been open 18 days. This is the primary CSAT driver. James Tran has flagged frustration to CS team.</p>
+          <div class="risk-mitigation"><strong>Mitigation:</strong> Escalated to engineering lead. Target resolution April 15. Follow-up CSAT survey to be issued within 7 days of close.</div>
+        </div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-header risk-header-low">
+          <div class="risk-title">Competitive RFP risk: Epic Cosmos renewal conversation expected industry-wide in Q3 2026</div>
+          <span class="risk-badge rb-low">Low</span>
+        </div>
+        <div class="risk-body">
+          <p>Epic is running a cross-sell campaign targeting their installed base. Meridian&rsquo;s EHR is Epic; potential for bundled pricing pitch. Low likelihood given champion strength, but worth monitoring.</p>
+          <div class="risk-mitigation"><strong>Mitigation:</strong> Arm Marcus Webb with competitive TCO comparison. Highlight SponAI&rsquo;s pre-built Epic connector. Early renewal locks out competitive evaluation window.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommended Approach -->
+    <div class="section">
+      <div class="section-title">Recommended Renewal Approach</div>
+      <table class="approach-table">
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>ACV</th>
+            <th>Terms</th>
+            <th>Rationale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="approach-label">Auto-Renew (Status Quo)</span></td>
+            <td>$325,000</td>
+            <td>Annual + CPI uplift (2.8%)</td>
+            <td>Baseline; protects revenue but misses expansion opportunity</td>
+          </tr>
+          <tr class="recommended">
+            <td><span class="approach-label">Multi-Year + Expansion</span><span class="recommended-tag">Recommended</span></td>
+            <td>$610,000</td>
+            <td>3-year, includes Member Engagement + Care Gap expansion; 5% discount</td>
+            <td>Locks in expanded ACV, blocks competitive window, rewards loyalty. Aligns with strategic account plan target.</td>
+          </tr>
+          <tr>
+            <td><span class="approach-label">Re-Negotiate Downward (Defensive)</span></td>
+            <td>$290,000</td>
+            <td>Annual, reduced scope</td>
+            <td>Use only if CDO blocks expansion and budget pressure intensifies. Last resort.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Renewal Summary &bull; Meridian Health &bull; SponAI Consulting &bull; Internal Use</span>
+    <span>v{{VERSION}} &bull; {{DATE}} &bull; {{OWNER}}</span>
+  </footer>
+</div>
+</body>
+</html>

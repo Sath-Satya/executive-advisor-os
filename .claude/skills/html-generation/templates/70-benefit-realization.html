@@ -1,0 +1,350 @@
+<!--
+TEMPLATE: benefit-realization
+CATEGORY: ROI / Business Case
+USE WHEN: Documenting a formal benefit realization plan with benefit owners, measurement methods, target dates, status tracking, a dependency matrix, and governance structure.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benefit Realization Plan &mdash; Meridian Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:  #f7f4ef;
+      --cream2: #edeae3;
+      --cream3: #e4e0d8;
+      --navy:   #0e1b2e;
+      --navy2:  #1a2e47;
+      --gold:   #b8965a;
+      --ink:    #1c1a18;
+      --muted:  #6b6560;
+      --border: #ddd8ce;
+      --go:     #2d6a4f;
+      --go-bg:  #d1fae5;
+      --hold:   #92400e;
+      --hold-bg:#fef3c7;
+      --nogo:   #b91c1c;
+      --nogo-bg:#fee2e2;
+      --purple-bg: #ede9fe;
+      --purple: #6d28d9;
+      --font:   'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono:   'DM Mono', 'Cascadia Code', monospace;
+    }
+    body { font-family: var(--font); background: var(--cream); color: var(--ink); font-size: 15px; line-height: 1.65; }
+    header { background: var(--navy); color: #fff; padding: 1.5rem 2.5rem; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .header-left h1 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.4px; }
+    .header-left p { font-size: 0.82rem; opacity: 0.7; margin-top: 0.15rem; }
+    .header-right { text-align: right; font-size: 0.78rem; opacity: 0.65; font-family: var(--mono); }
+
+    main { max-width: 1040px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+    h2 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+
+    /* Summary bar */
+    .sum-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin: 1.5rem 0 1.75rem; }
+    .ss-item { padding: 0.85rem 0.9rem; text-align: center; border-right: 1px solid var(--border); }
+    .ss-item:last-child { border-right: none; }
+    .ss-val { font-family: var(--mono); font-size: 1.3rem; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+    .ss-lbl { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 0.3rem; }
+    .ss-item.go .ss-val   { color: var(--go); }
+    .ss-item.hold .ss-val { color: var(--hold); }
+    .ss-item.plan .ss-val { color: var(--purple); }
+
+    /* Benefit register table */
+    .section { margin-bottom: 2rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    caption { text-align: left; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-bottom: 0.5rem; }
+    thead th { background: var(--navy); color: #fff; padding: 0.48rem 0.65rem; font-weight: 600; font-size: 0.78rem; text-align: left; }
+    thead th.num { text-align: right; }
+    thead th.ctr { text-align: center; }
+    tbody tr { border-bottom: 1px solid var(--border); }
+    tbody tr:nth-child(even) { background: var(--cream2); }
+    tbody tr:hover { background: var(--cream3); }
+    td { padding: 0.48rem 0.65rem; vertical-align: top; }
+    td.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+    td.ctr { text-align: center; }
+    td.muted { color: var(--muted); font-size: 0.78rem; }
+    tfoot td { font-weight: 700; border-top: 2px solid var(--navy); padding: 0.5rem 0.65rem; }
+    tfoot td.num { text-align: right; font-family: var(--mono); }
+
+    /* Status pill */
+    .sp { display: inline-block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.12rem 0.45rem; border-radius: 3px; white-space: nowrap; }
+    .sp-on    { background: var(--go-bg);     color: var(--go);     border: 1px solid #a7f3d0; }
+    .sp-at    { background: var(--hold-bg);   color: var(--hold);   border: 1px solid #fcd34d; }
+    .sp-beh   { background: var(--nogo-bg);   color: var(--nogo);   border: 1px solid #fca5a5; }
+    .sp-plan  { background: var(--purple-bg); color: var(--purple); border: 1px solid #c4b5fd; }
+    .sp-done  { background: var(--cream3);    color: var(--muted);  border: 1px solid var(--border); }
+
+    /* Dependency matrix */
+    .dep-grid { display: grid; grid-template-columns: 2fr 3fr; gap: 1.5rem; margin-bottom: 2rem; }
+    @media (max-width:700px) { .dep-grid { grid-template-columns: 1fr; } }
+    .dep-item { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 0.9rem 1rem; }
+    .dep-title { font-weight: 700; font-size: 0.88rem; margin-bottom: 0.2rem; }
+    .dep-desc { font-size: 0.8rem; color: var(--muted); }
+    .dep-links { margin-top: 0.45rem; display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .dep-pill { font-size: 0.68rem; background: var(--cream2); border: 1px solid var(--border); border-radius: 3px; padding: 0.08rem 0.4rem; color: var(--muted); font-family: var(--mono); }
+
+    /* Cadence */
+    .cadence-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .cad-item { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 0.9rem 1rem; }
+    .cad-freq { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+    .cad-title { font-weight: 600; font-size: 0.88rem; margin-bottom: 0.2rem; }
+    .cad-desc { font-size: 0.78rem; color: var(--muted); }
+
+    /* Governance */
+    .gov-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
+    .gov-table thead th { background: var(--navy2); color: #fff; padding: 0.48rem 0.75rem; font-size: 0.78rem; font-weight: 600; text-align: left; }
+    .gov-table tbody tr { border-bottom: 1px solid var(--border); }
+    .gov-table tbody tr:nth-child(even) { background: var(--cream2); }
+    .gov-table td { padding: 0.45rem 0.75rem; }
+
+    .note { background: var(--cream2); border-left: 3px solid var(--gold); padding: 0.75rem 1rem; font-size: 0.82rem; color: var(--muted); border-radius: 0 4px 4px 0; margin-top: 0.75rem; }
+
+    footer { max-width: 1040px; margin: 0 auto; padding: 1rem 1.5rem 2rem; display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); border-top: 1px solid var(--border); font-family: var(--mono); }
+    @media print { body{background:#fff;font-size:13px;} main,footer{max-width:100%;} header{-webkit-print-color-adjust:exact;print-color-adjust:exact;} }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Benefit Realization Plan &mdash; Claims Automation Initiative</h1>
+    <p>Meridian Health &bull; Enterprise Program Office &bull; Effective April 2026 &bull; 5-Year Horizon</p>
+  </div>
+  <div class="header-right">CONFIDENTIAL<br>Steering Committee</div>
+</header>
+
+<main>
+
+  <div class="sum-strip">
+    <div class="ss-item go"><div class="ss-val">$12.14M</div><div class="ss-lbl">5-Year Target</div></div>
+    <div class="ss-item go"><div class="ss-val">7</div><div class="ss-lbl">Benefit Areas</div></div>
+    <div class="ss-item go"><div class="ss-val">3</div><div class="ss-lbl">On Track</div></div>
+    <div class="ss-item hold"><div class="ss-val">3</div><div class="ss-lbl">At Risk</div></div>
+    <div class="ss-item plan"><div class="ss-val">1</div><div class="ss-lbl">Not Started</div></div>
+  </div>
+
+  <!-- Benefit Register -->
+  <div class="section">
+    <h2>Benefit Register</h2>
+    <table>
+      <caption>All identified benefits &mdash; owner, measurement method, target date, and current status</caption>
+      <thead>
+        <tr>
+          <th scope="col">Benefit</th>
+          <th scope="col">Type</th>
+          <th scope="col">Owner</th>
+          <th scope="col" class="num">Annual Target</th>
+          <th scope="col" class="num">5-Yr Target</th>
+          <th scope="col">Measurement Method</th>
+          <th scope="col" class="ctr">Baseline Date</th>
+          <th scope="col" class="ctr">Full Realization</th>
+          <th scope="col" class="ctr">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Claims adjudication labor savings</strong><br><span style="font-size:0.78rem;color:var(--muted);">18 FTEs redeployed; per-claim cost from $5.40 to $0.62</span></td>
+          <td>Hard / Quantified</td>
+          <td>VP Operations</td>
+          <td class="num">$1,150,000</td>
+          <td class="num">$5,750,000</td>
+          <td>Monthly FTE utilization report; claims processed per FTE KPI</td>
+          <td class="ctr muted">June 2026 (go-live)</td>
+          <td class="ctr muted">Jan 2027 (full rate)</td>
+          <td class="ctr"><span class="sp sp-on">On Track</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fraud &amp; error avoidance</strong><br><span style="font-size:0.78rem;color:var(--muted);">AI pattern detection on duplicate / improper billing</span></td>
+          <td>Hard / Quantified</td>
+          <td>Chief Compliance Officer</td>
+          <td class="num">$480,000</td>
+          <td class="num">$2,400,000</td>
+          <td>Monthly overpayment recovery report; SIU case volume</td>
+          <td class="ctr muted">June 2026</td>
+          <td class="ctr muted">Oct 2026</td>
+          <td class="ctr"><span class="sp sp-on">On Track</span></td>
+        </tr>
+        <tr>
+          <td><strong>Rework &amp; appeals reduction</strong><br><span style="font-size:0.78rem;color:var(--muted);">Denial rate target: from 12.4% to 7.1% (industry benchmark)</span></td>
+          <td>Hard / Quantified</td>
+          <td>VP Clinical Operations</td>
+          <td class="num">$240,000</td>
+          <td class="num">$1,200,000</td>
+          <td>Monthly denial rate report; appeal volume and cycle time</td>
+          <td class="ctr muted">June 2026</td>
+          <td class="ctr muted">Mar 2027</td>
+          <td class="ctr"><span class="sp sp-at">At Risk</span></td>
+        </tr>
+        <tr>
+          <td><strong>IT infrastructure retirement</strong><br><span style="font-size:0.78rem;color:var(--muted);">Legacy adjudication servers decommissioned</span></td>
+          <td>Hard / Quantified</td>
+          <td>CTO</td>
+          <td class="num">$160,000</td>
+          <td class="num">$800,000</td>
+          <td>Data center cost report; hardware lease cancellation confirmation</td>
+          <td class="ctr muted">Sept 2026</td>
+          <td class="ctr muted">Dec 2026</td>
+          <td class="ctr"><span class="sp sp-on">On Track</span></td>
+        </tr>
+        <tr>
+          <td><strong>Regulatory penalty avoidance</strong><br><span style="font-size:0.78rem;color:var(--muted);">CMS Star Rating improvement; reduced audit exposure</span></td>
+          <td>Hard / Estimated</td>
+          <td>Chief Compliance Officer</td>
+          <td class="num">$180,000</td>
+          <td class="num">$900,000</td>
+          <td>CMS Star Rating report (annual); audit finding log</td>
+          <td class="ctr muted">Jan 2027 (Star calc)</td>
+          <td class="ctr muted">Ongoing</td>
+          <td class="ctr"><span class="sp sp-on">On Track</span></td>
+        </tr>
+        <tr>
+          <td><strong>Provider portal self-service efficiency</strong><br><span style="font-size:0.78rem;color:var(--muted);">Providers submit status inquiries via portal, not phone</span></td>
+          <td>Soft / Estimated</td>
+          <td>VP Provider Relations</td>
+          <td class="num">$120,000</td>
+          <td class="num">$600,000</td>
+          <td>Portal login volume; call center handle time; FTE hours saved</td>
+          <td class="ctr muted">July 2026 (portal v2)</td>
+          <td class="ctr muted">Jan 2027</td>
+          <td class="ctr"><span class="sp sp-at">At Risk</span></td>
+        </tr>
+        <tr>
+          <td><strong>Member satisfaction / NPS improvement</strong><br><span style="font-size:0.78rem;color:var(--muted);">Claim resolution from 14 days to 3 days; +12 NPS target</span></td>
+          <td>Soft / Modeled</td>
+          <td>Chief Medical Officer</td>
+          <td class="num">$98,000</td>
+          <td class="num">$490,000</td>
+          <td>Quarterly NPS survey; claim cycle time dashboard (median P90)</td>
+          <td class="ctr muted">Q4 2026 (18-mo lag)</td>
+          <td class="ctr muted">Q2 2027</td>
+          <td class="ctr"><span class="sp sp-at">At Risk</span></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3"><strong>Total 5-Year Benefit Target</strong></td>
+          <td class="num"><strong>$2,428,000</strong></td>
+          <td class="num"><strong>$12,140,000</strong></td>
+          <td colspan="4"></td>
+        </tr>
+      </tfoot>
+    </table>
+    <p class="note">Type definitions: <strong>Hard/Quantified</strong> &mdash; directly measurable financial impact with clear baseline. <strong>Hard/Estimated</strong> &mdash; financial impact modeled from industry data. <strong>Soft/Modeled</strong> &mdash; indirect financial value derived from satisfaction or risk models; conservative estimates used.</p>
+  </div>
+
+  <!-- Dependency matrix -->
+  <div class="section">
+    <h2>Dependency Matrix</h2>
+    <div class="dep-grid">
+      <div>
+        <p style="font-size:0.84rem;color:var(--muted);margin-bottom:0.75rem;">Benefits that depend on predecessor deliverables before measurement can begin:</p>
+        <div class="dep-item" style="margin-bottom:0.75rem;">
+          <div class="dep-title">Provider portal efficiency</div>
+          <div class="dep-desc">Depends on Portal v2.0 API go-live (target July 2026). Currently delayed by API integration sprint overrun.</div>
+          <div class="dep-links"><span class="dep-pill">Blocks: B6</span><span class="dep-pill">Owner: VP Provider Rel.</span><span class="dep-pill">ETA: July 2026</span></div>
+        </div>
+        <div class="dep-item" style="margin-bottom:0.75rem;">
+          <div class="dep-title">Rework &amp; appeals reduction</div>
+          <div class="dep-desc">Depends on provider training completion. Training program delayed 6 weeks by contract dispute; restart May 2026.</div>
+          <div class="dep-links"><span class="dep-pill">Blocks: B3</span><span class="dep-pill">Owner: VP Clinical Ops</span><span class="dep-pill">ETA: Q3 2026</span></div>
+        </div>
+        <div class="dep-item">
+          <div class="dep-title">Member NPS</div>
+          <div class="dep-desc">Long-lag benefit (12&ndash;18 months). No action required; measurement cadence adjusted to Q4 2026 baseline.</div>
+          <div class="dep-links"><span class="dep-pill">Blocks: B7</span><span class="dep-pill">Owner: CMO</span><span class="dep-pill">Monitor only</span></div>
+        </div>
+      </div>
+      <div>
+        <table>
+          <caption>Benefit dependency matrix (X = dependency exists)</caption>
+          <thead>
+            <tr>
+              <th scope="col">Benefit</th>
+              <th scope="col" class="ctr">AI Platform</th>
+              <th scope="col" class="ctr">EHR Integ.</th>
+              <th scope="col" class="ctr">Portal v2</th>
+              <th scope="col" class="ctr">Training</th>
+              <th scope="col" class="ctr">Legacy Ret.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>B1 Labor savings</td><td class="ctr">&#10003;</td><td class="ctr">&#10003;</td><td class="ctr">&mdash;</td><td class="ctr">&mdash;</td><td class="ctr">&mdash;</td></tr>
+            <tr><td>B2 Fraud avoidance</td><td class="ctr">&#10003;</td><td class="ctr">&#10003;</td><td class="ctr">&mdash;</td><td class="ctr">&mdash;</td><td class="ctr">&mdash;</td></tr>
+            <tr><td>B3 Rework reduction</td><td class="ctr">&#10003;</td><td class="ctr">&mdash;</td><td class="ctr">&mdash;</td><td class="ctr">&#10003;</td><td class="ctr">&mdash;</td></tr>
+            <tr><td>B4 Infra retirement</td><td class="ctr">&#10003;</td><td class="ctr">&mdash;</td><td class="ctr">&mdash;</td><td class="ctr">&mdash;</td><td class="ctr">&#10003;</td></tr>
+            <tr><td>B5 Regulatory</td><td class="ctr">&#10003;</td><td class="ctr">&#10003;</td><td class="ctr">&mdash;</td><td class="ctr">&mdash;</td><td class="ctr">&mdash;</td></tr>
+            <tr><td>B6 Portal efficiency</td><td class="ctr">&mdash;</td><td class="ctr">&#10003;</td><td class="ctr">&#10003;</td><td class="ctr">&mdash;</td><td class="ctr">&mdash;</td></tr>
+            <tr><td>B7 Member NPS</td><td class="ctr">&#10003;</td><td class="ctr">&#10003;</td><td class="ctr">&mdash;</td><td class="ctr">&#10003;</td><td class="ctr">&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reporting cadence -->
+  <div class="section">
+    <h2>Reporting Cadence</h2>
+    <div class="cadence-grid">
+      <div class="cad-item">
+        <div class="cad-freq">Monthly</div>
+        <div class="cad-title">Operational Dashboard</div>
+        <div class="cad-desc">Claims volume, auto-adjudication rate, cycle time, error rate. Distributed to Program Director and CTO.</div>
+      </div>
+      <div class="cad-item">
+        <div class="cad-freq">Quarterly</div>
+        <div class="cad-title">Value Realization Report</div>
+        <div class="cad-desc">Promised vs. actual benefits by workstream. Variance explanations. Remediation actions for items &lt;80%.</div>
+      </div>
+      <div class="cad-item">
+        <div class="cad-freq">Semi-Annual</div>
+        <div class="cad-title">Steering Committee Review</div>
+        <div class="cad-desc">Full benefit register update. Forecast re-baselining if cumulative variance &gt;10%. Escalation decisions.</div>
+      </div>
+      <div class="cad-item">
+        <div class="cad-freq">Annual</div>
+        <div class="cad-title">Board / IC Update</div>
+        <div class="cad-desc">Year-over-year benefit performance vs. original business case. Phase 2 opportunity review. NPV re-forecast.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Governance -->
+  <div class="section">
+    <h2>Governance Structure</h2>
+    <table class="gov-table">
+      <caption>Roles and responsibilities for benefit realization governance</caption>
+      <thead>
+        <tr>
+          <th scope="col">Role</th>
+          <th scope="col">Individual(s)</th>
+          <th scope="col">Responsibility</th>
+          <th scope="col">Escalation Authority</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Executive Sponsor</strong></td><td>CTO + CFO (joint)</td><td>Ultimate accountability for 5-year benefit delivery; chairs IC annual review</td><td>Board Technology Committee</td></tr>
+        <tr><td><strong>Program Director</strong></td><td>Enterprise PMO Lead</td><td>Monthly tracking, variance reporting, issue escalation, benefit register maintenance</td><td>Executive Sponsor</td></tr>
+        <tr><td><strong>Benefit Owners</strong></td><td>VP Operations, CMO, CCO, CTO, VP Provider Rel.</td><td>Own individual benefit lines; provide data; implement remediation actions</td><td>Program Director</td></tr>
+        <tr><td><strong>Finance Controller</strong></td><td>VP Finance</td><td>Validate financial measurements; certify annual benefit totals; audit trail</td><td>CFO</td></tr>
+        <tr><td><strong>Vendor CSM</strong></td><td>ClaimAI Pro Account Team</td><td>Platform adoption metrics; SLA reporting; feature roadmap alignment</td><td>Program Director</td></tr>
+        <tr><td><strong>Independent Reviewer</strong></td><td>Internal Audit (annually)</td><td>Annual independent review of benefit claims vs. supporting evidence</td><td>Audit Committee</td></tr>
+      </tbody>
+    </table>
+    <p class="note">This Benefit Realization Plan is a living document. The Program Director is authorized to update benefit descriptions, measurement methods, and target dates without steering committee approval, provided the cumulative 5-year target is not reduced. Any reduction to the 5-year target requires steering committee approval and IC notification.</p>
+  </div>
+
+</main>
+
+<footer>
+  <span>Meridian Health &mdash; Claims Automation Initiative &bull; Benefit Realization Plan</span>
+  <span>v{{VERSION}} &bull; {{DATE}} &bull; CONFIDENTIAL &mdash; {{CLASSIFICATION}}</span>
+</footer>
+
+</body>
+</html>

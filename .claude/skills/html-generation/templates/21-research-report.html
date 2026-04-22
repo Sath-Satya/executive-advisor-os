@@ -1,0 +1,643 @@
+<!--
+TEMPLATE: research-report
+CATEGORY: Reports / Documents
+USE WHEN: Publishing academic or analyst research with abstract, methodology, findings, and citations.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{REPORT_TITLE}} — Research Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream2: #efebe3;
+      --navy: #0e1b2e;
+      --navy2: #162540;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --callout-bg: #f0ece4;
+      --green: #2d6a4f;
+      --amber: #92400e;
+      --red: #b91c1c;
+      --serif: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+      --sans: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', 'Fira Code', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* ── Layout ── */
+    .page-wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .report-grid {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* ── Cover header ── */
+    .report-header {
+      background: var(--navy);
+      color: #fff;
+      padding: 3.5rem 2rem 2.5rem;
+    }
+    .report-header .page-wrap {}
+    .report-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 1rem;
+    }
+    .report-title {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      line-height: 1.2;
+      font-weight: 400;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      max-width: 680px;
+    }
+    .report-subtitle {
+      font-size: 1.05rem;
+      color: #a8b8cc;
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+    .report-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: 1.25rem;
+    }
+    .report-meta-item { }
+    .report-meta-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold2);
+      font-family: var(--mono);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .report-meta-value {
+      font-size: 0.875rem;
+      color: #d0dae8;
+    }
+
+    /* ── Navigation strip ── */
+    .toc-strip {
+      background: var(--navy2);
+      border-bottom: 3px solid var(--gold);
+    }
+    .toc-strip .page-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .toc-strip a {
+      display: inline-block;
+      padding: 0.75rem 1.25rem;
+      color: #a8b8cc;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-family: var(--mono);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      transition: background 0.15s, color 0.15s;
+    }
+    .toc-strip a:first-child { border-left: 1px solid rgba(255,255,255,0.08); }
+    .toc-strip a:hover { background: rgba(184,150,90,0.15); color: var(--gold2); }
+
+    /* ── Main content area ── */
+    .report-body {
+      padding: 3rem 0 4rem;
+    }
+    main article { }
+    .section {
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section:last-child { border-bottom: none; }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-family: var(--serif);
+      font-size: 1.75rem;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+    h3 {
+      font-family: var(--sans);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Abstract box ── */
+    .abstract-box {
+      background: var(--callout-bg);
+      border-left: 4px solid var(--gold);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2.5rem;
+      border-radius: 0 4px 4px 0;
+    }
+    .abstract-box .abstract-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+    .abstract-box p {
+      font-style: italic;
+      color: #2c2a28;
+      font-size: 0.975rem;
+      line-height: 1.75;
+    }
+    .keywords {
+      margin-top: 0.75rem;
+      font-style: normal;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .keywords strong { color: var(--ink); }
+
+    /* ── Sidebar ── */
+    aside {
+      position: sticky;
+      top: 2rem;
+    }
+    .sidebar-card {
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .sidebar-card-title {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+    .sidebar-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+    }
+    .sidebar-card p:last-child { margin-bottom: 0; }
+    .sidebar-stat {
+      text-align: center;
+      padding: 0.75rem 0;
+    }
+    .sidebar-stat-value {
+      display: block;
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      color: var(--navy);
+      line-height: 1.1;
+    }
+    .sidebar-stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+    .sidebar-divider { border: none; border-top: 1px solid var(--border); margin: 0.75rem 0; }
+
+    /* ── Callout boxes ── */
+    .callout {
+      padding: 1rem 1.25rem;
+      border-radius: 4px;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+    }
+    .callout-key {
+      background: #eef6f1;
+      border-left: 3px solid var(--green);
+      color: #1a3d2b;
+    }
+    .callout-warn {
+      background: #fef3e2;
+      border-left: 3px solid var(--amber);
+      color: #5c2d0a;
+    }
+    .callout-title {
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+
+    /* ── Findings list ── */
+    .findings-list { list-style: none; margin: 1rem 0; }
+    .findings-list li {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.925rem;
+    }
+    .findings-list li:last-child { border-bottom: none; }
+    .finding-num {
+      flex-shrink: 0;
+      width: 1.6rem;
+      height: 1.6rem;
+      background: var(--navy);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-top: 0.1rem;
+    }
+
+    /* ── Data table ── */
+    .data-table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    caption {
+      text-align: left;
+      font-size: 0.78rem;
+      font-family: var(--mono);
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    th {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 500;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+    }
+    td {
+      padding: 0.6rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--ink);
+    }
+    tr:nth-child(even) td { background: var(--callout-bg); }
+
+    /* ── References ── */
+    .references-list { list-style: none; counter-reset: ref; }
+    .references-list li {
+      counter-increment: ref;
+      padding: 0.5rem 0 0.5rem 2.5rem;
+      position: relative;
+      font-size: 0.875rem;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.6;
+    }
+    .references-list li::before {
+      content: "[" counter(ref) "]";
+      position: absolute;
+      left: 0;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--gold);
+      top: 0.55rem;
+    }
+    cite { font-style: italic; }
+
+    /* ── Footer ── */
+    .report-footer {
+      background: var(--navy);
+      color: #6b7e94;
+      padding: 1.5rem 2rem;
+      font-size: 0.78rem;
+      font-family: var(--mono);
+    }
+    .report-footer .page-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .footer-brand { color: var(--gold2); font-weight: 500; }
+    .footer-divider { color: rgba(255,255,255,0.2); margin: 0 0.5rem; }
+
+    /* ── Print ── */
+    @media print {
+      @page { margin: 2cm; size: A4; }
+      body { background: #fff; font-size: 11pt; }
+      .toc-strip, aside { display: none; }
+      .report-grid { display: block; }
+      .report-header { background: #fff; color: var(--ink); padding: 0 0 1cm; }
+      .report-title { color: var(--navy); font-size: 20pt; }
+      .report-subtitle { color: var(--muted); }
+      .report-meta-row { border-top-color: var(--border); padding-top: 0.5cm; }
+      .report-meta-label { color: var(--gold); }
+      .report-meta-value { color: var(--ink); }
+      .report-label { color: var(--gold); }
+      .section { break-inside: avoid; }
+      h2 { break-after: avoid; }
+      h3 { break-after: avoid; }
+      .report-footer { background: #fff; color: var(--muted); border-top: 1px solid var(--border); padding: 0.5cm 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Report Header ── -->
+  <header class="report-header">
+    <div class="page-wrap">
+      <p class="report-label">Northwind Capital Research Division &bull; Working Paper</p>
+      <h1 class="report-title">AI-Driven Underwriting in Mid-Market Healthcare Lending: Evidence from 142 Portfolio Companies</h1>
+      <p class="report-subtitle">A quantitative analysis of machine-learning augmented credit decisioning and its effect on default rates, approval velocity, and portfolio yield across three fiscal cohorts.</p>
+      <div class="report-meta-row">
+        <div class="report-meta-item">
+          <span class="report-meta-label">Lead Author</span>
+          <span class="report-meta-value">{{AUTHOR_NAME}}</span>
+        </div>
+        <div class="report-meta-item">
+          <span class="report-meta-label">Published</span>
+          <span class="report-meta-value">{{DATE}}</span>
+        </div>
+        <div class="report-meta-item">
+          <span class="report-meta-label">Classification</span>
+          <span class="report-meta-value">{{CLASSIFICATION}}</span>
+        </div>
+        <div class="report-meta-item">
+          <span class="report-meta-label">Version</span>
+          <span class="report-meta-value">{{VERSION}}</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── TOC Strip ── -->
+  <nav class="toc-strip" aria-label="Report sections">
+    <div class="page-wrap">
+      <a href="#abstract">Abstract</a>
+      <a href="#methodology">Methodology</a>
+      <a href="#findings">Findings</a>
+      <a href="#discussion">Discussion</a>
+      <a href="#limitations">Limitations</a>
+      <a href="#conclusions">Conclusions</a>
+      <a href="#references">References</a>
+    </div>
+  </nav>
+
+  <!-- ── Body ── -->
+  <div class="report-body">
+    <div class="page-wrap">
+      <div class="report-grid">
+
+        <!-- Main article -->
+        <main>
+          <article>
+
+            <!-- Abstract -->
+            <section class="section" id="abstract">
+              <span class="section-label">01</span>
+              <h2>Abstract</h2>
+              <div class="abstract-box">
+                <span class="abstract-label">Abstract</span>
+                <p>This paper examines the adoption of AI-augmented underwriting models across 142 mid-market healthcare borrowers in Northwind Capital's lending portfolio between fiscal years 2022 and 2024. Using a difference-in-differences approach with propensity score matching, we isolate the causal effect of ML-assisted credit decisioning on three primary outcomes: 90-day default rate, time-to-approval, and net portfolio yield. Portfolios using AI-assisted decisioning exhibited a 31% reduction in 90-day default incidence, a 58% decrease in median approval cycle time, and a 14 basis-point improvement in net yield on a risk-adjusted basis. These findings hold under heteroskedasticity-robust standard errors and survive three robustness checks including placebo testing and alternative matching algorithms.</p>
+                <p class="keywords"><strong>Keywords:</strong> healthcare lending, machine learning, credit risk, underwriting automation, mid-market finance, difference-in-differences</p>
+              </div>
+            </section>
+
+            <!-- Methodology -->
+            <section class="section" id="methodology">
+              <span class="section-label">02</span>
+              <h2>Methodology</h2>
+              <h3>Sample Construction</h3>
+              <p>The study sample comprises 142 mid-market healthcare companies that received Northwind Capital debt facilities between Q1 2022 and Q4 2024. Companies were classified into treatment and control groups based on whether their credit application was processed through the AI-augmented decisioning pipeline (deployed incrementally from Q3 2022 onward) or the legacy analyst-reviewed workflow.</p>
+              <p>Eligible companies met the following inclusion criteria: (a) annualized revenue between $15M and $750M, (b) primary NAICS codes within the healthcare and social assistance sector (621xxx–623xxx), and (c) at least one full fiscal year of post-origination monitoring data available as of the analysis cutoff date.</p>
+
+              <h3>Identification Strategy</h3>
+              <p>We employ a staggered difference-in-differences estimator to address the non-simultaneous rollout of the AI pipeline across Northwind's five underwriting teams. The estimator follows Callaway and Sant'Anna (2021) to account for treatment effect heterogeneity across cohorts. Propensity scores were generated using a logistic model on pre-treatment covariates including prior-year EBITDA margin, leverage ratio, sector sub-segment, and geographic region.</p>
+
+              <div class="callout callout-key">
+                <span class="callout-title">Key Identification Assumption</span>
+                Parallel pre-trends were validated for 8 pre-treatment quarters across all outcome variables. F-tests for joint significance of pre-treatment interaction terms yield p-values of 0.38 (default rate), 0.21 (approval time), and 0.44 (yield), supporting the parallel trends assumption.
+              </div>
+
+              <h3>Outcome Variables</h3>
+              <div class="data-table-wrap">
+                <table>
+                  <caption>Table 1. Primary Outcome Variables and Measurement Windows</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Variable</th>
+                      <th scope="col">Definition</th>
+                      <th scope="col">Window</th>
+                      <th scope="col">Source</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Default Rate (90d)</td>
+                      <td>Proportion of facilities 90+ days past due</td>
+                      <td>12 months post-origination</td>
+                      <td>Northwind loan servicing</td>
+                    </tr>
+                    <tr>
+                      <td>Approval Cycle Time</td>
+                      <td>Calendar days from application to commitment letter</td>
+                      <td>Origination window</td>
+                      <td>CRM workflow logs</td>
+                    </tr>
+                    <tr>
+                      <td>Net Portfolio Yield</td>
+                      <td>Risk-adjusted yield net of expected loss provision</td>
+                      <td>Annual, post-origination</td>
+                      <td>Treasury accounting</td>
+                    </tr>
+                    <tr>
+                      <td>Covenant Breach Rate</td>
+                      <td>Proportion of facilities with at least one covenant trigger</td>
+                      <td>24 months post-origination</td>
+                      <td>Portfolio monitoring system</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <!-- Findings -->
+            <section class="section" id="findings">
+              <span class="section-label">03</span>
+              <h2>Findings</h2>
+              <p>The main findings are presented below. Coefficient estimates are reported with 95% confidence intervals under heteroskedasticity-robust standard errors. Full regression tables appear in Appendix A.</p>
+
+              <ul class="findings-list" aria-label="Key findings">
+                <li>
+                  <span class="finding-num" aria-hidden="true">1</span>
+                  <span><strong>Default rate reduction.</strong> AI-assisted underwriting was associated with a 31 percentage-point reduction in the 90-day default rate (ATT = -0.031, SE = 0.009, p &lt; 0.001). The effect was strongest in the behavioral health sub-segment, where defaults fell by 47%.</span>
+                </li>
+                <li>
+                  <span class="finding-num" aria-hidden="true">2</span>
+                  <span><strong>Approval velocity.</strong> Median approval cycle time fell from 23 days (legacy) to 9.7 days (AI-assisted), a reduction of 57.8%. The 90th percentile improved from 41 days to 18 days, narrowing the tail substantially.</span>
+                </li>
+                <li>
+                  <span class="finding-num" aria-hidden="true">3</span>
+                  <span><strong>Yield improvement.</strong> Risk-adjusted net yield improved by 14 basis points on average (ATT = +0.0014, SE = 0.0004, p = 0.003). The improvement is partially attributable to better pricing precision at the segment level.</span>
+                </li>
+                <li>
+                  <span class="finding-num" aria-hidden="true">4</span>
+                  <span><strong>Covenant breach frequency.</strong> No statistically significant change in 24-month covenant breach rates was detected (ATT = -0.008, SE = 0.011, p = 0.47), suggesting that AI models improved early-stage screening without altering downstream covenant design.</span>
+                </li>
+              </ul>
+
+              <div class="callout callout-warn">
+                <span class="callout-title">Caveat on Generalizability</span>
+                These findings are specific to Northwind Capital's deal flow, proprietary feature set, and operating context. External replication requires comparable training data and similar portfolio composition. Results may not generalize to retail or consumer lending contexts.
+              </div>
+            </section>
+
+            <!-- Discussion -->
+            <section class="section" id="discussion">
+              <span class="section-label">04</span>
+              <h2>Discussion</h2>
+              <p>The magnitude of the default rate reduction exceeds prior estimates in the corporate lending literature, which typically report improvements in the 10–20% range for comparable ML deployments. We attribute the larger effect to two factors: the relative richness of structured clinical and operational data available for healthcare borrowers, and the proprietary feature engineering layer that converts claims-level utilization data into credit-predictive signals.</p>
+              <p>The approval cycle improvement, while substantial, carries a caveat: part of the 57.8% reduction reflects procedural redesign that occurred concurrently with the AI rollout. Our robustness checks cannot fully disentangle the two effects. We estimate that between 60% and 75% of the cycle time improvement is attributable to the ML pipeline itself based on team-level variation in procedural changes.</p>
+              <p>The null result on covenant breach rates is theoretically consistent with AI models optimizing for origination-point risk rather than ongoing monitoring. This suggests a complementary opportunity: applying similar models to continuous portfolio monitoring could extend the default prevention effect through the full credit lifecycle.</p>
+            </section>
+
+            <!-- Limitations -->
+            <section class="section" id="limitations">
+              <span class="section-label">05</span>
+              <h2>Limitations</h2>
+              <p>Several limitations should be noted. First, the treatment and control groups differ in vintage (later vintages are more likely to be AI-assisted), introducing potential confounding from macroeconomic conditions. We address this through the staggered DiD design, but residual time-trend confounding cannot be ruled out.</p>
+              <p>Second, the AI model's feature set includes non-public operational metrics from healthcare clients. This means findings may not be replicable from publicly available data alone, limiting academic reproducibility.</p>
+              <p>Third, the study period ends in Q4 2024. The post-COVID normalization of healthcare utilization patterns may have changed the underlying predictive relationships; models trained on 2020–2022 data may not perform equivalently going forward without retraining.</p>
+            </section>
+
+            <!-- Conclusions -->
+            <section class="section" id="conclusions">
+              <span class="section-label">06</span>
+              <h2>Conclusions</h2>
+              <p>This study provides rigorous causal evidence that AI-augmented underwriting materially improves credit outcomes in mid-market healthcare lending. The 31% default rate reduction and 58% approval cycle improvement translate to concrete economic value: at current portfolio size, the default reduction alone represents approximately $14.2M in avoided annual loss provisions.</p>
+              <p>The findings support broader deployment of ML-assisted decisioning within the healthcare lending segment and highlight adjacent opportunities in continuous portfolio monitoring. Future research should examine model governance requirements, fair lending compliance, and the dynamics of model drift as economic conditions evolve.</p>
+            </section>
+
+            <!-- References -->
+            <section class="section" id="references">
+              <span class="section-label">07</span>
+              <h2>References</h2>
+              <ol class="references-list">
+                <li>Callaway, B. &amp; Sant'Anna, P.H.C. (2021). <cite>Difference-in-Differences with Multiple Time Periods.</cite> Journal of Econometrics, 225(2), 200–230.</li>
+                <li>Fuster, A., Goldsmith-Pinkham, P., Ramadorai, T. &amp; Walther, A. (2022). <cite>Predictably Unequal? The Effects of Machine Learning on Credit Markets.</cite> Journal of Finance, 77(1), 5–47.</li>
+                <li>Berger, A.N. &amp; Udell, G.F. (2019). <cite>Small Business Credit Availability and Relationship Lending.</cite> Economic Journal, 129(617), 1–29.</li>
+                <li>Khandani, A.E., Kim, A.J. &amp; Lo, A.W. (2010). <cite>Consumer Credit-Risk Models via Machine-Learning Algorithms.</cite> Journal of Banking &amp; Finance, 34(11), 2767–2787.</li>
+                <li>Northwind Capital Internal Research. (2024). <cite>AI Pipeline Technical Specification and Feature Registry</cite> [Proprietary]. Northwind Capital Research Division.</li>
+              </ol>
+            </section>
+
+          </article>
+        </main>
+
+        <!-- Sidebar -->
+        <aside aria-label="Report key statistics">
+
+          <div class="sidebar-card">
+            <span class="sidebar-card-title">Key Statistics</span>
+            <div class="sidebar-stat">
+              <span class="sidebar-stat-value">31%</span>
+              <span class="sidebar-stat-label">Default Rate Reduction</span>
+            </div>
+            <hr class="sidebar-divider">
+            <div class="sidebar-stat">
+              <span class="sidebar-stat-value">58%</span>
+              <span class="sidebar-stat-label">Faster Approvals</span>
+            </div>
+            <hr class="sidebar-divider">
+            <div class="sidebar-stat">
+              <span class="sidebar-stat-value">+14bps</span>
+              <span class="sidebar-stat-label">Net Yield Improvement</span>
+            </div>
+          </div>
+
+          <div class="sidebar-card">
+            <span class="sidebar-card-title">Study Scope</span>
+            <p><strong>142</strong> portfolio companies</p>
+            <p><strong>3</strong> fiscal year cohorts (FY22–FY24)</p>
+            <p><strong>5</strong> underwriting teams</p>
+            <p>Healthcare NAICS 621–623</p>
+          </div>
+
+          <div class="sidebar-card">
+            <span class="sidebar-card-title">Methodology</span>
+            <p>Staggered Difference-in-Differences</p>
+            <p>Propensity Score Matching</p>
+            <p>Callaway-Sant'Anna (2021) estimator</p>
+            <p>Robust SEs, 3 placebo checks</p>
+          </div>
+
+          <div class="sidebar-card">
+            <span class="sidebar-card-title">Peer Review Status</span>
+            <p>Internal review: Completed</p>
+            <p>External review: Pending</p>
+            <p>Submission target: {{JOURNAL}}</p>
+          </div>
+
+        </aside>
+
+      </div><!-- .report-grid -->
+    </div><!-- .page-wrap -->
+  </div><!-- .report-body -->
+
+  <!-- ── Footer ── -->
+  <footer class="report-footer">
+    <div class="page-wrap">
+      <span><span class="footer-brand">SponAItech</span> <span class="footer-divider">|</span> html-generation skill v1.1</span>
+      <span>Version {{VERSION}} <span class="footer-divider">|</span> {{DATE}} <span class="footer-divider">|</span> Classification: {{CLASSIFICATION}}</span>
+    </div>
+  </footer>
+
+</body>
+</html>

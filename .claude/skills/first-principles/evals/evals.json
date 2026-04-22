@@ -1,0 +1,29 @@
+{
+  "skill_name": "first-principles",
+  "version": "1.0.0",
+  "note": "Minimal launch trigger set. Expand to 20 cases (10 should-trigger + 10 should-not) after first real session; flag for skill-evolution at 3+ missed activations.",
+  "should_trigger": [
+    { "id": "T01", "query": "Challenge my assumptions on the CMS 2026 prior-auth final rule impact", "reason": "explicit challenge + strategic regulatory topic" },
+    { "id": "T02", "query": "Let's go back to first principles on this vendor consolidation decision", "reason": "explicit 'first principles' phrase + one-way-door decision" },
+    { "id": "T03", "query": "What are we really solving here?", "reason": "re-framing signal; Feynman phase fits" },
+    { "id": "T04", "query": "Why do we believe our member retention strategy is the right one?", "reason": "assumption-interrogation phrasing" },
+    { "id": "T05", "query": "I want to rethink this from scratch — forget what we've done before", "reason": "Cartesian-doubt signal; zero-base framing" },
+    { "id": "T06", "query": "Is this actually the right question, or are we solving the wrong problem?", "reason": "question re-framing; core Phase 1 trigger" },
+    { "id": "T07", "query": "Can you stress-test this recommendation with a pre-mortem?", "reason": "direct Phase 4 invocation" },
+    { "id": "T08", "query": "[Advisor] Strategic-deep research on healthcare M&A fit — big decision, board-level, multi-year", "reason": "EA Strategic-deep tier auto-invokes" },
+    { "id": "T09", "query": "Help me think through build-vs-buy for this — I want to make sure we're not anchored to 'build'", "reason": "explicit bias callout + strategic decision" },
+    { "id": "T10", "query": "We keep saying 'it has to be this way' — let's test that", "reason": "convention-as-truth signal; clean Cartesian-doubt trigger" }
+  ],
+  "should_not_trigger": [
+    { "id": "N01", "query": "Fix this failing unit test", "reason": "single-file bug fix; not a strategic decision" },
+    { "id": "N02", "query": "Generate a deck from this research report", "reason": "output-generation task; no decision analysis" },
+    { "id": "N03", "query": "What's the syntax for a Salesforce trigger?", "reason": "lookup question, not reasoning" },
+    { "id": "N04", "query": "Write the executive summary for this research", "reason": "content-generation; EA normal flow handles" },
+    { "id": "N05", "query": "Regenerate the tracker HTML", "reason": "mechanical output refresh" },
+    { "id": "N06", "query": "Deploy this to Azure", "reason": "deployment task" },
+    { "id": "N07", "query": "What does 'regret minimization' mean?", "reason": "definition lookup; skill activates when applying the framework to a decision, not when defining it" },
+    { "id": "N08", "query": "Summarize what first-principles thinking is in one paragraph", "reason": "explainer request; doesn't need the full 4-phase pipeline" },
+    { "id": "N09", "query": "Our production is down — how do we recover?", "reason": "urgent hotfix; skill should DECLINE with redirect (part of the decline test)" },
+    { "id": "N10", "query": "Rename this variable across the codebase", "reason": "pure refactor; no assumptions to challenge" }
+  ]
+}

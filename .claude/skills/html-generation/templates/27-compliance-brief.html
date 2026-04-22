@@ -1,0 +1,446 @@
+<!--
+TEMPLATE: compliance-brief
+CATEGORY: Reports / Documents
+USE WHEN: Summarizing regulatory compliance status (HIPAA, SOX, GDPR, etc.) with applicable regulations, checklist, gap analysis, and remediation plan.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compliance Brief — {{ENTITY_NAME}} — {{DATE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream2: #efebe3;
+      --navy: #0e1b2e;
+      --navy2: #162540;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --callout-bg: #f0ece4;
+      --green: #2d6a4f;
+      --green-bg: #d1fae5;
+      --green-border: #a7f3d0;
+      --amber: #92400e;
+      --amber-bg: #fef3e2;
+      --amber-border: #fcd34d;
+      --red: #b91c1c;
+      --red-bg: #fee2e2;
+      --red-border: #fca5a5;
+      --blue: #1e40af;
+      --blue-bg: #dbeafe;
+      --sans: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', 'Fira Code', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* ── Header ── */
+    .cb-header {
+      background: var(--navy);
+      padding: 2.5rem 2rem;
+      border-bottom: 3px solid var(--gold);
+    }
+    .hdr-inner { max-width: 820px; margin: 0 auto; }
+    .cb-label { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold2); display: block; margin-bottom: 0.6rem; }
+    h1 { font-family: var(--sans); font-size: 1.8rem; font-weight: 600; color: #fff; line-height: 1.25; margin-bottom: 0.6rem; }
+    .cb-subtitle { font-size: 0.9rem; color: #8899b0; max-width: 560px; margin-bottom: 1.75rem; }
+    .cb-meta { display: flex; flex-wrap: wrap; gap: 2rem; border-top: 1px solid rgba(255,255,255,0.12); padding-top: 1.25rem; }
+    .cb-meta-label { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold2); display: block; margin-bottom: 0.2rem; }
+    .cb-meta-value { font-size: 0.875rem; color: #c0cede; }
+
+    /* ── Reg tags strip ── */
+    .reg-strip { background: var(--cream2); border-bottom: 1px solid var(--border); }
+    .reg-strip-inner { max-width: 820px; margin: 0 auto; padding: 1rem 2rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+    .reg-strip-label { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-right: 0.5rem; }
+    .reg-tag { padding: 0.25rem 0.75rem; border-radius: 3px; font-family: var(--mono); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; }
+    .reg-hipaa { background: #dbeafe; color: #1e3a5f; }
+    .reg-sox { background: #ede9fe; color: #4c1d95; }
+    .reg-gdpr { background: #d1fae5; color: #064e3b; }
+    .reg-ccpa { background: #fef3e2; color: #78350f; }
+    .reg-hitrust { background: var(--callout-bg); color: var(--muted); border: 1px solid var(--border); }
+
+    /* ── Overall posture banner ── */
+    .posture-banner { padding: 1.25rem 2rem; border-bottom: 1px solid var(--border); }
+    .posture-inner { max-width: 820px; margin: 0 auto; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+    .posture-gauge { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .posture-score { font-family: var(--sans); font-size: 2.8rem; font-weight: 700; color: var(--amber); line-height: 1; }
+    .posture-max { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+    .posture-body {}
+    .posture-title { font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 0.35rem; }
+    .posture-desc { font-size: 0.875rem; color: var(--muted); max-width: 520px; line-height: 1.6; }
+
+    /* ── Document layout ── */
+    .doc-wrap { max-width: 820px; margin: 0 auto; padding: 0 2rem 4rem; }
+
+    /* ── Sections ── */
+    .cb-section { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+    .cb-section:last-child { border-bottom: none; }
+    .section-eyebrow { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); display: block; margin-bottom: 0.5rem; }
+    h2 { font-family: var(--sans); font-size: 1.35rem; font-weight: 600; color: var(--navy); line-height: 1.3; margin-bottom: 1.25rem; }
+    h3 { font-family: var(--sans); font-size: 0.975rem; font-weight: 600; color: var(--navy); margin-top: 1.75rem; margin-bottom: 0.5rem; }
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Requirement rows ── */
+    .req-reg-group { margin-bottom: 2rem; }
+    .req-reg-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.65rem 1rem;
+      background: var(--navy2);
+      border-radius: 4px 4px 0 0;
+    }
+    .req-reg-name { font-family: var(--mono); font-size: 0.72rem; color: var(--gold2); font-weight: 600; letter-spacing: 0.06em; }
+    .req-reg-full { font-size: 0.78rem; color: #8899b0; }
+    .req-list { list-style: none; border: 1px solid var(--border); border-top: none; border-radius: 0 0 4px 4px; overflow: hidden; }
+    .req-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+    }
+    .req-row:last-child { border-bottom: none; }
+    .req-row:nth-child(even) { background: var(--callout-bg); }
+    .req-text { color: var(--ink); }
+    .req-ref { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
+    .req-status { white-space: nowrap; }
+    .status-pill { display: inline-block; padding: 0.2rem 0.55rem; border-radius: 3px; font-family: var(--mono); font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+    .pill-compliant { background: var(--green-bg); color: var(--green); }
+    .pill-partial { background: var(--amber-bg); color: var(--amber); }
+    .pill-gap { background: var(--red-bg); color: var(--red); }
+    .pill-na { background: var(--callout-bg); color: var(--muted); border: 1px solid var(--border); }
+
+    /* ── Gap analysis table ── */
+    .gap-table-wrap { overflow-x: auto; margin: 1.25rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    caption { text-align: left; font-size: 0.78rem; font-family: var(--mono); color: var(--muted); margin-bottom: 0.5rem; }
+    th { background: var(--navy); color: #fff; font-weight: 500; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.65rem 1rem; text-align: left; }
+    td { padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: var(--callout-bg); }
+
+    /* ── Remediation timeline ── */
+    .remediation-list { list-style: none; margin: 1.25rem 0; position: relative; padding-left: 2rem; }
+    .remediation-list::before { content: ''; position: absolute; left: 0.45rem; top: 0.5rem; bottom: 0.5rem; width: 2px; background: var(--border); }
+    .remediation-item { position: relative; padding: 0 0 1.5rem 1rem; }
+    .remediation-item:last-child { padding-bottom: 0; }
+    .remediation-dot {
+      position: absolute; left: -2rem; top: 0.25rem;
+      width: 0.9rem; height: 0.9rem;
+      border-radius: 50%;
+      border: 2px solid;
+      background: var(--cream);
+    }
+    .remediation-dot.now { border-color: var(--red); background: var(--red); }
+    .remediation-dot.short { border-color: var(--amber); }
+    .remediation-dot.mid { border-color: var(--gold); }
+    .remediation-dot.long { border-color: var(--green); }
+    .remediation-when { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); display: block; margin-bottom: 0.25rem; }
+    .remediation-title { font-weight: 600; font-size: 0.9rem; color: var(--navy); margin-bottom: 0.25rem; }
+    .remediation-desc { font-size: 0.85rem; color: var(--muted); }
+    .remediation-owner { font-family: var(--mono); font-size: 0.72rem; color: var(--gold); margin-top: 0.25rem; }
+
+    /* ── Footer ── */
+    .cb-footer { background: var(--navy); color: #6b7e94; padding: 1.5rem 2rem; font-size: 0.78rem; font-family: var(--mono); }
+    .cb-footer .hdr-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+    .footer-brand { color: var(--gold2); font-weight: 500; }
+    .footer-div { color: rgba(255,255,255,0.2); margin: 0 0.5rem; }
+
+    /* ── Print ── */
+    @media print {
+      @page { margin: 2cm; size: A4; }
+      body { background: #fff; font-size: 10.5pt; }
+      .cb-header { background: #fff; padding: 0; border-bottom-color: var(--gold); }
+      h1 { color: var(--navy); font-size: 16pt; }
+      .cb-label, .cb-meta-label { color: var(--gold); }
+      .cb-meta-value, .cb-subtitle { color: var(--muted); }
+      .reg-strip { background: #fff; }
+      .posture-banner { background: #f0ece4; }
+      .cb-section { break-inside: avoid; }
+      .req-reg-header { background: #ddd8ce; }
+      .req-reg-name { color: var(--navy); }
+      .cb-footer { background: #fff; color: var(--muted); border-top: 1px solid var(--border); padding: 0.5cm 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="cb-header">
+    <div class="hdr-inner">
+      <span class="cb-label">Meridian Health Systems &bull; Compliance Office &bull; Regulatory Brief</span>
+      <h1>Compliance Status Brief: AI-Augmented Utilization Management Platform</h1>
+      <p class="cb-subtitle">Regulatory compliance assessment covering HIPAA Security Rule, HIPAA Privacy Rule, SOX IT General Controls, and CCPA requirements as applied to the AI-augmented prior authorization system. Assessment period: {{ASSESSMENT_PERIOD}}.</p>
+      <div class="cb-meta">
+        <div><span class="cb-meta-label">Prepared By</span><span class="cb-meta-value">{{AUTHOR}}</span></div>
+        <div><span class="cb-meta-label">Assessment Date</span><span class="cb-meta-value">{{DATE}}</span></div>
+        <div><span class="cb-meta-label">Review Cycle</span><span class="cb-meta-value">Annual</span></div>
+        <div><span class="cb-meta-label">Version</span><span class="cb-meta-value">{{VERSION}}</span></div>
+        <div><span class="cb-meta-label">Classification</span><span class="cb-meta-value">{{CLASSIFICATION}}</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Applicable Regulations ── -->
+  <div class="reg-strip" role="region" aria-label="Applicable regulations">
+    <div class="reg-strip-inner">
+      <span class="reg-strip-label">Regulations in Scope:</span>
+      <span class="reg-tag reg-hipaa">HIPAA Security</span>
+      <span class="reg-tag reg-hipaa">HIPAA Privacy</span>
+      <span class="reg-tag reg-sox">SOX ITGC</span>
+      <span class="reg-tag reg-ccpa">CCPA</span>
+      <span class="reg-tag reg-hitrust">HITRUST CSF</span>
+    </div>
+  </div>
+
+  <!-- ── Overall Posture ── -->
+  <div class="posture-banner" role="region" aria-label="Overall compliance posture">
+    <div class="posture-inner">
+      <div class="posture-gauge" aria-label="Compliance score 74 out of 100">
+        <span class="posture-score">74</span>
+        <span class="posture-max">/ 100</span>
+      </div>
+      <div class="posture-body">
+        <div class="posture-title">Partial Compliance — Remediation In Progress</div>
+        <p class="posture-desc">74 of 100 assessed requirements are fully met. 14 requirements are partially met and 12 have open gaps requiring remediation. No requirements related to patient harm or immediate regulatory penalty risk are currently unaddressed. The primary open gaps are in the areas of data retention, model explainability documentation, and business associate agreement coverage for two sub-processors.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Body ── -->
+  <div class="doc-wrap">
+
+    <!-- Requirements Checklist -->
+    <section class="cb-section" id="checklist">
+      <span class="section-eyebrow">Requirements Checklist</span>
+      <h2>Regulatory Requirements Status</h2>
+      <p>The following checklist covers the highest-priority requirements from each applicable framework. A full requirement listing is available in the supplemental workbook. Status is assessed as of the report date.</p>
+
+      <!-- HIPAA Security -->
+      <div class="req-reg-group">
+        <div class="req-reg-header">
+          <span class="req-reg-name">HIPAA Security Rule</span>
+          <span class="req-reg-full">45 CFR Part 164, Subpart C</span>
+        </div>
+        <ul class="req-list">
+          <li class="req-row">
+            <span class="req-text">Risk analysis and risk management program maintained and documented</span>
+            <span class="req-ref">164.308(a)(1)</span>
+            <span class="req-status"><span class="status-pill pill-compliant">Compliant</span></span>
+          </li>
+          <li class="req-row">
+            <span class="req-text">Automatic logoff implemented for workstations accessing ePHI</span>
+            <span class="req-ref">164.312(a)(2)(iii)</span>
+            <span class="req-status"><span class="status-pill pill-compliant">Compliant</span></span>
+          </li>
+          <li class="req-row">
+            <span class="req-text">Encryption at rest for all ePHI data stores</span>
+            <span class="req-ref">164.312(a)(2)(iv)</span>
+            <span class="req-status"><span class="status-pill pill-partial">Partial</span></span>
+          </li>
+          <li class="req-row">
+            <span class="req-text">Audit controls — hardware, software, and procedural mechanisms</span>
+            <span class="req-ref">164.312(b)</span>
+            <span class="req-status"><span class="status-pill pill-compliant">Compliant</span></span>
+          </li>
+          <li class="req-row">
+            <span class="req-text">Business Associate Agreements executed with all ePHI sub-processors</span>
+            <span class="req-ref">164.314(a)(1)</span>
+            <span class="req-status"><span class="status-pill pill-gap">Gap</span></span>
+          </li>
+          <li class="req-row">
+            <span class="req-text">Contingency plan tested annually (backup, DR, emergency mode)</span>
+            <span class="req-ref">164.308(a)(7)</span>
+            <span class="req-status"><span class="status-pill pill-compliant">Compliant</span></span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- HIPAA Privacy -->
+      <div class="req-reg-group">
+        <div class="req-reg-header">
+          <span class="req-reg-name">HIPAA Privacy Rule</span>
+          <span class="req-reg-full">45 CFR Part 164, Subpart E</span>
+        </div>
+        <ul class="req-list">
+          <li class="req-row">
+            <span class="req-text">Minimum necessary standard applied to AI model inputs</span>
+            <span class="req-ref">164.502(b)</span>
+            <span class="req-status"><span class="status-pill pill-partial">Partial</span></span>
+          </li>
+          <li class="req-row">
+            <span class="req-text">Notice of Privacy Practices updated to reflect AI processing</span>
+            <span class="req-ref">164.520(a)</span>
+            <span class="req-status"><span class="status-pill pill-gap">Gap</span></span>
+          </li>
+          <li class="req-row">
+            <span class="req-text">Member right of access to PHI upheld and process documented</span>
+            <span class="req-ref">164.524</span>
+            <span class="req-status"><span class="status-pill pill-compliant">Compliant</span></span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- SOX ITGC -->
+      <div class="req-reg-group">
+        <div class="req-reg-header">
+          <span class="req-reg-name">SOX ITGC</span>
+          <span class="req-reg-full">Sarbanes-Oxley Act — IT General Controls</span>
+        </div>
+        <ul class="req-list">
+          <li class="req-row">
+            <span class="req-text">Change management process documented and enforced for AI model updates</span>
+            <span class="req-ref">ITGC-CM</span>
+            <span class="req-status"><span class="status-pill pill-partial">Partial</span></span>
+          </li>
+          <li class="req-row">
+            <span class="req-text">Access control reviews completed quarterly for financial system interfaces</span>
+            <span class="req-ref">ITGC-AC</span>
+            <span class="req-status"><span class="status-pill pill-compliant">Compliant</span></span>
+          </li>
+          <li class="req-row">
+            <span class="req-text">AI model decision logging retained for minimum 7 years for financial records</span>
+            <span class="req-ref">ITGC-DR</span>
+            <span class="req-status"><span class="status-pill pill-gap">Gap</span></span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Gap Analysis -->
+    <section class="cb-section" id="gaps">
+      <span class="section-eyebrow">Gap Analysis</span>
+      <h2>Open Gaps by Priority</h2>
+      <p>The following gaps require remediation actions. Priority is based on regulatory penalty risk, proximity to audit cycle, and complexity of remediation.</p>
+
+      <div class="gap-table-wrap">
+        <table>
+          <caption>Table 1. Open compliance gaps with priority and remediation estimate</caption>
+          <thead>
+            <tr>
+              <th scope="col">Gap ID</th>
+              <th scope="col">Regulation</th>
+              <th scope="col">Description</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Effort</th>
+              <th scope="col">Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GAP-001</td>
+              <td>HIPAA Security</td>
+              <td>Two sub-processors lack signed BAAs (AI inference API, cloud logging service)</td>
+              <td><span class="status-pill pill-gap">High</span></td>
+              <td>Low — legal drafting</td>
+              <td>Legal / Vendor Mgmt</td>
+            </tr>
+            <tr>
+              <td>GAP-002</td>
+              <td>HIPAA Privacy</td>
+              <td>Notice of Privacy Practices does not disclose AI processing of member PHI</td>
+              <td><span class="status-pill pill-gap">High</span></td>
+              <td>Low — document update</td>
+              <td>Compliance Officer</td>
+            </tr>
+            <tr>
+              <td>GAP-003</td>
+              <td>SOX ITGC</td>
+              <td>AI model decision logs not retained beyond 90 days; SOX requires 7 years</td>
+              <td><span class="status-pill pill-gap">High</span></td>
+              <td>Medium — log archival pipeline</td>
+              <td>Engineering / IT Ops</td>
+            </tr>
+            <tr>
+              <td>GAP-004</td>
+              <td>HIPAA Security</td>
+              <td>Secondary analytics warehouse not encrypted at rest (affects ~340,000 records)</td>
+              <td><span class="status-pill pill-partial">Medium</span></td>
+              <td>Low — configuration change</td>
+              <td>IT Security</td>
+            </tr>
+            <tr>
+              <td>GAP-005</td>
+              <td>HIPAA Privacy</td>
+              <td>Minimum necessary standard not fully enforced: AI receives full member record, not scoped to PA-relevant fields</td>
+              <td><span class="status-pill pill-partial">Medium</span></td>
+              <td>High — data pipeline redesign</td>
+              <td>Engineering</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Remediation Plan -->
+    <section class="cb-section" id="remediation">
+      <span class="section-eyebrow">Remediation Plan</span>
+      <h2>Remediation Timeline</h2>
+
+      <ul class="remediation-list" aria-label="Remediation timeline">
+        <li class="remediation-item">
+          <div class="remediation-dot now" aria-hidden="true"></div>
+          <span class="remediation-when">Immediate (0–15 days)</span>
+          <div class="remediation-title">Execute BAAs with AI inference API and cloud logging sub-processors (GAP-001)</div>
+          <p class="remediation-desc">Legal to draft and route BAAs to both vendors. Escalate to Vendor Management if either vendor delays. No technical work required.</p>
+          <div class="remediation-owner">Owner: Legal / Vendor Management</div>
+        </li>
+        <li class="remediation-item">
+          <div class="remediation-dot now" aria-hidden="true"></div>
+          <span class="remediation-when">Immediate (0–15 days)</span>
+          <div class="remediation-title">Update Notice of Privacy Practices to disclose AI processing (GAP-002)</div>
+          <p class="remediation-desc">Compliance to draft updated NPP language for legal review. Publish to member-facing portal and update paper notices in care settings within 30 days of approval.</p>
+          <div class="remediation-owner">Owner: Compliance Officer</div>
+        </li>
+        <li class="remediation-item">
+          <div class="remediation-dot short" aria-hidden="true"></div>
+          <span class="remediation-when">Short-Term (30–60 days)</span>
+          <div class="remediation-title">Enable encryption at rest on secondary analytics warehouse (GAP-004)</div>
+          <p class="remediation-desc">Engineering to enable Snowflake Tri-Secret Secure. Validate no performance degradation on reporting workloads. Document configuration change in IT change log.</p>
+          <div class="remediation-owner">Owner: IT Security</div>
+        </li>
+        <li class="remediation-item">
+          <div class="remediation-dot mid" aria-hidden="true"></div>
+          <span class="remediation-when">Medium-Term (60–120 days)</span>
+          <div class="remediation-title">Implement 7-year AI decision log archival pipeline (GAP-003)</div>
+          <p class="remediation-desc">Engineering to build log export to cold storage (Azure Blob Archive tier). Implement lifecycle policy ensuring 7-year retention. Include retrieval test in DR plan.</p>
+          <div class="remediation-owner">Owner: Engineering / IT Ops</div>
+        </li>
+        <li class="remediation-item">
+          <div class="remediation-dot long" aria-hidden="true"></div>
+          <span class="remediation-when">Long-Term (120–180 days)</span>
+          <div class="remediation-title">Implement minimum necessary data scoping for AI inference inputs (GAP-005)</div>
+          <p class="remediation-desc">Engineering to redesign the data pipeline to pass only PA-relevant fields to the AI model, excluding non-essential PHI fields. Requires schema review and model revalidation after input scoping change.</p>
+          <div class="remediation-owner">Owner: Engineering</div>
+        </li>
+      </ul>
+    </section>
+
+  </div><!-- .doc-wrap -->
+
+  <!-- ── Footer ── -->
+  <footer class="cb-footer">
+    <div class="hdr-inner">
+      <span><span class="footer-brand">SponAItech</span> <span class="footer-div">|</span> html-generation skill v1.1</span>
+      <span>Version {{VERSION}} <span class="footer-div">|</span> {{DATE}} <span class="footer-div">|</span> {{CLASSIFICATION}}</span>
+    </div>
+  </footer>
+
+</body>
+</html>

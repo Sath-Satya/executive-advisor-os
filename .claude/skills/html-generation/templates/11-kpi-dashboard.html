@@ -1,0 +1,499 @@
+<!--
+TEMPLATE: kpi-dashboard
+CATEGORY: Dashboard / Analytics
+USE WHEN: You need a grid of headline KPIs with trend indicators and sparkline micro-charts — executive overview, weekly ops review, or product health.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KPI Dashboard &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f7f4ef;
+      --cream2: #edeae3;
+      --navy: #0e1b2e;
+      --navy2: #1a2e47;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --green: #2dd4a0;
+      --amber: #f0a050;
+      --red: #f06070;
+      --purple: #a78bfa;
+      --font: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    header .brand { display: flex; align-items: center; gap: 0.75rem; }
+    header .logo {
+      width: 36px; height: 36px;
+      background: var(--gold);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1rem; color: var(--navy);
+    }
+    header h1 { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.3px; }
+    header .meta { font-size: 0.8rem; color: #94a3b8; font-family: var(--mono); }
+    .period-badge {
+      background: var(--navy2);
+      border: 1px solid #2a3f5a;
+      color: #94a3b8;
+      border-radius: 20px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.78rem;
+      font-family: var(--mono);
+    }
+
+    main { max-width: 1280px; margin: 0 auto; padding: 2rem; }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+    }
+
+    /* KPI grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .kpi-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.35rem 1.5rem 1.1rem;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .kpi-card:hover { box-shadow: 0 4px 18px rgba(14,27,46,0.09); }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .kpi-card.green::before { background: var(--green); }
+    .kpi-card.amber::before { background: var(--amber); }
+    .kpi-card.red::before   { background: var(--red); }
+    .kpi-card.purple::before { background: var(--purple); }
+
+    .kpi-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .kpi-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--navy);
+      letter-spacing: -1px;
+    }
+    .kpi-unit {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin-left: 2px;
+    }
+    .kpi-trend {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      margin-top: 0.55rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+    .kpi-trend .arrow { font-size: 0.85rem; }
+    .kpi-trend.up   { color: #1aa878; }
+    .kpi-trend.down { color: #d0404f; }
+    .kpi-trend.flat { color: var(--muted); }
+    .kpi-trend .vs  { color: var(--muted); font-weight: 400; margin-left: 0.2rem; }
+
+    /* sparkline SVG */
+    .sparkline {
+      margin-top: 0.9rem;
+      overflow: visible;
+    }
+    .sparkline polyline {
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .sparkline .area {
+      fill-opacity: 0.12;
+      stroke: none;
+    }
+    .spark-green polyline { stroke: var(--green); }
+    .spark-green .area   { fill: var(--green); }
+    .spark-amber polyline { stroke: var(--amber); }
+    .spark-amber .area   { fill: var(--amber); }
+    .spark-red polyline   { stroke: var(--red); }
+    .spark-red .area     { fill: var(--red); }
+    .spark-purple polyline { stroke: var(--purple); }
+    .spark-purple .area  { fill: var(--purple); }
+
+    /* secondary metrics table */
+    .metrics-section { margin-bottom: 2.5rem; }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+    .metrics-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+    }
+    .metrics-card h3 {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 1rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-align: left;
+      padding: 0.35rem 0.5rem;
+    }
+    td {
+      font-size: 0.88rem;
+      padding: 0.55rem 0.5rem;
+      border-top: 1px solid var(--cream2);
+      color: var(--ink);
+    }
+    .td-num { font-family: var(--mono); text-align: right; }
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .badge-green  { background: rgba(45,212,160,0.15); color: #0e7a5a; }
+    .badge-amber  { background: rgba(240,160,80,0.15);  color: #a05c10; }
+    .badge-red    { background: rgba(240,96,112,0.15);  color: #b52030; }
+
+    /* goal progress bars */
+    .goal-list { display: flex; flex-direction: column; gap: 0.9rem; }
+    .goal-item {}
+    .goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.3rem;
+    }
+    .goal-name { font-size: 0.85rem; font-weight: 500; color: var(--ink); }
+    .goal-pct  { font-size: 0.8rem; font-family: var(--mono); color: var(--muted); }
+    .bar-track {
+      height: 7px;
+      background: var(--cream2);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    .bar-green  { background: var(--green); }
+    .bar-amber  { background: var(--amber); }
+    .bar-red    { background: var(--red); }
+    .bar-navy   { background: var(--navy); }
+
+    footer {
+      background: var(--navy);
+      color: #64748b;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-family: var(--mono);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    footer span + span::before { content: ' &#183; '; }
+
+    @media (max-width: 600px) {
+      main { padding: 1rem; }
+      .kpi-value { font-size: 1.8rem; }
+    }
+    @media print {
+      body { background: #fff; }
+      header { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .kpi-card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo" aria-hidden="true">NC</div>
+    <div>
+      <h1>Northwind Capital &mdash; KPI Dashboard</h1>
+      <div class="meta">Q2 2026 &bull; Executive Overview</div>
+    </div>
+  </div>
+  <div class="period-badge">Apr 2026</div>
+</header>
+
+<main>
+
+  <section aria-labelledby="headline-kpis">
+    <p class="section-label" id="headline-kpis">Headline KPIs</p>
+    <div class="kpi-grid">
+
+      <article class="kpi-card green" aria-label="Annual Recurring Revenue">
+        <div class="kpi-label">ARR</div>
+        <div class="kpi-value">$24.7<span class="kpi-unit">M</span></div>
+        <div class="kpi-trend up">
+          <span class="arrow">&#9650;</span> 18.4%
+          <span class="vs">vs Q2 2025</span>
+        </div>
+        <svg class="sparkline spark-green" width="100%" height="36" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true">
+          <polygon class="area" points="0,36 0,28 15,24 30,26 45,20 60,18 75,14 90,10 105,8 120,6 120,36"/>
+          <polyline points="0,28 15,24 30,26 45,20 60,18 75,14 90,10 105,8 120,6"/>
+        </svg>
+      </article>
+
+      <article class="kpi-card green" aria-label="Monthly Recurring Revenue">
+        <div class="kpi-label">MRR</div>
+        <div class="kpi-value">$2.06<span class="kpi-unit">M</span></div>
+        <div class="kpi-trend up">
+          <span class="arrow">&#9650;</span> 6.2%
+          <span class="vs">vs last month</span>
+        </div>
+        <svg class="sparkline spark-green" width="100%" height="36" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true">
+          <polygon class="area" points="0,36 0,30 15,28 30,27 45,25 60,24 75,22 90,20 105,17 120,15 120,36"/>
+          <polyline points="0,30 15,28 30,27 45,25 60,24 75,22 90,20 105,17 120,15"/>
+        </svg>
+      </article>
+
+      <article class="kpi-card amber" aria-label="Customer Acquisition Cost">
+        <div class="kpi-label">CAC</div>
+        <div class="kpi-value">$3,840</div>
+        <div class="kpi-trend down">
+          <span class="arrow">&#9660;</span> 4.1%
+          <span class="vs">vs last quarter</span>
+        </div>
+        <svg class="sparkline spark-amber" width="100%" height="36" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true">
+          <polygon class="area" points="0,36 0,12 15,15 30,13 45,16 60,14 75,18 90,16 105,19 120,22 120,36"/>
+          <polyline points="0,12 15,15 30,13 45,16 60,14 75,18 90,16 105,19 120,22"/>
+        </svg>
+      </article>
+
+      <article class="kpi-card green" aria-label="Net Revenue Retention">
+        <div class="kpi-label">NRR</div>
+        <div class="kpi-value">118<span class="kpi-unit">%</span></div>
+        <div class="kpi-trend up">
+          <span class="arrow">&#9650;</span> 3pp
+          <span class="vs">vs Q1 2026</span>
+        </div>
+        <svg class="sparkline spark-green" width="100%" height="36" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true">
+          <polygon class="area" points="0,36 0,22 15,21 30,20 45,19 60,18 75,17 90,15 105,13 120,11 120,36"/>
+          <polyline points="0,22 15,21 30,20 45,19 60,18 75,17 90,15 105,13 120,11"/>
+        </svg>
+      </article>
+
+      <article class="kpi-card amber" aria-label="Churn Rate">
+        <div class="kpi-label">Churn Rate</div>
+        <div class="kpi-value">2.1<span class="kpi-unit">%</span></div>
+        <div class="kpi-trend flat">
+          <span class="arrow">&mdash;</span> flat
+          <span class="vs">vs last month</span>
+        </div>
+        <svg class="sparkline spark-amber" width="100%" height="36" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true">
+          <polygon class="area" points="0,36 0,18 15,17 30,19 45,18 60,20 75,18 90,19 105,18 120,19 120,36"/>
+          <polyline points="0,18 15,17 30,19 45,18 60,20 75,18 90,19 105,18 120,19"/>
+        </svg>
+      </article>
+
+      <article class="kpi-card red" aria-label="Burn Rate">
+        <div class="kpi-label">Burn Rate</div>
+        <div class="kpi-value">$420<span class="kpi-unit">K</span></div>
+        <div class="kpi-trend down">
+          <span class="arrow">&#9650;</span> 9.4%
+          <span class="vs">above target</span>
+        </div>
+        <svg class="sparkline spark-red" width="100%" height="36" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true">
+          <polygon class="area" points="0,36 0,24 15,22 30,23 45,20 60,18 75,16 90,13 105,11 120,9 120,36"/>
+          <polyline points="0,24 15,22 30,23 45,20 60,18 75,16 90,13 105,11 120,9"/>
+        </svg>
+      </article>
+
+      <article class="kpi-card green" aria-label="Gross Margin">
+        <div class="kpi-label">Gross Margin</div>
+        <div class="kpi-value">71<span class="kpi-unit">%</span></div>
+        <div class="kpi-trend up">
+          <span class="arrow">&#9650;</span> 2pp
+          <span class="vs">vs Q1 2026</span>
+        </div>
+        <svg class="sparkline spark-green" width="100%" height="36" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true">
+          <polygon class="area" points="0,36 0,26 15,25 30,24 45,23 60,21 75,20 90,18 105,17 120,15 120,36"/>
+          <polyline points="0,26 15,25 30,24 45,23 60,21 75,20 90,18 105,17 120,15"/>
+        </svg>
+      </article>
+
+      <article class="kpi-card purple" aria-label="Active Users">
+        <div class="kpi-label">Active Users</div>
+        <div class="kpi-value">14,830</div>
+        <div class="kpi-trend up">
+          <span class="arrow">&#9650;</span> 11.2%
+          <span class="vs">vs last month</span>
+        </div>
+        <svg class="sparkline spark-purple" width="100%" height="36" viewBox="0 0 120 36" preserveAspectRatio="none" aria-hidden="true">
+          <polygon class="area" points="0,36 0,28 15,27 30,25 45,26 60,23 75,21 90,18 105,14 120,12 120,36"/>
+          <polyline points="0,28 15,27 30,25 45,26 60,23 75,21 90,18 105,14 120,12"/>
+        </svg>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="metrics-section" aria-labelledby="breakdown-section">
+    <p class="section-label" id="breakdown-section">Segment Breakdown &amp; Goals</p>
+    <div class="metrics-grid">
+
+      <div class="metrics-card">
+        <h3>Revenue by Segment</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Segment</th>
+              <th style="text-align:right">MRR</th>
+              <th style="text-align:right">Share</th>
+              <th style="text-align:right">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Enterprise</td>
+              <td class="td-num">$1,240K</td>
+              <td class="td-num">60.2%</td>
+              <td><span class="badge badge-green">&#9650; 8%</span></td>
+            </tr>
+            <tr>
+              <td>Mid-Market</td>
+              <td class="td-num">$510K</td>
+              <td class="td-num">24.8%</td>
+              <td><span class="badge badge-amber">&mdash; 1%</span></td>
+            </tr>
+            <tr>
+              <td>SMB</td>
+              <td class="td-num">$280K</td>
+              <td class="td-num">13.6%</td>
+              <td><span class="badge badge-red">&#9660; 3%</span></td>
+            </tr>
+            <tr>
+              <td>Trial / PLG</td>
+              <td class="td-num">$30K</td>
+              <td class="td-num">1.4%</td>
+              <td><span class="badge badge-green">&#9650; 22%</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="metrics-card">
+        <h3>Q2 Goals Progress</h3>
+        <div class="goal-list">
+          <div class="goal-item">
+            <div class="goal-header">
+              <span class="goal-name">ARR Target $26M</span>
+              <span class="goal-pct">95%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bar-green" style="width:95%"></div></div>
+          </div>
+          <div class="goal-item">
+            <div class="goal-header">
+              <span class="goal-name">New Logos (40)</span>
+              <span class="goal-pct">72%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bar-amber" style="width:72%"></div></div>
+          </div>
+          <div class="goal-item">
+            <div class="goal-header">
+              <span class="goal-name">Churn &lt; 1.8%</span>
+              <span class="goal-pct">48%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bar-red" style="width:48%"></div></div>
+          </div>
+          <div class="goal-item">
+            <div class="goal-header">
+              <span class="goal-name">Gross Margin 73%</span>
+              <span class="goal-pct">97%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bar-navy" style="width:97%"></div></div>
+          </div>
+          <div class="goal-item">
+            <div class="goal-header">
+              <span class="goal-name">NPS &ge; 52</span>
+              <span class="goal-pct">84%</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bar-green" style="width:84%"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Northwind Capital &mdash; KPI Dashboard</span>
+  <span>v{{VERSION}}</span>
+  <span>Updated {{UPDATED}}</span>
+  <span>Source: Financial Data Warehouse</span>
+</footer>
+
+</body>
+</html>

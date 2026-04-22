@@ -1,0 +1,607 @@
+<!--
+TEMPLATE: Account Plan
+CATEGORY: Sales
+USE WHEN: Building or presenting a strategic account plan for a named enterprise customer, covering stakeholder mapping, whitespace analysis, revenue goals, and key initiatives.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.2
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Plan &mdash; Meridian Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --navy: #0e1b2e;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --white: #ffffff;
+      --green: #2dd4a0;
+      --amber: #f0a050;
+      --red: #f06070;
+      --purple: #a78bfa;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: #e8e4dc;
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .page {
+      background: var(--white);
+      width: 860px;
+      margin: 0 auto;
+      box-shadow: 0 4px 32px rgba(14,27,46,0.12);
+    }
+    .cover {
+      background: var(--navy);
+      padding: 52px 60px 44px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::after {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      border: 36px solid rgba(184,150,90,0.12);
+    }
+    .cover-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 14px;
+    }
+    .cover-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .cover-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 32px;
+    }
+    .cover-meta {
+      display: flex;
+      gap: 40px;
+    }
+    .cover-meta-item label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      display: block;
+      margin-bottom: 3px;
+    }
+    .cover-meta-item span {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.85);
+    }
+    .body { padding: 40px 60px; }
+    .section { margin-bottom: 36px; }
+    .section-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 6px;
+      margin-bottom: 16px;
+    }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+    .card-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .card-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: -0.3px;
+    }
+    .card-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    /* Stakeholder grid */
+    .stakeholder-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .stakeholder {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      position: relative;
+    }
+    .stakeholder-role {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .stakeholder-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .stakeholder-title {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-top: 6px;
+    }
+    .badge-champion { background: rgba(45,212,160,0.12); color: #1a8a68; }
+    .badge-sponsor { background: rgba(184,150,90,0.14); color: #8a6832; }
+    .badge-neutral { background: rgba(167,139,250,0.12); color: #6b52d4; }
+    .badge-risk { background: rgba(240,96,112,0.12); color: #c03040; }
+    /* Whitespace grid */
+    .ws-table { width: 100%; border-collapse: collapse; }
+    .ws-table th {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .ws-table td {
+      padding: 10px 12px;
+      font-size: 0.78rem;
+      border-bottom: 1px solid #ede9e1;
+      vertical-align: middle;
+    }
+    .ws-table tr:last-child td { border-bottom: none; }
+    .dot {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+    .dot-owned { background: var(--green); }
+    .dot-opportunity { background: var(--amber); }
+    .dot-na { background: #d0d0d0; }
+    /* Initiatives */
+    .initiative {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 14px 0;
+      border-bottom: 1px solid #ede9e1;
+    }
+    .initiative:last-child { border-bottom: none; }
+    .initiative-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .initiative-body h4 {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 3px;
+    }
+    .initiative-body p {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .initiative-meta {
+      margin-left: auto;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .initiative-meta .qtr {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--gold);
+    }
+    .initiative-meta .owner {
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+    /* Revenue plan */
+    .rev-bar-wrap { margin-top: 12px; }
+    .rev-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .rev-label { font-size: 0.75rem; color: var(--ink); min-width: 120px; }
+    .rev-bar-bg {
+      flex: 1;
+      height: 14px;
+      background: #ede9e1;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .rev-bar { height: 100%; border-radius: 4px; }
+    .rev-amt { font-size: 0.75rem; font-weight: 600; color: var(--navy); min-width: 70px; text-align: right; }
+    /* Risk table */
+    .risk-table { width: 100%; border-collapse: collapse; }
+    .risk-table th {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .risk-table td {
+      padding: 10px 12px;
+      font-size: 0.78rem;
+      border-bottom: 1px solid #ede9e1;
+    }
+    .risk-table tr:last-child td { border-bottom: none; }
+    .risk-pill {
+      display: inline-block;
+      font-size: 0.58rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .risk-high { background: rgba(240,96,112,0.12); color: #c03040; }
+    .risk-med { background: rgba(240,160,80,0.14); color: #a06020; }
+    .risk-low { background: rgba(45,212,160,0.12); color: #1a8a68; }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 14px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer span { font-size: 0.65rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="cover-label">Strategic Account Plan &bull; FY 2026</div>
+    <div class="cover-title">Meridian Health</div>
+    <div class="cover-sub">Enterprise Account &mdash; Pacific Northwest Region</div>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><label>ACV (Current)</label><span>$325,000</span></div>
+      <div class="cover-meta-item"><label>ACV Target (FY26)</label><span>$610,000</span></div>
+      <div class="cover-meta-item"><label>Account Owner</label><span>{{OWNER}}</span></div>
+      <div class="cover-meta-item"><label>Plan Date</label><span>{{DATE}}</span></div>
+      <div class="cover-meta-item"><label>Renewal Date</label><span>Jan 15, 2027</span></div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- Customer Overview -->
+    <div class="section">
+      <div class="section-title">Customer Overview</div>
+      <div class="three-col">
+        <div class="card">
+          <div class="card-label">Industry</div>
+          <div class="card-value" style="font-size:1rem;">Healthcare / Payer</div>
+          <div class="card-sub">Regional health plan &mdash; 4 states</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Employees</div>
+          <div class="card-value">4,200</div>
+          <div class="card-sub">HQ: Portland, OR</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Members Managed</div>
+          <div class="card-value">1.1M</div>
+          <div class="card-sub">Medicaid + Commercial</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Health Score</div>
+          <div class="card-value" style="color:var(--green);">87 / 100</div>
+          <div class="card-sub">Strong adoption trend</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Relationship Since</div>
+          <div class="card-value" style="font-size:1rem;">Mar 2023</div>
+          <div class="card-sub">3-year contract vehicle</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Open Support Tickets</div>
+          <div class="card-value" style="color:var(--amber);">3</div>
+          <div class="card-sub">1 P2, 2 P3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stakeholder Map -->
+    <div class="section">
+      <div class="section-title">Stakeholder Map</div>
+      <div class="stakeholder-grid">
+        <div class="stakeholder">
+          <div class="stakeholder-role">Economic Buyer</div>
+          <div class="stakeholder-name">Dr. Susan Park</div>
+          <div class="stakeholder-title">Chief Medical Officer</div>
+          <span class="badge badge-sponsor">Sponsor</span>
+        </div>
+        <div class="stakeholder">
+          <div class="stakeholder-role">Technical Buyer</div>
+          <div class="stakeholder-name">Marcus Webb</div>
+          <div class="stakeholder-title">VP Information Systems</div>
+          <span class="badge badge-champion">Champion</span>
+        </div>
+        <div class="stakeholder">
+          <div class="stakeholder-role">End User</div>
+          <div class="stakeholder-name">Priya Nair</div>
+          <div class="stakeholder-title">Dir. Care Management</div>
+          <span class="badge badge-champion">Champion</span>
+        </div>
+        <div class="stakeholder">
+          <div class="stakeholder-role">Legal / Procurement</div>
+          <div class="stakeholder-name">David Ochoa</div>
+          <div class="stakeholder-title">VP Legal &amp; Compliance</div>
+          <span class="badge badge-neutral">Neutral</span>
+        </div>
+        <div class="stakeholder">
+          <div class="stakeholder-role">Finance</div>
+          <div class="stakeholder-name">Karen Liu</div>
+          <div class="stakeholder-title">CFO</div>
+          <span class="badge badge-neutral">Neutral</span>
+        </div>
+        <div class="stakeholder">
+          <div class="stakeholder-role">Operations</div>
+          <div class="stakeholder-name">Tom Briggs</div>
+          <div class="stakeholder-title">VP Network Ops</div>
+          <span class="badge badge-neutral">Neutral</span>
+        </div>
+        <div class="stakeholder">
+          <div class="stakeholder-role">Data / Analytics</div>
+          <div class="stakeholder-name">Sasha Moreno</div>
+          <div class="stakeholder-title">Chief Data Officer</div>
+          <span class="badge badge-risk">At Risk</span>
+        </div>
+        <div class="stakeholder">
+          <div class="stakeholder-role">Day-to-Day</div>
+          <div class="stakeholder-name">James Tran</div>
+          <div class="stakeholder-title">IT Project Lead</div>
+          <span class="badge badge-champion">Champion</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Whitespace Analysis -->
+    <div class="section">
+      <div class="section-title">Whitespace Analysis &mdash; Product Coverage</div>
+      <table class="ws-table">
+        <thead>
+          <tr>
+            <th>Product / Module</th>
+            <th>Status</th>
+            <th>Licenses</th>
+            <th>Annual Value</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>AI Workflow Automation Core</td>
+            <td><span class="dot dot-owned"></span>Owned</td>
+            <td>500</td>
+            <td>$150,000</td>
+            <td>Renews Jan 2027</td>
+          </tr>
+          <tr>
+            <td>Care Gap Analytics</td>
+            <td><span class="dot dot-owned"></span>Owned</td>
+            <td>200</td>
+            <td>$90,000</td>
+            <td>Expanding to 400 seats</td>
+          </tr>
+          <tr>
+            <td>Provider Network Intelligence</td>
+            <td><span class="dot dot-owned"></span>Owned</td>
+            <td>Flat</td>
+            <td>$85,000</td>
+            <td>Steady state</td>
+          </tr>
+          <tr>
+            <td>Member Engagement Suite</td>
+            <td><span class="dot dot-opportunity"></span>Opportunity</td>
+            <td>&mdash;</td>
+            <td>~$120,000</td>
+            <td>Q2 budget cycle; Priya driving</td>
+          </tr>
+          <tr>
+            <td>Claims AI Copilot</td>
+            <td><span class="dot dot-opportunity"></span>Opportunity</td>
+            <td>&mdash;</td>
+            <td>~$85,000</td>
+            <td>CDO objection; need POC</td>
+          </tr>
+          <tr>
+            <td>Real-Time Risk Scoring API</td>
+            <td><span class="dot dot-opportunity"></span>Opportunity</td>
+            <td>&mdash;</td>
+            <td>~$60,000</td>
+            <td>Evaluating Q3</td>
+          </tr>
+          <tr>
+            <td>HIPAA Data Vault</td>
+            <td><span class="dot dot-na"></span>Not Applicable</td>
+            <td>&mdash;</td>
+            <td>&mdash;</td>
+            <td>Handled internally</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Strategic Initiatives -->
+    <div class="section">
+      <div class="section-title">Strategic Initiatives (FY 2026)</div>
+      <div class="initiative">
+        <div class="initiative-num">1</div>
+        <div class="initiative-body">
+          <h4>Member Engagement Suite Expansion</h4>
+          <p>Priya Nair has budget approval pending Q2 for 1,000 member-facing licenses. Requires HIPAA BAA amendment and security review. Marcus has signed off on architecture.</p>
+        </div>
+        <div class="initiative-meta"><div class="qtr">Q2 2026</div><div class="owner">{{OWNER}}</div></div>
+      </div>
+      <div class="initiative">
+        <div class="initiative-num">2</div>
+        <div class="initiative-body">
+          <h4>Claims AI Copilot POC for CDO</h4>
+          <p>Sasha Moreno needs a 90-day POC with measurable accuracy benchmarks before endorsing. SponAI to run POC at no cost; standard deal if approved. CDO presents to board in July.</p>
+        </div>
+        <div class="initiative-meta"><div class="qtr">Q2&ndash;Q3 2026</div><div class="owner">{{OWNER}}</div></div>
+      </div>
+      <div class="initiative">
+        <div class="initiative-num">3</div>
+        <div class="initiative-body">
+          <h4>Care Gap Analytics Seat Expansion</h4>
+          <p>Increase from 200 to 400 seats as Priya&rsquo;s team onboards Medicaid population health program. Straight upsell; renewal vehicle available.</p>
+        </div>
+        <div class="initiative-meta"><div class="qtr">Q1 2026</div><div class="owner">{{OWNER}}</div></div>
+      </div>
+      <div class="initiative">
+        <div class="initiative-num">4</div>
+        <div class="initiative-body">
+          <h4>Executive Alignment &mdash; CMO + CFO</h4>
+          <p>Schedule QBR with Dr. Park and Karen Liu before June 30 to present ROI data and roadmap. Goal: secure verbal commitment to multi-year renewal at expanded ACV.</p>
+        </div>
+        <div class="initiative-meta"><div class="qtr">Q2 2026</div><div class="owner">{{OWNER}}</div></div>
+      </div>
+    </div>
+
+    <!-- Revenue Plan -->
+    <div class="section">
+      <div class="section-title">Revenue Plan</div>
+      <div class="rev-bar-wrap">
+        <div class="rev-row">
+          <div class="rev-label">Current ARR</div>
+          <div class="rev-bar-bg"><div class="rev-bar" style="width:53%;background:var(--navy);"></div></div>
+          <div class="rev-amt">$325,000</div>
+        </div>
+        <div class="rev-row">
+          <div class="rev-label">Care Gap Expansion</div>
+          <div class="rev-bar-bg"><div class="rev-bar" style="width:15%;background:var(--green);"></div></div>
+          <div class="rev-amt">+$90,000</div>
+        </div>
+        <div class="rev-row">
+          <div class="rev-label">Member Engagement</div>
+          <div class="rev-bar-bg"><div class="rev-bar" style="width:20%;background:var(--amber);"></div></div>
+          <div class="rev-amt">+$120,000</div>
+        </div>
+        <div class="rev-row">
+          <div class="rev-label">Claims AI (POC &rarr; Deal)</div>
+          <div class="rev-bar-bg"><div class="rev-bar" style="width:14%;background:var(--purple);"></div></div>
+          <div class="rev-amt">+$85,000</div>
+        </div>
+        <div class="rev-row" style="border-top:2px solid var(--border);padding-top:10px;margin-top:4px;">
+          <div class="rev-label" style="font-weight:700;">FY26 Target ARR</div>
+          <div class="rev-bar-bg"><div class="rev-bar" style="width:100%;background:var(--navy);"></div></div>
+          <div class="rev-amt" style="font-weight:700;color:var(--navy);">$620,000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Risks -->
+    <div class="section">
+      <div class="section-title">Risks &amp; Mitigations</div>
+      <table class="risk-table">
+        <thead>
+          <tr>
+            <th>Risk</th>
+            <th>Level</th>
+            <th>Owner</th>
+            <th>Mitigation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>CDO blocks Claims AI rollout</td>
+            <td><span class="risk-pill risk-high">High</span></td>
+            <td>{{OWNER}}</td>
+            <td>Run 90-day POC with defined success metrics; engage CMO as sponsor</td>
+          </tr>
+          <tr>
+            <td>Budget freeze in Q3</td>
+            <td><span class="risk-pill risk-med">Med</span></td>
+            <td>{{OWNER}}</td>
+            <td>Accelerate Q2 closes; lock renewal before freeze window</td>
+          </tr>
+          <tr>
+            <td>Competitor evaluation (incumbent EHR vendor)</td>
+            <td><span class="risk-pill risk-med">Med</span></td>
+            <td>{{OWNER}}</td>
+            <td>Surface integration roadmap; competitive battlecard with Marcus</td>
+          </tr>
+          <tr>
+            <td>Open P2 support ticket</td>
+            <td><span class="risk-pill risk-low">Low</span></td>
+            <td>CS Team</td>
+            <td>Escalation target: resolved within 5 business days</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /body -->
+
+  <footer>
+    <span>Meridian Health &bull; Account Plan &bull; SponAI Consulting</span>
+    <span>v{{VERSION}} &bull; {{DATE}} &bull; {{OWNER}}</span>
+  </footer>
+</div>
+</body>
+</html>

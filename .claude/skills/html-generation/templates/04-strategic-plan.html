@@ -1,0 +1,553 @@
+<!--
+TEMPLATE: strategic-plan
+CATEGORY: Executive / Board
+USE WHEN: Presenting a multi-year strategic plan with vision, pillars, strategic initiatives, milestones, and KPIs to senior leadership or the board.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strategic Plan — {{TITLE}}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f7f4ef;
+      --cream-dark: #ede9e0;
+      --navy: #0e1b2e;
+      --navy-mid: #1a2f4a;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    /* ── Cover band ── */
+    .cover {
+      background: var(--navy);
+      color: #fff;
+      padding: 4rem 3rem 3.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 260px; height: 100%;
+      background: linear-gradient(135deg, transparent 60%, rgba(184,150,90,0.12) 100%);
+      pointer-events: none;
+    }
+    .cover-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold2);
+      margin-bottom: 1.2rem;
+    }
+    .cover h1 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      max-width: 600px;
+    }
+    .cover .cover-sub {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.6);
+      max-width: 480px;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .cover-meta {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .cover-meta-item .meta-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 0.2rem;
+    }
+    .cover-meta-item .meta-value {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* ── Page layout ── */
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem 5rem;
+    }
+
+    /* ── Section headers ── */
+    .section-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-size: 1.55rem;
+      font-weight: 600;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--gold);
+    }
+    .content-section { margin-bottom: 3.5rem; }
+
+    /* ── Vision statement ── */
+    .vision-block {
+      background: var(--navy);
+      padding: 2.2rem 2.5rem;
+      border-left: 4px solid var(--gold);
+      margin-bottom: 2rem;
+    }
+    .vision-block p {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.9);
+      font-style: italic;
+      line-height: 1.65;
+    }
+
+    /* ── Strategic pillars ── */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+    .pillar-card {
+      background: var(--cream-dark);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      padding: 1.4rem 1.3rem;
+    }
+    .pillar-number {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--gold);
+      margin-bottom: 0.6rem;
+    }
+    .pillar-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    .pillar-desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── Initiatives table ── */
+    .initiatives-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .initiatives-table thead th {
+      background: var(--navy);
+      color: rgba(255,255,255,0.8);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 400;
+      padding: 0.7rem 1rem;
+      text-align: left;
+      border-bottom: 2px solid var(--gold);
+    }
+    .initiatives-table tbody tr {
+      border-bottom: 1px solid var(--border);
+    }
+    .initiatives-table tbody tr:hover {
+      background: var(--cream-dark);
+    }
+    .initiatives-table tbody td {
+      padding: 0.85rem 1rem;
+      color: var(--ink);
+      vertical-align: top;
+    }
+    .initiatives-table tbody td:first-child {
+      font-weight: 500;
+      color: var(--navy);
+    }
+    .priority-badge {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 3px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .priority-p1 { background: rgba(14,27,46,0.1); color: var(--navy); }
+    .priority-p2 { background: rgba(184,150,90,0.15); color: #7a6030; }
+    .priority-p3 { background: rgba(107,101,96,0.12); color: var(--muted); }
+
+    /* ── Milestones timeline ── */
+    .milestones {
+      list-style: none;
+      padding: 0;
+      position: relative;
+    }
+    .milestones::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 12px;
+      bottom: 12px;
+      width: 1px;
+      background: var(--border);
+    }
+    .milestone-item {
+      display: flex;
+      gap: 1.5rem;
+      padding: 0 0 1.8rem 0;
+      position: relative;
+    }
+    .milestone-item:last-child { padding-bottom: 0; }
+    .milestone-dot {
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 2px solid var(--gold);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .milestone-dot.done {
+      background: var(--navy);
+      border-color: var(--navy);
+    }
+    .milestone-content { padding-top: 0.1rem; }
+    .milestone-period {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.67rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.3rem;
+    }
+    .milestone-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 0.2rem;
+    }
+    .milestone-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── KPI grid ── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .kpi-cell {
+      background: var(--cream);
+      padding: 1.2rem 1.4rem;
+    }
+    .kpi-cell:hover { background: var(--cream-dark); }
+    .kpi-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 0.6rem;
+    }
+    .kpi-values {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .kpi-value-block .kv-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.15rem;
+    }
+    .kpi-value-block .kv-number {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .kv-number.target { color: var(--navy); }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 4rem;
+      padding-top: 1.2rem;
+      border-top: 2px solid var(--gold);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+    footer strong { color: var(--navy); }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; }
+      .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .vision-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .initiatives-table thead th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { padding: 1.5cm 2cm; }
+      @page { size: A4 portrait; margin: 1.5cm 2cm; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cover">
+    <p class="cover-eyebrow">Strategic Plan &mdash; FY 2027&ndash;2029</p>
+    <h1>Meridian Health: Building for the Next Decade</h1>
+    <p class="cover-sub">A three-year plan to become the region's most trusted integrated health network, powered by digital excellence and patient-first care delivery.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <p class="meta-label">Approved by</p>
+        <p class="meta-value">Board of Directors</p>
+      </div>
+      <div class="cover-meta-item">
+        <p class="meta-label">Effective</p>
+        <p class="meta-value">1 January 2027</p>
+      </div>
+      <div class="cover-meta-item">
+        <p class="meta-label">Version</p>
+        <p class="meta-value">{{VERSION}}</p>
+      </div>
+      <div class="cover-meta-item">
+        <p class="meta-label">Date</p>
+        <p class="meta-value">{{DATE}}</p>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="page">
+
+      <section class="content-section" aria-labelledby="vision-heading">
+        <p class="section-tag">01 &mdash; Vision</p>
+        <h2 class="section-title" id="vision-heading">Where We Are Going</h2>
+        <div class="vision-block">
+          <p>"By 2029, Meridian Health will be the first choice for 500,000 patients across our four-state region — not because we are the largest network, but because we are the one they trust most to know them, reach them, and care for them."</p>
+        </div>
+        <p style="font-size:0.95rem; color:var(--muted); line-height:1.7;">This vision is grounded in three realities: patients are demanding more from their health providers, technology has finally made personalised care at scale possible, and Meridian has the clinical foundation and community relationships to win if we act with speed and discipline.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="pillars-heading">
+        <p class="section-tag">02 &mdash; Strategic Pillars</p>
+        <h2 class="section-title" id="pillars-heading">Three Pillars of Growth</h2>
+        <div class="pillars-grid">
+          <div class="pillar-card">
+            <p class="pillar-number">Pillar 01</p>
+            <h3 class="pillar-title">Digital Patient Experience</h3>
+            <p class="pillar-desc">Build a seamless digital touchpoint for every stage of the patient journey — from first search to post-discharge follow-up.</p>
+          </div>
+          <div class="pillar-card">
+            <p class="pillar-number">Pillar 02</p>
+            <h3 class="pillar-title">Operational Excellence</h3>
+            <p class="pillar-desc">Reduce administrative burden by 40% through intelligent automation, freeing clinical staff for higher-value patient care.</p>
+          </div>
+          <div class="pillar-card">
+            <p class="pillar-number">Pillar 03</p>
+            <h3 class="pillar-title">Network Expansion</h3>
+            <p class="pillar-desc">Enter two new markets by end of 2028 via targeted acquisitions or de novo clinic openings in high-growth suburban corridors.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="initiatives-heading">
+        <p class="section-tag">03 &mdash; Strategic Initiatives</p>
+        <h2 class="section-title" id="initiatives-heading">Priority Initiatives</h2>
+        <table class="initiatives-table">
+          <thead>
+            <tr>
+              <th>Initiative</th>
+              <th>Pillar</th>
+              <th>Owner</th>
+              <th>Target</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Patient Portal v2.0</td>
+              <td>Digital Experience</td>
+              <td>CTO</td>
+              <td>Q2 2027</td>
+              <td><span class="priority-badge priority-p1">P1</span></td>
+            </tr>
+            <tr>
+              <td>AI Scheduling Assistant</td>
+              <td>Operational Excellence</td>
+              <td>COO</td>
+              <td>Q3 2027</td>
+              <td><span class="priority-badge priority-p1">P1</span></td>
+            </tr>
+            <tr>
+              <td>FHIR R4 API Compliance</td>
+              <td>Digital Experience</td>
+              <td>CTO</td>
+              <td>Q4 2026</td>
+              <td><span class="priority-badge priority-p1">P1</span></td>
+            </tr>
+            <tr>
+              <td>Revenue Cycle Automation</td>
+              <td>Operational Excellence</td>
+              <td>CFO</td>
+              <td>Q1 2028</td>
+              <td><span class="priority-badge priority-p2">P2</span></td>
+            </tr>
+            <tr>
+              <td>Phoenix Market Entry</td>
+              <td>Network Expansion</td>
+              <td>CEO</td>
+              <td>Q2 2028</td>
+              <td><span class="priority-badge priority-p2">P2</span></td>
+            </tr>
+            <tr>
+              <td>Clinical Decision Support</td>
+              <td>Digital Experience</td>
+              <td>CMO</td>
+              <td>Q4 2028</td>
+              <td><span class="priority-badge priority-p3">P3</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="content-section" aria-labelledby="milestones-heading">
+        <p class="section-tag">04 &mdash; Milestones</p>
+        <h2 class="section-title" id="milestones-heading">Three-Year Roadmap</h2>
+        <ul class="milestones">
+          <li class="milestone-item">
+            <span class="milestone-dot done" aria-label="Complete"></span>
+            <div class="milestone-content">
+              <p class="milestone-period">Q4 2026 &mdash; Foundation</p>
+              <p class="milestone-title">Platform Architecture Approved &amp; FHIR Compliance Delivered</p>
+              <p class="milestone-desc">Board approves $8.4M platform investment. FHIR R4 adapter deployed. Engineering team upskilled.</p>
+            </div>
+          </li>
+          <li class="milestone-item">
+            <span class="milestone-dot" aria-label="Planned"></span>
+            <div class="milestone-content">
+              <p class="milestone-period">H1 2027 &mdash; Build</p>
+              <p class="milestone-title">Patient Portal v2.0 Launch &amp; AI Scheduling Pilot</p>
+              <p class="milestone-desc">New patient portal live in all primary markets. AI scheduling assistant pilot with 3,000 patients. NPS baseline established.</p>
+            </div>
+          </li>
+          <li class="milestone-item">
+            <span class="milestone-dot" aria-label="Planned"></span>
+            <div class="milestone-content">
+              <p class="milestone-period">H2 2027 &mdash; Scale</p>
+              <p class="milestone-title">Full AI Rollout &amp; Revenue Cycle Phase 1</p>
+              <p class="milestone-desc">AI scheduling at 100% network coverage. Revenue cycle automation Phase 1 delivers 18% reduction in claim denials.</p>
+            </div>
+          </li>
+          <li class="milestone-item">
+            <span class="milestone-dot" aria-label="Planned"></span>
+            <div class="milestone-content">
+              <p class="milestone-period">2028 &mdash; Expand</p>
+              <p class="milestone-title">Phoenix Market Entry &amp; 400K Patient Milestone</p>
+              <p class="milestone-desc">First Phoenix clinic operational by June 2028. Active patient count exceeds 400,000. Preparing for 2029 second market entry.</p>
+            </div>
+          </li>
+          <li class="milestone-item">
+            <span class="milestone-dot" aria-label="Planned"></span>
+            <div class="milestone-content">
+              <p class="milestone-period">2029 &mdash; Vision Realised</p>
+              <p class="milestone-title">500K Patients, Second Market, Clinical Decision Support Live</p>
+              <p class="milestone-desc">Vision target achieved. Meridian is the highest-NPS health network in four-state region.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section class="content-section" aria-labelledby="kpi-heading">
+        <p class="section-tag">05 &mdash; Success Metrics</p>
+        <h2 class="section-title" id="kpi-heading">Key Performance Indicators</h2>
+        <div class="kpi-grid">
+          <div class="kpi-cell">
+            <p class="kpi-name">Active Patient Count</p>
+            <div class="kpi-values">
+              <div class="kpi-value-block"><p class="kv-label">Baseline</p><p class="kv-number">285,000</p></div>
+              <div class="kpi-value-block"><p class="kv-label">2027 Target</p><p class="kv-number target">340,000</p></div>
+              <div class="kpi-value-block"><p class="kv-label">2029 Target</p><p class="kv-number target">500,000</p></div>
+            </div>
+          </div>
+          <div class="kpi-cell">
+            <p class="kpi-name">Net Promoter Score</p>
+            <div class="kpi-values">
+              <div class="kpi-value-block"><p class="kv-label">Baseline</p><p class="kv-number">31</p></div>
+              <div class="kpi-value-block"><p class="kv-label">2027 Target</p><p class="kv-number target">52</p></div>
+              <div class="kpi-value-block"><p class="kv-label">2029 Target</p><p class="kv-number target">68</p></div>
+            </div>
+          </div>
+          <div class="kpi-cell">
+            <p class="kpi-name">Digital Appointment Share</p>
+            <div class="kpi-values">
+              <div class="kpi-value-block"><p class="kv-label">Baseline</p><p class="kv-number">11%</p></div>
+              <div class="kpi-value-block"><p class="kv-label">2027 Target</p><p class="kv-number target">45%</p></div>
+              <div class="kpi-value-block"><p class="kv-label">2029 Target</p><p class="kv-number target">75%</p></div>
+            </div>
+          </div>
+          <div class="kpi-cell">
+            <p class="kpi-name">Operating Cost per Encounter</p>
+            <div class="kpi-values">
+              <div class="kpi-value-block"><p class="kv-label">Baseline</p><p class="kv-number">$148</p></div>
+              <div class="kpi-value-block"><p class="kv-label">2027 Target</p><p class="kv-number target">$134</p></div>
+              <div class="kpi-value-block"><p class="kv-label">2029 Target</p><p class="kv-number target">$112</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div>
+      <strong>Meridian Health</strong> &mdash; Strategic Plan FY 2027&ndash;2029 &nbsp;|&nbsp; Board Approved
+    </div>
+    <div>Audience: Executive Leadership &nbsp;|&nbsp; {{DATE}} &nbsp;|&nbsp; {{VERSION}}</div>
+  </footer>
+
+</body>
+</html>

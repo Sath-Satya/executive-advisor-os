@@ -1,0 +1,503 @@
+<!--
+TEMPLATE: system-health
+CATEGORY: Dashboard / Analytics
+USE WHEN: You need a system observability dashboard with services grid showing latency, error rate, and throughput cards — for engineering teams monitoring production infrastructure.
+PALETTE: Dark developer
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Health &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --surface2: #18222e;
+      --surface3: #1e2d40;
+      --border: #1e2d40;
+      --primary: #3b9eff;
+      --secondary: #a78bfa;
+      --accent: #2dd4a0;
+      --warning: #f0a050;
+      --error: #f06070;
+      --text: #d0d8e4;
+      --muted: #556677;
+      --font: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    header h1 { font-size: 1rem; font-weight: 600; color: #fff; }
+    .hdr-right { display: flex; align-items: center; gap: 1.25rem; }
+    .refresh-badge {
+      font-size: 0.72rem; font-family: var(--mono); color: var(--muted);
+      padding: 0.25rem 0.65rem; border: 1px solid var(--border); border-radius: 4px;
+    }
+    .env-badge {
+      font-size: 0.72rem; font-weight: 600; font-family: var(--mono);
+      padding: 0.25rem 0.65rem; border-radius: 4px;
+      background: rgba(45,212,160,0.15); color: var(--accent);
+      border: 1px solid rgba(45,212,160,0.3);
+    }
+
+    main { max-width: 1400px; margin: 0 auto; padding: 1.25rem 1.75rem 2rem; }
+
+    .section-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem;
+    }
+
+    /* overview stats row */
+    .overview-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.75rem;
+    }
+    .ov-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.85rem 1rem; text-align: center;
+    }
+    .ov-card.good  { border-top: 2px solid var(--accent); }
+    .ov-card.warn  { border-top: 2px solid var(--warning); }
+    .ov-card.bad   { border-top: 2px solid var(--error); }
+    .ov-card.info  { border-top: 2px solid var(--primary); }
+    .ov-val { font-size: 1.5rem; font-weight: 700; font-family: var(--mono); line-height: 1; margin-bottom: 0.2rem; }
+    .ov-lbl { font-size: 0.7rem; color: var(--muted); }
+
+    /* services grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .svc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .svc-card.healthy  { border-left: 3px solid var(--accent); }
+    .svc-card.degraded { border-left: 3px solid var(--warning); }
+    .svc-card.critical { border-left: 3px solid var(--error); }
+
+    .svc-header {
+      padding: 0.75rem 1rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .svc-name { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .svc-version { font-size: 0.7rem; font-family: var(--mono); color: var(--muted); }
+    .svc-status-badge {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-size: 0.7rem; font-weight: 600;
+      padding: 0.15rem 0.5rem; border-radius: 4px;
+    }
+    .sb-healthy  { background: rgba(45,212,160,0.15); color: var(--accent); }
+    .sb-degraded { background: rgba(240,160,80,0.15); color: var(--warning); }
+    .sb-critical { background: rgba(240,96,112,0.15); color: var(--error); }
+
+    .svc-metrics {
+      padding: 0.85rem 1rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.6rem;
+    }
+    .metric-cell { text-align: center; }
+    .mc-val { font-size: 1.1rem; font-weight: 700; font-family: var(--mono); line-height: 1; }
+    .mc-lbl { font-size: 0.66rem; color: var(--muted); margin-top: 0.15rem; }
+    .mc-chg { font-size: 0.66rem; font-family: var(--mono); margin-top: 0.1rem; }
+
+    .val-good { color: var(--accent); }
+    .val-warn { color: var(--warning); }
+    .val-bad  { color: var(--error); }
+    .val-neu  { color: var(--text); }
+
+    .svc-sparkline {
+      padding: 0 1rem 0.85rem;
+    }
+    .svc-sparkline svg { width: 100%; overflow: visible; display: block; }
+
+    /* alerts list */
+    .alert-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.75rem; }
+    .alert-row {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 7px;
+      padding: 0.75rem 1rem;
+      display: flex; align-items: center; gap: 0.85rem;
+    }
+    .alert-row.critical-alert { border-left: 3px solid var(--error); }
+    .alert-row.warn-alert     { border-left: 3px solid var(--warning); }
+    .alert-row.info-alert     { border-left: 3px solid var(--primary); }
+    .alert-icon { font-size: 0.9rem; flex-shrink: 0; }
+    .alert-service { font-size: 0.78rem; font-weight: 600; color: var(--text); flex-shrink: 0; min-width: 140px; }
+    .alert-msg  { font-size: 0.82rem; color: #8899ac; flex: 1; }
+    .alert-time { font-size: 0.7rem; font-family: var(--mono); color: var(--muted); white-space: nowrap; }
+
+    /* SLO table */
+    .slo-table { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em; color: var(--muted); text-align: left;
+      padding: 0.5rem 0.85rem; border-bottom: 1px solid var(--border);
+      background: var(--surface2);
+    }
+    th:not(:first-child) { text-align: right; }
+    td {
+      font-size: 0.82rem; padding: 0.55rem 0.85rem;
+      border-top: 1px solid rgba(30,45,64,0.8);
+      vertical-align: middle;
+    }
+    td:not(:first-child) { text-align: right; font-family: var(--mono); }
+    tr:hover td { background: rgba(59,158,255,0.03); }
+    .slo-name { font-weight: 500; color: var(--text); }
+    .slo-bar-cell { width: 120px; }
+    .slo-bar-track { height: 5px; background: var(--surface3); border-radius: 3px; overflow: hidden; }
+    .slo-bar-fill  { height: 100%; border-radius: 3px; }
+
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      color: var(--muted); padding: 0.85rem 1.75rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.72rem; font-family: var(--mono); gap: 1rem; flex-wrap: wrap;
+    }
+
+    @media (max-width: 700px) {
+      main { padding: 1rem; }
+      .services-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Northwind Capital &mdash; System Health</h1>
+  <div class="hdr-right">
+    <span class="env-badge">Production</span>
+    <span class="refresh-badge">&#8635; 30s refresh &bull; 14:32 ET</span>
+  </div>
+</header>
+
+<main>
+
+  <p class="section-label">Platform Overview</p>
+  <div class="overview-row" role="region" aria-label="Platform overview metrics">
+    <div class="ov-card good">
+      <div class="ov-val" style="color:var(--accent)">18/18</div>
+      <div class="ov-lbl">Services healthy</div>
+    </div>
+    <div class="ov-card good">
+      <div class="ov-val" style="color:var(--accent)">99.97%</div>
+      <div class="ov-lbl">Platform uptime</div>
+    </div>
+    <div class="ov-card good">
+      <div class="ov-val" style="color:var(--accent)">42ms</div>
+      <div class="ov-lbl">Avg p50 latency</div>
+    </div>
+    <div class="ov-card warn">
+      <div class="ov-val" style="color:var(--warning)">0.12%</div>
+      <div class="ov-lbl">Error rate</div>
+    </div>
+    <div class="ov-card info">
+      <div class="ov-val" style="color:var(--primary)">12.4K</div>
+      <div class="ov-lbl">Req / min</div>
+    </div>
+    <div class="ov-card good">
+      <div class="ov-val" style="color:var(--accent)">2</div>
+      <div class="ov-lbl">Active alerts</div>
+    </div>
+  </div>
+
+  <p class="section-label">Services</p>
+  <div class="services-grid" role="region" aria-label="Service health cards">
+
+    <!-- API Gateway -->
+    <article class="svc-card healthy">
+      <div class="svc-header">
+        <div><div class="svc-name">API Gateway</div><div class="svc-version">v4.2.1 &bull; us-east-1</div></div>
+        <span class="svc-status-badge sb-healthy">&#9679; Healthy</span>
+      </div>
+      <div class="svc-metrics">
+        <div class="metric-cell">
+          <div class="mc-val val-good">38ms</div>
+          <div class="mc-lbl">p50 latency</div>
+          <div class="mc-chg" style="color:var(--accent)">&#9660; -4ms</div>
+        </div>
+        <div class="metric-cell">
+          <div class="mc-val val-warn">0.18%</div>
+          <div class="mc-lbl">Error rate</div>
+          <div class="mc-chg" style="color:var(--warning)">&#9650; +0.03%</div>
+        </div>
+        <div class="metric-cell">
+          <div class="mc-val val-neu">4.2K</div>
+          <div class="mc-lbl">Req/min</div>
+          <div class="mc-chg" style="color:var(--muted)">stable</div>
+        </div>
+      </div>
+      <div class="svc-sparkline" aria-hidden="true">
+        <svg viewBox="0 0 200 30" height="30" preserveAspectRatio="none">
+          <polyline fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" points="0,20 20,18 40,22 60,17 80,15 100,18 120,14 140,16 160,12 180,14 200,11"/>
+        </svg>
+      </div>
+    </article>
+
+    <!-- Auth Service -->
+    <article class="svc-card healthy">
+      <div class="svc-header">
+        <div><div class="svc-name">Auth Service</div><div class="svc-version">v3.1.0 &bull; multi-region</div></div>
+        <span class="svc-status-badge sb-healthy">&#9679; Healthy</span>
+      </div>
+      <div class="svc-metrics">
+        <div class="metric-cell">
+          <div class="mc-val val-good">22ms</div>
+          <div class="mc-lbl">p50 latency</div>
+          <div class="mc-chg" style="color:var(--accent)">&#9660; -2ms</div>
+        </div>
+        <div class="metric-cell">
+          <div class="mc-val val-good">0.02%</div>
+          <div class="mc-lbl">Error rate</div>
+          <div class="mc-chg" style="color:var(--accent)">stable</div>
+        </div>
+        <div class="metric-cell">
+          <div class="mc-val val-neu">1.8K</div>
+          <div class="mc-lbl">Auth/min</div>
+          <div class="mc-chg" style="color:var(--muted)">stable</div>
+        </div>
+      </div>
+      <div class="svc-sparkline" aria-hidden="true">
+        <svg viewBox="0 0 200 30" height="30" preserveAspectRatio="none">
+          <polyline fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" points="0,15 20,14 40,16 60,13 80,15 100,14 120,13 140,15 160,12 180,13 200,12"/>
+        </svg>
+      </div>
+    </article>
+
+    <!-- Data Pipeline -->
+    <article class="svc-card degraded">
+      <div class="svc-header">
+        <div><div class="svc-name">Data Pipeline</div><div class="svc-version">v2.4.3 &bull; Kafka + Flink</div></div>
+        <span class="svc-status-badge sb-degraded">&#9651; Degraded</span>
+      </div>
+      <div class="svc-metrics">
+        <div class="metric-cell">
+          <div class="mc-val val-warn">284ms</div>
+          <div class="mc-lbl">p95 latency</div>
+          <div class="mc-chg" style="color:var(--warning)">&#9650; +120ms</div>
+        </div>
+        <div class="metric-cell">
+          <div class="mc-val val-warn">1.4%</div>
+          <div class="mc-lbl">Error rate</div>
+          <div class="mc-chg" style="color:var(--warning)">&#9650; +0.9%</div>
+        </div>
+        <div class="metric-cell">
+          <div class="mc-val val-warn">880K</div>
+          <div class="mc-lbl">Lag msgs</div>
+          <div class="mc-chg" style="color:var(--warning)">&#9650; rising</div>
+        </div>
+      </div>
+      <div class="svc-sparkline" aria-hidden="true">
+        <svg viewBox="0 0 200 30" height="30" preserveAspectRatio="none">
+          <polyline fill="none" stroke="var(--warning)" stroke-width="1.5" stroke-linecap="round" points="0,24 20,22 40,20 60,18 80,16 100,14 120,10 140,8 160,6 180,7 200,9"/>
+        </svg>
+      </div>
+    </article>
+
+    <!-- Analytics Engine -->
+    <article class="svc-card healthy">
+      <div class="svc-header">
+        <div><div class="svc-name">Analytics Engine</div><div class="svc-version">v1.9.2 &bull; ClickHouse</div></div>
+        <span class="svc-status-badge sb-healthy">&#9679; Healthy</span>
+      </div>
+      <div class="svc-metrics">
+        <div class="metric-cell">
+          <div class="mc-val val-good">110ms</div>
+          <div class="mc-lbl">Query p50</div>
+          <div class="mc-chg" style="color:var(--accent)">&#9660; -8ms</div>
+        </div>
+        <div class="metric-cell">
+          <div class="mc-val val-good">0.04%</div>
+          <div class="mc-lbl">Error rate</div>
+          <div class="mc-chg" style="color:var(--accent)">stable</div>
+        </div>
+        <div class="metric-cell">
+          <div class="mc-val val-neu">340</div>
+          <div class="mc-lbl">Queries/min</div>
+          <div class="mc-chg" style="color:var(--muted)">stable</div>
+        </div>
+      </div>
+      <div class="svc-sparkline" aria-hidden="true">
+        <svg viewBox="0 0 200 30" height="30" preserveAspectRatio="none">
+          <polyline fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" points="0,18 20,16 40,18 60,15 80,16 100,14 120,15 140,13 160,14 180,12 200,11"/>
+        </svg>
+      </div>
+    </article>
+
+    <!-- Web Portal -->
+    <article class="svc-card healthy">
+      <div class="svc-header">
+        <div><div class="svc-name">Web Portal</div><div class="svc-version">v5.1.4 &bull; CDN-backed</div></div>
+        <span class="svc-status-badge sb-healthy">&#9679; Healthy</span>
+      </div>
+      <div class="svc-metrics">
+        <div class="metric-cell">
+          <div class="mc-val val-good">56ms</div>
+          <div class="mc-lbl">p50 LCP</div>
+          <div class="mc-chg" style="color:var(--accent)">&#9660; -3ms</div>
+        </div>
+        <div class="metric-cell">
+          <div class="mc-val val-good">0.05%</div>
+          <div class="mc-lbl">JS error rate</div>
+          <div class="mc-chg" style="color:var(--accent)">stable</div>
+        </div>
+        <div class="metric-cell">
+          <div class="mc-val val-neu">3.4K</div>
+          <div class="mc-lbl">Sessions/hr</div>
+          <div class="mc-chg" style="color:var(--primary)">&#9650; +12%</div>
+        </div>
+      </div>
+      <div class="svc-sparkline" aria-hidden="true">
+        <svg viewBox="0 0 200 30" height="30" preserveAspectRatio="none">
+          <polyline fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" points="0,22 20,20 40,19 60,18 80,17 100,16 120,15 140,13 160,11 180,10 200,9"/>
+        </svg>
+      </div>
+    </article>
+
+    <!-- Notification Service -->
+    <article class="svc-card healthy">
+      <div class="svc-header">
+        <div><div class="svc-name">Notification Service</div><div class="svc-version">v2.2.0 &bull; Email + Push</div></div>
+        <span class="svc-status-badge sb-healthy">&#9679; Healthy</span>
+      </div>
+      <div class="svc-metrics">
+        <div class="metric-cell">
+          <div class="mc-val val-good">145ms</div>
+          <div class="mc-lbl">Delivery p50</div>
+          <div class="mc-chg" style="color:var(--accent)">stable</div>
+        </div>
+        <div class="metric-cell">
+          <div class="mc-val val-good">0.08%</div>
+          <div class="mc-lbl">Bounce rate</div>
+          <div class="mc-chg" style="color:var(--accent)">stable</div>
+        </div>
+        <div class="metric-cell">
+          <div class="mc-val val-neu">620</div>
+          <div class="mc-lbl">Sent/min</div>
+          <div class="mc-chg" style="color:var(--muted)">stable</div>
+        </div>
+      </div>
+      <div class="svc-sparkline" aria-hidden="true">
+        <svg viewBox="0 0 200 30" height="30" preserveAspectRatio="none">
+          <polyline fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" points="0,16 20,15 40,17 60,14 80,16 100,15 120,14 140,16 160,14 180,15 200,14"/>
+        </svg>
+      </div>
+    </article>
+
+  </div>
+
+  <p class="section-label">Active Alerts</p>
+  <div class="alert-list" role="list" aria-label="Active alerts">
+    <div class="alert-row warn-alert" role="listitem">
+      <span class="alert-icon" style="color:var(--warning)">&#9651;</span>
+      <span class="alert-service">Data Pipeline</span>
+      <span class="alert-msg">Kafka consumer lag exceeding threshold &mdash; 880K msgs backlogged. Autoscaler investigating.</span>
+      <span class="alert-time">14:18 ET</span>
+    </div>
+    <div class="alert-row warn-alert" role="listitem">
+      <span class="alert-icon" style="color:var(--warning)">&#9651;</span>
+      <span class="alert-service">API Gateway</span>
+      <span class="alert-msg">Error rate 0.18% &mdash; above 0.15% SLO. Elevated 4xx on /api/v1/reports. Investigating.</span>
+      <span class="alert-time">14:24 ET</span>
+    </div>
+  </div>
+
+  <p class="section-label">SLO Compliance &mdash; Last 30 Days</p>
+  <div class="slo-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th>SLO Target</th>
+          <th>Actual</th>
+          <th>Error Budget Used</th>
+          <th style="text-align:left">Burn Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="slo-name">API Gateway</td>
+          <td>99.9%</td>
+          <td style="color:var(--accent)">99.93%</td>
+          <td><div class="slo-bar-track"><div class="slo-bar-fill" style="width:30%;background:var(--accent)"></div></div></td>
+          <td style="color:var(--accent);font-family:var(--mono);font-size:0.8rem">0.3x</td>
+        </tr>
+        <tr>
+          <td class="slo-name">Auth Service</td>
+          <td>99.99%</td>
+          <td style="color:var(--accent)">100.0%</td>
+          <td><div class="slo-bar-track"><div class="slo-bar-fill" style="width:2%;background:var(--accent)"></div></div></td>
+          <td style="color:var(--accent);font-family:var(--mono);font-size:0.8rem">0.1x</td>
+        </tr>
+        <tr>
+          <td class="slo-name">Data Pipeline</td>
+          <td>99.5%</td>
+          <td style="color:var(--warning)">98.4%</td>
+          <td><div class="slo-bar-track"><div class="slo-bar-fill" style="width:68%;background:var(--warning)"></div></div></td>
+          <td style="color:var(--warning);font-family:var(--mono);font-size:0.8rem">2.1x</td>
+        </tr>
+        <tr>
+          <td class="slo-name">Analytics Engine</td>
+          <td>99.9%</td>
+          <td style="color:var(--accent)">99.99%</td>
+          <td><div class="slo-bar-track"><div class="slo-bar-fill" style="width:5%;background:var(--accent)"></div></div></td>
+          <td style="color:var(--accent);font-family:var(--mono);font-size:0.8rem">0.1x</td>
+        </tr>
+        <tr>
+          <td class="slo-name">Web Portal</td>
+          <td>99.9%</td>
+          <td style="color:var(--accent)">99.91%</td>
+          <td><div class="slo-bar-track"><div class="slo-bar-fill" style="width:38%;background:var(--accent)"></div></div></td>
+          <td style="color:var(--accent);font-family:var(--mono);font-size:0.8rem">0.5x</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer>
+  <span>Northwind Capital &mdash; System Health</span>
+  <span>v{{VERSION}}</span>
+  <span>Updated {{UPDATED}}</span>
+  <span>Source: Prometheus / Grafana</span>
+</footer>
+
+</body>
+</html>

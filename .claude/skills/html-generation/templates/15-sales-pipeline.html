@@ -1,0 +1,506 @@
+<!--
+TEMPLATE: sales-pipeline
+CATEGORY: Dashboard / Analytics
+USE WHEN: You need a Kanban-style sales pipeline view with deal cards across stages (Lead, Qualify, Demo, Proposal, Close) — CRM pipeline overview for sales teams or executives.
+PALETTE: Executive cream
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Pipeline &mdash; Northwind Capital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f7f4ef;
+      --cream2: #edeae3;
+      --cream3: #e4e0d8;
+      --navy: #0e1b2e;
+      --navy2: #1a2e47;
+      --gold: #b8965a;
+      --gold2: #d4ab72;
+      --ink: #1c1a18;
+      --muted: #6b6560;
+      --border: #ddd8ce;
+      --green: #2dd4a0;
+      --amber: #f0a050;
+      --red: #f06070;
+      --purple: #a78bfa;
+      --blue: #3b9eff;
+      --font: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'DM Mono', 'Cascadia Code', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .logo {
+      width: 36px; height: 36px; border-radius: 6px;
+      background: var(--gold); display: flex; align-items: center;
+      justify-content: center; font-weight: 700; font-size: 0.9rem; color: var(--navy);
+    }
+    header h1 { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.3px; }
+    header .meta { font-size: 0.78rem; color: #94a3b8; font-family: var(--mono); }
+    .pipeline-total {
+      text-align: right;
+    }
+    .pipeline-total .big { font-size: 1.6rem; font-weight: 700; color: var(--gold2); line-height: 1; }
+    .pipeline-total .sub { font-size: 0.75rem; color: #94a3b8; font-family: var(--mono); }
+
+    main { padding: 1.75rem 2rem 2rem; overflow-x: auto; }
+
+    .section-label {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 1rem;
+    }
+
+    /* pipeline funnel stats */
+    .funnel-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+    }
+    .funnel-stage {
+      flex: 1;
+      min-width: 120px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      position: relative;
+    }
+    .funnel-stage::after {
+      content: '&#8594;';
+      position: absolute;
+      right: -14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 1rem;
+      z-index: 1;
+    }
+    .funnel-stage:last-child::after { display: none; }
+    .fs-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 0.25rem; }
+    .fs-count { font-size: 1.4rem; font-weight: 700; color: var(--navy); line-height: 1; }
+    .fs-value { font-size: 0.78rem; font-family: var(--mono); color: var(--muted); }
+    .fs-bar { height: 3px; border-radius: 2px; margin-top: 0.5rem; }
+
+    /* kanban board */
+    .kanban {
+      display: flex;
+      gap: 1rem;
+      min-width: 900px;
+      align-items: flex-start;
+    }
+
+    .kanban-col {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .col-header {
+      padding: 0.65rem 0.9rem;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .col-header .stage-name { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+    .col-header .col-count {
+      width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 700;
+    }
+
+    .col-lead    .col-header { background: #f0f4ff; border-color: #c8d5ef; }
+    .col-lead    .stage-name { color: #3055b0; }
+    .col-lead    .col-count  { background: #3b9eff; color: #fff; }
+
+    .col-qualify .col-header { background: #fff8f0; border-color: var(--border); }
+    .col-qualify .stage-name { color: #a06010; }
+    .col-qualify .col-count  { background: var(--amber); color: #fff; }
+
+    .col-demo    .col-header { background: #f5f0ff; border-color: #d8ccf0; }
+    .col-demo    .stage-name { color: #6038c0; }
+    .col-demo    .col-count  { background: var(--purple); color: #fff; }
+
+    .col-proposal .col-header { background: #eafaf5; border-color: #b8eedd; }
+    .col-proposal .stage-name { color: #0a6a50; }
+    .col-proposal .col-count  { background: var(--green); color: #fff; }
+
+    .col-close   .col-header { background: #fff4f0; border-color: #f0d0c8; }
+    .col-close   .stage-name { color: #902030; }
+    .col-close   .col-count  { background: var(--gold); color: var(--navy); }
+
+    .col-body {
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      border-top: 2px solid transparent;
+      border-radius: 0 0 8px 8px;
+      padding: 0.65rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      min-height: 80px;
+    }
+    .col-lead    .col-body { border-top-color: #3b9eff; }
+    .col-qualify .col-body { border-top-color: var(--amber); }
+    .col-demo    .col-body { border-top-color: var(--purple); }
+    .col-proposal .col-body { border-top-color: var(--green); }
+    .col-close   .col-body { border-top-color: var(--gold); }
+
+    /* deal cards */
+    .deal-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 0.85rem 0.9rem;
+      transition: box-shadow 0.15s;
+    }
+    .deal-card:hover { box-shadow: 0 2px 10px rgba(14,27,46,0.08); }
+
+    .deal-company {
+      font-size: 0.88rem; font-weight: 600; color: var(--navy); margin-bottom: 0.15rem;
+    }
+    .deal-contact {
+      font-size: 0.75rem; color: var(--muted); margin-bottom: 0.5rem;
+    }
+    .deal-footer {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+    }
+    .deal-value {
+      font-size: 0.9rem; font-weight: 700; color: var(--ink); font-family: var(--mono);
+    }
+    .deal-tags { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+    .dtag {
+      font-size: 0.65rem; font-weight: 600; padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+    }
+    .dtag-enterprise { background: rgba(59,158,255,0.1); color: #2050a0; }
+    .dtag-health     { background: rgba(45,212,160,0.1); color: #0a6a50; }
+    .dtag-sf         { background: rgba(240,160,80,0.1); color: #a05c10; }
+    .dtag-ai         { background: rgba(167,139,250,0.1); color: #6038c0; }
+
+    .deal-date { font-size: 0.7rem; font-family: var(--mono); color: var(--muted); margin-top: 0.4rem; }
+
+    .priority-dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+    }
+    .pri-hot  { background: var(--red); }
+    .pri-warm { background: var(--amber); }
+    .pri-cold { background: #94a3b8; }
+
+    footer {
+      background: var(--navy); color: #64748b;
+      padding: 1rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.75rem; font-family: var(--mono); gap: 1rem; flex-wrap: wrap;
+    }
+
+    @media (max-width: 700px) {
+      main { padding: 1rem; }
+      .kanban { min-width: 600px; }
+      .funnel-stage::after { display: none; }
+    }
+    @media print {
+      body { background: #fff; }
+      header { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .deal-card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo" aria-hidden="true">NC</div>
+    <div>
+      <h1>Northwind Capital &mdash; Sales Pipeline</h1>
+      <div class="meta">Q2 2026 Active Deals &bull; Enterprise &amp; Mid-Market</div>
+    </div>
+  </div>
+  <div class="pipeline-total">
+    <div class="big">$4.82M</div>
+    <div class="sub">Total pipeline value</div>
+  </div>
+</header>
+
+<main>
+
+  <p class="section-label">Pipeline Funnel</p>
+  <div class="funnel-row" role="list" aria-label="Pipeline stages summary">
+    <div class="funnel-stage" role="listitem">
+      <div class="fs-label">Lead</div>
+      <div class="fs-count">18</div>
+      <div class="fs-value">$1.24M</div>
+      <div class="fs-bar" style="background:var(--blue)"></div>
+    </div>
+    <div class="funnel-stage" role="listitem">
+      <div class="fs-label">Qualify</div>
+      <div class="fs-count">11</div>
+      <div class="fs-value">$1.62M</div>
+      <div class="fs-bar" style="background:var(--amber)"></div>
+    </div>
+    <div class="funnel-stage" role="listitem">
+      <div class="fs-label">Demo</div>
+      <div class="fs-count">7</div>
+      <div class="fs-value">$980K</div>
+      <div class="fs-bar" style="background:var(--purple)"></div>
+    </div>
+    <div class="funnel-stage" role="listitem">
+      <div class="fs-label">Proposal</div>
+      <div class="fs-count">5</div>
+      <div class="fs-value">$680K</div>
+      <div class="fs-bar" style="background:var(--green)"></div>
+    </div>
+    <div class="funnel-stage" role="listitem">
+      <div class="fs-label">Close</div>
+      <div class="fs-count">3</div>
+      <div class="fs-value">$300K</div>
+      <div class="fs-bar" style="background:var(--gold)"></div>
+    </div>
+  </div>
+
+  <p class="section-label">Active Deals by Stage</p>
+  <div class="kanban" role="region" aria-label="Sales pipeline kanban board">
+
+    <!-- LEAD -->
+    <div class="kanban-col col-lead">
+      <div class="col-header" aria-label="Lead stage, 3 deals shown">
+        <span class="stage-name">Lead</span>
+        <span class="col-count" aria-label="3 deals">3</span>
+      </div>
+      <div class="col-body">
+        <article class="deal-card">
+          <div class="deal-company">Meridian Health Systems</div>
+          <div class="deal-contact">Jamie Torres &bull; VP Technology</div>
+          <div class="deal-footer">
+            <span class="deal-value">$240K</span>
+            <div class="deal-tags">
+              <span class="dtag dtag-enterprise">Enterprise</span>
+              <span class="dtag dtag-health">Healthcare</span>
+            </div>
+            <span class="priority-dot pri-hot" aria-label="Hot priority"></span>
+          </div>
+          <div class="deal-date">Created 2026-04-01</div>
+        </article>
+        <article class="deal-card">
+          <div class="deal-company">Apex Financial Group</div>
+          <div class="deal-contact">Rachel Kim &bull; CIO</div>
+          <div class="deal-footer">
+            <span class="deal-value">$185K</span>
+            <div class="deal-tags">
+              <span class="dtag dtag-sf">Salesforce</span>
+            </div>
+            <span class="priority-dot pri-warm" aria-label="Warm priority"></span>
+          </div>
+          <div class="deal-date">Created 2026-04-08</div>
+        </article>
+        <article class="deal-card">
+          <div class="deal-company">Clearview Insurance</div>
+          <div class="deal-contact">David Park &bull; Dir. IT</div>
+          <div class="deal-footer">
+            <span class="deal-value">$120K</span>
+            <div class="deal-tags">
+              <span class="dtag dtag-ai">AI</span>
+            </div>
+            <span class="priority-dot pri-cold" aria-label="Low priority"></span>
+          </div>
+          <div class="deal-date">Created 2026-04-15</div>
+        </article>
+      </div>
+    </div>
+
+    <!-- QUALIFY -->
+    <div class="kanban-col col-qualify">
+      <div class="col-header">
+        <span class="stage-name">Qualify</span>
+        <span class="col-count" aria-label="3 deals">3</span>
+      </div>
+      <div class="col-body">
+        <article class="deal-card">
+          <div class="deal-company">Bridgewater Medical Center</div>
+          <div class="deal-contact">Sandra Lee &bull; CMIO</div>
+          <div class="deal-footer">
+            <span class="deal-value">$390K</span>
+            <div class="deal-tags">
+              <span class="dtag dtag-health">Healthcare</span>
+              <span class="dtag dtag-ai">AI</span>
+            </div>
+            <span class="priority-dot pri-hot" aria-label="Hot priority"></span>
+          </div>
+          <div class="deal-date">Qualified 2026-04-06</div>
+        </article>
+        <article class="deal-card">
+          <div class="deal-company">Summit Logistics Corp</div>
+          <div class="deal-contact">Mike Anderson &bull; COO</div>
+          <div class="deal-footer">
+            <span class="deal-value">$275K</span>
+            <div class="deal-tags">
+              <span class="dtag dtag-enterprise">Enterprise</span>
+            </div>
+            <span class="priority-dot pri-warm" aria-label="Warm priority"></span>
+          </div>
+          <div class="deal-date">Qualified 2026-04-10</div>
+        </article>
+        <article class="deal-card">
+          <div class="deal-company">Harbor Tech Partners</div>
+          <div class="deal-contact">Alex Chen &bull; CTO</div>
+          <div class="deal-footer">
+            <span class="deal-value">$160K</span>
+            <div class="deal-tags">
+              <span class="dtag dtag-sf">Salesforce</span>
+              <span class="dtag dtag-ai">AI</span>
+            </div>
+            <span class="priority-dot pri-warm" aria-label="Warm priority"></span>
+          </div>
+          <div class="deal-date">Qualified 2026-04-14</div>
+        </article>
+      </div>
+    </div>
+
+    <!-- DEMO -->
+    <div class="kanban-col col-demo">
+      <div class="col-header">
+        <span class="stage-name">Demo</span>
+        <span class="col-count" aria-label="2 deals">2</span>
+      </div>
+      <div class="col-body">
+        <article class="deal-card">
+          <div class="deal-company">Pacific Care Alliance</div>
+          <div class="deal-contact">Dr. Nina Patel &bull; CEO</div>
+          <div class="deal-footer">
+            <span class="deal-value">$520K</span>
+            <div class="deal-tags">
+              <span class="dtag dtag-enterprise">Enterprise</span>
+              <span class="dtag dtag-health">Healthcare</span>
+            </div>
+            <span class="priority-dot pri-hot" aria-label="Hot priority"></span>
+          </div>
+          <div class="deal-date">Demo 2026-04-18</div>
+        </article>
+        <article class="deal-card">
+          <div class="deal-company">Vanguard Retail Group</div>
+          <div class="deal-contact">Tony Marsh &bull; VP Sales</div>
+          <div class="deal-footer">
+            <span class="deal-value">$200K</span>
+            <div class="deal-tags">
+              <span class="dtag dtag-sf">Salesforce</span>
+            </div>
+            <span class="priority-dot pri-warm" aria-label="Warm priority"></span>
+          </div>
+          <div class="deal-date">Demo 2026-04-22</div>
+        </article>
+      </div>
+    </div>
+
+    <!-- PROPOSAL -->
+    <div class="kanban-col col-proposal">
+      <div class="col-header">
+        <span class="stage-name">Proposal</span>
+        <span class="col-count" aria-label="2 deals">2</span>
+      </div>
+      <div class="col-body">
+        <article class="deal-card">
+          <div class="deal-company">NextGen Community Health</div>
+          <div class="deal-contact">Karen Liu &bull; CIO</div>
+          <div class="deal-footer">
+            <span class="deal-value">$440K</span>
+            <div class="deal-tags">
+              <span class="dtag dtag-health">Healthcare</span>
+              <span class="dtag dtag-ai">AI</span>
+            </div>
+            <span class="priority-dot pri-hot" aria-label="Hot priority"></span>
+          </div>
+          <div class="deal-date">Proposal sent 2026-04-16</div>
+        </article>
+        <article class="deal-card">
+          <div class="deal-company">Titan Manufacturing</div>
+          <div class="deal-contact">James Wu &bull; IT Director</div>
+          <div class="deal-footer">
+            <span class="deal-value">$180K</span>
+            <div class="deal-tags">
+              <span class="dtag dtag-enterprise">Enterprise</span>
+            </div>
+            <span class="priority-dot pri-warm" aria-label="Warm priority"></span>
+          </div>
+          <div class="deal-date">Proposal sent 2026-04-19</div>
+        </article>
+      </div>
+    </div>
+
+    <!-- CLOSE -->
+    <div class="kanban-col col-close">
+      <div class="col-header">
+        <span class="stage-name">Close</span>
+        <span class="col-count" aria-label="2 deals">2</span>
+      </div>
+      <div class="col-body">
+        <article class="deal-card">
+          <div class="deal-company">Regional Hospital Network</div>
+          <div class="deal-contact">Dr. H. Brooks &bull; CISO</div>
+          <div class="deal-footer">
+            <span class="deal-value">$680K</span>
+            <div class="deal-tags">
+              <span class="dtag dtag-enterprise">Enterprise</span>
+              <span class="dtag dtag-health">Healthcare</span>
+            </div>
+            <span class="priority-dot pri-hot" aria-label="Hot priority"></span>
+          </div>
+          <div class="deal-date">Close date 2026-04-28</div>
+        </article>
+        <article class="deal-card">
+          <div class="deal-company">Skyline Insurance Tech</div>
+          <div class="deal-contact">Priya Sharma &bull; COO</div>
+          <div class="deal-footer">
+            <span class="deal-value">$210K</span>
+            <div class="deal-tags">
+              <span class="dtag dtag-ai">AI</span>
+              <span class="dtag dtag-sf">Salesforce</span>
+            </div>
+            <span class="priority-dot pri-warm" aria-label="Warm priority"></span>
+          </div>
+          <div class="deal-date">Close date 2026-04-30</div>
+        </article>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  <span>Northwind Capital &mdash; Sales Pipeline</span>
+  <span>v{{VERSION}}</span>
+  <span>Updated {{UPDATED}}</span>
+  <span>Source: CRM Platform</span>
+</footer>
+
+</body>
+</html>

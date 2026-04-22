@@ -1,0 +1,546 @@
+<!--
+TEMPLATE: pitch-onepager
+CATEGORY: Docs / Product Communications
+USE WHEN: Presenting a startup or product pitch covering problem, solution, market, traction, team, and funding ask in a single dense but scannable page.
+PALETTE: Light marketing
+AUTHOR: SponAItech html-generation skill v1.1
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meridian — Investor One-Pager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --white: #ffffff;
+      --off-white: #f7f9fc;
+      --blue: #3b9eff;
+      --blue-dark: #1a6ed4;
+      --blue-light: #eaf4ff;
+      --green: #2dd4a0;
+      --green-light: #e8faf5;
+      --navy: #0e1b2e;
+      --navy-mid: #1e3356;
+      --text: #1c2a3a;
+      --muted: #5a7184;
+      --border: #dce5f0;
+      --border-light: #edf2f8;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--off-white);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 860px;
+      margin: 2rem auto;
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 6px 48px rgba(14,27,46,0.09);
+    }
+
+    /* ── Top band ── */
+    .top-band {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      padding: 2.5rem 3rem;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .band-left { max-width: 440px; }
+    .company-mark { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.25rem; }
+    .company-mark .logo-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(59,158,255,0.15);
+      border: 1px solid rgba(59,158,255,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .company-mark .company-name { font-size: 1.2rem; font-weight: 700; color: var(--white); }
+    .company-mark .company-sector {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(208,216,228,0.5);
+      border: 1px solid rgba(208,216,228,0.2);
+      border-radius: 4px;
+      padding: 2px 7px;
+      margin-left: 0.4rem;
+    }
+    .top-band h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.85rem;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 0.6rem;
+    }
+    .top-band h1 em { font-style: normal; color: var(--green); }
+    .top-band .tagline { font-size: 0.9rem; color: rgba(208,216,228,0.7); }
+
+    .band-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.75rem; min-width: 180px; }
+    .ask-block {
+      background: var(--green);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      text-align: center;
+      min-width: 160px;
+    }
+    .ask-block .ask-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(14,27,46,0.6);
+      margin-bottom: 0.2rem;
+    }
+    .ask-block .ask-amount {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.75rem;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .ask-block .ask-stage { font-size: 0.72rem; color: rgba(14,27,46,0.65); font-weight: 500; margin-top: 0.1rem; }
+    .contact-block { font-size: 0.75rem; color: rgba(208,216,228,0.5); text-align: right; line-height: 1.5; }
+    .contact-block a { color: rgba(59,158,255,0.7); text-decoration: none; }
+
+    /* ── Traction bar ── */
+    .traction-bar {
+      background: var(--navy-mid);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 0.85rem 3rem;
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .traction-item { display: flex; align-items: baseline; gap: 0.4rem; }
+    .traction-item .num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+    .traction-item .num-label { font-size: 0.75rem; color: rgba(208,216,228,0.55); }
+
+    /* ── Body grid ── */
+    .body-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media(max-width:640px) { .body-grid { grid-template-columns: 1fr; } .top-band { padding: 2rem 1.5rem; } .traction-bar { padding: 0.75rem 1.5rem; } }
+    .body-col { padding: 1.75rem 3rem; border-right: 1px solid var(--border-light); }
+    .body-col:last-child { border-right: none; }
+    .body-col:nth-child(n+3) { border-top: 1px solid var(--border-light); }
+
+    /* Section labels */
+    .section-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: var(--blue-light);
+      border-radius: 3px;
+      padding: 2px 7px;
+      display: inline-flex;
+      margin-bottom: 0.65rem;
+    }
+    h2 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+    p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.5rem; }
+    p:last-child { margin-bottom: 0; }
+    ul { margin-left: 1rem; margin-bottom: 0; }
+    li { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.25rem; }
+    strong { color: var(--text); font-weight: 600; }
+
+    /* Market size rings */
+    .market-rings {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .market-rings svg { flex-shrink: 0; }
+    .market-labels { display: flex; flex-direction: column; gap: 0.25rem; }
+    .market-label-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; }
+    .market-label-item .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .market-label-item .market-name { color: var(--muted); }
+    .market-label-item .market-size { font-weight: 600; color: var(--text); margin-left: auto; font-family: 'DM Mono', monospace; font-size: 0.75rem; }
+
+    /* Business model */
+    .biz-model { display: flex; flex-direction: column; gap: 0.5rem; }
+    .biz-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--off-white);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+    }
+    .biz-tier { font-size: 0.82rem; font-weight: 600; color: var(--navy); }
+    .biz-price { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--blue); }
+
+    /* Competitive positioning */
+    .position-grid { display: flex; flex-direction: column; gap: 0.4rem; }
+    .position-row { display: flex; align-items: center; gap: 0.6rem; }
+    .position-label { font-size: 0.78rem; color: var(--muted); width: 110px; flex-shrink: 0; }
+    .position-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; }
+    .position-bar { height: 100%; border-radius: 100px; }
+    .position-score { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); min-width: 28px; text-align: right; }
+
+    /* Team */
+    .team-grid { display: flex; flex-direction: column; gap: 0.65rem; }
+    .team-member { display: flex; align-items: flex-start; gap: 0.65rem; }
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .team-info .name { font-size: 0.85rem; font-weight: 600; color: var(--navy); }
+    .team-info .role { font-size: 0.75rem; color: var(--muted); }
+    .team-info .prev { font-size: 0.72rem; color: rgba(59,158,255,0.7); }
+
+    /* Use of funds */
+    .funds-rows { display: flex; flex-direction: column; gap: 0.35rem; }
+    .fund-row { display: flex; align-items: center; gap: 0.75rem; }
+    .fund-name { font-size: 0.8rem; color: var(--text); width: 120px; flex-shrink: 0; }
+    .fund-bar-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 100px; overflow: hidden; }
+    .fund-bar { height: 100%; border-radius: 100px; }
+    .fund-pct { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); min-width: 30px; text-align: right; }
+
+    /* Milestones */
+    .milestone-list { list-style: none; }
+    .milestone-item { display: flex; gap: 0.65rem; align-items: flex-start; padding: 0.35rem 0; border-bottom: 1px solid var(--border-light); }
+    .milestone-item:last-child { border-bottom: none; }
+    .milestone-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      width: 70px;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+    .milestone-text { font-size: 0.82rem; color: var(--text); }
+    .milestone-done { color: var(--green); font-size: 0.7rem; margin-left: auto; font-family: 'DM Mono', monospace; }
+
+    /* Footer */
+    .page-footer {
+      background: var(--off-white);
+      border-top: 1px solid var(--border);
+      padding: 0.9rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page" role="main">
+
+  <!-- Top band -->
+  <header class="top-band">
+    <div class="band-left">
+      <div class="company-mark">
+        <div class="logo-box" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M4 9h10M9 4l5 5-5 5" stroke="#3b9eff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="company-name">Meridian</span>
+        <span class="company-sector">Data &middot; AI &middot; B2B SaaS</span>
+      </div>
+      <h1>The intelligence layer<br>for <em>enterprise data.</em></h1>
+      <p class="tagline">Meridian enables any employee to query any dataset in plain English &mdash; connecting to 40+ warehouses and returning validated, confidence-scored answers in under 3 seconds.</p>
+    </div>
+    <div class="band-right">
+      <div class="ask-block">
+        <div class="ask-label">Raising</div>
+        <div class="ask-amount">$8M</div>
+        <div class="ask-stage">Series A &mdash; 2026</div>
+      </div>
+      <div class="contact-block">
+        Kavya Menon, CEO<br>
+        <a href="#">kavya@meridian.io</a><br>
+        meridian.io
+      </div>
+    </div>
+  </header>
+
+  <!-- Traction bar -->
+  <div class="traction-bar" role="complementary" aria-label="Key traction metrics">
+    <div class="traction-item">
+      <div class="num">$2.4M</div>
+      <div class="num-label">ARR</div>
+    </div>
+    <div class="traction-item">
+      <div class="num">3&times;</div>
+      <div class="num-label">YoY revenue growth</div>
+    </div>
+    <div class="traction-item">
+      <div class="num">84</div>
+      <div class="num-label">Paying customers</div>
+    </div>
+    <div class="traction-item">
+      <div class="num">112%</div>
+      <div class="num-label">Net revenue retention</div>
+    </div>
+    <div class="traction-item">
+      <div class="num">18 mo</div>
+      <div class="num-label">Runway post-close</div>
+    </div>
+  </div>
+
+  <!-- Body grid -->
+  <div class="body-grid">
+
+    <!-- Problem -->
+    <div class="body-col">
+      <div class="section-tag">Problem</div>
+      <h2>Data is locked behind SQL skills</h2>
+      <p>Only 4% of enterprise employees can write SQL. The other 96% submit tickets. Data teams spend <strong>60% of their time</strong> on ad-hoc queries instead of strategic work. Average wait: <strong>3.2 business days</strong> per question.</p>
+      <p>Existing BI tools require a data analyst to configure dashboards. When business questions change &mdash; and they always do &mdash; the dashboard goes stale.</p>
+    </div>
+
+    <!-- Solution -->
+    <div class="body-col">
+      <div class="section-tag">Solution</div>
+      <h2>Any question. Any warehouse. Instant.</h2>
+      <p>Meridian connects to your data warehouse, auto-indexes it, and serves a natural language query interface. Our proprietary Chain-of-Verification engine generates SQL, validates it against schema constraints, executes it read-only, and returns a <strong>confidence score with every answer.</strong></p>
+      <ul>
+        <li>40+ native connectors (Snowflake, BigQuery, Redshift&hellip;)</li>
+        <li>2 minutes from sign-up to first query</li>
+        <li>SOC 2 Type II certified, column-level RBAC</li>
+      </ul>
+    </div>
+
+    <!-- Market -->
+    <div class="body-col">
+      <div class="section-tag">Market</div>
+      <h2>Large and underpenetrated</h2>
+      <div class="market-rings">
+        <svg width="70" height="70" viewBox="0 0 70 70" fill="none" aria-hidden="true">
+          <circle cx="35" cy="35" r="32" fill="rgba(59,158,255,0.07)" stroke="#3b9eff" stroke-width="1.5"/>
+          <circle cx="35" cy="35" r="22" fill="rgba(45,212,160,0.1)" stroke="#2dd4a0" stroke-width="1.5"/>
+          <circle cx="35" cy="35" r="11" fill="rgba(167,139,250,0.15)" stroke="#a78bfa" stroke-width="1.5"/>
+        </svg>
+        <div class="market-labels">
+          <div class="market-label-item">
+            <div class="dot" style="background:#3b9eff"></div>
+            <span class="market-name">TAM &mdash; Analytics SaaS</span>
+            <span class="market-size">$38B</span>
+          </div>
+          <div class="market-label-item">
+            <div class="dot" style="background:#2dd4a0"></div>
+            <span class="market-name">SAM &mdash; NL Data Query</span>
+            <span class="market-size">$6.2B</span>
+          </div>
+          <div class="market-label-item">
+            <div class="dot" style="background:#a78bfa"></div>
+            <span class="market-name">SOM &mdash; Mid-market (2026)</span>
+            <span class="market-size">$420M</span>
+          </div>
+        </div>
+      </div>
+      <p>The NL analytics category is nascent. No incumbent has shipped a production-grade, confidence-scored solution. We have 12-18 months before a major platform player replicates our core feature.</p>
+    </div>
+
+    <!-- Business model -->
+    <div class="body-col">
+      <div class="section-tag">Business Model</div>
+      <h2>Usage-based SaaS with enterprise tiers</h2>
+      <div class="biz-model" style="margin-bottom:0.75rem">
+        <div class="biz-row">
+          <span class="biz-tier">Starter</span>
+          <span class="biz-price">$299 / mo</span>
+        </div>
+        <div class="biz-row">
+          <span class="biz-tier">Team</span>
+          <span class="biz-price">$999 / mo + $0.04/query over 25K</span>
+        </div>
+        <div class="biz-row" style="border-color:var(--blue)">
+          <span class="biz-tier" style="color:var(--blue)">Enterprise</span>
+          <span class="biz-price">Custom ACV ($80K&ndash;$400K)</span>
+        </div>
+      </div>
+      <p><strong>84% gross margin</strong> at current scale. ACV expanding 28% per cohort (12-month look-back). Average contract value: $28,500.</p>
+    </div>
+
+    <!-- Competitive positioning -->
+    <div class="body-col">
+      <div class="section-tag">Why We Win</div>
+      <h2>Accuracy and trust others don&apos;t have</h2>
+      <div class="position-grid" style="margin-bottom:0.75rem">
+        <div class="position-row">
+          <span class="position-label">Query accuracy</span>
+          <div class="position-bar-wrap"><div class="position-bar" style="width:87%;background:var(--blue)"></div></div>
+          <span class="position-score">87%</span>
+        </div>
+        <div class="position-row">
+          <span class="position-label">Setup speed</span>
+          <div class="position-bar-wrap"><div class="position-bar" style="width:96%;background:var(--green)"></div></div>
+          <span class="position-score">2 min</span>
+        </div>
+        <div class="position-row">
+          <span class="position-label">Connector breadth</span>
+          <div class="position-bar-wrap"><div class="position-bar" style="width:80%;background:#a78bfa)"></div></div>
+          <span class="position-score">40+</span>
+        </div>
+        <div class="position-row">
+          <span class="position-label">Enterprise RBAC</span>
+          <div class="position-bar-wrap"><div class="position-bar" style="width:100%;background:var(--green)"></div></div>
+          <span class="position-score">Full</span>
+        </div>
+      </div>
+      <p>Competitors (Sigma, ThoughtSpot AI) require dashboard admin setup and lack column-level confidence scoring. Our <strong>Chain-of-Verification</strong> IP is patent-pending.</p>
+    </div>
+
+    <!-- Team -->
+    <div class="body-col">
+      <div class="section-tag">Team</div>
+      <h2>Built this before, at scale</h2>
+      <div class="team-grid">
+        <div class="team-member">
+          <div class="avatar" style="background:#eaf4ff;color:var(--blue)">KM</div>
+          <div class="team-info">
+            <div class="name">Kavya Menon &mdash; CEO</div>
+            <div class="role">2&times; founder, previously Head of Product at Looker</div>
+            <div class="prev">Looker &bull; acquired by Google $2.6B</div>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="avatar" style="background:#e8faf5;color:var(--green)">DV</div>
+          <div class="team-info">
+            <div class="name">Dmitri Volkov &mdash; CTO</div>
+            <div class="role">Led query engine at Databricks (3 yrs)</div>
+            <div class="prev">Databricks &bull; Stanford CS PhD</div>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="avatar" style="background:#f3efff;color:#6637cc">YP</div>
+          <div class="team-info">
+            <div class="name">Yuna Park &mdash; VP Design</div>
+            <div class="role">Previously design lead at Notion (Series B&ndash;D)</div>
+            <div class="prev">Notion &bull; Figma early team</div>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="avatar" style="background:#fef5e9;color:#b86a10">LO</div>
+          <div class="team-info">
+            <div class="name">Layla Osei &mdash; VP Sales</div>
+            <div class="role">$12M ARR built at Fivetran, 4 years</div>
+            <div class="prev">Fivetran &bull; Snowflake</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Use of funds -->
+    <div class="body-col">
+      <div class="section-tag">Use of Funds</div>
+      <h2>$8M Series A &mdash; 18-month plan</h2>
+      <div class="funds-rows" style="margin-bottom:0.75rem">
+        <div class="fund-row">
+          <span class="fund-name">Engineering (8 hires)</span>
+          <div class="fund-bar-wrap"><div class="fund-bar" style="width:45%;background:var(--blue)"></div></div>
+          <span class="fund-pct">45%</span>
+        </div>
+        <div class="fund-row">
+          <span class="fund-name">Sales &amp; Marketing</span>
+          <div class="fund-bar-wrap"><div class="fund-bar" style="width:30%;background:var(--green)"></div></div>
+          <span class="fund-pct">30%</span>
+        </div>
+        <div class="fund-row">
+          <span class="fund-name">Infra &amp; COGS</span>
+          <div class="fund-bar-wrap"><div class="fund-bar" style="width:15%;background:#a78bfa"></div></div>
+          <span class="fund-pct">15%</span>
+        </div>
+        <div class="fund-row">
+          <span class="fund-name">G&amp;A / Legal / Reserve</span>
+          <div class="fund-bar-wrap"><div class="fund-bar" style="width:10%;background:#f0a050"></div></div>
+          <span class="fund-pct">10%</span>
+        </div>
+      </div>
+      <p>Target: <strong>$8M ARR</strong> by month 18. Expect Series B readiness at month 20 with clear path to profitability at $16M ARR.</p>
+    </div>
+
+    <!-- Milestones -->
+    <div class="body-col">
+      <div class="section-tag">Milestones</div>
+      <h2>Proven execution, clear roadmap</h2>
+      <ul class="milestone-list" aria-label="Key milestones">
+        <li class="milestone-item">
+          <span class="milestone-date">Aug 2024</span>
+          <span class="milestone-text">Founded. $1.8M pre-seed (a16z, Operator Collective)</span>
+          <span class="milestone-done">DONE</span>
+        </li>
+        <li class="milestone-item">
+          <span class="milestone-date">Jan 2025</span>
+          <span class="milestone-text">Product GA. First 10 paying customers. $180K ARR.</span>
+          <span class="milestone-done">DONE</span>
+        </li>
+        <li class="milestone-item">
+          <span class="milestone-date">Oct 2025</span>
+          <span class="milestone-text">50 customers, $1.2M ARR. First enterprise ($120K ACV).</span>
+          <span class="milestone-done">DONE</span>
+        </li>
+        <li class="milestone-item">
+          <span class="milestone-date">Apr 2026</span>
+          <span class="milestone-text">NL Query GA (v2.1). 84 customers. $2.4M ARR. Raise Series A.</span>
+          <span class="milestone-done" style="color:var(--blue)">NOW</span>
+        </li>
+        <li class="milestone-item">
+          <span class="milestone-date">Q4 2026</span>
+          <span class="milestone-text">$5M ARR target. EMEA office open. SOC 2 Type I complete.</span>
+          <span class="milestone-done" style="color:var(--muted)">TARGET</span>
+        </li>
+        <li class="milestone-item">
+          <span class="milestone-date">Q2 2027</span>
+          <span class="milestone-text">$8M ARR. Series B readiness. Enterprise conversation memory launch.</span>
+          <span class="milestone-done" style="color:var(--muted)">TARGET</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <footer class="page-footer" role="contentinfo">
+    <span>CONFIDENTIAL &mdash; FOR QUALIFIED INVESTORS ONLY</span>
+    <span>Meridian, Inc. &mdash; Series A &mdash; v{{VERSION}} &mdash; {{DATE}}</span>
+    <span>kavya@meridian.io &nbsp;&bull;&nbsp; meridian.io/investors</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
